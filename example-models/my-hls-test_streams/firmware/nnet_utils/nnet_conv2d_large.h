@@ -194,7 +194,7 @@ void fill_entry(unsigned iShift,
 		data_T input[CONFIG_T::n_chan],
 		res_T  data [CONFIG_T::filt_width   * CONFIG_T::out_width * CONFIG_T::n_chan]) { 
 
-  #pragma HLS inline region
+  #pragma HLS inline
   unsigned lShift = iShift*CONFIG_T::filt_height*CONFIG_T::n_chan;
   for(unsigned i2 = 0; i2 < CONFIG_T::n_chan; i2++) {
     #pragma HLS UNROLL

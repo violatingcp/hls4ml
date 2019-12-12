@@ -91,7 +91,7 @@ void myproject(
     #pragma HLS ARRAY_RESHAPE variable=layer4_out complete dim=0
 
     //layer5_t layer5_out[config4::n_filt];      
-    // #pragma HLS ARRAY_RESHAPE variable=layer5_out complete dim=0
+    //#pragma HLS ARRAY_RESHAPE variable=layer5_out complete dim=0
 
     layer9_t layer9_out[N_LAYER_9];
     #pragma HLS ARRAY_RESHAPE variable=layer9_out complete dim=0
