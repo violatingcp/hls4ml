@@ -213,6 +213,17 @@ void fill_entry(unsigned iShift,
 }
 //Fills the temporary array to be fed in the CNN 
 template<class data_T, class res_T, typename CONFIG_T>
+void fill_entry_2d(unsigned iShift,
+		   data_T input[CONFIG_T::n_chan],
+		   res_T  data [CONFIG_T::out_width][CONFIG_T::filt_height][CONFIG_T::n_chan]) { 
+  #pragma HLS PIPELINE
+  static const unsigned lChan = CONFIG_T::filt_height-1; 
+  for(unsigned i2 = 0; i2 < CONFIG_T::n_chan; i2++) {
+    data[iShift][lChan][i2] = input[i2];
+  }
+}
+//Fills the temporary array to be fed in the CNN 
+template<class data_T, class res_T, typename CONFIG_T>
 void shift_right_small(//To be fixed with stride
 		 data_T input[CONFIG_T::filt_height * CONFIG_T::n_chan],
                  res_T  data[CONFIG_T::filt_width   * CONFIG_T::filt_height * CONFIG_T::n_chan]) { 
@@ -244,6 +255,20 @@ void shift_right(unsigned iShift,
   for(int i0 = 0; i0 < CONFIG_T::filt_height; i0++) { 
    for(int i1 = 0; i1 < CONFIG_T::n_chan; i1++) { 
       tmpinput[i0*CONFIG_T::n_chan+i1] = input[shift+i0*CONFIG_T::filt_height+i1];
+    }
+  } 
+  shift_right_small<data_T,res_T,CONFIG_T>(tmpinput,data);
+}
+template<class data_T, class res_T, typename CONFIG_T>
+void shift_right_2d(unsigned iShift,
+		    data_T input[CONFIG_T::out_width][CONFIG_T::filt_height][CONFIG_T::n_chan],
+                    res_T  data[CONFIG_T::filt_width   * CONFIG_T::filt_height * CONFIG_T::n_chan]) {
+#pragma HLS PIPELINE
+  data_T tmpinput[CONFIG_T::filt_height * CONFIG_T::n_chan];
+  #pragma HLS ARRAY_RESHAPE variable=tmpinput complete dim=0
+  for(int i0 = 0; i0 < CONFIG_T::filt_height; i0++) { 
+   for(int i1 = 0; i1 < CONFIG_T::n_chan; i1++) { 
+    tmpinput[i0*CONFIG_T::n_chan+i1] = input[iShift][i0][i1];
     }
   } 
   shift_right_small<data_T,res_T,CONFIG_T>(tmpinput,data);
@@ -308,6 +333,21 @@ void reset_down(//To be fixed with stride
     }
   }
 }
+//Fills the temporary array to be fed in the CNN
+template<class data_T, class res_T, typename CONFIG_T>
+void reset_down_2d(//To be fixed with stride
+                   data_T input[CONFIG_T::out_width][CONFIG_T::filt_height][CONFIG_T::n_chan],
+                   res_T  data [CONFIG_T::filt_width * CONFIG_T::filt_height* CONFIG_T::n_chan]) { 
+  //Shift register by image height
+  #pragma HLS PIPELINE
+  for(int i0 = 0; i0 < CONFIG_T::filt_width; i0++) { 
+    for(int i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
+      for(int i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
+       data[i0*CONFIG_T::filt_height*CONFIG_T::n_chan+i1*CONFIG_T::n_chan+i2] = input[i0][i1][i2];
+      }
+    }
+  }
+}
 //Shifts whole row
 template<class data_T, class res_T, typename CONFIG_T>
 void shift_down(//To be fixed with stride
@@ -335,12 +375,26 @@ void shift_down_small(//To be fixed with stride
 		      data_T  data [CONFIG_T::filt_height* CONFIG_T::out_width * CONFIG_T::n_chan]) {
   //Shift register by image height
   #pragma HLS PIPELINE 
-  for(int i1 = 0; i1 < CONFIG_T::out_width; i1++) { 
-    for(int i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
-      for(int i0 = 0; i0 < CONFIG_T::filt_height-1; i0++) { 
-	data[i1*CONFIG_T::n_chan*CONFIG_T::filt_height+i2*CONFIG_T::filt_height+i0] = data[i1*CONFIG_T::n_chan*CONFIG_T::filt_height+i2*CONFIG_T::filt_height+i0+1];
+  for(int i0 = 0; i0 < CONFIG_T::out_width; i0++) { 
+    for(int i1 = 0; i1 < CONFIG_T::filt_height-1; i1++) { 
+      for(int i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
+       data[i0*CONFIG_T::n_chan*CONFIG_T::filt_height+i1*CONFIG_T::filt_height+i2] = data[i0*CONFIG_T::n_chan*CONFIG_T::filt_height+(i1+1)*CONFIG_T::filt_height+i2];
       }
     }
+  }
+}
+//Shifts whole row
+template<class data_T, typename CONFIG_T>
+void shift_down_small_2d(//To be fixed with stride
+		      data_T  data [CONFIG_T::out_width][CONFIG_T::filt_height][CONFIG_T::n_chan]) {
+  //Shift register by image height
+  #pragma HLS PIPELINE 
+  for(int i0 = 0; i0 < CONFIG_T::out_width; i0++) { 
+   for(int i1 = 0; i1 < CONFIG_T::filt_height-1; i1++) { 
+    for(int i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
+     data[i0][i1][i2] = data[i0][i1+1][i2];
+    }
+   }
   }
 }
 
