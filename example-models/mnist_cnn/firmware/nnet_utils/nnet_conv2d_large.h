@@ -195,7 +195,7 @@ template<class data_T, class res_T, typename CONFIG_T>
 		  //res_T  data [CONFIG_T::out_width * CONFIG_T::n_chan]) { 
   		  res_T  data [CONFIG_T::out_height*CONFIG_T::out_width * CONFIG_T::n_chan]) { 
   #pragma HLS PIPELINE
-  const unsigned lShift = (iShiftY/CONFIG_T::stide_height)*CONFIG_T::out_width*CONFIG_T::n_chan+(iShiftX/CONFIG_T::stride_width)*CONFIG_T::n_chan;
+  const unsigned lShift = (iShiftY/CONFIG_T::stride_height)*CONFIG_T::out_width*CONFIG_T::n_chan+(iShiftX/CONFIG_T::stride_width)*CONFIG_T::n_chan;
   for(unsigned i2 = 0; i2 < CONFIG_T::n_chan; i2++) {
     data[lShift+i2] = input[i2];
   }
@@ -241,9 +241,9 @@ void shift_right(unsigned iShift,
   const unsigned shift=iShift*CONFIG_T::filt_height * CONFIG_T::n_chan;
   data_T tmpinput[CONFIG_T::filt_height * CONFIG_T::n_chan];
   #pragma HLS ARRAY_RESHAPE variable=tmpinput complete dim=0
-  for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
-    for(int i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
-      tmpinput[i1*CONFIG_T::n_chan+i0] = input[shift+i0*CONFIG_T::filt_height+i1];
+  for(int i0 = 0; i0 < CONFIG_T::filt_height; i0++) { 
+   for(int i1 = 0; i1 < CONFIG_T::n_chan; i1++) { 
+      tmpinput[i0*CONFIG_T::n_chan+i1] = input[shift+i0*CONFIG_T::filt_height+i1];
     }
   } 
   shift_right_small<data_T,res_T,CONFIG_T>(tmpinput,data);

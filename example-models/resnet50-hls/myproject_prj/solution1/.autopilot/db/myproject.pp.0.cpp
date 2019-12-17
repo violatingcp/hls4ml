@@ -40020,7 +40020,7 @@ void concatenate3d(
 
 }
 # 19 "firmware/parameters.h" 2
-# 81 "firmware/parameters.h"
+# 84 "firmware/parameters.h"
 typedef ap_fixed<16,6> model_default_t;
 typedef ap_fixed<16,6> input_t;
 typedef ap_fixed<16,6> layer2_t;
@@ -40825,10 +40825,10 @@ void myproject(
  layer9_t layer9_in[3*3*64];
 #pragma HLS ARRAY_RESHAPE variable=&layer6_in complete dim=0
 
- for(unsigned i0 = 0; i0 < 112; i0++) {
+ for(unsigned i0 = 0; i0 < 12; i0++) {
 
       Loop1:
-      for(unsigned i1 = 0; i1 < 112; i1++) {
+      for(unsigned i1 = 0; i1 < 12; i1++) {
 #pragma HLS PIPELINE II=1
  for(unsigned i2 = 0; i2 < 3; i2++) {
          layer2_in_row[i1*config2::n_chan*config2::filt_height+i2*config2::filt_height] = gpu_0_data_0[i0*224*3 +i1*3 +i2];
@@ -40840,7 +40840,7 @@ void myproject(
       nnet::reset_down<input_t,layer6_t,config6>(layer6_in,layer6_in_row);
 
       Loop2:
-      for(unsigned i1 = 0; i1 < 112; i1++) {
+      for(unsigned i1 = 0; i1 < 12; i1++) {
 
  nnet::shift_right_stride<input_t,input_t,config2>(i1,layer2_in,layer2_in_row);
  nnet::dense_large<input_t,layer2_t,config2::mult_config>(layer2_in,layer2_out,w2,b2);

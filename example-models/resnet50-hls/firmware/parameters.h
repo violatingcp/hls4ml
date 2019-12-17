@@ -23,8 +23,11 @@
 #define N_INPUT_2_1 224
 #define N_INPUT_3_1 224
 
-#define N_INPUT_2_1_C 112
-#define N_INPUT_3_1_C 112
+//#define N_INPUT_2_1_C 112
+//#define N_INPUT_3_1_C 112
+
+#define N_INPUT_2_1_C 12
+#define N_INPUT_3_1_C 12
 
 #define N_FILT_2 64
 #define OUT_HEIGHT_2 56

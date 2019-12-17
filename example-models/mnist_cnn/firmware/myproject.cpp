@@ -80,10 +80,10 @@ void myproject(
     #pragma HLS ARRAY_RESHAPE variable=layer3_out complete dim=0
     
     //Layer 4 CNN input subImage x row
-    layer4_t layer4_in_row[FILT_HEIGHT_4*IN_WIDTH_4*N_CHAN_4];
+    layer4_t layer4_in_row[N_FILT_HEIGHT_4*OUT_WIDTH_2*N_FILT_2];
     #pragma HLS ARRAY_RESHAPE variable=layer4_in_row complete dim=0
     //Layer 4 Input array to the dense layer
-    layer4_t layer4_in[FILT_HEIGHT_4*N_FILT_WIDTH_4*N_CHAN_4];
+    layer4_t layer4_in[N_FILT_HEIGHT_4*N_FILT_WIDTH_4*N_FILT_2];
     #pragma HLS ARRAY_RESHAPE variable=layer4_in complete dim=0
     //Layer 4 Output array from the dense layer
     layer4_t layer4_out[N_FILT_4];
@@ -93,17 +93,17 @@ void myproject(
     layer5_t layer5_out[N_FILT_4];
     #pragma HLS ARRAY_RESHAPE variable=layer5_out complete dim=0
     //Input layer into pool
-    layer6_t layer6_in_row[FILT_HEIGHT_6*IN_WIDTH_6*N_CHAN_6];
-    #pragma HLS ARRAY_RESHAPE variable=layer6_in complete dim=0
+    layer6_t layer6_in_row[N_FILT_HEIGHT_6*OUT_WIDTH_4*N_FILT_4];
+    #pragma HLS ARRAY_RESHAPE variable=layer6_in_row complete dim=0
     //Input layer into dense layer
-    layer6_t layer6_in[FILT_HEIGHT_6*FILT_WIDTH_6*N_CHAN_6];
+    layer6_t layer6_in[N_FILT_HEIGHT_6*N_FILT_WIDTH_6*N_FILT_6];
     #pragma HLS ARRAY_RESHAPE variable=layer6_in complete dim=0
     //Layer 6 Output array from the dense layer
     layer6_t layer6_out[N_FILT_6];
     #pragma HLS ARRAY_RESHAPE variable=layer6_out complete dim=0
     //Output Image to the CNN    
-    layer7_t layer7_out[N_LAYER_7];
-    #pragma HLS ARRAY_RESHAPE variable=layer7_out complete dim=0
+    layer7_t layer7_in[N_LAYER_7_IN];
+    #pragma HLS ARRAY_RESHAPE variable=layer7_in block factor=64
     
     ///////////// CNN core
     //Loop over vertically
@@ -112,7 +112,7 @@ void myproject(
       for(unsigned i1 = 0; i1 < N_INPUT_2_1; i1++) {
        #pragma HLS PIPELINE II=1
        for(int i2 = 0; i2 < N_INPUT_3_1; i2++) {       
-        layer2_in_row[i1*N_FILT_HEIGHT_2*N_INPUT_3_1+(N_FILT_HEIGHT_2-1)+i2] = input1[i0*N_INPUT_2_1*N_INPUT_3_1+i1*N_INPUT_3_1+i2];
+        layer2_in_row[i1*N_FILT_HEIGHT_2*N_INPUT_3_1+(N_FILT_HEIGHT_2-1)*N_INPUT_3_1+i2] = input1[i0*N_INPUT_2_1*N_INPUT_3_1+i1*N_INPUT_3_1+i2];
        }
       }
       //Fill the dense layer input buffer with inputs one row lower
@@ -138,18 +138,19 @@ void myproject(
        nnet::shift_right<layer4_t,layer4_t,config6>(i1,layer6_in,layer6_in_row);
        nnet::pooling2d_filt_cl<layer6_t, config6>(layer6_in, layer6_out);
        //Finally we want to fill the giant output image vector => putting in stride in a hacky way
-       if(i0 % config6::stride_height == 0 && i1 % config6::stride_width == 0) nnet::fill_image<layer6_t,result_t,config6>(i0,i1,layer6_out,layer7_out);
+       if(i0 % config6::stride_height == 0 && i1 % config6::stride_width == 0) nnet::fill_image<layer6_t,result_t,config6>(i0,i1,layer6_out,layer7_in);
      }
      //Shift the whole row down by moving everything up and making it zeros
      nnet::shift_down_small<layer2_t,config2>(layer2_in_row);
      nnet::shift_down_small<layer4_t,config4>(layer4_in_row);
      nnet::shift_down_small<layer6_t,config6>(layer6_in_row);
    }
+
    //Now fill a dummy output so we don't run the million by million dense multiply
    layer9_t layer9_out[N_LAYER_9];
    #pragma HLS ARRAY_RESHAPE variable=layer9_out complete dim=0     
    for(unsigned i0 = 0; i0 < N_LAYER_9; i0++) { 
-     layer9_out[i0] = layer7_out[i0*10];
+     layer9_out[i0] = layer7_in[i0*100];
    }
 
     ////// Below is the actual end to the network

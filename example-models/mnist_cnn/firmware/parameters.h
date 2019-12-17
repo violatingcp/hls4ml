@@ -37,6 +37,7 @@
 #define N_FILT_WIDTH_6  2
 #define N_FILT_HEIGHT_6 2
 #define N_FILT_6 64
+#define N_LAYER_7_IN 9216
 #define N_LAYER_7 128
 #define N_LAYER_9 10
 
@@ -57,7 +58,7 @@ typedef ap_fixed<16,6> result_t;
 struct config2_mult : nnet::dense_config {
     static const unsigned n_in = 9;
     static const unsigned n_out = 32;
-    static const unsigned reuse_factor = 64;
+    static const unsigned reuse_factor = 18;
     typedef ap_fixed<16,6> accum_t;
     typedef model_default_t bias_t;
     typedef model_default_t weight_t;
@@ -71,8 +72,8 @@ struct config2 : nnet::conv2d_config {
     static const unsigned in_height = N_INPUT_1_1;
     static const unsigned in_width = N_INPUT_2_1;
     static const unsigned n_chan = N_INPUT_3_1;
-    static const unsigned filt_height = 3;
-    static const unsigned filt_width = 3;
+    static const unsigned filt_height = N_FILT_HEIGHT_2;
+    static const unsigned filt_width = N_FILT_WIDTH_2;
     static const unsigned n_filt = N_FILT_2;
     static const unsigned stride_height = 1;
     static const unsigned stride_width = 1;
@@ -80,7 +81,7 @@ struct config2 : nnet::conv2d_config {
     static const unsigned out_width = OUT_WIDTH_2;
     static const unsigned reuse_factor = 64;
     static const unsigned n_zeros = 0;
-    static const bool store_weights_in_bram = false;
+    static const bool store_weights_in_bram = true;
     typedef ap_fixed<16,6> accum_t;
     typedef model_default_t bias_t;
     typedef model_default_t weight_t;
@@ -88,7 +89,7 @@ struct config2 : nnet::conv2d_config {
 };
 
 struct relu_config3 : nnet::activ_config {
-    static const unsigned n_in = OUT_HEIGHT_2*OUT_WIDTH_2*N_FILT_2;
+    static const unsigned n_in = N_FILT_2;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
 };
@@ -96,7 +97,7 @@ struct relu_config3 : nnet::activ_config {
 struct config4_mult : nnet::dense_config {
     static const unsigned n_in = 288;
     static const unsigned n_out = 64;
-    static const unsigned reuse_factor = 64;
+    static const unsigned reuse_factor = 576;
     typedef ap_fixed<16,6> accum_t;
     typedef model_default_t bias_t;
     typedef model_default_t weight_t;
@@ -110,8 +111,8 @@ struct config4 : nnet::conv2d_config {
     static const unsigned in_height = OUT_HEIGHT_2;
     static const unsigned in_width = OUT_WIDTH_2;
     static const unsigned n_chan = N_FILT_2;
-    static const unsigned filt_height = 3;
-    static const unsigned filt_width = 3;
+    static const unsigned filt_height = N_FILT_HEIGHT_4;
+    static const unsigned filt_width = N_FILT_WIDTH_4;
     static const unsigned n_filt = N_FILT_4;
     static const unsigned stride_height = 1;
     static const unsigned stride_width = 1;
@@ -119,7 +120,7 @@ struct config4 : nnet::conv2d_config {
     static const unsigned out_width = OUT_WIDTH_4;
     static const unsigned reuse_factor = 64;
     static const unsigned n_zeros = 0;
-    static const bool store_weights_in_bram = false;
+    static const bool store_weights_in_bram = true;
     typedef ap_fixed<16,6> accum_t;
     typedef model_default_t bias_t;
     typedef model_default_t weight_t;
@@ -127,7 +128,7 @@ struct config4 : nnet::conv2d_config {
 };
 
 struct relu_config5 : nnet::activ_config {
-    static const unsigned n_in = OUT_HEIGHT_4*OUT_WIDTH_4*N_FILT_4;
+    static const unsigned n_in = N_FILT_4;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
 };
@@ -136,10 +137,13 @@ struct config6 : nnet::pooling2d_config {
     static const unsigned in_height = 24;
     static const unsigned in_width = OUT_WIDTH_4;
     static const unsigned n_filt = N_FILT_6;
+    static const unsigned n_chan = N_FILT_6;
     static const unsigned stride_height = 2;
     static const unsigned stride_width = 2;
-    static const unsigned pool_height = 2;
-    static const unsigned pool_width = 2;
+    static const unsigned pool_height = N_FILT_HEIGHT_6;
+    static const unsigned pool_width = N_FILT_WIDTH_6;
+    static const unsigned filt_height = N_FILT_HEIGHT_6;
+    static const unsigned filt_width = N_FILT_WIDTH_6;
     static const unsigned out_height = OUT_HEIGHT_6;
     static const unsigned out_width = OUT_WIDTH_6;
     static const unsigned pad_top = 0;
