@@ -194,11 +194,22 @@ void fill_entry(unsigned iShift,
 		data_T input[CONFIG_T::n_chan],
 		res_T  data [CONFIG_T::filt_width   * CONFIG_T::out_width * CONFIG_T::n_chan]) { 
 
-  #pragma HLS inline
-  unsigned lShift = iShift*CONFIG_T::filt_height*CONFIG_T::n_chan;
+  //#pragma HLS inline
   for(unsigned i2 = 0; i2 < CONFIG_T::n_chan; i2++) {
     #pragma HLS UNROLL
-    data[lShift+i2*CONFIG_T::filt_height] = input[i2];
+    data[iShift*CONFIG_T::filt_height*CONFIG_T::n_chan+i2*CONFIG_T::filt_height] = input[i2];
+  }
+}
+//Fills the temporary array to be fed in the CNN 
+template<class data_T, class res_T, typename CONFIG_T>
+void fill_entryp(
+		data_T input[CONFIG_T::n_chan],
+		res_T  data[CONFIG_T::n_chan*CONFIG_T::n_chan]) { 
+
+  #pragma HLS inline
+  for(unsigned i2 = 0; i2 < CONFIG_T::n_chan; i2++) {
+    #pragma HLS UNROLL
+    data[i2*CONFIG_T::filt_height] = input[i2];
   }
 }
 //Fills the temporary array to be fed in the CNN 

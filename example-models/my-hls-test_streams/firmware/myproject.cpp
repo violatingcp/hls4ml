@@ -106,14 +106,23 @@ void myproject(
      nnet::reset_down<input_t,layer2_t,config2>(input_stream1,input_rows);
      nnet::reset_down<input_t,layer3_t,config4>(input_stream2,layer3_out_row);
      for(unsigned i1 = 0; i1 < config2::out_width; i1++) {//See above note
-       nnet::shift_right<input_t,input_t,config2>(i1,input_stream1,input_rows);
+       //input_t tmpinput[config2::filt_height * config2::n_chan];
+       //     for(unsigned i2 = 0; i2 < config2::n_chan; i2++) {
+       //    for(unsigned i3 = 0; i3 < config2::filt_height; i3++) {
+       //  tmpinput[i1*config2::n_chan+i0] = input_rows[i1*config2::filt_height * config2::n_chan+i0*config2::filt_height+i1];
+	 // }
+	//}
+       //nnet::shift_right_small<input_t,input_t,config2>(tmpinput,input_stream1);
+       nnet::shift_right<input_t,input_t,config2>(i1,input_rows,input_stream1);
        nnet::dense_large<input_t,layer2_t,config2::mult_config>(input_stream1,layer2_out,w2,b2);
        nnet::relu<layer2_t, layer3_t, relu_config3>(layer2_out, layer3_out);
-       nnet::fill_entry<layer3_t,layer3_t,config4>(i1,layer3_out,layer3_out_row);
-       /*
+       //nnet::fill_entryp<layer3_t,layer3_t,config4>(layer3_out,layer3_out_row);//[i1*config4::filt_height*config4::n_chan]);
+       //nnet::fill_entry<layer3_t,layer3_t,config4>(i1,layer3_out,layer3_out_row);
+       //Above line blows up resources
        for(unsigned i2 = 0; i2 < config4::n_chan; i2++) {
+        #pragma HLS UNROLL
         layer3_out_row[i1*config4::filt_height*config4::n_chan+i2*config4::filt_height] = layer3_out[i2];
-	}*/
+       }
        nnet::shift_right<layer3_t,layer3_t,config4>(i1,input_stream2,layer3_out_row);
        nnet::dense_large<layer3_t, layer4_t, config4::mult_config>(input_stream2, layer4_out, w4, b4);
        //nnet::relu<layer4_t, layer5_t, relu_config5>(layer4_out, layer5_out);

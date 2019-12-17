@@ -127,6 +127,17 @@ struct pooling2d_config{
   static const unsigned reuse = 1;
 };
 
+template<class data_T, typename CONFIG_T>
+void pooling2d_filt_cl(data_T data[CONFIG_T::pool_height * CONFIG_T::pool_width * CONFIG_T::n_filt],
+		       data_T res[CONFIG_T::n_filt]){
+  for(unsigned i0 = 0; i0 < CONFIG_T::n_filt; i0++) { 
+    data_T pool[CONFIG_T::pool_height * CONFIG_T::pool_width];
+    for(unsigned i1 = 0; i1 < CONFIG_T::pool_height*CONFIG_T::pool_width; i1++) { 
+      pool[i1] = data[i1*CONFIG_T::n_filt+i0];
+    }
+    res[i0] = pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool);
+  }
+}
 template<typename CONFIG_T>
 constexpr int pool_op_limit(){
   return (CONFIG_T::out_height * CONFIG_T::out_width) * CONFIG_T::n_filt / CONFIG_T::reuse;

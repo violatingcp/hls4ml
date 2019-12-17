@@ -21,11 +21,11 @@
 #define N_INPUT_1_1 28
 #define N_INPUT_2_1 28
 #define N_INPUT_3_1 1
-#define OUT_HEIGHT_2 4
-#define OUT_WIDTH_2  4
+#define OUT_HEIGHT_2 12
+#define OUT_WIDTH_2  12
 #define N_FILT_2 32
-#define OUT_HEIGHT_4 4
-#define OUT_WIDTH_4  4
+#define OUT_HEIGHT_4 12
+#define OUT_WIDTH_4  12
 #define N_FILT_4 64
 #define OUT_HEIGHT_6 12
 #define OUT_WIDTH_6 12

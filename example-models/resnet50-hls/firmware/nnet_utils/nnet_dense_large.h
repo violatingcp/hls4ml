@@ -149,7 +149,6 @@ void dense_large_rf_gt_nin_rem0(
             outstep++;
         }
     }
-    std::cout <<" ====> Loop NIN " << rufactor << " -- " << block_factor << std::endl;
     ReuseLoop:
     for (int ir = 0; ir < rufactor; ir++) {
         #pragma HLS PIPELINE II=1 rewind
