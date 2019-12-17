@@ -68,7 +68,7 @@ void myproject_2d(
 
     //hls-fpga-machine-learning insert layers
     layer2_t layer2_in_row[N_INPUT_1_1][N_FILT_HEIGHT_2][N_INPUT_3_1];
-    #pragma HLS ARRAY_RESHAPE variable=layer2_out_row block factor=21 dim=0
+    #pragma HLS ARRAY_RESHAPE variable=layer2_out_row complete dim=3
     
     layer2_t layer2_in[N_FILT_HEIGHT_2*N_FILT_WIDTH_2*N_INPUT_1_1];
     #pragma HLS ARRAY_RESHAPE variable=layer2_out complete dim=0
@@ -81,7 +81,8 @@ void myproject_2d(
     
     //Layer 4 CNN input subImage x row
     layer4_t layer4_in_row[OUT_WIDTH_2][N_FILT_HEIGHT_4][N_FILT_2];
-    #pragma HLS ARRAY_RESHAPE variable=layer4_in_row complete dim=0
+    #pragma HLS ARRAY_PARTITION variable=layer4_in_row complete dim=3
+    
     //Layer 4 Input array to the dense layer
     layer4_t layer4_in[N_FILT_HEIGHT_4*N_FILT_WIDTH_4*N_FILT_2];
     #pragma HLS ARRAY_RESHAPE variable=layer4_in complete dim=0
@@ -94,7 +95,7 @@ void myproject_2d(
     #pragma HLS ARRAY_RESHAPE variable=layer5_out complete dim=0
     //Input layer into pool
     layer6_t layer6_in_row[OUT_WIDTH_4][N_FILT_HEIGHT_6][N_FILT_4];
-    #pragma HLS ARRAY_RESHAPE variable=layer6_in_row complete dim=0
+    #pragma HLS ARRAY_RESHAPE variable=layer6_in_row complete dim=3
     //Input layer into dense layer
     layer6_t layer6_in[N_FILT_HEIGHT_6*N_FILT_WIDTH_6*N_FILT_6];
     #pragma HLS ARRAY_RESHAPE variable=layer6_in complete dim=0
@@ -102,9 +103,9 @@ void myproject_2d(
     layer6_t layer6_out[N_FILT_6];
     #pragma HLS ARRAY_RESHAPE variable=layer6_out complete dim=0
     //Output Image to the CNN    
-    layer7_t layer7_in[N_LAYER_7_IN];
-    #pragma HLS ARRAY_RESHAPE variable=layer7_in block factor=64
-    
+    layer7_t layer7_in[OUT_HEIGHT_6][OUT_WIDTH_6][N_FILT_6];
+    #pragma HLS ARRAY_RESHAPE variable=layer7_in complete dim=3
+
     ///////////// CNN core
     //Loop over vertically
     for(unsigned i0 = 0; i0 < N_INPUT_1_1; i0++) { 
@@ -138,7 +139,7 @@ void myproject_2d(
        nnet::shift_right_2d<layer4_t,layer4_t,config6>(i1,layer6_in_row,layer6_in);
        nnet::pooling2d_filt_cl<layer6_t, config6>(layer6_in, layer6_out);
        //Finally we want to fill the giant output image vector => putting in stride in a hacky way
-       if(i0 % config6::stride_height == 0 && i1 % config6::stride_width == 0) nnet::fill_image<layer6_t,result_t,config6>(i0,i1,layer6_out,layer7_in);
+       if(i0 % config6::stride_height == 0 && i1 % config6::stride_width == 0) nnet::fill_image_2d<layer6_t,result_t,config6>(i0,i1,layer6_out,layer7_in);
      }
      //Shift the whole row down by moving everything up and making it zeros
      nnet::shift_down_small_2d<layer2_t,config2>(layer2_in_row);

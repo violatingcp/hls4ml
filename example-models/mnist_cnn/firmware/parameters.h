@@ -19,25 +19,25 @@
 #include "nnet_utils/nnet_helpers.h"
 
 //hls-fpga-machine-learning insert numbers
-#define N_INPUT_1_1 28
-#define N_INPUT_2_1 28
+#define N_INPUT_1_1 5
+#define N_INPUT_2_1 5
 #define N_INPUT_3_1 1
-#define OUT_HEIGHT_2 26
-#define OUT_WIDTH_2 26
-#define N_FILT_WIDTH_2  3
-#define N_FILT_HEIGHT_2 3
+#define OUT_HEIGHT_2 3
+#define OUT_WIDTH_2 3
+#define N_FILT_WIDTH_2  4
+#define N_FILT_HEIGHT_2 4
 #define N_FILT_2 32
-#define OUT_HEIGHT_4 24
-#define OUT_WIDTH_4 24
+#define OUT_HEIGHT_4 4
+#define OUT_WIDTH_4 4
 #define N_FILT_WIDTH_4  3
 #define N_FILT_HEIGHT_4 3
 #define N_FILT_4 64
-#define OUT_HEIGHT_6 12
-#define OUT_WIDTH_6 12
+#define OUT_HEIGHT_6 2
+#define OUT_WIDTH_6 2
 #define N_FILT_WIDTH_6  2
 #define N_FILT_HEIGHT_6 2
 #define N_FILT_6 64
-#define N_LAYER_7_IN 9216
+#define N_LAYER_7_IN 256
 #define N_LAYER_7 128
 #define N_LAYER_9 10
 
@@ -97,7 +97,7 @@ struct relu_config3 : nnet::activ_config {
 struct config4_mult : nnet::dense_config {
     static const unsigned n_in = 288;
     static const unsigned n_out = 64;
-    static const unsigned reuse_factor = 576;
+    static const unsigned reuse_factor = 36;
     typedef ap_fixed<16,6> accum_t;
     typedef model_default_t bias_t;
     typedef model_default_t weight_t;
@@ -134,7 +134,7 @@ struct relu_config5 : nnet::activ_config {
 };
 
 struct config6 : nnet::pooling2d_config {
-    static const unsigned in_height = 24;
+    static const unsigned in_height = OUT_HEIGHT_4;
     static const unsigned in_width = OUT_WIDTH_4;
     static const unsigned n_filt = N_FILT_6;
     static const unsigned n_chan = N_FILT_6;

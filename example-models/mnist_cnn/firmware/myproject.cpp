@@ -102,8 +102,8 @@ void myproject(
     layer6_t layer6_out[N_FILT_6];
     #pragma HLS ARRAY_RESHAPE variable=layer6_out complete dim=0
     //Output Image to the CNN    
-    layer7_t layer7_in[N_LAYER_7_IN];
-    #pragma HLS ARRAY_RESHAPE variable=layer7_in block factor=64
+    layer7_t layer7_in[OUT_HEIGHT_6][OUT_WIDTH_6][N_FILT_6];
+    #pragma HLS ARRAY_RESHAPE variable=layer7_in complete dim=3
     
     ///////////// CNN core
     //Loop over vertically
@@ -138,7 +138,9 @@ void myproject(
        nnet::shift_right<layer4_t,layer4_t,config6>(i1,layer6_in,layer6_in_row);
        nnet::pooling2d_filt_cl<layer6_t, config6>(layer6_in, layer6_out);
        //Finally we want to fill the giant output image vector => putting in stride in a hacky way
-       if(i0 % config6::stride_height == 0 && i1 % config6::stride_width == 0) nnet::fill_image<layer6_t,result_t,config6>(i0,i1,layer6_out,layer7_in);
+       if(i0 % config6::stride_height == 0 && i1 % config6::stride_width == 0) {
+        nnet::fill_image_2d<layer6_t,result_t,config6>(i0,i1,layer6_out,layer7_in);
+       }
      }
      //Shift the whole row down by moving everything up and making it zeros
      nnet::shift_down_small<layer2_t,config2>(layer2_in_row);
