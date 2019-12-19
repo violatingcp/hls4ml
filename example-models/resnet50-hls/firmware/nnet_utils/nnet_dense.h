@@ -200,7 +200,89 @@ void dense_latency(
         res[ires] = cast<data_T, res_T, CONFIG_T>(acc[ires]);
     }
 }
+/*
+template<class data_T, class res_T, typename CONFIG_T>
+void dense(
+    data_T    data[CONFIG_T::n_in],
+    res_T     res[CONFIG_T::n_out],
+    typename CONFIG_T::weight_t  weights[CONFIG_T::n_in*CONFIG_T::n_out],
+    typename CONFIG_T::bias_t    biases[CONFIG_T::n_out])
+{
+    data_T cache;
+    typename CONFIG_T::accum_t mult[CONFIG_T::n_in*CONFIG_T::n_out];
+    typename CONFIG_T::accum_t acc[CONFIG_T::n_out];
 
+
+    #pragma HLS function_instantiate variable=weights,biases
+    //#pragma HLS RESOURCE variable=weights core=RAM_2P_BRAM Commenting out the deisgnation HLS seems to choose correctly
+    #pragma HLS ARRAY_RESHAPE   variable=weights block factor=block_factor
+    #pragma HLS ARRAY_RESHAPE variable=biases complete
+
+    typename CONFIG_T::accum_t acc[CONFIG_T::n_out];
+    #pragma HLS ARRAY_PARTITION variable=acc complete
+
+    InitAccum:
+    for (int iacc = 0; iacc < nout; iacc++) {
+        #pragma HLS UNROLL
+        acc[iacc] = (typename CONFIG_T::accum_t) biases[iacc];
+    }
+
+
+        // #pragma HLS ARRAY_PARTITION variable=weights complete // remove this line for now, it breaks compression sometimes
+        #pragma HLS ARRAY_PARTITION variable=biases complete
+        #pragma HLS ARRAY_PARTITION variable=mult complete
+        #pragma HLS ARRAY_PARTITION variable=acc complete
+
+        int multiplier_limit  = ceil(float(CONFIG_T::n_in*CONFIG_T::n_out) / float(CONFIG_T::reuse_factor)) - floor(float(CONFIG_T::n_zeros) / float(CONFIG_T::reuse_factor));
+        #pragma HLS ALLOCATION instances=product limit=multiplier_limit function
+
+    } 
+
+    // Do the matrix-multiply
+    Product1: for(int ii = 0; ii < CONFIG_T::n_in; ii++) {
+        if (CONFIG_T::io_type == io_serial){
+            #pragma HLS PIPELINE
+        }
+        cache = data[ii];
+        Product2: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
+            if (CONFIG_T::io_type == io_serial) {
+                int multiplier_limit  = ceil(float(CONFIG_T::n_out) / float(CONFIG_T::reuse_factor));
+                #pragma HLS ALLOCATION instances=product limit=multiplier_limit function
+            }
+        int index = ii*CONFIG_T::n_out+jj;
+        mult[index] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::accum_t>(cache, weights[index]);
+        }
+    }
+
+    // Initialize accumulator with input biases
+    ResetAccum: for(int iacc = 0; iacc < CONFIG_T::n_out; iacc++) {
+        if (CONFIG_T::io_type == io_serial){
+            #pragma HLS UNROLL
+        }
+        acc[iacc] = (typename CONFIG_T::accum_t) biases[iacc];
+    }
+
+    // Accumulate multiplication result
+    Accum1: for(int ii = 0; ii < CONFIG_T::n_in; ii++) {
+        if (CONFIG_T::io_type == io_serial){
+            #pragma HLS PIPELINE
+        }
+        Accum2: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
+        int index = ii*CONFIG_T::n_out+jj;
+        acc[jj] += mult[index];
+        }
+    }
+
+    // Cast to "res_t" type
+    Result: for(int ires = 0; ires < CONFIG_T::n_out; ires++){
+        if (CONFIG_T::io_type == io_serial){
+            #pragma HLS UNROLL
+        }
+        //res[ires] = (res_T) (acc[ires]);
+        res[ires] = cast<data_T, res_T, CONFIG_T>(acc[ires]);
+    }
+}
+*/
 }
 
 #endif

@@ -19,21 +19,21 @@
 #include "nnet_utils/nnet_helpers.h"
 
 //hls-fpga-machine-learning insert numbers
-#define N_INPUT_1_1 5
-#define N_INPUT_2_1 5
+#define N_INPUT_1_1 28
+#define N_INPUT_2_1 28
 #define N_INPUT_3_1 1
-#define OUT_HEIGHT_2 3
-#define OUT_WIDTH_2 3
-#define N_FILT_WIDTH_2  4
-#define N_FILT_HEIGHT_2 4
+#define OUT_HEIGHT_2 28
+#define OUT_WIDTH_2 28
+#define N_FILT_WIDTH_2  3
+#define N_FILT_HEIGHT_2 3
 #define N_FILT_2 32
-#define OUT_HEIGHT_4 4
-#define OUT_WIDTH_4 4
+#define OUT_HEIGHT_4 28
+#define OUT_WIDTH_4 28
 #define N_FILT_WIDTH_4  3
 #define N_FILT_HEIGHT_4 3
 #define N_FILT_4 64
-#define OUT_HEIGHT_6 2
-#define OUT_WIDTH_6 2
+#define OUT_HEIGHT_6 12
+#define OUT_WIDTH_6 12
 #define N_FILT_WIDTH_6  2
 #define N_FILT_HEIGHT_6 2
 #define N_FILT_6 64
@@ -57,6 +57,9 @@ typedef ap_fixed<16,6> result_t;
 //hls-fpga-machine-learning insert layer-config
 struct config2_mult : nnet::dense_config {
     static const unsigned n_in = 9;
+    static const unsigned n_in1 = N_FILT_HEIGHT_2;
+    static const unsigned n_in2 = N_FILT_WIDTH_2;
+    static const unsigned n_in3 = N_INPUT_3_1;
     static const unsigned n_out = 32;
     static const unsigned reuse_factor = 18;
     typedef ap_fixed<16,6> accum_t;
@@ -95,6 +98,9 @@ struct relu_config3 : nnet::activ_config {
 };
 
 struct config4_mult : nnet::dense_config {
+    static const unsigned n_in1 = 3;
+    static const unsigned n_in2 = 3;
+    static const unsigned n_in3 = 32;
     static const unsigned n_in = 288;
     static const unsigned n_out = 64;
     static const unsigned reuse_factor = 36;
@@ -158,10 +164,10 @@ struct config7 : nnet::dense_config {
     static const unsigned n_in = OUT_HEIGHT_6*OUT_WIDTH_6*N_FILT_6;
     static const unsigned n_out = N_LAYER_7;
     static const unsigned io_type = nnet::io_parallel;
-    static const unsigned reuse_factor = 64;
+    static const unsigned reuse_factor = 18432;
     static const unsigned n_zeros = 0;
     static const unsigned n_nonzeros = 1179648;
-    static const bool store_weights_in_bram = false;
+    static const bool store_weights_in_bram = true;
     typedef ap_fixed<16,6> accum_t;
     typedef model_default_t bias_t;
     typedef model_default_t weight_t;

@@ -283,6 +283,36 @@ void dense_large(
     }
 }
 
+
+template<class data_T, class res_T, typename CONFIG_T>
+void dense_large_2d(
+    data_T *data, //[CONFIG_T::n_in1][CONFIG_T::n_in2][CONFIG_T::n_in3],
+    res_T  res[CONFIG_T::n_out],
+    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
+    typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
+  /*
+  //#pragma HLS INLINE region
+    data_T data[CONFIG_T::n_in];
+    #pragma HLS ARRAY_RESHAPE complete dim=0
+    
+    for(unsigned i0 = 0; i0 < CONFIG_T::n_in1; i0++) { 
+     #pragma HLS UNROLL
+     for(unsigned i1 = 0; i1 < CONFIG_T::n_in2; i1++) { 
+      for(unsigned i2 = 0; i2 < CONFIG_T::n_in3; i2++) { 
+       data[i0*CONFIG_T::n_in1+i1*CONFIG_T::n_in2+i2*CONFIG_T::n_in3] = data_in[i0][i1][i2];
+      }
+     }
+    }
+  */
+    if (CONFIG_T::reuse_factor <= CONFIG_T::n_in) {
+       dense_large_rf_leq_nin<data_T, res_T, CONFIG_T>(data, res, weights, biases);
+    } else if (CONFIG_T::reuse_factor % CONFIG_T::n_in == 0) {
+        dense_large_rf_gt_nin_rem0<data_T, res_T, CONFIG_T>(data, res, weights, biases);
+    } else {
+        dense_large_rf_gt_nin<data_T, res_T, CONFIG_T>(data, res, weights, biases);
+    }
+}
+
 }
 
 #endif
