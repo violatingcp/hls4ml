@@ -122,5 +122,4 @@ void subimage_stream(bool iReset,
     hls::stream<layer6_t> layer6_out[N_FILT_6];
     #pragma HLS stream variable=layer6_out      depth=1
     nnet::pool_2d_large_stream<layer6_t,layer6_t,config6>(layer4_out,layer6_out);
-
 }

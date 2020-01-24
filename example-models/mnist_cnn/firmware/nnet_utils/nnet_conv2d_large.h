@@ -933,7 +933,7 @@ void conv_2d_large_stream_norm(
     static unsigned pY = 0;
     
     //Processs image
-    if(pY == 0) { 
+    if(pY < CONFIG_T::filt_height-CONFIG_T::pad_top) { 
       for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) {
 	#pragma HLS UNROLL
         layer_in_row[pX][CONFIG_T::pad_top][i0] =  data[i0].read();
