@@ -92,6 +92,25 @@ void normalize(
 	}
 }
 
+template<class data_T, class res_T, typename CONFIG_T>
+void normalize2(
+    data_T    data[CONFIG_T::n_in],
+    res_T     res[CONFIG_T::n_in],
+    typename CONFIG_T::scale_t  scale[CONFIG_T::n_in],
+    typename CONFIG_T::bias_t   bias[CONFIG_T::n_in] ) {
+   
+    // Use a function_instantiate in case it helps to explicitly optimize unchanging weights/biases
+    //#pragma HLS function_instantiate variable=scale,bias
+    #pragma HLS ARRAY_RESHAPE variable=scale complete
+    #pragma HLS ARRAY_RESHAPE variable=bias complete
+
+    // Calcuate result
+    Result: for (int ires = 0; ires < CONFIG_T::n_in; ires++) {
+            #pragma HLS UNROLL
+            res[ires] = data[ires] * scale[ires] + bias[ires];
+    }
+}
+
 // ****************************************************
 //       Merged Batch Normalization and Quantized Tanh
 // ****************************************************

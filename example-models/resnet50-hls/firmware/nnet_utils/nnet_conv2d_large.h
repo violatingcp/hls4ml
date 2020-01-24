@@ -1,7 +1,9 @@
 #ifndef NNET_CONV2D_LARGE_H_
 #define NNET_CONV2D_LARGE_H_
 
+#include "nnet_activation.h"
 #include "nnet_common.h"
+#include "nnet_batchnorm.h"
 #include "nnet_conv2d.h"
 #include "nnet_dense_large.h"
 
@@ -203,14 +205,66 @@ template<class data_T, class res_T, typename CONFIG_T>
 template<class data_T, class res_T, typename CONFIG_T>
   void fill_image_2d(unsigned iShiftX,unsigned iShiftY,
 		     data_T input[CONFIG_T::n_filt],
-		     res_T  data [CONFIG_T::out_height][CONFIG_T::out_width][CONFIG_T::n_filt]) { 
+		     res_T  data [CONFIG_T::out_width][CONFIG_T::filt_height][CONFIG_T::n_filt]) { //CONFIG_T::n_filt2
   #pragma HLS PIPELINE
-  unsigned lX = iShiftX/CONFIG_T::stride_width;
-  unsigned lY = iShiftY/CONFIG_T::stride_height;
+  //unsigned lX = iShiftX*CONFIG_T::stride_width;
+  //unsigned lY = iShiftY*CONFIG_T::stride_height;
   for(unsigned i2 = 0; i2 < CONFIG_T::n_filt; i2++) {
-    data[lX][lY][i2] = input[i2];
+    data[iShiftX][iShiftY][i2] = input[i2];
   }
 }
+//Fills the temporary array to be fed in the CNN 
+template<class data_T, class res_T, typename CONFIG_T>
+  void fill_image_2d2(unsigned iShiftX,unsigned iShiftY,
+		     data_T input[CONFIG_T::n_filt],
+		     res_T  data [CONFIG_T::out_height][CONFIG_T::out_width][CONFIG_T::n_filt2]) { //CONFIG_T::n_filt2
+  #pragma HLS PIPELINE
+  //unsigned lX = iShiftX*CONFIG_T::stride_width;
+  //unsigned lY = iShiftY*CONFIG_T::stride_height;
+  for(unsigned i2 = 0; i2 < CONFIG_T::n_filt; i2++) {
+    data[iShiftX][iShiftY][i2] = input[i2];
+  }
+}
+template<class data_T, class res_T, typename CONFIG_T>
+  void fill_image_2dS(unsigned iShiftX,
+		     data_T input[CONFIG_T::n_filt],
+		     res_T  data [CONFIG_T::out_width][CONFIG_T::n_filt]) { //CONFIG_T::n_filt2
+  #pragma HLS PIPELINE
+  //unsigned lX = iShiftX*CONFIG_T::stride_width;
+  //unsigned lY = iShiftY*CONFIG_T::stride_height;
+  for(unsigned i2 = 0; i2 < CONFIG_T::n_filt; i2++) {
+    data[iShiftX][i2] = input[i2];
+  }
+}
+template<class data_T, class res_T, typename CONFIG_T>
+  void fill_image_2dS1(
+		       data_T input[CONFIG_T::n_filt],
+		       hls::stream<res_T>  data [CONFIG_T::n_filt]) { //CONFIG_T::n_filt2
+  #pragma HLS PIPELINE
+  for(unsigned i2 = 0; i2 < CONFIG_T::n_filt; i2++) {
+   #pragma HLS UNROLL
+   data[i2].write(input[i2]);
+  }
+}
+template<class data_T, class res_T, typename CONFIG_T>
+  void fill_image_2dS2(
+		       data_T input[CONFIG_T::n_filt],
+		       hls::stream<res_T>  data[1]) { //CONFIG_T::n_filt2
+  #pragma HLS PIPELINE
+  for(unsigned i2 = 0; i2 < CONFIG_T::n_filt; i2++) {
+   data[0].write(input[i2]);
+  }
+}
+template<class data_T, class res_T, typename CONFIG_T>
+  void clone(	       data_T input[CONFIG_T::n_filt],
+		       res_T  data [CONFIG_T::n_filt]) { //CONFIG_T::n_filt2
+  #pragma HLS PIPELINE
+  for(unsigned i2 = 0; i2 < CONFIG_T::n_filt; i2++) {
+   #pragma HLS UNROLL
+    data[i2] = input[i2];
+  }
+}
+
 //Fills the temporary array to be fed in the CNN 
 template<class data_T, class res_T, typename CONFIG_T>
 void fill_entry(unsigned iShift,
@@ -281,12 +335,12 @@ template<class data_T, class res_T, typename CONFIG_T>
 void shift_right_small_2dX(//To be fixed with stride
 			   data_T input[CONFIG_T::filt_height][CONFIG_T::n_chan],
 			   res_T  data [CONFIG_T::filt_width*CONFIG_T::filt_height*CONFIG_T::n_chan]) { 
-  static const unsigned lW=CONFIG_T::filt_height*CONFIG_T::n_chan;
-  static const unsigned lH=CONFIG_T::n_chan;
-  static const unsigned lLast=CONFIG_T::filt_width-1;
-  static const unsigned lWLast=lLast*lW;
+  static const int lW=CONFIG_T::filt_height*CONFIG_T::n_chan;
+  static const int lH=CONFIG_T::n_chan;
+  static const int lLast=CONFIG_T::filt_width-1;
+  static const int lWLast=lLast*lW;
   //Shift register by image height
-  for(unsigned i0 = 0; i0 < lLast; i0++) { 
+  for(int i0 = 0; i0 < lLast; i0++) { 
     #pragma HLS PIPELINE II=1
     for(unsigned i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
       for(unsigned i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
@@ -379,8 +433,8 @@ void shift_right_small_stride(//To be fixed with stride
 			      res_T  data[CONFIG_T::filt_width   * CONFIG_T::filt_height * CONFIG_T::n_chan]) { 
   
   //Shift register by image height
-  static const unsigned filt_width = CONFIG_T::filt_width-CONFIG_T::stride_width;
-  for(unsigned i0 = 0; i0 < filt_width; i0++) { 
+  static const int filt_width = CONFIG_T::filt_width-CONFIG_T::stride_width;
+  for(int i0 = 0; i0 < filt_width; i0++) { 
     #pragma HLS PIPELINE II=1
     for(unsigned i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
       for(unsigned i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
@@ -388,7 +442,7 @@ void shift_right_small_stride(//To be fixed with stride
       }
     }
   }
-  static const unsigned lastheight=(CONFIG_T::filt_width-CONFIG_T::stride_width)*(CONFIG_T::filt_height)*CONFIG_T::n_chan;
+  static const int lastheight=(CONFIG_T::filt_width-CONFIG_T::stride_width)*(CONFIG_T::filt_height)*CONFIG_T::n_chan;
   for(unsigned i0 = 0; i0 < CONFIG_T::stride_width; i0++) { 
     for(unsigned i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
      #pragma HLS UNROLL
@@ -419,7 +473,7 @@ void shift_right_stride(unsigned iShift,
 }
 template<class data_T, class res_T, typename CONFIG_T>
 void shift_right_stride_2d(unsigned iShift,
-			   data_T input[CONFIG_T::out_width][CONFIG_T::filt_height][CONFIG_T::n_chan],
+			   data_T input[CONFIG_T::in_width][CONFIG_T::filt_height][CONFIG_T::n_chan],
 			   res_T  data[CONFIG_T::filt_width   * CONFIG_T::filt_height * CONFIG_T::n_chan]) { 
   #pragma HLS PIPELINE
   unsigned lShift = iShift*CONFIG_T::stride_width;
@@ -439,6 +493,63 @@ void shift_right_stride_2d(unsigned iShift,
     } 
   }
   shift_right_small_stride<data_T,res_T,CONFIG_T>(tmpinput,data);
+}
+
+template<class data_T, class res_T, typename CONFIG_T>
+void shift_right_stride_2dNew(unsigned iShiftX,unsigned iShiftY,
+			      data_T input[CONFIG_T::in_width][CONFIG_T::filt_height][CONFIG_T::n_chan],
+			      res_T  data[CONFIG_T::filt_width   * CONFIG_T::filt_height * CONFIG_T::n_chan]) { 
+  #pragma HLS PIPELINE
+  unsigned lShiftX = iShiftX*CONFIG_T::stride_width;
+  unsigned lShiftY = iShiftY*CONFIG_T::stride_height;
+  //static const unsigned lX = CONFIG_T::filt_height*CONFIG_T::n_chan;
+  //static const unsigned lY = CONFIG_T::n_chan;
+  static const unsigned minwidth  = CONFIG_T::pad_left;
+  static const unsigned maxwidth  = CONFIG_T::pad_left+CONFIG_T::in_width;
+  static const unsigned minheight = CONFIG_T::pad_top;
+  static const unsigned maxheight = CONFIG_T::pad_top+CONFIG_T::in_height;
+  data_T tmpinput[CONFIG_T::stride_width][CONFIG_T::filt_height][CONFIG_T::n_chan];
+  #pragma HLS ARRAY_RESHAPE variable=tmpinput complete dim=0
+  for(unsigned i0 = 0; i0 < CONFIG_T::stride_width;  i0++) {
+    unsigned pX = i0+lShiftX;
+    for(unsigned i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
+      unsigned pY  = i1+lShiftY;
+      unsigned pYC = pY % CONFIG_T::filt_height; 
+      for(unsigned i2 = 0; i2 < CONFIG_T::n_chan;    i2++) { 
+	if(pX > minwidth && pX < maxwidth && pY > minheight && pY < maxheight) { 
+	  tmpinput[i0][i1][i2] = input[pX][pYC][i2];//*lX+i1*lY+i2];
+	} else { 
+	  tmpinput[i0][i1][i2] = 0;
+	}
+      }
+    } 
+  }
+  shift_right_small_stride<data_T,res_T,CONFIG_T>(tmpinput,data);
+}
+template<class data_T, class res_T, typename CONFIG_T>
+void shift_right_2dNew(unsigned iShiftX,unsigned iShiftY,
+		       data_T input[CONFIG_T::in_width][CONFIG_T::filt_height][CONFIG_T::n_chan],
+		       res_T  data[CONFIG_T::filt_width   * CONFIG_T::filt_height * CONFIG_T::n_chan]) { 
+  #pragma HLS PIPELINE
+  static const unsigned minwidth  = CONFIG_T::pad_left;
+  static const unsigned maxwidth  = CONFIG_T::pad_left+CONFIG_T::in_width;
+  static const unsigned minheight = CONFIG_T::pad_top;
+  static const unsigned maxheight = CONFIG_T::pad_top+CONFIG_T::in_height;
+  data_T tmpinput[CONFIG_T::filt_height][CONFIG_T::n_chan];
+  #pragma HLS ARRAY_RESHAPE variable=tmpinput complete dim=0
+  for(unsigned i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
+      unsigned pY  = i1+iShiftY;
+      unsigned pYC = pY % CONFIG_T::filt_height; 
+      for(unsigned i2 = 0; i2 < CONFIG_T::n_chan;    i2++) { 
+	#pragma HLS UNROLL
+	if(iShiftX > minwidth && iShiftX < maxwidth && pY > minheight && pY < maxheight) { 
+	  tmpinput[i1][i2] = input[iShiftX][pYC][i2];
+	} else { 
+	  tmpinput[i1][i2] = 0;
+	}
+      }
+  } 
+  shift_right_small_2dX<data_T,res_T,CONFIG_T>(tmpinput,data);
 }
 //Fills the temporary array to be fed in the CNN
 template<class data_T, class res_T, typename CONFIG_T>
@@ -488,6 +599,34 @@ void reset_down_2dX(//To be fixed with stride
     }
   }
 }
+//Fills the temporary array to be fed in the CNN
+template<class data_T, class res_T, typename CONFIG_T>
+  void reset_down_2dXNew(unsigned iY,
+			 data_T input[CONFIG_T::in_width][CONFIG_T::filt_height][CONFIG_T::n_chan],
+			 res_T  data [CONFIG_T::filt_width*CONFIG_T::filt_height*CONFIG_T::n_chan]) { 
+  static const unsigned lW = CONFIG_T::filt_height*CONFIG_T::n_chan;
+  static const unsigned lH = CONFIG_T::n_chan;
+  static const unsigned lY = iY*CONFIG_T::stride_height;
+
+  //Shift register by image height
+  #pragma HLS PIPELINE
+  for(int i0 = 0; i0 < CONFIG_T::filt_width; i0++) { 
+    for(int i1 = CONFIG_T::pad_left; i1 < CONFIG_T::filt_height; i1++) { 
+      unsigned pYC = (i1+lY) % CONFIG_T::filt_height;
+      for(int i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
+	data[i0*lW+i1*lH+i2] = input[i0][pYC][i2];
+      }
+    }
+  }
+  for(int i0 = 0; i0 < CONFIG_T::filt_width; i0++) { 
+    for(int i1 = 0; i1 < CONFIG_T::pad_left; i1++) { 
+      for(int i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
+	data[i0*lW+i1*lH+i2] = 0;
+      }
+    }
+  }
+}
+
 //Shifts whole row
 template<class data_T, class res_T, typename CONFIG_T>
 void shift_down(//To be fixed with stride
@@ -529,10 +668,28 @@ void shift_down_small_2d(//To be fixed with stride
 		      data_T  data [CONFIG_T::in_width][CONFIG_T::filt_height][CONFIG_T::n_chan]) {
   #pragma HLS PIPELINE 
   //Shift register by image height
-  for(unsigned i0 = 0; i0 < CONFIG_T::out_width; i0++) { 
-   for(unsigned i1 = 0; i1 < (CONFIG_T::filt_height-1); i1++) { 
-     for(unsigned i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
+  for(int i0 = 0; i0 < CONFIG_T::in_width; i0++) { 
+   for(int i1 = 0; i1 < (CONFIG_T::filt_height-1); i1++) { 
+     for(int i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
+      #pragma HLS UNROLL
       data[i0][i1][i2] = data[i0][i1+1][i2];
+    }
+   }
+  }
+}
+
+
+//Shifts whole row
+template<class data_T, typename CONFIG_T>
+void shift_down_small_2d_test(//To be fixed with stride
+		      data_T  data [CONFIG_T::in_width][CONFIG_T::filt_height][CONFIG_T::n_chan]) {
+  //Shift register by image height
+  for(int i0 = 0; i0 < CONFIG_T::in_width; i0++) { 
+   for(int i1 = 0; i1 < (CONFIG_T::filt_height-1); i1++) { 
+     for(int i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
+       #pragma HLS UNROLL
+       data_T tmp =  data[i0][i1+1][i2];
+      data[i0][i1][i2] = tmp;
     }
    }
   }
@@ -558,7 +715,7 @@ void shift_down_small_stride_2d(//To be fixed with stride
 				data_T  data [CONFIG_T::in_width][CONFIG_T::filt_height][CONFIG_T::n_chan]) {
   //Shift register by image height
   #pragma HLS PIPELINE 
-  for(unsigned i0 = 0; i0 < CONFIG_T::out_width; i0++) { 
+  for(unsigned i0 = 0; i0 < CONFIG_T::in_width; i0++) { 
     for(unsigned i1 = 0; i1 < CONFIG_T::filt_height-CONFIG_T::stride_height; i1++) { 
       for(unsigned i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
 	data[i0][i1][i2] = data[i0][i1+CONFIG_T::stride_height][i2];
@@ -608,7 +765,32 @@ void conv_2d_large_cl(
      }
     }
 }
+template<class data_T, typename CONFIG_T>
+void reset_zero_vert(
+		     data_T  data [CONFIG_T::in_width][CONFIG_T::filt_height][CONFIG_T::n_chan]) {  
+    for(unsigned i0  = 0; i0 < CONFIG_T::pad_left; i0++) { 
+     #pragma HLS UNROLL
+      for(unsigned i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
+	for(unsigned i2 = 0; i2 < CONFIG_T::n_chan;    i2++) { 
+	  data[i0]                  [i1][i2]=0;
+	  data[CONFIG_T::in_width-CONFIG_T::pad_left+i0][i1][i2]=0; //assumes left and right pad are the same
+	}
+      }
+    }
+}
+template<class data_T, typename CONFIG_T>    
+void reset_zero_horiz(
+		      data_T  data [CONFIG_T::in_width][CONFIG_T::filt_height][CONFIG_T::n_chan]) {  
 
+    for(unsigned i0 = 0; i0 < CONFIG_T::in_width; i0++) { 
+      for(unsigned i1  = 0; i1 < CONFIG_T::filt_height; i1++) { 
+        #pragma HLS PIPELINE II=1
+	for(unsigned i2 = 0; i2 < CONFIG_T::n_chan;   i2++) { 
+	 data[i0][i1][i2]     =  0;
+        }
+      }
+    }
+}
 
 template<class data_T, class res_T, typename CONFIG_T>
 void conv_2d_large_cl_stream(
@@ -651,7 +833,124 @@ void conv_2d_large_cl_stream(
       }
      }
     }
- }
+}
+
+template<class data_T, class res_T, typename CONFIG_T>
+void conv_2d_large_stream(
+		      hls::stream<data_T> data[CONFIG_T::n_chan],
+		      hls::stream<res_T>  res [CONFIG_T::n_filt], //Filt Width clocks to read output
+		      //res_T  res [CONFIG_T::n_filt], //Filt Width clocks to read output
+		      typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt],
+		      typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]) {
+  
+    static data_T layer_in_row[CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right][CONFIG_T::filt_height][CONFIG_T::n_chan];
+    #pragma HLS ARRAY_RESHAPE variable=layer_in_row complete dim=3
+
+    static data_T layer_in[CONFIG_T::filt_height*CONFIG_T::filt_width*CONFIG_T::n_chan];
+    //#pragma HLS ARRAY_RESHAPE variable=layer_in block factor=CONFIG_T::n_chan dim=0
+    #pragma HLS ARRAY_RESHAPE variable=layer_in complete dim=0
+
+    static res_T layer_reluout[CONFIG_T::n_filt];
+    #pragma HLS ARRAY_RESHAPE variable=layer_reluout complete dim=0
+
+    static res_T layer_out[CONFIG_T::n_filt];
+    #pragma HLS ARRAY_RESHAPE variable=layer_out complete dim=0
+
+    static unsigned pX = 0; 
+    static unsigned pY = 0;
+    
+    //Processs image
+    if(pY == 0) { 
+      for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) {
+	#pragma HLS UNROLL
+        layer_in_row[pX][CONFIG_T::pad_top][i0] =  data[i0].read();
+      }
+      for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) {
+	#pragma HLS UNROLL
+	layer_out[i0] =  0;
+      }
+      nnet::fill_image_2dS1<res_T,res_T,CONFIG_T>(layer_out,res);
+    } else { 
+    if(pY < CONFIG_T::out_height+CONFIG_T::filt_height-CONFIG_T::pad_top) { 
+     for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) {
+	 #pragma HLS UNROLL
+	 layer_in_row[pX][(pY+1) % CONFIG_T::filt_height][i0] =  data[i0].read();
+	}
+      }
+      if(pX == 0) nnet::reset_down_2dXNew<data_T,data_T,CONFIG_T>(pX,layer_in_row,layer_in);
+      nnet::dense_large<data_T,res_T,CONFIG_T::mult_config>(layer_in,layer_out,weights,biases);
+      nnet::relu<res_T,res_T, CONFIG_T::relu_config>(layer_out, layer_reluout);
+      nnet::fill_image_2dS1<data_T,data_T,CONFIG_T>(layer_reluout,res);
+      nnet::shift_right_2dNew<data_T,data_T,CONFIG_T>(pX,pY,layer_in_row,layer_in);//add padding
+    }
+    pX = pX+1;
+    if(pX == CONFIG_T::out_height) { 
+      pX = 0;
+      pY = pY+1;
+    }
+}
+
+template<class data_T, class res_T, typename CONFIG_T>
+void conv_2d_large_stream_norm(
+		      hls::stream<data_T> data[CONFIG_T::n_chan],
+		      hls::stream<res_T>  res [CONFIG_T::n_filt], //Filt Width clocks to read output
+		      //res_T  res [CONFIG_T::n_filt], //Filt Width clocks to read output
+		      typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt],
+		      typename CONFIG_T::bias_t   biases [CONFIG_T::n_filt],
+		      typename CONFIG_T::norm_config::scale_t  scale  [CONFIG_T::n_filt],
+		      typename CONFIG_T::norm_config::bias_t   sbiases[CONFIG_T::n_filt]
+		      ) {
+  
+    static data_T layer_in_row[CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right][CONFIG_T::filt_height][CONFIG_T::n_chan];
+    #pragma HLS ARRAY_RESHAPE variable=layer_in_row complete dim=3
+
+    static data_T layer_in[CONFIG_T::filt_height*CONFIG_T::filt_width*CONFIG_T::n_chan];
+    //#pragma HLS ARRAY_RESHAPE variable=layer_in block factor=CONFIG_T::n_chan dim=0
+    #pragma HLS ARRAY_RESHAPE variable=layer_in complete dim=0
+
+    static res_T layer_normout[CONFIG_T::n_filt];
+    #pragma HLS ARRAY_RESHAPE variable=layer_normout complete dim=0
+
+    static res_T layer_reluout[CONFIG_T::n_filt];
+    #pragma HLS ARRAY_RESHAPE variable=layer_reluout complete dim=0
+
+    static res_T layer_out[CONFIG_T::n_filt];
+    #pragma HLS ARRAY_RESHAPE variable=layer_out complete dim=0
+
+    static unsigned pX = 0; 
+    static unsigned pY = 0;
+    
+    //Processs image
+    if(pY == 0) { 
+      for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) {
+	#pragma HLS UNROLL
+        layer_in_row[pX][CONFIG_T::pad_top][i0] =  data[i0].read();
+      }
+      for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) {
+	#pragma HLS UNROLL
+	layer_out[i0] =  0;
+      }
+      nnet::fill_image_2dS1<res_T,res_T,CONFIG_T>(layer_out,res);
+    } else { 
+    if(pY < CONFIG_T::out_height+CONFIG_T::filt_height-CONFIG_T::pad_top) { 
+     for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) {
+	 #pragma HLS UNROLL
+	 layer_in_row[pX][(pY+1) % CONFIG_T::filt_height][i0] =  data[i0].read();
+	}
+      }
+      if(pX == 0) nnet::reset_down_2dXNew<data_T,data_T,CONFIG_T>(pX,layer_in_row,layer_in);
+      nnet::dense_large<data_T,res_T,typename CONFIG_T::mult_config>(layer_in,layer_out,weights,biases);
+      nnet::normalize2<res_T, res_T,typename CONFIG_T::norm_config>(layer_out, layer_normout,scale,sbiases);
+      nnet::relu<res_T,res_T,typename CONFIG_T::relu_config>(layer_normout, layer_reluout);
+      nnet::fill_image_2dS1<data_T,data_T,CONFIG_T>(layer_reluout,res);
+      nnet::shift_right_2dNew<data_T,data_T,CONFIG_T>(pX,pY,layer_in_row,layer_in);//add padding
+    }
+    pX = pX+1;
+    if(pX == CONFIG_T::out_height) { 
+      pX = 0;
+      pY = pY+1;
+    }
+}
 
 }
 #endif

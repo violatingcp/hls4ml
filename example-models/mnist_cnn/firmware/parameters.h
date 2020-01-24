@@ -67,6 +67,18 @@ struct config2_mult : nnet::dense_config {
     typedef model_default_t weight_t;
 };
 
+struct config2_relu : nnet::activ_config {
+    static const unsigned n_in = N_FILT_2;
+    static const unsigned table_size = 1024;
+    static const unsigned io_type = nnet::io_parallel;
+};
+
+struct relu_config3 : nnet::activ_config {
+  static const unsigned n_in = N_FILT_2;
+  static const unsigned table_size = 1024;
+  static const unsigned io_type = nnet::io_parallel;
+};
+
 struct config2 : nnet::conv2d_config {
     static const unsigned pad_top = 0;
     static const unsigned pad_bottom = 0;
@@ -89,12 +101,7 @@ struct config2 : nnet::conv2d_config {
     typedef model_default_t bias_t;
     typedef model_default_t weight_t;
     typedef config2_mult mult_config;
-};
-
-struct relu_config3 : nnet::activ_config {
-    static const unsigned n_in = N_FILT_2;
-    static const unsigned table_size = 1024;
-    static const unsigned io_type = nnet::io_parallel;
+    typedef config2_relu relu_config;
 };
 
 struct config4_mult : nnet::dense_config {
@@ -107,6 +114,18 @@ struct config4_mult : nnet::dense_config {
     typedef ap_fixed<16,6> accum_t;
     typedef model_default_t bias_t;
     typedef model_default_t weight_t;
+};
+
+struct config4_relu : nnet::activ_config {
+    static const unsigned n_in = N_FILT_4;
+    static const unsigned table_size = 1024;
+    static const unsigned io_type = nnet::io_parallel;
+};
+
+struct relu_config5 : nnet::activ_config {
+  static const unsigned n_in = N_FILT_4;
+  static const unsigned table_size = 1024;
+  static const unsigned io_type = nnet::io_parallel;
 };
 
 struct config4 : nnet::conv2d_config {
@@ -131,12 +150,7 @@ struct config4 : nnet::conv2d_config {
     typedef model_default_t bias_t;
     typedef model_default_t weight_t;
     typedef config4_mult mult_config;
-};
-
-struct relu_config5 : nnet::activ_config {
-    static const unsigned n_in = N_FILT_4;
-    static const unsigned table_size = 1024;
-    static const unsigned io_type = nnet::io_parallel;
+    typedef config4_relu relu_config;
 };
 
 struct config6 : nnet::pooling2d_config {

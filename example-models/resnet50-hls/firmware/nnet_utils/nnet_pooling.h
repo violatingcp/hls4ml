@@ -149,9 +149,10 @@ void maxpool2d_filt_cl(data_T data[CONFIG_T::pool_height * CONFIG_T::pool_width 
     #pragma HLS UNROLL
     pMax[i0] = data[i0];
   }
-  for(unsigned i1 = 1; i1 < (CONFIG_T::pool_height*CONFIG_T::pool_width); i1++) { 
-    #pragma HLS PIPELINE II=1
-    for(unsigned i0 = 0; i0 < CONFIG_T::n_filt; i0++) { 
+  for(unsigned i0 = 0; i0 < CONFIG_T::n_filt; i0++) { 
+    //#pragma HLS PIPELINE II=1
+    #pragma HLS UNROLL
+    for(unsigned i1 = 1; i1 < (CONFIG_T::pool_height*CONFIG_T::pool_width); i1++) { 
      #pragma HLS UNROLL
      data_T pTmp = data[(i1*CONFIG_T::n_filt)+i0];
      if(pMax[i0] < pTmp) pMax[i0] = pTmp;
