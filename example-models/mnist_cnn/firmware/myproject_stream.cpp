@@ -52,30 +52,42 @@ void myproject(
 
     hls::stream<input_t>   sInput  [N_INPUT_3_1];
     hls::stream<result_t>  sOutput [N_FILT_6];
-    #pragma HLS stream variable=sInput      depth=1
-    #pragma HLS stream variable=sOutput     depth=1
+    #pragma HLS stream variable=sInput      depth=2
+    #pragma HLS stream variable=sOutput     depth=2
     bool lReset = true;
-    for(unsigned i0 = 0; i0 < N_INPUT_1_1; i0++) { 
+    for(unsigned iC = 0; iC < N_INPUT_1_1; iC++) { 
      //Read in the input image to bottom row of buffer
      for(unsigned i1 = 0; i1 < N_INPUT_2_1; i1++) {
       for(unsigned i2 = 0; i2 < N_INPUT_3_1; i2++) { 
        #pragma HLS UNROLL
-       sInput[i2].write(input[i0*N_INPUT_2_1*N_INPUT_3_1+i1*N_INPUT_3_1+i2]);
+       sInput[i2].write(input[iC*N_INPUT_2_1*N_INPUT_3_1+i1*N_INPUT_3_1+i2]);
       }
       subimage_stream(lReset,sInput,sOutput);
       lReset = false;
-      for(unsigned i2 = 0; i2 < N_FILT_6; i2++) { 
-       #pragma HLS UNROLL
-       layer7_full[index] = sOutput[i2].read();
-       index++;
+      if(iC > (N_FILT_WIDTH_2-1)+(N_FILT_WIDTH_4-1)  
+         && i1 > (N_FILT_HEIGHT_2-1)+(N_FILT_HEIGHT_4-1) 
+         && iC % 2 == 1 && i1 % 2 == 1) { 
+       for(unsigned i2 = 0; i2 < N_FILT_6; i2++) { 
+        #pragma HLS UNROLL
+     	layer7_full[index] = sOutput[i2].read();
+        index++;
+	//Xstd::cout << " ----> " << iC << " -- "  <<  N_INPUT_1_1 << " --  -- " << index << " -- " << (OUT_WIDTH_6*OUT_HEIGHT_6*N_FILT_6)<< std::endl;
+       }
       }
+      //else { 
+      //  for(unsigned i2 = 0; i2 < N_FILT_6; i2++) { 
+      //  #pragma HLS UNROLL
+      //  sOutput[i2].read();
+      // }
+      //}
      }
    }
+   std::cout << " here " << std::endl;
    //Now fill a dummy output so we don't run the million by million dense multiply
    layer9_t layer9_out[N_LAYER_9];
    #pragma HLS ARRAY_RESHAPE variable=layer9_out complete dim=0     
    for(unsigned i0 = 0; i0 < N_LAYER_9; i0++) { 
-     layer9_out[i0] = layer7_full[i0*100];
+     layer9_out[i0] = layer7_full[i0];
    }
 
    ////// Below is the actual end to the network
@@ -94,7 +106,8 @@ void myproject(
 void subimage_stream(bool iReset, 
 	      hls::stream<input_t>  input[N_INPUT_3_1],
 	      hls::stream<result_t> output[N_FILT_6]) { 
-
+  static unsigned pX = 0; 
+  if(iReset) pX = 0; 
 #ifndef __SYNTHESIS__
     static bool loaded_weights = false;
     if (!loaded_weights) {
@@ -111,15 +124,16 @@ void subimage_stream(bool iReset,
     }
 #endif
 
-    hls::stream<layer2_t> layer2_out[N_INPUT_3_1];
+    hls::stream<layer2_t> layer2_out[N_FILT_2];
     #pragma HLS stream variable=layer2_out      depth=1
     nnet::conv_2d_large_stream<input_t,layer2_t,config2>(input,layer2_out,w2,b2);
 
     hls::stream<layer4_t> layer4_out[N_FILT_4];
-    #pragma HLS stream variable=layer4_out      depth=1
+    #pragma HLS stream variable=layer4_out      depth=2
     nnet::conv_2d_large_stream<layer4_t,layer4_t,config4>(layer2_out,layer4_out,w4,b4);
-
-    hls::stream<layer6_t> layer6_out[N_FILT_6];
-    #pragma HLS stream variable=layer6_out      depth=1
-    nnet::pool_2d_large_stream<layer6_t,layer6_t,config6>(layer4_out,layer6_out);
+    
+    //hls::stream<layer6_t> layer6_out[N_FILT_6];
+    //#pragma HLS stream variable=layer6_out      depth=1
+    nnet::pool_2d_large_stream<layer6_t,layer6_t,config6>(layer4_out,output);
+    pX = pX+1;
 }
