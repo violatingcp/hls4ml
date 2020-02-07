@@ -72,8 +72,7 @@ void dense_large_rf_leq_nin(
 
         MultLoop:
         for (int im = 0; im < block_factor; im++) {
-         #pragma HLS UNROLL
-            
+           #pragma HLS UNROLL
             tmpmult[im] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::accum_t>(data[in_index], weights[w_index]);
 	    w_index += rufactor;
 	    in_index += rufactor;
@@ -81,7 +80,7 @@ void dense_large_rf_leq_nin(
                 in_index = ir;
             }
         }
-        for (int im = 0; im < block_factor; im++) {
+	for (int im = 0; im < block_factor; im++) {
             acc[out_index] += tmpmult[im];
             // Increment out_index
             if (acc_step + 1 >= multscale) {
@@ -91,9 +90,7 @@ void dense_large_rf_leq_nin(
                 acc_step++;
             }
        }
-	
     }
-
     // Cast to "res_t" type
     Result:
     for (int ires = 0; ires < CONFIG_T::n_out; ires++) {

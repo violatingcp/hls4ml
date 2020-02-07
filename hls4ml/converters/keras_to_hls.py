@@ -183,6 +183,7 @@ def keras_to_hls(yamlConfig):
             layer['data_format'] = keras_layer['config'].get('data_format', 'channels_last')
             # weights_shape = (filter_height, filter_width, n_channels, n_filters)
             weights_shape = get_weights_shape(yamlConfig['KerasH5'], layer['name'])
+            print("!!!!!!!!!!!!",weights_shape)
             layer['in_height']=current_shape[1]
             layer['in_width']=current_shape[2]
             if layer['data_format'] == 'channels_first':

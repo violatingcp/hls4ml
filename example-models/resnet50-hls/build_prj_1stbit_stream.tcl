@@ -50,13 +50,13 @@ set CSIM_RESULTS "./tb_data/csim_results.log"
 set RTL_COSIM_RESULTS "./tb_data/rtl_cosim_results.log"
 
 if {$opt(reset)} {
-  open_project -reset myproject_prj_1stbit_stream
+  open_project -reset myproject_prj_1stbit_stream_simple
 } else {
-  open_project myproject_prj_1stbit_stream
+  open_project myproject_prj_1stbit_stream_simple
 }
 set_top subimage
-add_files firmware/myproject_1stbit_stream.cpp -cflags "-std=c++0x"
-add_files -tb myproject_test_1stbit_stream.cpp -cflags "-std=c++0x"
+add_files firmware/myproject_1stbit_stream_simple.cpp -cflags "-std=c++0x"
+add_files -tb myproject_test_1stbit_stream_simple.cpp -cflags "-std=c++0x"
 add_files -tb firmware/weights
 add_files -tb tb_data
 if {$opt(reset)} {
@@ -88,7 +88,7 @@ if {$opt(synth)} {
 if {$opt(cosim)} {
   puts "***** C/RTL SIMULATION *****"
   # TODO: This is a workaround (Xilinx defines __RTL_SIMULATION__ only for SystemC testbenches).
-  add_files -tb myproject_test_1stbit_stram.cpp -cflags "-std=c++0x -DRTL_SIM"
+  add_files -tb myproject_test_1stbit_stream_simple.cpp -cflags "-std=c++0x -DRTL_SIM"
   set time_start [clock clicks -milliseconds]
   cosim_design -trace_level all
   set time_end [clock clicks -milliseconds]

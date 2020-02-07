@@ -17,6 +17,9 @@ class VivadoWriter(Writer):
         ## Print weight array to C++
         #######################################
 
+        #var.data = np.transpose(var.data, axes=[3, 2, 1, 0]) 
+        #var.data = np.transpose(var.data, axes=[0, 3, 2, 1]) 
+
         h_file = open("{}/firmware/weights/{}.h".format(odir,var.name),"w")
         if write_txt_file:
             txt_file = open("{}/firmware/weights/{}.txt".format(odir,var.name),"w")

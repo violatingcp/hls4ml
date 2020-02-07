@@ -33,7 +33,38 @@
 #include "weights/b12.h"
 #include "weights/s13.h"
 #include "weights/b13.h"
-
+#include "weights/w14.h"
+#include "weights/b14.h"
+#include "weights/s15.h"
+#include "weights/b15.h"
+#include "weights/w18.h"
+#include "weights/b18.h"
+#include "weights/s19.h"
+#include "weights/b19.h"
+#include "weights/w21.h"
+#include "weights/b21.h"
+#include "weights/s22.h"
+#include "weights/b22.h"
+#include "weights/w24.h"
+#include "weights/b24.h"
+#include "weights/s25.h"
+#include "weights/b25.h"
+#include "weights/w28.h"
+#include "weights/b28.h"
+#include "weights/s29.h"
+#include "weights/b29.h"
+#include "weights/w31.h"
+#include "weights/b31.h"
+#include "weights/s32.h"
+#include "weights/b32.h"
+#include "weights/w34.h"
+#include "weights/b34.h"
+#include "weights/s35.h"
+#include "weights/b35.h"
+#include "weights/w38.h"
+#include "weights/b38.h"
+#include "weights/s39.h"
+#include "weights/b39.h"
 
 void subimage(      
 	      input_t input[N_INPUT_1_1][N_INPUT_2_1][N_INPUT_3_1],
@@ -51,10 +82,12 @@ void subimage(
 	  sInput[i2].write(input[i0][i1][i2]);
       }
       subimage_stream(lReset,sInput,sOutput);
-      if(lReset) lReset = false;
-      for(unsigned i2 = 0; i2 < N_FILT_12; i2++) { 
-       #pragma HLS UNROLL
-       output[i0][i1][i2] = sOutput[i2].read();
+      lReset = false;
+      if(!sOutput[0].empty()) { 
+	for(unsigned i2 = 0; i2 < N_FILT_12; i2++) { 
+         #pragma HLS UNROLL
+	 output[i0][i1][i2] = sOutput[i2].read();
+	}
       }
     }
   }
@@ -62,7 +95,7 @@ void subimage(
 
 void subimage_stream(bool iReset, 
 	      hls::stream<input_t>  input[N_INPUT_3_1],
-	      hls::stream<result_t> output[N_FILT_12]) { 
+	      hls::stream<result_t> output[N_FILT_34]) { 
 
 #ifndef __SYNTHESIS__
     static bool loaded_weights = false;
@@ -80,6 +113,38 @@ void subimage_stream(bool iReset,
         nnet::load_weights_from_txt<bias12_t, 56>(b12, "b12.txt");
         nnet::load_weights_from_txt<model_default_t, 256>(s13, "s13.txt");
         nnet::load_weights_from_txt<model_default_t, 256>(b13, "b13.txt");
+        nnet::load_weights_from_txt<model_default_t, 16384>(w14, "w14.txt");
+        nnet::load_weights_from_txt<bias14_t, 56>(b14, "b14.txt");
+        nnet::load_weights_from_txt<model_default_t, 256>(s15, "s15.txt");
+        nnet::load_weights_from_txt<model_default_t, 256>(b15, "b15.txt");
+        nnet::load_weights_from_txt<model_default_t, 16384>(w18, "w18.txt");
+        nnet::load_weights_from_txt<bias18_t, 56>(b18, "b18.txt");
+        nnet::load_weights_from_txt<model_default_t, 64>(s19, "s19.txt");
+        nnet::load_weights_from_txt<model_default_t, 64>(b19, "b19.txt");
+        nnet::load_weights_from_txt<model_default_t, 36864>(w21, "w21.txt");
+        nnet::load_weights_from_txt<bias21_t, 56>(b21, "b21.txt");
+        nnet::load_weights_from_txt<model_default_t, 64>(s22, "s22.txt");
+        nnet::load_weights_from_txt<model_default_t, 64>(b22, "b22.txt");
+        nnet::load_weights_from_txt<model_default_t, 16384>(w24, "w24.txt");
+        nnet::load_weights_from_txt<bias24_t, 56>(b24, "b24.txt");
+        nnet::load_weights_from_txt<model_default_t, 256>(s25, "s25.txt");
+        nnet::load_weights_from_txt<model_default_t, 256>(b25, "b25.txt");
+        nnet::load_weights_from_txt<model_default_t, 16384>(w28, "w28.txt");
+        nnet::load_weights_from_txt<bias28_t, 56>(b28, "b28.txt");
+        nnet::load_weights_from_txt<model_default_t, 64>(s29, "s29.txt");
+        nnet::load_weights_from_txt<model_default_t, 64>(b29, "b29.txt");
+        nnet::load_weights_from_txt<model_default_t, 36864>(w31, "w31.txt");
+        nnet::load_weights_from_txt<bias31_t, 56>(b31, "b31.txt");
+        nnet::load_weights_from_txt<model_default_t, 64>(s32, "s32.txt");
+        nnet::load_weights_from_txt<model_default_t, 64>(b32, "b32.txt");
+        nnet::load_weights_from_txt<model_default_t, 16384>(w34, "w34.txt");
+        nnet::load_weights_from_txt<bias34_t, 56>(b34, "b34.txt");
+        nnet::load_weights_from_txt<model_default_t, 256>(s35, "s35.txt");
+        nnet::load_weights_from_txt<model_default_t, 256>(b35, "b35.txt");
+        nnet::load_weights_from_txt<model_default_t, 32768>(w38, "w38.txt");
+        nnet::load_weights_from_txt<bias38_t, 56>(b38, "b38.txt");
+        nnet::load_weights_from_txt<model_default_t, 128>(s39, "s39.txt");
+        nnet::load_weights_from_txt<model_default_t, 128>(b39, "b39.txt");
         loaded_weights = true;
     }
 #endif
@@ -87,10 +152,39 @@ void subimage_stream(bool iReset,
     hls::stream<layer6_t> layer6_out[N_FILT_6];
     #pragma HLS stream variable=layer6_out      depth=1
     nnet::conv_2d_large_stream_norm<input_t,layer6_t,config6>(input,layer6_out,w6,b6,s7,b7);
+
     hls::stream<layer9_t> layer9_out[N_FILT_9];
     #pragma HLS stream variable=layer9_out      depth=1
-    nnet::conv_2d_large_stream_norm<layer6_t,layer9_t,config9>(layer6_out,layer9_out,w9,b9,s10,b10);
-    //hls::stream<layer9_t> layer12_out[N_FILT_12];
-    nnet::conv_2d_large_stream_norm<layer9_t,result_t,config12>(layer9_out,output,w12,b12,s13,b13);
+    if(!layer6_out[0].empty()) nnet::conv_2d_large_stream_norm<layer6_t,layer9_t,config9>(layer6_out,layer9_out,w9,b9,s10,b10);
 
+    hls::stream<layer12_t> layer12_out[N_FILT_12];
+    #pragma HLS stream variable=layer12_out      depth=1
+    if(!layer9_out[0].empty()) nnet::conv_2d_large_stream_norm<layer9_t,layer12_t,config12>(layer9_out,layer12_out,w12,b12,s13,b13);
+    
+    hls::stream<layer14_t> layer14_out[N_FILT_14];
+    #pragma HLS stream variable=layer14_out      depth=1
+    if(!layer12_out[0].empty()) nnet::conv_2d_large_stream_norm<layer12_t,layer14_t,config14>(layer12_out,layer14_out,w14,b14,s15,b15);
+
+    hls::stream<layer18_t> layer18_out[N_FILT_18];
+    #pragma HLS stream variable=layer18_out      depth=1
+    if(!layer14_out[0].empty()) nnet::conv_2d_large_stream_norm<layer14_t,layer18_t,config18>(layer14_out,layer18_out,w18,b18,s19,b19);
+
+    hls::stream<layer21_t> layer21_out[N_FILT_21];
+    #pragma HLS stream variable=layer21_out      depth=1
+    if(!layer18_out[0].empty()) nnet::conv_2d_large_stream_norm<layer18_t,layer21_t,config21>(layer18_out,layer21_out,w21,b21,s22,b22);
+
+    hls::stream<layer24_t> layer24_out[N_FILT_24];
+    #pragma HLS stream variable=layer24_out      depth=1
+    if(!layer21_out[0].empty()) nnet::conv_2d_large_stream_norm<layer21_t,layer24_t,config24>(layer21_out,layer24_out,w24,b24,s25,b25);
+
+    hls::stream<layer28_t> layer28_out[N_FILT_28];
+    #pragma HLS stream variable=layer28_out      depth=1
+    if(!layer24_out[0].empty()) nnet::conv_2d_large_stream_norm<layer28_t,layer28_t,config28>(layer24_out,layer28_out,w28,b28,s29,b29);
+
+    hls::stream<layer31_t> layer31_out[N_FILT_31];
+    #pragma HLS stream variable=layer31_out      depth=1
+    if(!layer28_out[0].empty()) nnet::conv_2d_large_stream_norm<layer31_t,layer31_t,config31>(layer28_out,layer31_out,w31,b31,s32,b32);
+
+    //hls::stream<layer34_t> layer34_out[N_FILT_34];
+    if(!layer31_out[0].empty()) nnet::conv_2d_large_stream_norm<layer34_t,result_t,config34>(layer31_out,output,w34,b34,s35,b35);
 }

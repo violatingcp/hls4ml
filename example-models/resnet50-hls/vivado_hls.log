@@ -6,16 +6,16 @@
 
 source /data/Xilinx/Vivado/Vivado/2019.1/scripts/vivado_hls/hls.tcl -notrace
 INFO: [HLS 200-10] Running '/data/Xilinx/Vivado/Vivado/2019.1/bin/unwrapped/lnx64.o/vivado_hls'
-INFO: [HLS 200-10] For user 'pharris' on host 'correlator2.fnal.gov' (Linux_x86_64 version 3.10.0-957.21.3.el7.x86_64) on Thu Dec 19 10:48:39 CST 2019
+INFO: [HLS 200-10] For user 'pharris' on host 'correlator2.fnal.gov' (Linux_x86_64 version 3.10.0-957.21.3.el7.x86_64) on Fri Feb 07 13:53:11 CST 2020
 INFO: [HLS 200-10] On os "Scientific Linux release 7.6 (Nitrogen)"
-INFO: [HLS 200-10] In directory '/home/pharris/tmp3/test_hack7/hls4ml/example-models/resnet50-hls'
-Sourcing Tcl script 'build_prj.tcl'
-INFO: [HLS 200-10] Opening project '/home/pharris/tmp3/test_hack7/hls4ml/example-models/resnet50-hls/myproject_prj'.
-INFO: [HLS 200-10] Adding design file 'firmware/myproject.cpp' to the project
-INFO: [HLS 200-10] Adding test bench file 'myproject_test.cpp' to the project
+INFO: [HLS 200-10] In directory '/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/resnet50-hls'
+Sourcing Tcl script 'build_prj_1stbit_stream.tcl'
+INFO: [HLS 200-10] Opening project '/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/resnet50-hls/myproject_prj_1stbit_stream_simple'.
+INFO: [HLS 200-10] Adding design file 'firmware/myproject_1stbit_stream_simple.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'myproject_test_1stbit_stream_simple.cpp' to the project
 INFO: [HLS 200-10] Adding test bench file 'firmware/weights' to the project
 INFO: [HLS 200-10] Adding test bench file 'tb_data' to the project
-INFO: [HLS 200-10] Opening solution '/home/pharris/tmp3/test_hack7/hls4ml/example-models/resnet50-hls/myproject_prj/solution1'.
+INFO: [HLS 200-10] Opening solution '/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/resnet50-hls/myproject_prj_1stbit_stream_simple/solution1'.
 INFO: [SYN 201-201] Setting up clock 'default' with a period of 5ns.
 INFO: [HLS 200-10] Setting target device to 'xcku115-flvb2104-2-i'
 INFO: [XFORM 203-101] Allowed max sub elements number after partition is 4096.
@@ -23,3 +23,26 @@ INFO: [XFORM 203-101] Allowed max sub elements number after partition is 4096.
 ***** C SIMULATION *****
 INFO: [SIM 211-2] *************** CSIM start ***************
 INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../firmware/myproject_1stbit_stream_simple.cpp in debug mode
+   Generating csim.exe
+INFO: Saved inference results to file: tb_data/csim_results.log
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+***** C SIMULATION COMPLETED IN 0h0m7s *****
+***** C/RTL SYNTHESIS *****
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file 'firmware/myproject_1stbit_stream_simple.cpp' ... 
+WARNING: [HLS 214-114] Since the only kind of statements allowed in a dataflow region are variable declarations and function calls, the compiler may not be able to correctly handle the region: firmware/nnet_utils/nnet_dense.h:139:9
+WARNING: [HLS 214-104] Only for-loops and functions support the dataflow: firmware/nnet_utils/nnet_dense.h:151:9
+WARNING: [HLS 214-104] Only for-loops and functions support the dataflow: firmware/nnet_utils/nnet_batchnorm.h:76:9
+WARNING: [HLS 200-471] Dataflow form checks found 3 issue(s) in file firmware/myproject_1stbit_stream_simple.cpp
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:01:58 ; elapsed = 00:02:02 . Memory (MB): peak = 984.562 ; gain = 196.125 ; free physical = 10170 ; free virtual = 120024
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:01:58 ; elapsed = 00:02:02 . Memory (MB): peak = 984.562 ; gain = 196.125 ; free physical = 10170 ; free virtual = 120024
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.1' (firmware/nnet_utils/nnet_conv2d_large.h:458) in function 'void nnet::shift_right_small_stride<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config34>(FORWARD_REFERENCE (*) [FORWARD_REFERENCE::filt_height][FORWARD_REFERENCE::n_chan], FORWARD_REFERENCE*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.1' (firmware/nnet_utils/nnet_conv2d_large.h:458) in function 'void nnet::shift_right_small_stride<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config28>(FORWARD_REFERENCE (*) [FORWARD_REFERENCE::filt_height][FORWARD_REFERENCE::n_chan], FORWARD_REFERENCE*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.1' (firmware/nnet_utils/nnet_conv2d_large.h:458) in function 'void nnet::shift_right_small_stride<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config24>(FORWARD_REFERENCE (*) [FORWARD_REFERENCE::filt_height][FORWARD_REFERENCE::n_chan], FORWARD_REFERENCE*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.1' (firmware/nnet_utils/nnet_conv2d_large.h:458) in function 'void nnet::shift_right_small_stride<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>(FORWARD_REFERENCE (*) [FORWARD_REFERENCE::filt_height][FORWARD_REFERENCE::n_chan], FORWARD_REFERENCE*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.1' (firmware/nnet_utils/nnet_conv2d_large.h:458) in function 'void nnet::shift_right_small_stride<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>(FORWARD_REFERENCE (*) [FORWARD_REFERENCE::filt_height][FORWARD_REFERENCE::n_chan], FORWARD_REFERENCE*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.1' (firmware/nnet_utils/nnet_conv2d_large.h:458) in function 'void nnet::shift_right_small_stride<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>(FORWARD_REFERENCE (*) [FORWARD_REFERENCE::filt_height][FORWARD_REFERENCE::n_chan], FORWARD_REFERENCE*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.1' (firmware/nnet_utils/nnet_conv2d_large.h:458) in function 'void nnet::shift_right_small_stride<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>(FORWARD_REFERENCE (*) [FORWARD_REFERENCE::filt_height][FORWARD_REFERENCE::n_chan], FORWARD_REFERENCE*)' completely with a factor of 1.

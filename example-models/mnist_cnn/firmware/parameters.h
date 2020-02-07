@@ -1,4 +1,5 @@
 #ifndef PARAMETERS_H_
+
 #define PARAMETERS_H_
 
 #include <complex>
@@ -22,13 +23,13 @@
 #define N_INPUT_1_1 28
 #define N_INPUT_2_1 28
 #define N_INPUT_3_1 1
-#define OUT_HEIGHT_2 28
-#define OUT_WIDTH_2 28
+#define OUT_HEIGHT_2 26
+#define OUT_WIDTH_2 26
 #define N_FILT_WIDTH_2  3
 #define N_FILT_HEIGHT_2 3
 #define N_FILT_2 32
-#define OUT_HEIGHT_4 28
-#define OUT_WIDTH_4 28
+#define OUT_HEIGHT_4 24
+#define OUT_WIDTH_4 24
 #define N_FILT_WIDTH_4  3
 #define N_FILT_HEIGHT_4 3
 #define N_FILT_4 64
@@ -105,12 +106,9 @@ struct config2 : nnet::conv2d_config {
 };
 
 struct config4_mult : nnet::dense_config {
-    static const unsigned n_in1 = 3;
-    static const unsigned n_in2 = 3;
-    static const unsigned n_in3 = 32;
     static const unsigned n_in = 288;
     static const unsigned n_out = 64;
-    static const unsigned reuse_factor = 36;
+    static const unsigned reuse_factor = 1;
     typedef ap_fixed<16,6> accum_t;
     typedef model_default_t bias_t;
     typedef model_default_t weight_t;

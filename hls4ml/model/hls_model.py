@@ -847,7 +847,8 @@ class Conv2D(Layer):
                 if chosen_rf not in valid_rf:
                     print('WARNING: Using invalid ReuseFactor={} with "Resource" strategy in layer "{}". Valid ReuseFactor(s): {}'
                         .format(chosen_rf, self.name, ','.join(map(str, valid_rf))))
-                self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[3, 2, 0, 1]) #(H,W,C,F) => (F,C,H,W)
+                self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[3, 0, 1, 2]) #(H,W,C,F) => (F,C,H,W)
+                #self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[1, 3, 2, 0]) #(H,W,C,F) => (F,C,H,W)
         else:
             self.set_attr('strategy', 'latency')
 
