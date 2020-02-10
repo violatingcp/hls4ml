@@ -37,6 +37,21 @@ void myproject(
     unsigned short &const_size_out_1
 ) {
 
+
+  //#pragma HLS DATAFLOW
+
+#ifndef __SYNTHESIS__
+    static bool loaded_weights = false;
+    if (!loaded_weights) {
+        //hls-fpga-machine-learning insert load weights
+        nnet::load_weights_from_txt<model_default_t, 1179648>(w7, "w7.txt");
+        nnet::load_weights_from_txt<model_default_t, 128>(b7, "b7.txt");
+        nnet::load_weights_from_txt<model_default_t, 1280>(w9, "w9.txt");
+        nnet::load_weights_from_txt<model_default_t, 10>(b9, "b9.txt");
+        loaded_weights = true;
+    }
+#endif
+
     //hls-fpga-machine-learning insert IO
     #pragma HLS ARRAY_RESHAPE variable=input1 complete dim=0 
     #pragma HLS ARRAY_RESHAPE variable=layer10_out complete dim=0 
@@ -50,18 +65,15 @@ void myproject(
     #pragma HLS ARRAY_RESHAPE variable=layer7_full block factor=64
     unsigned index=0; 
 
-    const static unsigned lShiftX = 0;//config2::filt_width-1+config4::filt_width-1 +config6::filt_width-1;
-    const static unsigned lShiftY = 0;//config2::filt_height-1+config4::filt_height-1+config6::filt_height-1;
-
     hls::stream<input_t>   sInput  [N_INPUT_3_1];
     hls::stream<result_t>  sOutput [N_FILT_6];
-    #pragma HLS stream variable=sInput      depth=2
-    #pragma HLS stream variable=sOutput     depth=2
+    #pragma HLS stream variable=sInput      depth=784
+    #pragma HLS stream variable=sOutput     depth=144
     bool lReset = true;
-    for(unsigned iC = 0; iC < N_INPUT_1_1+lShiftY; iC++) { 
+    for(unsigned iC = 0; iC < N_INPUT_1_1; iC++) { 
      //Read in the input image to bottom row of buffer
      LoopSubstream:
-     for(unsigned i1 = 0; i1 < N_INPUT_2_1+lShiftX; i1++) {
+     for(unsigned i1 = 0; i1 < N_INPUT_2_1; i1++) {
       LoopInput:
       for(unsigned i2 = 0; i2 < N_INPUT_3_1; i2++) { 
        #pragma HLS UNROLL
@@ -80,9 +92,9 @@ void myproject(
         #pragma HLS UNROLL 
         layer7_full[index*N_FILT_6+iX] = sOutput[iX].read();
        }
-       index++;
+       index++; 
       }
-     }
+    }
    }
    //Now fill a dummy output so we don't run the million by million dense multiply
    //layer9_t layer9_out[N_LAYER_9];
@@ -111,8 +123,6 @@ void subimage_stream(bool iReset,
 	      hls::stream<input_t>  input[N_INPUT_3_1],
 	      hls::stream<result_t> output[N_FILT_6]) { 
 
-    #pragma HLS DATAFLOW
-
 #ifndef __SYNTHESIS__
     static bool loaded_weights = false;
     if (!loaded_weights) {
@@ -121,23 +131,19 @@ void subimage_stream(bool iReset,
         nnet::load_weights_from_txt<model_default_t, 32>(b2, "b2.txt");
         nnet::load_weights_from_txt<model_default_t, 18432>(w4, "w4.txt");
         nnet::load_weights_from_txt<model_default_t, 64>(b4, "b4.txt");
-        nnet::load_weights_from_txt<model_default_t, 1179648>(w7, "w7.txt");
-        nnet::load_weights_from_txt<model_default_t, 128>(b7, "b7.txt");
-        nnet::load_weights_from_txt<model_default_t, 1280>(w9, "w9.txt");
-        nnet::load_weights_from_txt<model_default_t, 10>(b9, "b9.txt");
         loaded_weights = true;
     }
 #endif
 
     hls::stream<layer2_t> layer2_out[N_FILT_2];
-    #pragma HLS stream variable=layer2_out      depth=1
+    #pragma HLS stream variable=layer2_out      depth=10
     nnet::conv_2d_large_stream<input_t,layer2_t,config2>(input,layer2_out,w2,b2);
 
     hls::stream<layer4_t> layer4_out[N_FILT_4];
-    #pragma HLS stream variable=layer4_out      depth=1
+    #pragma HLS stream variable=layer4_out      depth=10
     if(!layer2_out[0].empty()) nnet::conv_2d_large_stream<layer4_t,layer4_t,config4>(layer2_out,layer4_out,w4,b4);
 
-    hls::stream<layer6_t> layer6_out[N_FILT_6];
-    #pragma HLS stream variable=layer6_out      depth=1
+    //hls::stream<layer6_t> layer6_out[N_FILT_6];
+    //#pragma HLS stream variable=layer6_out      depth=1
     if(!layer4_out[0].empty()) nnet::pool_2d_large_stream<layer6_t,layer6_t,config6>(layer4_out,output);
 }

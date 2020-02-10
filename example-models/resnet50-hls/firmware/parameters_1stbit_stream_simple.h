@@ -151,6 +151,7 @@ struct config6_relu : nnet::activ_config {
     static const unsigned n_in = N_FILT_6;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
+    static const unsigned reuse_factor = 1;
 };
 
 struct config6 : nnet::conv2d_config {
@@ -204,6 +205,7 @@ struct config9_relu : nnet::activ_config {
     static const unsigned n_in = N_FILT_9;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
+    static const unsigned reuse_factor = 1;
 };
 
 struct config9 : nnet::conv2d_config {
@@ -256,6 +258,7 @@ struct config12_relu : nnet::activ_config {
     static const unsigned n_in = N_FILT_12;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
+    static const unsigned reuse_factor = 1;
 };
 
 struct config12 : nnet::conv2d_config {
@@ -288,7 +291,7 @@ struct config12 : nnet::conv2d_config {
 struct config14_mult : nnet::dense_config {
     static const unsigned n_in = 64;
     static const unsigned n_out = 256;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 32;
     typedef ap_fixed<16,6> accum_t;
     typedef bias14_t bias_t;
     typedef model_default_t weight_t;
@@ -308,6 +311,7 @@ struct config14_relu : nnet::activ_config {
     static const unsigned n_in = N_FILT_12*OUT_HEIGHT_12*OUT_WIDTH_12;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
+    static const unsigned reuse_factor = 1;
 };
 
 struct config14 : nnet::conv2d_config {
@@ -316,8 +320,8 @@ struct config14 : nnet::conv2d_config {
     static const unsigned pad_left = 0;
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_WIDTH_5;
-    static const unsigned in_width = N_FILT_5;
-    static const unsigned n_chan = OUT_HEIGHT_5;
+    static const unsigned in_width = OUT_HEIGHT_5;
+    static const unsigned n_chan = N_FILT_12;
     static const unsigned filt_height = 1;
     static const unsigned filt_width = 1;
     static const unsigned n_filt = N_FILT_14;
@@ -343,7 +347,7 @@ struct config16 : nnet::merge_config {
 struct config18_mult : nnet::dense_config {
     static const unsigned n_in = 256;
     static const unsigned n_out = 64;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 32;
     typedef ap_fixed<16,6> accum_t;
     typedef bias18_t bias_t;
     typedef model_default_t weight_t;
@@ -363,6 +367,7 @@ struct config18_relu : nnet::activ_config {
     static const unsigned n_in = N_FILT_18*OUT_HEIGHT_18*OUT_WIDTH_18;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
+    static const unsigned reuse_factor = 1;
 };
 
 struct config18 : nnet::conv2d_config {
@@ -372,7 +377,7 @@ struct config18 : nnet::conv2d_config {
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_HEIGHT_12;
     static const unsigned in_width = OUT_WIDTH_12;
-    static const unsigned n_chan = N_FILT_12;
+    static const unsigned n_chan = N_FILT_14;
     static const unsigned filt_height = 1;
     static const unsigned filt_width = 1;
     static const unsigned n_filt = N_FILT_18;
@@ -395,7 +400,7 @@ struct config21_norm : nnet::batchnorm_config {
     static const unsigned n_in = N_FILT_21*OUT_HEIGHT_21*OUT_WIDTH_21;
     static const unsigned n_filt = 64;
     static const unsigned io_type = nnet::io_parallel;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 2;
     static const bool store_weights_in_bram = false;
     typedef model_default_t bias_t;
     typedef model_default_t scale_t;
@@ -405,12 +410,13 @@ struct config21_relu : nnet::activ_config {
     static const unsigned n_in = N_FILT_21*OUT_HEIGHT_21*OUT_WIDTH_21;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
+    static const unsigned reuse_factor = 2;
 };
 
 struct config21_mult : nnet::dense_config {
     static const unsigned n_in = 576;
     static const unsigned n_out = 64;
-    static const unsigned reuse_factor = 144;
+    static const unsigned reuse_factor = 64;
     typedef ap_fixed<16,6> accum_t;
     typedef bias21_t bias_t;
     typedef model_default_t weight_t;
@@ -445,7 +451,7 @@ struct config21 : nnet::conv2d_config {
 struct config24_mult : nnet::dense_config {
     static const unsigned n_in = 64;
     static const unsigned n_out = 256;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 32;
     typedef ap_fixed<16,6> accum_t;
     typedef bias24_t bias_t;
     typedef model_default_t weight_t;
@@ -465,6 +471,7 @@ struct config24_relu : nnet::activ_config {
     static const unsigned n_in = N_FILT_24*OUT_HEIGHT_24*OUT_WIDTH_24;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
+    static const unsigned reuse_factor = 1;
 };
 
 struct config24 : nnet::conv2d_config {
@@ -500,7 +507,7 @@ struct config26 : nnet::merge_config {
 struct config28_mult : nnet::dense_config {
     static const unsigned n_in = 256;
     static const unsigned n_out = 64;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 32;
     typedef ap_fixed<16,6> accum_t;
     typedef bias28_t bias_t;
     typedef model_default_t weight_t;
@@ -520,6 +527,7 @@ struct config28_relu : nnet::activ_config {
     static const unsigned n_in = N_FILT_28*OUT_HEIGHT_28*OUT_WIDTH_28;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
+    static const unsigned reuse_factor = 1;
 };
 
 struct config28 : nnet::conv2d_config {
@@ -551,7 +559,7 @@ struct config28 : nnet::conv2d_config {
 struct config31_mult : nnet::dense_config {
     static const unsigned n_in = 576;
     static const unsigned n_out = 64;
-    static const unsigned reuse_factor = 144;
+    static const unsigned reuse_factor = 32;
     typedef ap_fixed<16,6> accum_t;
     typedef bias31_t bias_t;
     typedef model_default_t weight_t;
@@ -571,6 +579,7 @@ struct config31_relu : nnet::activ_config {
     static const unsigned n_in = N_FILT_31*OUT_HEIGHT_31*OUT_WIDTH_31;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
+    static const unsigned reuse_factor = 1;
 };
 
 struct config31 : nnet::conv2d_config {
@@ -602,7 +611,7 @@ struct config31 : nnet::conv2d_config {
 struct config34_mult : nnet::dense_config {
     static const unsigned n_in = 64;
     static const unsigned n_out = 256;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 32;
     typedef ap_fixed<16,6> accum_t;
     typedef bias34_t bias_t;
     typedef model_default_t weight_t;
@@ -622,6 +631,7 @@ struct config34_relu : nnet::activ_config {
     static const unsigned n_in = N_FILT_34*OUT_HEIGHT_34*OUT_WIDTH_34;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
+    static const unsigned reuse_factor = 1;
 };
 
 struct config34 : nnet::conv2d_config {

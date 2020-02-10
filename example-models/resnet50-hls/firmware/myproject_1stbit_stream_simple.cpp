@@ -71,7 +71,7 @@ void subimage(
 	      result_t output[N_LAYER_OUT_1][N_LAYER_OUT_2][N_LAYER_OUT_3]) { 
 
   hls::stream<input_t>   sInput  [N_INPUT_3_1];
-  hls::stream<result_t>  sOutput [N_FILT_12];
+  hls::stream<result_t>  sOutput [N_FILT_14];
   #pragma HLS stream variable=sInput      depth=1
   #pragma HLS stream variable=sOutput     depth=1
   bool lReset = true;
@@ -84,7 +84,7 @@ void subimage(
       subimage_stream(lReset,sInput,sOutput);
       lReset = false;
       if(!sOutput[0].empty()) { 
-	for(unsigned i2 = 0; i2 < N_FILT_12; i2++) { 
+	for(unsigned i2 = 0; i2 < N_FILT_34; i2++) { 
          #pragma HLS UNROLL
 	 output[i0][i1][i2] = sOutput[i2].read();
 	}
@@ -95,7 +95,7 @@ void subimage(
 
 void subimage_stream(bool iReset, 
 	      hls::stream<input_t>  input[N_INPUT_3_1],
-	      hls::stream<result_t> output[N_FILT_34]) { 
+	      hls::stream<result_t> output[N_FILT_14]) { 
 
 #ifndef __SYNTHESIS__
     static bool loaded_weights = false;
@@ -149,6 +149,7 @@ void subimage_stream(bool iReset,
     }
 #endif
 
+
     hls::stream<layer6_t> layer6_out[N_FILT_6];
     #pragma HLS stream variable=layer6_out      depth=1
     nnet::conv_2d_large_stream_norm<input_t,layer6_t,config6>(input,layer6_out,w6,b6,s7,b7);
@@ -164,6 +165,7 @@ void subimage_stream(bool iReset,
     hls::stream<layer14_t> layer14_out[N_FILT_14];
     #pragma HLS stream variable=layer14_out      depth=1
     if(!layer12_out[0].empty()) nnet::conv_2d_large_stream_norm<layer12_t,layer14_t,config14>(layer12_out,layer14_out,w14,b14,s15,b15);
+
 
     hls::stream<layer18_t> layer18_out[N_FILT_18];
     #pragma HLS stream variable=layer18_out      depth=1
@@ -188,3 +190,4 @@ void subimage_stream(bool iReset,
     //hls::stream<layer34_t> layer34_out[N_FILT_34];
     if(!layer31_out[0].empty()) nnet::conv_2d_large_stream_norm<layer34_t,result_t,config34>(layer31_out,output,w34,b34,s35,b35);
 }
+

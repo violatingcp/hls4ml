@@ -515,17 +515,17 @@ void shift_right_stride_2dNew(unsigned iShiftX,unsigned iShiftY,
   unsigned lShiftY = iShiftY*CONFIG_T::stride_height-CONFIG_T::filt_height+1;
   //static const unsigned lX = CONFIG_T::filt_height*CONFIG_T::n_chan;
   //static const unsigned lY = CONFIG_T::n_chan;
-  static const unsigned minwidth  = CONFIG_T::pad_left;
-  static const unsigned maxwidth  = CONFIG_T::pad_left+CONFIG_T::in_width;
-  static const unsigned minheight = CONFIG_T::pad_top;
-  static const unsigned maxheight = CONFIG_T::pad_top+CONFIG_T::in_height;
+  static const int minwidth  = CONFIG_T::pad_left;
+  static const int maxwidth  = CONFIG_T::pad_left+CONFIG_T::in_width;
+  static const int minheight = CONFIG_T::pad_top;
+  static const int maxheight = CONFIG_T::pad_top+CONFIG_T::in_height;
   data_T tmpinput[CONFIG_T::stride_width][CONFIG_T::filt_height][CONFIG_T::n_chan];
   #pragma HLS ARRAY_RESHAPE variable=tmpinput complete dim=0
   for(unsigned i0 = 0; i0 < CONFIG_T::stride_width;  i0++) {
-    unsigned pX = i0+lShiftX;
+    int pX = i0+lShiftX;
     for(unsigned i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
-      unsigned pY  = i1+lShiftY;
-      unsigned pYC = pY % CONFIG_T::filt_height; 
+      int pY  = i1+lShiftY;
+      int pYC = pY % CONFIG_T::filt_height; 
       for(unsigned i2 = 0; i2 < CONFIG_T::n_chan;    i2++) { 
 	if(pX >= minwidth && pX < maxwidth && pY >= minheight && pY < maxheight) { 
 	  tmpinput[i0][i1][i2] = input[pX][pYC][i2];
@@ -542,15 +542,15 @@ void shift_right_2dNew(unsigned iShiftX,unsigned iShiftY,
 		       data_T input[CONFIG_T::in_width][CONFIG_T::filt_height][CONFIG_T::n_chan],
 		       res_T  data[CONFIG_T::filt_width   * CONFIG_T::filt_height * CONFIG_T::n_chan]) { 
   #pragma HLS PIPELINE
-  static const unsigned minwidth  = CONFIG_T::pad_left-1;
-  static const unsigned maxwidth  = CONFIG_T::pad_left+CONFIG_T::in_width;
-  static const unsigned minheight = CONFIG_T::pad_top-1;
-  static const unsigned maxheight = CONFIG_T::pad_top+CONFIG_T::in_height;
+  static const int minwidth  = CONFIG_T::pad_left-1;
+  static const int maxwidth  = CONFIG_T::pad_left+CONFIG_T::in_width;
+  static const int minheight = CONFIG_T::pad_top-1;
+  static const int maxheight = CONFIG_T::pad_top+CONFIG_T::in_height;
   data_T tmpinput[CONFIG_T::filt_height][CONFIG_T::n_chan];
   #pragma HLS ARRAY_RESHAPE variable=tmpinput complete dim=0
   for(unsigned i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
-      unsigned pY  = i1+iShiftY;
-      unsigned pYC = pY % CONFIG_T::filt_height; 
+      int pY  = i1+iShiftY;
+      int pYC = pY % CONFIG_T::filt_height; 
       for(unsigned i2 = 0; i2 < CONFIG_T::n_chan;    i2++) { 
 	#pragma HLS UNROLL
 	if(iShiftX > minwidth && iShiftX < maxwidth && pY > minheight && pY < maxheight) { 

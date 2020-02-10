@@ -104,11 +104,17 @@ void normalize2(
     #pragma HLS ARRAY_RESHAPE variable=scale complete
     #pragma HLS ARRAY_RESHAPE variable=bias complete
 
+    const int rufactor = 1;//CONFIG_T::reuse_factor;
+    const int multfactor = CONFIG_T::n_in;//MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
+
     // Calcuate result
-    Result: for (int ires = 0; ires < CONFIG_T::n_in; ires++) {
+    //for (int ir = 0; ir < rufactor; ir++) {
+    int ir = 0; 
+        for (int ires = 0; ires < multfactor; ires++) {
             #pragma HLS UNROLL
-            res[ires] = data[ires] * scale[ires] + bias[ires];
-    }
+            res[ires*rufactor+ir] = data[ires*rufactor+ir] * scale[ires*rufactor+ir] + bias[ires*rufactor+ir];
+        }
+	  //}
 }
 
 // ****************************************************
