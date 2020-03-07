@@ -214,7 +214,7 @@ void subimage_stream(bool iReset,
     if(!layer28_out[0].empty()) nnet::conv_2d_large_stream_norm<layer28_t,layer31_t,config31>(iReset,layer28_out,layer31_out,w31,b31,s32,b32);
 
     static hls::stream<layer34_t> layer34_out[N_FILT_34];
-    #pragma HLS stream variable=layer31_out      depth=1
+    #pragma HLS stream variable=layer34_out      depth=1
     if(!layer31_out[0].empty()) nnet::conv_2d_large_stream_norm<layer31_t,layer34_t,config34>(iReset,layer31_out,layer34_out,w34,b34,s35,b35);
     
     if(!layer28_in2[0].empty() && !layer34_out[0].empty()) nnet::addrelu<layer34_t,result_t,config34>(layer28_in2,layer34_out,output);

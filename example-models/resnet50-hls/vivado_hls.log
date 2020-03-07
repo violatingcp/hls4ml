@@ -1064,3 +1064,499 @@ INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_conv2d_lar
 INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_conv2d_large.h:475) in function 'nnet::shift_right_small_stride<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' completely with a factor of 64.
 INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_conv2d_large.h:711) in function 'nnet::reset_down_2dXNew<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' completely with a factor of 64.
 INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_merge.h:77) in function 'nnet::split<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' completely with a factor of 64.
+INFO: [XFORM 203-131] Reshaping array 'layer_in_row.V.7'  in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V.7'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_normout.V.7'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V.7'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V.7'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 's35.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'b35.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w34.V'  in dimension 1 with a block factor of 512.
+INFO: [XFORM 203-131] Reshaping array 'b34.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large.h:70) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in_row.V.6'  in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V.6'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_normout.V.6'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V.6'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V.6'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 's32.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'b32.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w31.V'  in dimension 1 with a block factor of 1152.
+INFO: [XFORM 203-131] Reshaping array 'b31.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large.h:70) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in_row.V.5'  in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V.5'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_normout.V.5'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V.5'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V.5'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 's29.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'b29.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w28.V'  in dimension 1 with a block factor of 512.
+INFO: [XFORM 203-131] Reshaping array 'b28.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large.h:70) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in_row.V.4'  in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V.4'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_normout.V.4'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V.4'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V.4'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 's25.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'b25.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w24.V'  in dimension 1 with a block factor of 512.
+INFO: [XFORM 203-131] Reshaping array 'b24.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large.h:70) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in_row.V.3'  in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V.3'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_normout.V.3'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V.3'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V.3'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 's22.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'b22.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w21.V'  in dimension 1 with a block factor of 576.
+INFO: [XFORM 203-131] Reshaping array 'b21.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large.h:70) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in_row.V.2'  in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V.2'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_normout.V.2'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V.2'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V.2'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 's19.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'b19.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w18.V'  in dimension 1 with a block factor of 512.
+INFO: [XFORM 203-131] Reshaping array 'b18.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large.h:70) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in_row.V'  in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_normout.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 's13.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'b13.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w12.V'  in dimension 1 with a block factor of 512.
+INFO: [XFORM 203-131] Reshaping array 'b12.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large.h:70) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in_row.V.9'  in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V.9'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_normout.V.9'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V.9'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V.9'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 's10.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'b10.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w9.V'  in dimension 1 with a block factor of 1152.
+INFO: [XFORM 203-131] Reshaping array 'b9.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large.h:70) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in_row.V.1'  in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_normout.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 's15.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'b15.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w14.V'  in dimension 1 with a block factor of 512.
+INFO: [XFORM 203-131] Reshaping array 'b14.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large.h:70) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in_row.V.8'  in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V.8'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_normout.V.8'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V.8'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V.8'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 's7.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'b7.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w6.V'  in dimension 1 with a block factor of 512.
+INFO: [XFORM 203-131] Reshaping array 'b6.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large.h:70) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 2 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 2 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 2 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 2 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 2 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 2 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 2 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 2 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 2 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 2 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 3 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpinput.V' (firmware/nnet_utils/nnet_conv2d_large.h:568) in dimension 3 completely.
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer9_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer6_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer6_in2.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer6_in1.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer34_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer31_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer28_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer28_in2.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer28_in1.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer26_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer24_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer21_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer18_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer18_in2.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer18_in1.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer14_out2.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer14_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer12_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'sInput.V.V' (firmware/myproject_1stbit_stream_simple.cpp:73) .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'sOutput.V.V' (firmware/myproject_1stbit_stream_simple.cpp:74) .
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:54) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:54) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:54) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:54) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:54) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:54) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:54) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:54) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:54) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:54) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer9_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer6_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer6_in2.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer6_in1.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer34_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer31_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer28_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer28_in2.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer28_in1.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer26_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer24_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer21_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer18_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer18_in2.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer18_in1.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer14_out2.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer14_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer12_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'sInput.V.V' (firmware/myproject_1stbit_stream_simple.cpp:73) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'sOutput.V.V' (firmware/myproject_1stbit_stream_simple.cpp:74) in dimension 1 completely.
+INFO: [XFORM 203-102] Partitioning array 'layer_in_row.V.7' in dimension 2 automatically.
+INFO: [XFORM 203-102] Partitioning array 'layer_in_row.V.5' in dimension 2 automatically.
+INFO: [XFORM 203-102] Partitioning array 'layer_in_row.V.4' in dimension 2 automatically.
+INFO: [XFORM 203-102] Partitioning array 'layer_in_row.V.2' in dimension 2 automatically.
+INFO: [XFORM 203-102] Partitioning array 'layer_in_row.V' in dimension 2 automatically.
+INFO: [XFORM 203-102] Partitioning array 'layer_in_row.V.1' in dimension 2 automatically.
+INFO: [XFORM 203-102] Partitioning array 'layer_in_row.V.8' in dimension 2 automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config6_mult>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config6_mult>.1' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config6_mult>' into 'nnet::conv_2d_large_stream_norm<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config14_mult>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config14_mult>.1' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config14_mult>' into 'nnet::conv_2d_large_stream_norm<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config9_mult>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config9_mult>.1' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config9_mult>' into 'nnet::conv_2d_large_stream_norm<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config9>' automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config12_mult>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config12_mult>.1' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config12_mult>' into 'nnet::conv_2d_large_stream_norm<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config18_mult>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config18_mult>.1' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config18_mult>' into 'nnet::conv_2d_large_stream_norm<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config21_mult>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config21_mult>.1' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config21_mult>' into 'nnet::conv_2d_large_stream_norm<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config21>' automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config24_mult>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config24_mult>.1' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config24_mult>' into 'nnet::conv_2d_large_stream_norm<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config24>' automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config28_mult>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config28_mult>.1' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config28_mult>' into 'nnet::conv_2d_large_stream_norm<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config28>' automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config31_mult>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config31_mult>.1' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config31_mult>' into 'nnet::conv_2d_large_stream_norm<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config31>' automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config34_mult>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config34_mult>.1' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config34_mult>' into 'nnet::conv_2d_large_stream_norm<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config34>' automatically.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config34_mult>.1'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config34_mult>.1.0' by setting 'weights.V' to 'w34.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config34_mult>.1.0'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config34_mult>.1.0.0' by setting 'biases.V' to 'b34.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config31_mult>.1'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config31_mult>.1.0' by setting 'weights.V' to 'w31.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config31_mult>.1.0'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config31_mult>.1.0.0' by setting 'biases.V' to 'b31.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config28_mult>.1'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config28_mult>.1.0' by setting 'weights.V' to 'w28.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config28_mult>.1.0'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config28_mult>.1.0.0' by setting 'biases.V' to 'b28.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config24_mult>.1'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config24_mult>.1.0' by setting 'weights.V' to 'w24.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config24_mult>.1.0'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config24_mult>.1.0.0' by setting 'biases.V' to 'b24.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config21_mult>.1'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config21_mult>.1.0' by setting 'weights.V' to 'w21.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config21_mult>.1.0'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config21_mult>.1.0.0' by setting 'biases.V' to 'b21.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config18_mult>.1'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config18_mult>.1.0' by setting 'weights.V' to 'w18.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config18_mult>.1.0'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config18_mult>.1.0.0' by setting 'biases.V' to 'b18.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config12_mult>.1'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config12_mult>.1.0' by setting 'weights.V' to 'w12.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config12_mult>.1.0'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config12_mult>.1.0.0' by setting 'biases.V' to 'b12.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config9_mult>.1'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config9_mult>.1.0' by setting 'weights.V' to 'w9.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config9_mult>.1.0'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config9_mult>.1.0.0' by setting 'biases.V' to 'b9.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config14_mult>.1'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config14_mult>.1.0' by setting 'weights.V' to 'w14.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config14_mult>.1.0'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config14_mult>.1.0.0' by setting 'biases.V' to 'b14.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config6_mult>.1'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config6_mult>.1.0' by setting 'weights.V' to 'w6.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config6_mult>.1.0'(firmware/nnet_utils/nnet_dense_large.h:60:16) to 'nnet::dense_large_rf_leq_nin<ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<8, 4, (ap_q_mode)5, (ap_o_mode)3, 0>, config6_mult>.1.0.0' by setting 'biases.V' to 'b6.V'.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.99' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.98' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.97' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.96' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.95' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.94' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.93' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.92' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.91' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.90' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.9' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.89' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.88' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.87' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.86' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.85' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.84' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.83' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.82' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.81' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.80' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.8' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.79' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.78' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.77' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.76' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.75' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.74' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.73' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.72' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.71' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.70' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.7' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.69' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.68' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.67' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.66' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.65' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.64' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.63' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.62' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.61' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.60' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.6' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.59' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.58' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.57' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.56' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.55' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.54' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.53' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.52' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.51' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.50' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.5' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.49' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.48' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.47' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.46' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.45' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.44' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.43' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.42' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.41' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.40' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.4' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.39' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.38' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.37' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.36' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.35' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.34' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.33' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.32' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.31' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.30' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.3' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.29' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.28' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.27' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.26' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.255' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.254' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.253' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.252' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.251' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.250' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.25' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.249' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.248' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.247' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.246' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.245' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.244' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.243' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.242' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.241' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.240' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.24' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.239' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.238' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.237' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.236' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.235' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.234' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.233' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.232' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.231' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.230' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.23' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.229' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.228' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.227' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.226' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.225' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.224' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.223' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.222' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.221' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.220' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.22' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.219' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.218' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.217' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.216' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.215' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.214' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.213' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.212' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.211' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.210' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.21' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.209' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.208' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.207' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.206' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.205' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.204' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.203' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.202' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.201' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.200' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.20' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.2' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.199' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.198' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.197' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.196' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.195' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.194' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.193' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.192' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.191' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.190' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.19' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.189' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.188' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.187' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.186' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.185' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.184' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.183' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.182' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.181' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.180' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.18' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.179' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.178' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.177' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.176' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.175' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.174' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.173' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.172' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.171' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.170' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.17' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.169' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.168' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.167' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.166' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.165' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.164' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.163' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.162' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.161' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.160' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.16' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.159' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.158' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.157' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.156' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.155' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.154' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.153' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.152' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.151' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.150' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.15' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.149' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.148' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.147' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.146' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.145' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.144' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.143' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.142' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.141' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.140' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.14' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.139' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.138' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.137' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.136' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.135' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.134' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.133' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.132' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.131' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.130' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.13' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.129' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.128' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.127' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.126' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.125' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.124' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.123' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.122' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.121' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.120' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.12' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.119' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.118' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.117' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.116' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.115' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.114' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.113' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.112' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.111' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.110' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.11' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.109' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.108' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.107' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.106' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.105' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.104' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.103' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.102' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.101' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.100' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.10' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.1' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'layer34_out.V.V.0' with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [HLS 200-70] Pre-synthesis failed.
+command 'ap_source' returned error code
+    while executing
+"source build_prj_1stbit_stream.tcl"
+    invoked from within
+"hls::main build_prj_1stbit_stream.tcl"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel 1 hls::main {*}$args"
+    (procedure "hls_proc" line 5)
+    invoked from within
+"hls_proc $argv"
+INFO: [Common 17-206] Exiting vivado_hls at Fri Mar  6 22:40:52 2020...
