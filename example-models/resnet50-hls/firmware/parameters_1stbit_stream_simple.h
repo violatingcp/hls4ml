@@ -73,60 +73,60 @@
 
 
 //hls-fpga-machine-learning insert layer-precision
-typedef ap_fixed<16,6> model_default_t;
-typedef ap_fixed<16,6> input_t;
-typedef ap_fixed<16,6> layer2_t;
+typedef ap_fixed<8,4> model_default_t;
+typedef ap_fixed<8,4> input_t;
+typedef ap_fixed<8,4> layer2_t;
 typedef ap_uint<1> bias2_t;
-typedef ap_fixed<16,6> layer3_t;
-typedef ap_fixed<16,6> layer4_t;
-typedef ap_fixed<16,6> layer5_t;
-typedef ap_fixed<16,6> layer6_t;
+typedef ap_fixed<8,4> layer3_t;
+typedef ap_fixed<8,4> layer4_t;
+typedef ap_fixed<8,4> layer5_t;
+typedef ap_fixed<8,4> layer6_t;
 typedef ap_uint<1> bias6_t;
-typedef ap_fixed<16,6> layer7_t;
-typedef ap_fixed<16,6> layer8_t;
-typedef ap_fixed<16,6> layer9_t;
+typedef ap_fixed<8,4> layer7_t;
+typedef ap_fixed<8,4> layer8_t;
+typedef ap_fixed<8,4> layer9_t;
 typedef ap_uint<1> bias9_t;
-typedef ap_fixed<16,6> layer10_t;
-typedef ap_fixed<16,6> layer11_t;
-typedef ap_fixed<16,6> layer12_t;
+typedef ap_fixed<8,4> layer10_t;
+typedef ap_fixed<8,4> layer11_t;
+typedef ap_fixed<8,4> layer12_t;
 typedef ap_uint<1> bias12_t;
-typedef ap_fixed<16,6> layer13_t;
-typedef ap_fixed<16,6> layer14_t;
+typedef ap_fixed<8,4> layer13_t;
+typedef ap_fixed<8,4> layer14_t;
 typedef ap_uint<1> bias14_t;
-typedef ap_fixed<16,6> layer15_t;
-typedef ap_fixed<16,6> layer16_t;
-typedef ap_fixed<16,6> layer17_t;
-typedef ap_fixed<16,6> layer18_t;
+typedef ap_fixed<8,4> layer15_t;
+typedef ap_fixed<8,4> layer16_t;
+typedef ap_fixed<8,4> layer17_t;
+typedef ap_fixed<8,4> layer18_t;
 typedef ap_uint<1> bias18_t;
-typedef ap_fixed<16,6> layer19_t;
-typedef ap_fixed<16,6> layer20_t;
-typedef ap_fixed<16,6> layer21_t;
+typedef ap_fixed<8,4> layer19_t;
+typedef ap_fixed<8,4> layer20_t;
+typedef ap_fixed<8,4> layer21_t;
 typedef ap_uint<1> bias21_t;
-typedef ap_fixed<16,6> layer22_t;
-typedef ap_fixed<16,6> layer23_t;
-typedef ap_fixed<16,6> layer24_t;
+typedef ap_fixed<8,4> layer22_t;
+typedef ap_fixed<8,4> layer23_t;
+typedef ap_fixed<8,4> layer24_t;
 typedef ap_uint<1> bias24_t;
-typedef ap_fixed<16,6> layer25_t;
-typedef ap_fixed<16,6> layer26_t;
-typedef ap_fixed<16,6> layer27_t;
-typedef ap_fixed<16,6> layer28_t;
+typedef ap_fixed<8,4> layer25_t;
+typedef ap_fixed<8,4> layer26_t;
+typedef ap_fixed<8,4> layer27_t;
+typedef ap_fixed<8,4> layer28_t;
 typedef ap_uint<1> bias28_t;
-typedef ap_fixed<16,6> layer29_t;
-typedef ap_fixed<16,6> layer30_t;
-typedef ap_fixed<16,6> layer31_t;
+typedef ap_fixed<8,4> layer29_t;
+typedef ap_fixed<8,4> layer30_t;
+typedef ap_fixed<8,4> layer31_t;
 typedef ap_uint<1> bias31_t;
-typedef ap_fixed<16,6> layer32_t;
-typedef ap_fixed<16,6> layer33_t;
-typedef ap_fixed<16,6> layer34_t;
+typedef ap_fixed<8,4> layer32_t;
+typedef ap_fixed<8,4> layer33_t;
+typedef ap_fixed<8,4> layer34_t;
 typedef ap_uint<1> bias34_t;
-typedef ap_fixed<16,6> layer35_t;
-typedef ap_fixed<16,6> layer36_t;
-typedef ap_fixed<16,6> layer37_t;
-typedef ap_fixed<16,6> layer38_t;
+typedef ap_fixed<8,4> layer35_t;
+typedef ap_fixed<8,4> layer36_t;
+typedef ap_fixed<8,4> layer37_t;
+typedef ap_fixed<8,4> layer38_t;
 typedef ap_uint<1> bias38_t;
-typedef ap_fixed<16,6> layer39_t;
+typedef ap_fixed<8,4> layer39_t;
 
-typedef ap_fixed<16,6> result_t;
+typedef ap_fixed<8,4> result_t;
 
 struct config6_mult : nnet::dense_config {
     static const unsigned n_in = 64;
@@ -298,7 +298,7 @@ struct config14_mult : nnet::dense_config {
 };
 
 struct config14_norm : nnet::batchnorm_config {
-    static const unsigned n_in = N_FILT_14*OUT_HEIGHT_14*OUT_WIDTH_14;
+    static const unsigned n_in = N_FILT_14;
     static const unsigned n_filt = 256;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 128;
@@ -308,7 +308,7 @@ struct config14_norm : nnet::batchnorm_config {
 };
 /// Fix me should be 17th
 struct config14_relu : nnet::activ_config {
-    static const unsigned n_in = N_FILT_12*OUT_HEIGHT_12*OUT_WIDTH_12;
+    static const unsigned n_in = N_FILT_12;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 1;
@@ -321,7 +321,7 @@ struct config14 : nnet::conv2d_config {
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_WIDTH_5;
     static const unsigned in_width = OUT_HEIGHT_5;
-    static const unsigned n_chan = N_FILT_12;
+    static const unsigned n_chan = N_FILT_5;
     static const unsigned filt_height = 1;
     static const unsigned filt_width = 1;
     static const unsigned n_filt = N_FILT_14;
@@ -333,7 +333,7 @@ struct config14 : nnet::conv2d_config {
     static const unsigned n_zeros = 0;
     static const bool store_weights_in_bram = false;
     typedef ap_fixed<16,6> accum_t;
-    typedef bias14_t bias_t;
+    typedef bias12_t bias_t;
     typedef model_default_t weight_t;
     typedef config14_mult mult_config;
     typedef config14_norm norm_config;
@@ -341,7 +341,7 @@ struct config14 : nnet::conv2d_config {
 };
 
 struct config16 : nnet::merge_config {
-    static const unsigned n_elem = N_FILT_12*OUT_HEIGHT_12*OUT_WIDTH_12;
+  static const unsigned n_elem = N_FILT_12;
 };
 
 struct config18_mult : nnet::dense_config {
@@ -354,7 +354,7 @@ struct config18_mult : nnet::dense_config {
 };
 
 struct config18_norm : nnet::batchnorm_config {
-    static const unsigned n_in = N_FILT_18*OUT_HEIGHT_18*OUT_WIDTH_18;
+    static const unsigned n_in = N_FILT_18;
     static const unsigned n_filt = 64;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 128;
@@ -364,7 +364,7 @@ struct config18_norm : nnet::batchnorm_config {
 };
 
 struct config18_relu : nnet::activ_config {
-    static const unsigned n_in = N_FILT_18*OUT_HEIGHT_18*OUT_WIDTH_18;
+    static const unsigned n_in = N_FILT_18;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 1;
@@ -397,7 +397,7 @@ struct config18 : nnet::conv2d_config {
 };
 
 struct config21_norm : nnet::batchnorm_config {
-    static const unsigned n_in = N_FILT_21*OUT_HEIGHT_21*OUT_WIDTH_21;
+    static const unsigned n_in = N_FILT_21;
     static const unsigned n_filt = 64;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 2;
@@ -407,7 +407,7 @@ struct config21_norm : nnet::batchnorm_config {
 };
 
 struct config21_relu : nnet::activ_config {
-    static const unsigned n_in = N_FILT_21*OUT_HEIGHT_21*OUT_WIDTH_21;
+    static const unsigned n_in = N_FILT_21;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 2;
@@ -458,7 +458,7 @@ struct config24_mult : nnet::dense_config {
 };
 
 struct config24_norm : nnet::batchnorm_config {
-    static const unsigned n_in = N_FILT_24*OUT_HEIGHT_24*OUT_WIDTH_24;
+    static const unsigned n_in = N_FILT_24;
     static const unsigned n_filt = 256;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 128;
@@ -468,7 +468,7 @@ struct config24_norm : nnet::batchnorm_config {
 };
 
 struct config24_relu : nnet::activ_config {
-    static const unsigned n_in = N_FILT_24*OUT_HEIGHT_24*OUT_WIDTH_24;
+    static const unsigned n_in = N_FILT_24;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 1;
@@ -501,7 +501,7 @@ struct config24 : nnet::conv2d_config {
 };
 
 struct config26 : nnet::merge_config {
-    static const unsigned n_elem = N_FILT_24*OUT_HEIGHT_24*OUT_WIDTH_24;
+    static const unsigned n_elem = N_FILT_24;
 };
 
 struct config28_mult : nnet::dense_config {
@@ -514,7 +514,7 @@ struct config28_mult : nnet::dense_config {
 };
 
 struct config28_norm : nnet::batchnorm_config {
-    static const unsigned n_in = N_FILT_28*OUT_HEIGHT_28*OUT_WIDTH_28;
+    static const unsigned n_in = N_FILT_28;
     static const unsigned n_filt = 64;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 128;
@@ -524,7 +524,7 @@ struct config28_norm : nnet::batchnorm_config {
 };
 
 struct config28_relu : nnet::activ_config {
-    static const unsigned n_in = N_FILT_28*OUT_HEIGHT_28*OUT_WIDTH_28;
+    static const unsigned n_in = N_FILT_28;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 1;
@@ -566,7 +566,7 @@ struct config31_mult : nnet::dense_config {
 };
 
 struct config31_norm : nnet::batchnorm_config {
-    static const unsigned n_in = N_FILT_31*OUT_HEIGHT_31*OUT_WIDTH_31;
+    static const unsigned n_in = N_FILT_31;
     static const unsigned n_filt = 64;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 128;
@@ -576,7 +576,7 @@ struct config31_norm : nnet::batchnorm_config {
 };
 
 struct config31_relu : nnet::activ_config {
-    static const unsigned n_in = N_FILT_31*OUT_HEIGHT_31*OUT_WIDTH_31;
+    static const unsigned n_in = N_FILT_31;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 1;
@@ -618,7 +618,7 @@ struct config34_mult : nnet::dense_config {
 };
 
 struct config34_norm : nnet::batchnorm_config {
-    static const unsigned n_in = N_FILT_34*OUT_HEIGHT_34*OUT_WIDTH_34;
+    static const unsigned n_in = N_FILT_34;
     static const unsigned n_filt = 256;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 128;
@@ -628,7 +628,7 @@ struct config34_norm : nnet::batchnorm_config {
 };
 
 struct config34_relu : nnet::activ_config {
-    static const unsigned n_in = N_FILT_34*OUT_HEIGHT_34*OUT_WIDTH_34;
+    static const unsigned n_in = N_FILT_34;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 1;
@@ -653,7 +653,7 @@ struct config34 : nnet::conv2d_config {
     static const unsigned n_zeros = 0;
     static const bool store_weights_in_bram = false;
     typedef ap_fixed<16,6> accum_t;
-    typedef bias34_t bias_t;
+    typedef bias12_t bias_t;
     typedef model_default_t weight_t;
     typedef config34_mult mult_config;
     typedef config34_norm norm_config;
@@ -661,7 +661,7 @@ struct config34 : nnet::conv2d_config {
 };
 
 struct config36 : nnet::merge_config {
-    static const unsigned n_elem = N_FILT_34*OUT_HEIGHT_34*OUT_WIDTH_34;
+  static const unsigned n_elem = N_FILT_34;
 };
 
 struct config38_mult : nnet::dense_config {
@@ -674,7 +674,7 @@ struct config38_mult : nnet::dense_config {
 };
 
 struct config38_norm : nnet::batchnorm_config {
-    static const unsigned n_in = N_FILT_38*OUT_HEIGHT_38*OUT_WIDTH_38;
+    static const unsigned n_in = N_FILT_38;
     static const unsigned n_filt = 128;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 128;
@@ -684,7 +684,7 @@ struct config38_norm : nnet::batchnorm_config {
 };
 
 struct config38_relu : nnet::activ_config {
-    static const unsigned n_in = N_FILT_38*OUT_HEIGHT_38*OUT_WIDTH_38;
+    static const unsigned n_in = N_FILT_38;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
 };

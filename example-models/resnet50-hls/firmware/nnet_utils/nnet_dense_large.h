@@ -271,7 +271,7 @@ void dense_large(
     typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
     typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
 
-    #pragma HLS INLINE region
+  //    #pragma HLS INLINE region
 
     if (CONFIG_T::reuse_factor <= CONFIG_T::n_in) {
        dense_large_rf_leq_nin<data_T, res_T, CONFIG_T>(data, res, weights, biases);

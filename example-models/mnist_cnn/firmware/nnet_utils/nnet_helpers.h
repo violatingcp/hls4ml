@@ -32,6 +32,39 @@ namespace nnet {
 
 #define WEIGHTS_DIR "weights"
 
+template <class T, size_t nrows, size_t ncols>
+void load_weights_from_txt_2d(T w[nrows][ncols], const char* fname) {
+
+    std::string full_path = std::string(WEIGHTS_DIR) + "/" + std::string(fname);
+    std::ifstream infile(full_path.c_str(), std::ios::binary);
+
+    if (infile.fail()) {
+        std::cerr << "ERROR: file " << std::string(fname) << " does not exist" << std::endl;
+        exit(1);
+    }
+
+    std::string line;
+    if (std::getline(infile, line)) {
+        std::istringstream iss(line);
+        std::string token;
+
+        size_t i = 0;
+	size_t j = 0;
+        while(std::getline(iss, token, ',')) {
+            std::istringstream(token) >> w[i][j];
+	    j++;
+	    if(j == ncols) {
+	      i++;
+	      j=0;
+	    }
+        }
+
+        if (nrows != i && ncols != j) {
+            std::cerr << "ERROR: Expected " << nrows << " , " << ncols  << " values";
+            std::cerr << " but read only " << i << " , " << j << " values" << std::endl;
+        }
+    }
+}
 template<class T, size_t SIZE>
 void load_weights_from_txt(T *w, const char* fname) {
 

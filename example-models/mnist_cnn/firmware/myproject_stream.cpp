@@ -44,6 +44,7 @@ void myproject(
     static bool loaded_weights = false;
     if (!loaded_weights) {
         //hls-fpga-machine-learning insert load weights
+        //nnet::load_weights_from_txt_2d<model_default_t, 9216, 128>(w7, "w7.txt");
         nnet::load_weights_from_txt<model_default_t, 1179648>(w7, "w7.txt");
         nnet::load_weights_from_txt<model_default_t, 128>(b7, "b7.txt");
         nnet::load_weights_from_txt<model_default_t, 1280>(w9, "w9.txt");
@@ -51,6 +52,7 @@ void myproject(
         loaded_weights = true;
     }
 #endif
+
 
     //hls-fpga-machine-learning insert IO
     #pragma HLS ARRAY_RESHAPE variable=input1 complete dim=0 
@@ -97,11 +99,11 @@ void myproject(
     }
    }
    //Now fill a dummy output so we don't run the million by million dense multiply
-   //layer9_t layer9_out[N_LAYER_9];
-   // #pragma HLS ARRAY_RESHAPE variable=layer9_out complete dim=0     
-   //for(unsigned i0 = 0; i0 < N_LAYER_9; i0++) { 
+   //layer7_t layer7_out[N_LAYER_7];
+   //#pragma HLS ARRAY_RESHAPE variable=layer7_out complete dim=0     
+   //for(unsigned i0 = 0; i0 < N_LAYER_7; i0++) { 
    //  #pragma HLS UNROLL
-   //  layer9_out[i0] = layer7_full[i0];
+   //  layer7_out[i0] = layer7_full[i0];
    //}
 
    ////// Below is the actual end to the network

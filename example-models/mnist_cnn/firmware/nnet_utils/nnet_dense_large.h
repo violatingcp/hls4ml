@@ -100,6 +100,88 @@ void dense_large_rf_leq_nin(
 }
 
 template<class data_T, class res_T, typename CONFIG_T>
+void dense_large_rf_leq_nin2(
+    data_T data[CONFIG_T::n_in],
+    res_T  res[CONFIG_T::n_out],
+    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
+      //hls::stream<typename CONFIG_T::weight_t> weights[CONFIG_T::n_in*CONFIG_T::n_out],
+    typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
+
+    const int rufactor = CONFIG_T::reuse_factor;
+    const int multfactor = MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
+    const int multiplier_limit = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out, multfactor);
+    const int block_factor = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out, CONFIG_T::reuse_factor);
+    const int multscale = multiplier_limit/CONFIG_T::n_out;
+    const int nin = CONFIG_T::n_in;
+    const int nout = CONFIG_T::n_out;
+
+    assert((multiplier_limit % nout == 0 || rufactor >= nin) && "The current Reuse Factor is not allowed");
+    assert((multiplier_limit == block_factor) && "This function is correct only for RF <= N_IN");
+
+    #pragma HLS function_instantiate variable=weights,biases
+    //#pragma HLS RESOURCE variable=weights core=RAM_2P_BRAM Commenting out the deisgnation HLS seems to choose correctly
+    #pragma HLS ARRAY_RESHAPE   variable=weights block factor=block_factor
+    #pragma HLS ARRAY_RESHAPE variable=biases complete
+
+    typename CONFIG_T::accum_t acc[CONFIG_T::n_out];
+    #pragma HLS ARRAY_PARTITION variable=acc complete
+
+    hls::stream<typename CONFIG_T::weight_t> tmpweights[block_factor];
+    #pragma HLS stream variable=tmpweights depth=1
+
+    InitAccum:
+    for (int iacc = 0; iacc < nout; iacc++) {
+        #pragma HLS UNROLL
+        acc[iacc] = (typename CONFIG_T::accum_t) biases[iacc];
+    }
+    ReuseLoop:
+    for (int ir = 0; ir < rufactor; ir++) {
+        #pragma HLS PIPELINE II=1 rewind
+
+        int w_index = ir;
+        int in_index = ir;
+        int out_index = 0;
+        int acc_step = 0;
+	typename CONFIG_T::accum_t tmpmult[block_factor];
+        #pragma HLS ARRAY_RESHAPE variable=tmpmult complete
+
+        InitStream:
+        for(int  im = 0; im < block_factor; im++) { 
+	 #pragma HLS UNROLL
+         tmpweights[im].write(weights[w_index]);
+	 w_index += rufactor;
+        }
+
+        MultLoop:
+        for (int im = 0; im < block_factor; im++) {
+           #pragma HLS UNROLL
+ 	    tmpmult[im] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::accum_t>(data[in_index], tmpweights[im].read());
+	    //w_index += rufactor;
+	    in_index += rufactor;
+            if (in_index >= nin) {
+                in_index = ir;
+            }
+        }
+	for (int im = 0; im < block_factor; im++) {
+            acc[out_index] += tmpmult[im];
+            // Increment out_index
+            if (acc_step + 1 >= multscale) {
+                acc_step = 0;
+                out_index++;
+            } else {
+                acc_step++;
+            }
+       }
+    }
+    // Cast to "res_t" type
+    Result:
+    for (int ires = 0; ires < CONFIG_T::n_out; ires++) {
+        #pragma HLS UNROLL
+        res[ires] = cast<data_T, res_T, CONFIG_T>(acc[ires]);
+    }
+}
+
+template<class data_T, class res_T, typename CONFIG_T>
 void dense_large_rf_gt_nin_rem0(
     data_T data[CONFIG_T::n_in],
     res_T  res[CONFIG_T::n_out],
@@ -115,7 +197,7 @@ void dense_large_rf_gt_nin_rem0(
     const int nout = CONFIG_T::n_out;
 
     assert((multiplier_limit % nout == 0 || rufactor >= nin) && "The current Reuse Factor is not allowed");
-    assert((rufactor > nin && rufactor % nin == 0) && "This function is correct only for RF > N_IN && RF % N_IN == 0");
+    assert((rufactor >= nin && rufactor % nin == 0) && "This function is correct only for RF > N_IN && RF % N_IN == 0");
 
     #pragma HLS function_instantiate variable=weights,biases
     //#pragma HLS RESOURCE variable=weights core=RAM_2P_BRAM Commenting out the deisgnation HLS seems to choose correctly
@@ -155,7 +237,7 @@ void dense_large_rf_gt_nin_rem0(
 
         MultLoop:
         for (int im = 0; im < block_factor; im++) {
-            #pragma HLS UNROLL
+            #pragma HLS UNROLL 
             tmpmult[im] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::accum_t>(data[in_index], weights[w_index]);
             w_index += rufactor;
             if (w_index >= CONFIG_T::n_in * CONFIG_T::n_out) break; // check out of bounds
@@ -172,6 +254,49 @@ void dense_large_rf_gt_nin_rem0(
     }
 
     // Cast to "res_t" type
+    Result:
+    for (int ires = 0; ires < CONFIG_T::n_out; ires++) {
+        #pragma HLS UNROLL
+        res[ires] = cast<data_T, res_T, CONFIG_T>(acc[ires]);
+    }
+}
+template<class data_T, class res_T, typename CONFIG_T>
+void dense_large_2d(
+    data_T data[CONFIG_T::n_in],
+    res_T  res[CONFIG_T::n_out],
+    typename CONFIG_T::weight_t weights[CONFIG_T::n_in][CONFIG_T::n_out],
+    typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
+
+    const int nin = CONFIG_T::n_in;
+    const int nout = CONFIG_T::n_out;
+
+    #pragma HLS function_instantiate variable=weights,biases
+    //#pragma HLS RESOURCE variable=weights core=RAM_2P_BRAM Commenting out the deisgnation HLS seems to choose correctly
+    #pragma HLS ARRAY_RESHAPE variable=weights complete dim=2
+    #pragma HLS ARRAY_RESHAPE variable=biases  complete
+
+    typename CONFIG_T::accum_t acc[CONFIG_T::n_out];
+    #pragma HLS ARRAY_PARTITION variable=acc complete
+
+    InitAccum:
+    for (int iacc = 0; iacc < nout; iacc++) {
+        #pragma HLS UNROLL
+        acc[iacc] = (typename CONFIG_T::accum_t) biases[iacc];
+    }
+    ReuseLoop:
+    for (int ir = 0; ir < CONFIG_T::n_in; ir++) {
+        #pragma HLS PIPELINE II=1 rewind
+        typename CONFIG_T::accum_t tmpmult[CONFIG_T::n_out];
+	#pragma HLS ARRAY_RESHAPE variable=tmpmult complete
+        MultLoop:
+        for (int im = 0; im < CONFIG_T::n_out; im++) {
+            #pragma HLS UNROLL
+            tmpmult[im] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::accum_t>(data[ir], weights[ir][im]);
+        }
+        for (int im = 0; im < CONFIG_T::n_out; im++) {
+	  acc[im] += tmpmult[im];
+	}
+    }
     Result:
     for (int ires = 0; ires < CONFIG_T::n_out; ires++) {
         #pragma HLS UNROLL
@@ -268,9 +393,9 @@ void dense_large(
     typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
     typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
 
-    #pragma HLS INLINE region
+  //    #pragma HLS INLINE region
 
-    if (CONFIG_T::reuse_factor <= CONFIG_T::n_in) {
+    if (CONFIG_T::reuse_factor < CONFIG_T::n_in) {
        dense_large_rf_leq_nin<data_T, res_T, CONFIG_T>(data, res, weights, biases);
     } else if (CONFIG_T::reuse_factor % CONFIG_T::n_in == 0) {
         dense_large_rf_gt_nin_rem0<data_T, res_T, CONFIG_T>(data, res, weights, biases);

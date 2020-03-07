@@ -108,7 +108,7 @@ struct config2 : nnet::conv2d_config {
 struct config4_mult : nnet::dense_config {
     static const unsigned n_in = 288;
     static const unsigned n_out = 64;
-    static const unsigned reuse_factor = 1;
+    static const unsigned reuse_factor = 16;
     typedef ap_fixed<16,6> accum_t;
     typedef model_default_t bias_t;
     typedef model_default_t weight_t;
@@ -176,7 +176,8 @@ struct config7 : nnet::dense_config {
     static const unsigned n_in = OUT_HEIGHT_6*OUT_WIDTH_6*N_FILT_6;
     static const unsigned n_out = N_LAYER_7;
     static const unsigned io_type = nnet::io_parallel;
-    static const unsigned reuse_factor = 18432;
+    //static const unsigned reuse_factor = 18432;
+    static const unsigned reuse_factor = 9216;
     static const unsigned n_zeros = 0;
     static const unsigned n_nonzeros = 1179648;
     static const bool store_weights_in_bram = true;
@@ -196,10 +197,10 @@ struct config9 : nnet::dense_config {
     static const unsigned n_in = N_LAYER_7;
     static const unsigned n_out = N_LAYER_9;
     static const unsigned io_type = nnet::io_parallel;
-    static const unsigned reuse_factor = 64;
+    static const unsigned reuse_factor = 256;
     static const unsigned n_zeros = 0;
     static const unsigned n_nonzeros = 1280;
-    static const bool store_weights_in_bram = false;
+    static const bool store_weights_in_bram = true;
     typedef ap_fixed<16,6> accum_t;
     typedef model_default_t bias_t;
     typedef model_default_t weight_t;
