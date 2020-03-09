@@ -65,7 +65,9 @@
 #define N_FILT_38 128
 #define OUT_HEIGHT_38 56
 #define OUT_WIDTH_38 56
-
+#define N_FILT_41 128
+#define OUT_HEIGHT_41 28
+#define OUT_WIDTH_41 28
 
 #define N_LAYER_OUT_1 56
 #define N_LAYER_OUT_2 56
@@ -73,60 +75,62 @@
 
 
 //hls-fpga-machine-learning insert layer-precision
-typedef ap_fixed<8,4> model_default_t;
-typedef ap_fixed<8,4> input_t;
-typedef ap_fixed<8,4> layer2_t;
+typedef ap_fixed<16,6> model_default_t;
+typedef ap_fixed<16,6> input_t;
+typedef ap_fixed<16,6> layer2_t;
 typedef ap_uint<1> bias2_t;
-typedef ap_fixed<8,4> layer3_t;
-typedef ap_fixed<8,4> layer4_t;
-typedef ap_fixed<8,4> layer5_t;
-typedef ap_fixed<8,4> layer6_t;
+typedef ap_fixed<16,6> layer3_t;
+typedef ap_fixed<16,6> layer4_t;
+typedef ap_fixed<16,6> layer5_t;
+typedef ap_fixed<16,6> layer6_t;
 typedef ap_uint<1> bias6_t;
-typedef ap_fixed<8,4> layer7_t;
-typedef ap_fixed<8,4> layer8_t;
-typedef ap_fixed<8,4> layer9_t;
+typedef ap_fixed<16,6> layer7_t;
+typedef ap_fixed<16,6> layer8_t;
+typedef ap_fixed<16,6> layer9_t;
 typedef ap_uint<1> bias9_t;
-typedef ap_fixed<8,4> layer10_t;
-typedef ap_fixed<8,4> layer11_t;
-typedef ap_fixed<8,4> layer12_t;
+typedef ap_fixed<16,6> layer10_t;
+typedef ap_fixed<16,6> layer11_t;
+typedef ap_fixed<16,6> layer12_t;
 typedef ap_uint<1> bias12_t;
-typedef ap_fixed<8,4> layer13_t;
-typedef ap_fixed<8,4> layer14_t;
+typedef ap_fixed<16,6> layer13_t;
+typedef ap_fixed<16,6> layer14_t;
 typedef ap_uint<1> bias14_t;
-typedef ap_fixed<8,4> layer15_t;
-typedef ap_fixed<8,4> layer16_t;
-typedef ap_fixed<8,4> layer17_t;
-typedef ap_fixed<8,4> layer18_t;
+typedef ap_fixed<16,6> layer15_t;
+typedef ap_fixed<16,6> layer16_t;
+typedef ap_fixed<16,6> layer17_t;
+typedef ap_fixed<16,6> layer18_t;
 typedef ap_uint<1> bias18_t;
-typedef ap_fixed<8,4> layer19_t;
-typedef ap_fixed<8,4> layer20_t;
-typedef ap_fixed<8,4> layer21_t;
+typedef ap_fixed<16,6> layer19_t;
+typedef ap_fixed<16,6> layer20_t;
+typedef ap_fixed<16,6> layer21_t;
 typedef ap_uint<1> bias21_t;
-typedef ap_fixed<8,4> layer22_t;
-typedef ap_fixed<8,4> layer23_t;
-typedef ap_fixed<8,4> layer24_t;
+typedef ap_fixed<16,6> layer22_t;
+typedef ap_fixed<16,6> layer23_t;
+typedef ap_fixed<16,6> layer24_t;
 typedef ap_uint<1> bias24_t;
-typedef ap_fixed<8,4> layer25_t;
-typedef ap_fixed<8,4> layer26_t;
-typedef ap_fixed<8,4> layer27_t;
-typedef ap_fixed<8,4> layer28_t;
+typedef ap_fixed<16,6> layer25_t;
+typedef ap_fixed<16,6> layer26_t;
+typedef ap_fixed<16,6> layer27_t;
+typedef ap_fixed<16,6> layer28_t;
 typedef ap_uint<1> bias28_t;
-typedef ap_fixed<8,4> layer29_t;
-typedef ap_fixed<8,4> layer30_t;
-typedef ap_fixed<8,4> layer31_t;
+typedef ap_fixed<16,6> layer29_t;
+typedef ap_fixed<16,6> layer30_t;
+typedef ap_fixed<16,6> layer31_t;
 typedef ap_uint<1> bias31_t;
-typedef ap_fixed<8,4> layer32_t;
-typedef ap_fixed<8,4> layer33_t;
-typedef ap_fixed<8,4> layer34_t;
+typedef ap_fixed<16,6> layer32_t;
+typedef ap_fixed<16,6> layer33_t;
+typedef ap_fixed<16,6> layer34_t;
 typedef ap_uint<1> bias34_t;
-typedef ap_fixed<8,4> layer35_t;
-typedef ap_fixed<8,4> layer36_t;
-typedef ap_fixed<8,4> layer37_t;
-typedef ap_fixed<8,4> layer38_t;
+typedef ap_fixed<16,6> layer35_t;
+typedef ap_fixed<16,6> layer36_t;
+typedef ap_fixed<16,6> layer37_t;
+typedef ap_fixed<16,6> layer38_t;
 typedef ap_uint<1> bias38_t;
-typedef ap_fixed<8,4> layer39_t;
+typedef ap_fixed<16,6> layer39_t;
+typedef ap_fixed<16,6> layer41_t;
+typedef ap_uint<1> bias41_t;
 
-typedef ap_fixed<8,4> result_t;
+typedef ap_fixed<16,6> result_t;
 
 struct config6_mult : nnet::dense_config {
     static const unsigned n_in = 64;
@@ -667,7 +671,7 @@ struct config36 : nnet::merge_config {
 struct config38_mult : nnet::dense_config {
     static const unsigned n_in = 256;
     static const unsigned n_out = 128;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 32;
     typedef ap_fixed<16,6> accum_t;
     typedef bias38_t bias_t;
     typedef model_default_t weight_t;
@@ -704,7 +708,7 @@ struct config38 : nnet::conv2d_config {
     static const unsigned stride_width = 1;
     static const unsigned out_height = OUT_HEIGHT_38;
     static const unsigned out_width = OUT_WIDTH_38;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 32;
     static const unsigned n_zeros = 0;
     static const bool store_weights_in_bram = false;
     typedef ap_fixed<16,6> accum_t;
@@ -713,6 +717,58 @@ struct config38 : nnet::conv2d_config {
     typedef config38_mult mult_config;
     typedef config38_norm norm_config;
     typedef config38_relu relu_config;
+};
+
+
+struct config41_mult : nnet::dense_config {
+    static const unsigned n_in = 1152;
+    static const unsigned n_out = 128;
+    static const unsigned reuse_factor = 128;
+    typedef ap_fixed<16,6> accum_t;
+    typedef bias41_t bias_t;
+    typedef model_default_t weight_t;
+};
+
+struct config41_norm : nnet::batchnorm_config {
+    static const unsigned n_in = N_FILT_41;
+    static const unsigned n_filt = 128;
+    static const unsigned io_type = nnet::io_parallel;
+    static const unsigned reuse_factor = 128;
+    static const bool store_weights_in_bram = false;
+    typedef model_default_t bias_t;
+    typedef model_default_t scale_t;
+};
+
+struct config41_relu : nnet::activ_config {
+  static const unsigned n_in = N_FILT_41;
+    static const unsigned table_size = 1024;
+    static const unsigned io_type = nnet::io_parallel;
+};
+
+struct config41 : nnet::conv2d_config {
+    static const unsigned pad_top = 1;
+    static const unsigned pad_bottom = 1;
+    static const unsigned pad_left = 1;
+    static const unsigned pad_right = 1;
+    static const unsigned in_height = OUT_HEIGHT_38;
+    static const unsigned in_width = OUT_WIDTH_38;
+    static const unsigned n_chan = N_FILT_38;
+    static const unsigned filt_height = 3;
+    static const unsigned filt_width = 3;
+    static const unsigned n_filt = N_FILT_41;
+    static const unsigned stride_height = 2;
+    static const unsigned stride_width = 2;
+    static const unsigned out_height = OUT_HEIGHT_41;
+    static const unsigned out_width = OUT_WIDTH_41;
+    static const unsigned reuse_factor = 128;
+    static const unsigned n_zeros = 0;
+    static const bool store_weights_in_bram = false;
+    typedef ap_fixed<16,6> accum_t;
+    typedef bias41_t bias_t;
+    typedef model_default_t weight_t;
+    typedef config41_mult mult_config;
+    typedef config41_norm norm_config;
+    typedef config41_relu relu_config;
 };
 
 #endif

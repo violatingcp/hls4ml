@@ -48,10 +48,10 @@ int main(int argc, char **argv)
 
   hls::stream<input_t> gpu_0_data_0[N_INPUT_3_1];
   hls::stream<result_t>  layer41_out[N_LAYER_OUT_3];
-  hls::stream<model_default_t> wtest[128];
-  for(int i0 = 0; i0 < 1152; i0++) {
-    for(int i1 = 0; i1 < 128; i1++) wtest[i1].write(1.1);
-  }
+  model_default_t wtest[config41::mult_config::n_in*config41::mult_config::n_out];
+  //for(int i0 = 0; i0 < 1152; i0++) {
+  //  for(int i1 = 0; i1 < 128; i1++) wtest[i1] = 1.1;
+  //}
   for(int i1 = 0; i1 < N_INPUT_3_1; i1++) gpu_0_data_0[i1].write(1.1);
   //hls-fpga-machine-learning insert top-level-function
   bool iReset = true;

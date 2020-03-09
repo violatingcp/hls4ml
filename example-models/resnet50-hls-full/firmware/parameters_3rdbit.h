@@ -293,7 +293,7 @@ struct config95 : nnet::conv2d_config {
 struct config98_mult : nnet::dense_config {
     static const unsigned n_in = 256;
     static const unsigned n_out = 1024;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 256;
     typedef ap_fixed<16,6> accum_t;
     typedef bias98_t bias_t;
     typedef model_default_t weight_t;
@@ -344,7 +344,7 @@ struct config98 : nnet::conv2d_config {
 struct config102_mult : nnet::dense_config {
     static const unsigned n_in = 1024;
     static const unsigned n_out = 256;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 1024;
     typedef ap_fixed<16,6> accum_t;
     typedef bias102_t bias_t;
     typedef model_default_t weight_t;
@@ -395,7 +395,7 @@ struct config102 : nnet::conv2d_config {
 struct config105_mult : nnet::dense_config {
     static const unsigned n_in = 2304;
     static const unsigned n_out = 256;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 2304;
     typedef ap_fixed<16,6> accum_t;
     typedef bias105_t bias_t;
     typedef model_default_t weight_t;
@@ -446,7 +446,7 @@ struct config105 : nnet::conv2d_config {
 struct config108_mult : nnet::dense_config {
     static const unsigned n_in = 256;
     static const unsigned n_out = 1024;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 256;
     typedef ap_fixed<16,6> accum_t;
     typedef bias108_t bias_t;
     typedef model_default_t weight_t;
@@ -959,7 +959,7 @@ struct config138 : nnet::conv2d_config {
 struct config142_mult : nnet::dense_config {
     static const unsigned n_in = 1024;
     static const unsigned n_out = 512;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 1024;
     typedef ap_fixed<16,6> accum_t;
     typedef bias142_t bias_t;
     typedef model_default_t weight_t;
@@ -1011,7 +1011,7 @@ struct config142 : nnet::conv2d_config {
 struct config145_mult : nnet::dense_config {
     static const unsigned n_in = 4608;
     static const unsigned n_out = 512;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 4608;
     typedef ap_fixed<16,6> accum_t;
     typedef bias145_t bias_t;
     typedef model_default_t weight_t;

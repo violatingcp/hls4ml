@@ -26,8 +26,10 @@
 void subimage(bool iReset,
 	      hls::stream<input_t>  input[N_INPUT_3_1],
 	      hls::stream<result_t> output[N_LAYER_OUT_3],
-	      hls::stream<model_default_t> w41[config41::mult_config::n_out]) {  
+	      //hls::stream<model_default_t> w41[config41::mult_config::n_out]) {  
+	      model_default_t w41[config41::mult_config::n_in*config41::mult_config::n_out]) {  
       //#pragma HLS resource core=AXI4Stream variable=w41
+      #pragma HLS interface bram port=w41
       if(!input[0].empty()) nnet::conv_2d_large_stream_norm_nobias<input_t,result_t,config41>(input,output,w41);
 }
 

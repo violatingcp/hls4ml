@@ -1113,7 +1113,8 @@ void conv_2d_large_stream_norm_nobias(
 		      hls::stream<data_T> data[CONFIG_T::n_chan],
 		      hls::stream<res_T>  res [CONFIG_T::n_filt], //Filt Width clocks to read output
 		      //res_T  res [CONFIG_T::n_filt], //Filt Width clocks to read output
-		      hls::stream<typename CONFIG_T::weight_t> weights[CONFIG_T::mult_config::n_out]
+		      //hls::stream<typename CONFIG_T::weight_t> weights[CONFIG_T::mult_config::n_out]
+		      typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt]
 		      //typename CONFIG_T::norm_config::scale_t  scale  [CONFIG_T::n_filt],
 		      //typename CONFIG_T::norm_config::bias_t   sbiases[CONFIG_T::n_filt]
 		      ) {
@@ -1127,8 +1128,8 @@ void conv_2d_large_stream_norm_nobias(
     #pragma HLS ARRAY_RESHAPE variable=layer_in_row complete dim=3
 
     static data_T layer_in[CONFIG_T::filt_height*CONFIG_T::filt_width*CONFIG_T::n_chan];
-    //#pragma HLS ARRAY_RESHAPE variable=layer_in block factor=CONFIG_T::n_chan dim=0
-    #pragma HLS ARRAY_RESHAPE variable=layer_in complete dim=0
+    #pragma HLS ARRAY_RESHAPE variable=layer_in block factor=CONFIG_T::n_chan dim=0
+    //#pragma HLS ARRAY_RESHAPE variable=layer_in complete dim=0
 
     static res_T layer_normout[CONFIG_T::n_filt];
     #pragma HLS ARRAY_RESHAPE variable=layer_normout complete dim=0
@@ -1150,7 +1151,7 @@ void conv_2d_large_stream_norm_nobias(
     if(pX == lShiftX && pPass) nnet::reset_down_2dXNew<data_T,data_T,CONFIG_T>(pY,layer_in_row,layer_in);
     if((pX+1) % CONFIG_T::stride_width == 0 && (pY+1) % CONFIG_T::stride_height == 0 && pPass) { 
       nnet::shift_right_stride_2dNew<data_T,data_T,CONFIG_T>(pX,pY,layer_in_row,layer_in);//add padding
-      nnet::dense_large_nobias_str<data_T,res_T,typename CONFIG_T::mult_config>(layer_in,layer_out,weights);
+      nnet::dense_large_nobias<data_T,res_T,typename CONFIG_T::mult_config>(layer_in,layer_out,weights);
       //nnet::normalize2<res_T, res_T,typename CONFIG_T::norm_config>(layer_out, layer_normout,scale,sbiases);
       nnet::relu<res_T,res_T,typename CONFIG_T::relu_config>(layer_out, layer_reluout);
       nnet::fill_image_2dS1<data_T,data_T,CONFIG_T>(layer_reluout,res);

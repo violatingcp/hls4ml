@@ -95,7 +95,7 @@ void subimage(
       subimage_stream(lReset,sInput,sOutput);
       lReset = false;
       if(!sOutput[0].empty()) { 
-	for(unsigned i2 = 0; i2 < N_FILT_98; i2++) { 
+	for(unsigned i2 = 0; i2 < N_FILT_150; i2++) { 
          #pragma HLS UNROLL
 	 output[i0][i1][i2] = sOutput[i2].read();
 	}
@@ -212,14 +212,12 @@ void subimage_stream(bool iReset,
 
     hls::stream<layer108_t> layer108_out[N_FILT_108];
     #pragma HLS stream variable=layer108_out      depth=1
-    if(!layer108_out[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer105_t,layer108_t,config108>(iReset,layer105_out,layer108_out,w108,s109,b109);
+    if(!layer105_out[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer105_t,layer108_t,config108>(iReset,layer105_out,layer108_out,w108,s109,b109);
 
     static hls::stream<layer108_t> layer108_out2[N_FILT_108];
     #pragma HLS stream variable=layer108_out2      depth=1
-    if(!layer98_out4[0].empty() && !layer108_out[0].empty()) nnet::addrelu<layer108_t,layer108_t,config108>(layer98_out4,layer108_out,layer108_out2);
+    if(!layer98_out4[0].empty() && !layer108_out[0].empty()) nnet::addrelu<layer108_t,result_t,config108>(layer98_out4,layer108_out,layer108_out2);
 
-}
-/*
     static hls::stream<layer108_t>  layer108_out3[N_FILT_108];
     static hls::stream<layer108_t>  layer108_out4[N_FILT_108];
     #pragma HLS stream variable=layer108_out3      depth=1
@@ -250,7 +248,7 @@ void subimage_stream(bool iReset,
 
     hls::stream<layer122_t> layer122_out[N_FILT_122];
     #pragma HLS stream variable=layer122_out      depth=1
-    if(!layer118_out4[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer118_t,layer122_t,config122>(iReset,layer118_out4,layer122_out,w122,s123,b123);
+    if(!layer118_out3[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer118_t,layer122_t,config122>(iReset,layer118_out3,layer122_out,w122,s123,b123);
 
     hls::stream<layer125_t> layer125_out[N_FILT_125];
     #pragma HLS stream variable=layer125_out      depth=1
@@ -276,11 +274,11 @@ void subimage_stream(bool iReset,
 
     hls::stream<layer135_t> layer135_out[N_FILT_135];
     #pragma HLS stream variable=layer135_out      depth=1
-    if(!layer135_out[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer132_t,layer135_t,config135>(iReset,layer132_out,layer135_out,w135,s136,b136);
+    if(!layer132_out[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer132_t,layer135_t,config135>(iReset,layer132_out,layer135_out,w135,s136,b136);
 
     hls::stream<layer138_t> layer138_out[N_FILT_138];
     #pragma HLS stream variable=layer138_out      depth=1
-    if(!layer138_out[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer135_t,layer138_t,config138>(iReset,layer135_out,layer138_out,w138,s139,b139);
+    if(!layer135_out[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer135_t,layer138_t,config138>(iReset,layer135_out,layer138_out,w138,s139,b139);
 
     static hls::stream<layer138_t> layer138_out2[N_FILT_138];
     #pragma HLS stream variable=layer138_out2      depth=1
@@ -290,15 +288,15 @@ void subimage_stream(bool iReset,
     static hls::stream<layer138_t>  layer138_out4[N_FILT_138];
     #pragma HLS stream variable=layer138_out3      depth=1
     #pragma HLS stream variable=layer138_out4      depth=1
-    if(!layer138_out2[0].empty()) nnet::split<layer138_t,layer138_t,config142>(layer138_out2,layer138_out3,layer138_out4);
+    if(!layer138_out2[0].empty()) nnet::split<layer138_t,result_t,config142>(layer138_out2,layer138_out3,layer138_out4);
 
     hls::stream<layer142_t> layer142_out[N_FILT_142];
     #pragma HLS stream variable=layer142_out      depth=1
-    if(!layer138_out3[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer138_t,result_t,config142>(iReset,layer138_out3,layer142_out,w142,s143,b143);
+    if(!layer138_out3[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer138_t,layer142_t,config142>(iReset,layer138_out3,layer142_out,w142,s143,b143);
 
     hls::stream<layer145_t> layer145_out[N_FILT_145];
     #pragma HLS stream variable=layer145_out      depth=1
-    if(!input[0].empty()) nnet::conv_2d_large_stream_norm_nobias<input_t,layer145_t,config145>(iReset,layer142_out,layer145_out,w145,s146,b146);
+    if(layer142_out[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer142_t,layer145_t,config145>(iReset,layer142_out,layer145_out,w145,s146,b146);
 
     hls::stream<layer148_t> layer148_out[N_FILT_148];
     #pragma HLS stream variable=layer148_out      depth=1
@@ -306,9 +304,9 @@ void subimage_stream(bool iReset,
     
     hls::stream<layer150_t> layer150_out[N_FILT_150];
     #pragma HLS stream variable=layer150_out      depth=1
-    if(!layer138_out4[0].empty()) nnet::conv_2d_large_stream_norm_resnet<layer150_t,layer150_t,config150>(iReset,layer138_out4,layer150_out,w150,s151,b151);
+    if(!layer138_out4[0].empty()) nnet::conv_2d_large_stream_norm_resnet<layer138_t,layer150_t,config150>(iReset,layer138_out4,layer150_out,w150,s151,b151);
 
     //static hls::stream<layer150_t> layer150_out2[N_FILT_150];
     //#pragma HLS stream variable=layer150_out2      depth=1
-    if(!layer148_out[0].empty() && !layer150_out[0].empty()) nnet::addrelu<layer148_t,layer150_t,config150>(layer148_out,layer150_out,output);
+    if(!layer148_out[0].empty() && !layer150_out[0].empty()) nnet::addrelu<layer148_t,result_t,config150>(layer148_out,layer150_out,output);
 }

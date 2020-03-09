@@ -30,6 +30,6 @@
 void subimage(bool iReset,
 	      hls::stream<input_t> input[N_INPUT_3_1],
 	      hls::stream<result_t> layer41_out[N_LAYER_OUT_3],
-	      hls::stream<model_default_t> *weights);
+	      model_default_t weights[config41::mult_config::n_in*config41::mult_config::n_out]);
 
 #endif
