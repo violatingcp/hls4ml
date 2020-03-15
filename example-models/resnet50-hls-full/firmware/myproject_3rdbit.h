@@ -13,5 +13,5 @@ void subimage(
 
 void subimage_stream(bool iReset,
 		     hls::stream<input_t>  input[N_INPUT_3_1],
-		     hls::stream<result_t> output[N_FILT_150]);
+		     hls::stream<result_t> output[N_FILT_138]);
 #endif

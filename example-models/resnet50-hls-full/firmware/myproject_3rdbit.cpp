@@ -82,7 +82,7 @@ void subimage(
 	      result_t output[N_LAYER_OUT_1][N_LAYER_OUT_2][N_LAYER_OUT_3]) { 
 
   hls::stream<input_t>   sInput  [N_INPUT_3_1];
-  hls::stream<result_t>  sOutput [N_FILT_150];
+  hls::stream<result_t>  sOutput [N_FILT_138];
   #pragma HLS stream variable=sInput      depth=1
   #pragma HLS stream variable=sOutput     depth=1
   bool lReset = true;
@@ -95,7 +95,7 @@ void subimage(
       subimage_stream(lReset,sInput,sOutput);
       lReset = false;
       if(!sOutput[0].empty()) { 
-	for(unsigned i2 = 0; i2 < N_FILT_150; i2++) { 
+	for(unsigned i2 = 0; i2 < N_FILT_138; i2++) { 
          #pragma HLS UNROLL
 	 output[i0][i1][i2] = sOutput[i2].read();
 	}
@@ -106,7 +106,7 @@ void subimage(
 
 void subimage_stream(bool iReset, 
 	      hls::stream<input_t>  input[N_INPUT_3_1],
-	      hls::stream<result_t> output[N_FILT_150]) { 
+	      hls::stream<result_t> output[N_FILT_138]) { 
 
 #pragma HLS DATAFLOW
 
@@ -282,8 +282,9 @@ void subimage_stream(bool iReset,
 
     static hls::stream<layer138_t> layer138_out2[N_FILT_138];
     #pragma HLS stream variable=layer138_out2      depth=1
-    if(!layer128_out4[0].empty() && !layer138_out[0].empty()) nnet::addrelu<layer138_t,layer138_t,config138>(layer128_out4,layer138_out,layer138_out2);
-
+    if(!layer128_out4[0].empty() && !layer138_out[0].empty()) nnet::addrelu<layer138_t,layer138_t,config138>(layer128_out4,layer138_out,output);
+}
+/*
     static hls::stream<layer138_t>  layer138_out3[N_FILT_138];
     static hls::stream<layer138_t>  layer138_out4[N_FILT_138];
     #pragma HLS stream variable=layer138_out3      depth=1
@@ -310,3 +311,4 @@ void subimage_stream(bool iReset,
     //#pragma HLS stream variable=layer150_out2      depth=1
     if(!layer148_out[0].empty() && !layer150_out[0].empty()) nnet::addrelu<layer148_t,result_t,config150>(layer148_out,layer150_out,output);
 }
+*/
