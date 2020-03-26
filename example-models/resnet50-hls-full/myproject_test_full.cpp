@@ -47,7 +47,7 @@ int main(int argc, char **argv)
   int e = 0;
 
   input_t   gpu_0_data_0[N_INPUT_1_1][N_INPUT_2_1][N_INPUT_3_1];
-  result_t  layer176_out[N_LAYER_OUT_1][N_LAYER_OUT_2][N_LAYER_OUT_3];
+  result_t  layer176_out[N_LAYER_175];
 
   //hls-fpga-machine-learning insert top-level-function
   //bool iReset = true;
