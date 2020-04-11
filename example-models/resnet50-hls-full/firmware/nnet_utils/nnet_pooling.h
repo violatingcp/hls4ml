@@ -177,7 +177,7 @@ void pool_2d_large_stream(
     if(pX == 0 && pY == 0) pPass = false;
     for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
        #pragma HLS UNROLL
-       layer_in_row[pX][(pY+CONFIG_T::pad_top) % CONFIG_T::filt_height][i0] =  data[i0].read();
+       layer_in_row[pX+CONFIG_T::pad_left][(pY+CONFIG_T::pad_top) % CONFIG_T::filt_height][i0] =  data[i0].read();
     }
     //Processs image
     if(pX == 0) nnet::reset_down_2dXNew<data_T,data_T,CONFIG_T>(pX,layer_in_row,layer_in); //check stride
