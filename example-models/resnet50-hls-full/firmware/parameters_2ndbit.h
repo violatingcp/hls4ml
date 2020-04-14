@@ -20,7 +20,7 @@
 
 //hls-fpga-machine-learning insert numbers
 #define N_INPUT_1_1 28
-#define N_INPUT_2_1 28
+#define N_INPUT_2_1 32
 #define N_INPUT_3_1 512
 
 #define N_FILT_44 512
@@ -69,9 +69,14 @@
 #define OUT_HEIGHT_88 14
 #define OUT_WIDTH_88 14
 
-#define N_LAYER_OUT_1 14
-#define N_LAYER_OUT_2 14
-#define N_LAYER_OUT_3 1024
+#define N_FILT_34 256
+#define OUT_HEIGHT_34 56
+#define OUT_WIDTH_34 56
+
+#define N_LAYER_OUT_1 28
+#define N_LAYER_OUT_2 28
+#define N_LAYER_OUT_3 512
+//#define N_LAYER_OUT_3 1024
 
 //hls-fpga-machine-learning insert layer-precision
 typedef ap_fixed<8,6> model_default_t;
@@ -131,6 +136,56 @@ typedef ap_fixed<8,6> layer88_t;
 typedef ap_uint<1> bias88_t;
 typedef ap_fixed<8,6> result_t;
 
+struct config46_mult : nnet::dense_config {
+    static const unsigned n_in = 256;
+    static const unsigned n_out = 512;
+    static const unsigned reuse_factor = 128;
+    typedef ap_fixed<8,6> accum_t;
+    typedef bias46_t bias_t;
+    typedef model_default_t weight_t;
+};
+
+struct config46_norm : nnet::batchnorm_config {
+    static const unsigned n_in = N_FILT_46;
+    static const unsigned n_filt = 512;
+    static const unsigned io_type = nnet::io_parallel;
+    static const unsigned reuse_factor = 128;
+    static const bool store_weights_in_bram = false;
+    typedef model_default_t bias_t;
+    typedef model_default_t scale_t;
+};
+
+struct config46_relu : nnet::activ_config {
+    static const unsigned n_in = N_FILT_46;
+    static const unsigned table_size = 1024;
+    static const unsigned io_type = nnet::io_parallel;
+};
+
+struct config46 : nnet::conv2d_config {
+    static const unsigned pad_top = 0;
+    static const unsigned pad_bottom = 0;
+    static const unsigned pad_left = 0;
+    static const unsigned pad_right = 0;
+    static const unsigned in_height = OUT_HEIGHT_34;
+    static const unsigned in_width = OUT_WIDTH_34;
+    static const unsigned n_chan = N_FILT_34;
+    static const unsigned filt_height = 1;
+    static const unsigned filt_width = 1;
+    static const unsigned n_filt = N_FILT_46;
+    static const unsigned stride_height = 2;
+    static const unsigned stride_width = 2;
+    static const unsigned out_height = OUT_HEIGHT_46;
+    static const unsigned out_width = OUT_WIDTH_46;
+    static const unsigned reuse_factor = 128;
+    static const unsigned n_zeros = 0;
+    static const bool store_weights_in_bram = false;
+    typedef ap_fixed<8,6> accum_t;
+    typedef bias46_t bias_t;
+    typedef model_default_t weight_t;
+    typedef config46_mult mult_config;
+    typedef config46_norm norm_config;
+    typedef config46_relu relu_config;
+};
 
 struct config50_mult : nnet::dense_config {
     static const unsigned n_in = 512;
@@ -164,7 +219,7 @@ struct config50 : nnet::conv2d_config {
     static const unsigned pad_right = 0;
     static const unsigned in_height = OUT_HEIGHT_44;
     static const unsigned in_width = OUT_WIDTH_44;
-    static const unsigned n_chan = N_FILT_44;
+    static const unsigned n_chan = N_FILT_46;
     static const unsigned filt_height = 1;
     static const unsigned filt_width = 1;
     static const unsigned n_filt = N_FILT_50;

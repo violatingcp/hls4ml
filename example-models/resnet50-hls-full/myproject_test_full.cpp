@@ -52,8 +52,16 @@ int main(int argc, char **argv)
   //hls-fpga-machine-learning insert top-level-function
   //bool iReset = true;
   //  subimage(iReset, gpu_0_data_0,layer176_out);
+  for(int i0 = 0; i0 < N_INPUT_1_1; i0++) { 
+    for(int i1 = 0; i1 < N_INPUT_2_1; i1++) { 
+      for(int i2 = 0; i2 < N_INPUT_3_1; i2++) { 
+	input_t var = rand()*2.;
+	gpu_0_data_0[i0][i1][i2] = var;
+	std::cout << i0 << " -- " << i1 << " -- " << i2 << "---> v " << var << std::endl;
+      }
+    }
+  }
   subimage(gpu_0_data_0,layer176_out);
-  
   //hls-fpga-machine-learning insert output
   // for(int i = 0; i < N_LAYER_OUT_3; i++) {
   //    std::cout << layer176_out[i].read() << " ";

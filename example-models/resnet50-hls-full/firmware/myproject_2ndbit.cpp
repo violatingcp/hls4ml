@@ -75,23 +75,28 @@ void subimage(
 	      result_t output[N_LAYER_OUT_1][N_LAYER_OUT_2][N_LAYER_OUT_3]) { 
 
   hls::stream<input_t>   sInput  [N_INPUT_3_1];
-  hls::stream<result_t>  sOutput [N_FILT_88];
+  hls::stream<result_t>  sOutput [N_FILT_56];
   #pragma HLS stream variable=sInput      depth=1
   #pragma HLS stream variable=sOutput     depth=1
   bool lReset = true;
+  unsigned iX = 0; 
+  unsigned iY = 0; 
   for(unsigned i0 = 0; i0 < N_INPUT_1_1; i0++) { 
     for(unsigned i1 = 0; i1 < N_INPUT_2_1; i1++) { 
       for(unsigned i2 = 0; i2 < N_INPUT_3_1; i2++) { 
           #pragma HLS UNROLL
-	  sInput[i2].write(input[i0][i1][i2]);
+	if(i1 < N_INPUT_2_1-1) sInput[i2].write(input[i0][i1][i2]);
       }
       subimage_stream(lReset,sInput,sOutput);
       lReset = false;
       if(!sOutput[0].empty()) { 
-	for(unsigned i2 = 0; i2 < N_FILT_88; i2++) { 
+	for(unsigned i2 = 0; i2 < N_FILT_56; i2++) { 
          #pragma HLS UNROLL
-	 output[i0][i1][i2] = sOutput[i2].read();
+	 output[iX][iY][i2] = sOutput[i2].read();
 	}
+	iY = iY + 1;
+	if(iY == N_LAYER_OUT_2) {iY = 0; iX = iX + 1;}
+	std::cout << "===> " << iX << " -- " << iY << std::endl;
       }
     }
   }
@@ -99,7 +104,7 @@ void subimage(
 
 void subimage_stream(bool iReset, 
 	      hls::stream<input_t>  input[N_INPUT_3_1],
-	      hls::stream<result_t> output[N_FILT_88]) { 
+	      hls::stream<result_t> output[N_FILT_56]) { 
 
 #ifndef __SYNTHESIS__
     static bool loaded_weights = false;
@@ -114,7 +119,7 @@ void subimage_stream(bool iReset,
         nnet::load_weights_from_txt<model_default_t, 65536>(w56, "w56.txt");
         nnet::load_weights_from_txt<model_default_t, 512>(s57, "s57.txt");
         nnet::load_weights_from_txt<model_default_t, 512>(b57, "b57.txt");
-        nnet::load_weights_from_txt<model_default_t, 65536>(w60, "w60.txt");
+	nnet::load_weights_from_txt<model_default_t, 65536>(w60, "w60.txt");
         nnet::load_weights_from_txt<model_default_t, 128>(s61, "s61.txt");
         nnet::load_weights_from_txt<model_default_t, 128>(b61, "b61.txt");
         nnet::load_weights_from_txt<model_default_t, 147456>(w63, "w63.txt");
@@ -123,6 +128,7 @@ void subimage_stream(bool iReset,
         nnet::load_weights_from_txt<model_default_t, 65536>(w66, "w66.txt");
         nnet::load_weights_from_txt<model_default_t, 512>(s67, "s67.txt");
         nnet::load_weights_from_txt<model_default_t, 512>(b67, "b67.txt");
+        /*
         nnet::load_weights_from_txt<model_default_t, 65536>(w70, "w70.txt");
         nnet::load_weights_from_txt<model_default_t, 128>(s71, "s71.txt");
         nnet::load_weights_from_txt<model_default_t, 128>(b71, "b71.txt");
@@ -144,6 +150,7 @@ void subimage_stream(bool iReset,
         nnet::load_weights_from_txt<model_default_t, 524288>(w88, "w88.txt");
         nnet::load_weights_from_txt<model_default_t, 1024>(s89, "s89.txt");
         nnet::load_weights_from_txt<model_default_t, 1024>(b89, "b89.txt");
+	*/
         loaded_weights = true;
     }
 #endif
@@ -157,6 +164,7 @@ void subimage_stream(bool iReset,
     static hls::stream<layer50_t> layer50_out[N_FILT_50];
     #pragma HLS stream variable=layer50_out      depth=1
     if(!layer50_out1[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer50_t,layer50_t,config50>(iReset,layer50_out1,layer50_out,w50,s51,b51);
+    //if(!input[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer50_t,layer50_t,config50>(iReset,input,layer50_out,w50,s51,b51);
 
     static hls::stream<layer53_t> layer53_out[N_FILT_53];
     #pragma HLS stream variable=layer53_out      depth=1
@@ -168,7 +176,7 @@ void subimage_stream(bool iReset,
 
     static hls::stream<layer56_t> layer56_out2[N_FILT_56];
     #pragma HLS stream variable=layer56_out2      depth=1
-    if(!layer50_out2[0].empty() && !layer56_out[0].empty()) nnet::addrelu<layer56_t,layer56_t,config56>(layer50_out2,layer56_out,layer56_out2);
+    if(!layer50_out2[0].empty() && !layer56_out[0].empty()) nnet::addrelu<layer50_t,layer56_t,config56>(layer50_out2,layer56_out,layer56_out2);
 
     static hls::stream<layer56_t>  layer56_out3[N_FILT_56];
     static hls::stream<layer56_t>  layer56_out4[N_FILT_56];
@@ -189,10 +197,11 @@ void subimage_stream(bool iReset,
     if(!layer63_out[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer63_t,layer66_t,config66>(iReset,layer63_out,layer66_out,w66,s67,b67);
 
 
-    static hls::stream<layer66_t> layer66_out2[N_FILT_66];
-    #pragma HLS stream variable=layer66_out2      depth=1
-    if(!layer56_out4[0].empty() && !layer66_out[0].empty()) nnet::addrelu<layer66_t,layer66_t,config66>(layer56_out4,layer66_out,layer66_out2);
+    //static hls::stream<layer66_t> layer66_out2[N_FILT_66];
+    //#pragma HLS stream variable=layer66_out2      depth=1
+   if(!layer56_out4[0].empty() && !layer66_out[0].empty()) nnet::addrelu<layer66_t,layer66_t,config66>(layer56_out4,layer66_out,output);//layer66_out2);
     
+    /*
     static hls::stream<layer66_t>  layer66_out3[N_FILT_66];
     static hls::stream<layer66_t>  layer66_out4[N_FILT_66];
     #pragma HLS stream variable=layer66_out3      depth=1
@@ -240,5 +249,6 @@ void subimage_stream(bool iReset,
     //static hls::stream<layer76_t> layer88_out2[N_FILT_76];
     //#pragma HLS stream variable=layer88_out2      depth=1
     if(!layer88_out[0].empty() && !layer86_out[0].empty()) nnet::addrelu<layer86_t,layer88_t,config88>(layer86_out,layer88_out,output);
+    */
 }
 

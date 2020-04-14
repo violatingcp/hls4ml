@@ -19,6 +19,7 @@
 #include "nnet_utils/nnet_helpers.h"
 
 //hls-fpga-machine-learning insert numbers
+#define N_INPUT_1_1_LARGE 1000
 #define N_INPUT_1_1 224
 #define N_INPUT_2_1 224
 #define N_INPUT_3_1 3
@@ -457,9 +458,9 @@ struct config2 : nnet::conv2d_config {
     static const unsigned pad_bottom = 3;
     static const unsigned pad_left = 3;
     static const unsigned pad_right = 3;
-    static const unsigned in_height = N_INPUT_3_1;
+    static const unsigned in_height = N_INPUT_1_1;
     static const unsigned in_width = N_INPUT_2_1;
-    static const unsigned n_chan = N_INPUT_1_1;
+    static const unsigned n_chan = N_INPUT_3_1;
     static const unsigned filt_height = N_FILT_HEIGHT_2;
     static const unsigned filt_width = N_FILT_WIDTH_2;
     static const unsigned n_filt = N_FILT_2;
@@ -479,10 +480,10 @@ struct config2 : nnet::conv2d_config {
 };
 
 struct config5 : nnet::pooling2d_config {
-    static const unsigned in_height = 112;
-    static const unsigned in_width = OUT_HEIGHT_2;
+    static const unsigned in_height = OUT_HEIGHT_2;
+    static const unsigned in_width = OUT_WIDTH_2;
     static const unsigned n_filt = N_FILT_5;
-    static const unsigned n_chan = N_FILT_5;
+    static const unsigned n_chan = N_FILT_2;
     static const unsigned stride_height = 2;
     static const unsigned stride_width = 2;
     static const unsigned pool_height = N_POOL_HEIGHT_5;
@@ -1758,7 +1759,7 @@ struct config80 : nnet::conv2d_config {
 struct config83_mult : nnet::dense_config {
     static const unsigned n_in = 2304;
     static const unsigned n_out = 256;
-    static const unsigned reuse_factor = 512;
+    static const unsigned reuse_factor = 576;
     typedef ap_fixed<8,6> accum_t;
     typedef bias83_t bias_t;
     typedef model_default_t weight_t;

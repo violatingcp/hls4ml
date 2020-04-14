@@ -81,8 +81,9 @@ void subimage(
   for(unsigned i0 = 0; i0 < N_INPUT_1_1; i0++) { 
     for(unsigned i1 = 0; i1 < N_INPUT_2_1; i1++) { 
       for(unsigned i2 = 0; i2 < N_INPUT_3_1; i2++) { 
-          #pragma HLS UNROLL
-	  sInput[i2].write(input[i0][i1][i2]);
+        #pragma HLS UNROLL
+	//if(i0 > N_INPUT_1_1-1) 
+	sInput[i2].write(input[i0][i1][i2]);
       }
       subimage_stream(lReset,sInput,sOutput);
       lReset = false;
@@ -102,9 +103,9 @@ void subimage(
 void subimage_stream(bool iReset, 
 	      hls::stream<input_t>  input[N_INPUT_3_1],
 	      hls::stream<result_t> output[N_FILT_46]) { 
-  
+c  
        #pragma HLS DATAFLOW
-
+out
 #ifndef __SYNTHESIS__
     static bool loaded_weights = false;
     if (!loaded_weights) {
@@ -162,7 +163,7 @@ void subimage_stream(bool iReset,
     static hls::stream<input_t>  layer6_in2[N_FILT_5];
     #pragma HLS stream variable=layer6_in1      depth=1
     #pragma HLS stream variable=layer6_in2      depth=1
-    nnet::split<input_t,input_t,config6>(input,layer6_in1,layer6_in2);
+    if(!input[0].empty()) nnet::split<input_t,input_t,config6>(input,layer6_in1,layer6_in2);
     
     static hls::stream<layer6_t> layer6_out[N_FILT_6];
     #pragma HLS stream variable=layer6_out      depth=1
