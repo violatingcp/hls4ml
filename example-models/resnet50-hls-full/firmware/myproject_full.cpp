@@ -431,7 +431,7 @@ void subimage_stream(bool iReset,
     #pragma HLS stream variable=layer2_out      depth=1
     if(!input[0].empty()) nnet::conv_2d_large_stream_norm_nobias<input_t,layer2_t,config2>(iReset,input,layer2_out,w2,s3,b3);
 
-    hls::stream<layer5_t> layer5_out[N_FILT_5];
+    static hls::stream<layer5_t> layer5_out[N_FILT_5];
     #pragma HLS stream variable=layer5_out      depth=1
     if(!layer2_out[0].empty()) nnet::pool_2d_large_stream<layer2_t,layer5_t,config5>(layer2_out,layer5_out);
 

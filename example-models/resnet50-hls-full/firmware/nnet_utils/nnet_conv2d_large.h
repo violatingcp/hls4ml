@@ -275,7 +275,7 @@ template<class data_T, class res_T, typename CONFIG_T>
   static unsigned min = MIN(CONFIG_T::n_in,CONFIG_T::n_out);
   for(unsigned i2 = 0; i2 < min; i2++) {
    #pragma HLS UNROLL
-    data[i2] = input[i2]+i2;
+   data[i2] = input[i2]+i2;
   }
 }
 

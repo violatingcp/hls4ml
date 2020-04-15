@@ -75,7 +75,7 @@ void  relu(data_T data[CONFIG_T::n_in], res_T res[CONFIG_T::n_in])
     }
 
     const int rufactor = 1;//CONFIG_T::reuse_factor;
-    const int multfactor = MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
+    const int multfactor = CONFIG_T::n_in;//MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
 
     data_T datareg;
     // Calcuate result

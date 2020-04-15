@@ -55,7 +55,7 @@ int main(int argc, char **argv)
   for(int i0 = 0; i0 < N_INPUT_1_1; i0++) { 
     for(int i1 = 0; i1 < N_INPUT_2_1; i1++) { 
       for(int i2 = 0; i2 < N_INPUT_3_1; i2++) { 
-	input_t var = rand()*2.;
+	input_t var = rand()*0.01;
 	gpu_0_data_0[i0][i1][i2] = var;
 	std::cout << i0 << " -- " << i1 << " -- " << i2 << "---> v " << var << std::endl;
       }
