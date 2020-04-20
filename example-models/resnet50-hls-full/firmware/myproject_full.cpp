@@ -841,6 +841,6 @@ void subimage_stream(bool iReset,
 
     //hls::stream<layer5_t> layer5_out[N_FILT_5];
     //#pragma HLS stream variable=layer5_out      depth=1
-    if(!layer170_out2[0].empty()) nnet::pool_2d_large_stream<layer170_t,layer170_t,config174>(layer170_out2,output);
+    if(!layer170_out2[0].empty()) nnet::pool_2d_large_stream_funnel<layer170_t,layer170_t,config174>(layer170_out2,output);
 }
 

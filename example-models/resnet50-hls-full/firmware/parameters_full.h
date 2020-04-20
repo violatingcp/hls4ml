@@ -3223,6 +3223,7 @@ struct config174 : nnet::pooling2d_config {
     static const unsigned pad_right = 0;
     static const nnet::Pool_Op pool_op = nnet::Average;
     static const unsigned reuse = 128;
+    static const unsigned reuse_factor = 16;
 };
 
 struct config175 : nnet::dense_config {
