@@ -479,6 +479,34 @@ void shift_right_small_stride(//To be fixed with stride
     }
   }
 }
+/*
+template<class data_T, class res_T, typename CONFIG_T>
+void shift_right_small_stride(//To be fixed with stride
+			      data_T input[CONFIG_T::stride_width][CONFIG_T::filt_height][CONFIG_T::n_chan],
+			      res_T  data[CONFIG_T::filt_width   * CONFIG_T::filt_height * CONFIG_T::n_chan]) { 
+  
+  //Shift register by image height
+  static const int filt_width = CONFIG_T::filt_width-CONFIG_T::stride_width;
+  for(unsigned i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
+    #pragma HLS PIPELINE II=1
+    for(int i0 = 0; i0 < filt_width; i0++) { 
+      for(unsigned i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
+	data[i2*CONFIG_T::filt_width*CONFIG_T::filt_height+i1*CONFIG_T::filt_width+i0] = data[i2*CONFIG_T::filt_width*CONFIG_T::filt_height+ i1*CONFIG_T::filt_width+(i0+1)];
+      }
+    }
+  }
+  static const int lastheight=(CONFIG_T::filt_width-CONFIG_T::stride_width);
+  for(int i0 = 0; i0 < CONFIG_T::stride_width; i0++) { 
+    for(int i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
+     #pragma HLS UNROLL
+     for(int i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
+       //data[lastheight+i1*CONFIG_T::filt_width*CONFIG_T::n_chan+i0*CONFIG_T::n_chan+i2] = input[i0][i1][i2];
+       data[lastheight+i1*CONFIG_T::filt_width+i0+i2*CONFIG_T::filt_width*CONFIG_T::filt_height] = input[i0][i1][i2];
+     }
+    }
+  }
+}
+*/
 //with stride
 template<class data_T, class res_T, typename CONFIG_T>
 void shift_right_small_stride_db(//To be fixed with stride
@@ -731,11 +759,11 @@ void reset_down_2dX(//To be fixed with stride
 //Fills the temporary array to be fed in the CNN
 template<class data_T, class res_T, typename CONFIG_T>
   void reset_down_2dXNew(unsigned iY,
-			 data_T input[CONFIG_T::in_width][CONFIG_T::filt_height][CONFIG_T::n_chan],
+			 data_T input[CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right][CONFIG_T::filt_height][CONFIG_T::n_chan],
 			 res_T  data [CONFIG_T::filt_width*CONFIG_T::filt_height*CONFIG_T::n_chan]) { 
   static const unsigned lW = CONFIG_T::n_chan;
   static const unsigned lH = CONFIG_T::filt_width*CONFIG_T::n_chan;
-  unsigned lY              = iY-(CONFIG_T::filt_height-1);//*CONFIG_T::stride_height;
+  unsigned lY              = iY-(CONFIG_T::filt_height-1)+CONFIG_T::pad_top;//*CONFIG_T::stride_height;
 
   //Shift register by image height
   #pragma HLS PIPELINE
@@ -755,7 +783,38 @@ template<class data_T, class res_T, typename CONFIG_T>
     }
   }
 }
+/*
+template<class data_T, class res_T, typename CONFIG_T>
+  void reset_down_2dXNew(unsigned iY,
+			 data_T input[CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right][CONFIG_T::filt_height][CONFIG_T::n_chan],
+			 res_T  data [CONFIG_T::filt_width*CONFIG_T::filt_height*CONFIG_T::n_chan]) { 
+  static const unsigned lW = 1;
+  static const unsigned lH = CONFIG_T::filt_width;
+  static const unsigned lC = CONFIG_T::filt_width*CONFIG_T::filt_height;
+  unsigned lY              = iY-(CONFIG_T::filt_height-1)+CONFIG_T::pad_top;//*CONFIG_T::stride_height;
 
+  //Shift register by image height
+  #pragma HLS PIPELINE
+  for(int i0 = CONFIG_T::pad_left+1; i0 < CONFIG_T::filt_width; i0++) { 
+    for(int i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
+      unsigned pYC = (i1+lY) % CONFIG_T::filt_height;
+      for(int i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
+	//std::cout <<" reset " << i0 << " -- " << i1 << "," << pYC << "," << iY << ","<< lY <<"," << CONFIG_T::filt_height<< " -- " << i2 << " -- " << input[i0-1][pYC][i2] << std::endl;
+	//reset 4 -- 2,3,3,4294967293,7 -- 0 -- 100
+	//data[i1*lH+i0*lW+i2] = input[i0-1][pYC][i2];
+	data[i2*lC+i1*lH+i0*lW] = input[i0-1][pYC][i2];
+      }
+    }
+  }
+  for(int i0 = 0; i0 < CONFIG_T::pad_left+1; i0++) { 
+    for(int i1 = 0; i1 < CONFIG_T::filt_height; i1++) { 
+      for(int i2 = 0; i2 < CONFIG_T::n_chan; i2++) { 
+	data[i1*lH+i0*lW+i2*lC] = 0;
+      }
+    }
+  }
+}
+*/
 //Fills the temporary array to be fed in the CNN
 template<class data_T, class res_T, typename CONFIG_T>
   void reset_down_2dXNew_db(unsigned iY,

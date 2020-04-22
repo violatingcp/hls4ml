@@ -430,7 +430,7 @@ void subimage_stream(bool iReset,
     static hls::stream<layer2_t> layer2_out[N_FILT_2];
     #pragma HLS stream variable=layer2_out      depth=1
     if(!input[0].empty()) nnet::conv_2d_large_stream_norm_nobias<input_t,layer2_t,config2>(iReset,input,layer2_out,w2,s3,b3);
-
+        
     static hls::stream<layer5_t> layer5_out[N_FILT_5];
     #pragma HLS stream variable=layer5_out      depth=1
     if(!layer2_out[0].empty()) nnet::pool_2d_large_stream<layer2_t,layer5_t,config5>(layer2_out,layer5_out);
@@ -441,13 +441,13 @@ void subimage_stream(bool iReset,
     #pragma HLS stream variable=layer6_in2      depth=1
     if(!layer5_out[0].empty()) nnet::split<layer5_t,layer5_t,config6>(layer5_out,layer6_in1,layer6_in2);
 
-    static hls::stream<layer6_t> layer6_out[N_FILT_6];
-    #pragma HLS stream variable=layer6_out      depth=1
-    if(!layer6_in1[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer5_t,layer6_t,config6>(iReset,layer6_in1,layer6_out,w6,s7,b7);
-
     static hls::stream<layer14_t> layer14_out[N_FILT_14];
     #pragma HLS stream variable=layer14_out      depth=1
     if(!layer6_in2[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer6_t,layer14_t,config14>(iReset,layer6_in2,layer14_out,w14,s15,b15);
+
+    static hls::stream<layer6_t> layer6_out[N_FILT_6];
+    #pragma HLS stream variable=layer6_out      depth=1
+    if(!layer6_in1[0].empty()) nnet::conv_2d_large_stream_norm_nobias<layer5_t,layer6_t,config6>(iReset,layer6_in1,layer6_out,w6,s7,b7);
 
     static hls::stream<layer9_t> layer9_out[N_FILT_9];
     #pragma HLS stream variable=layer9_out      depth=1
@@ -841,6 +841,6 @@ void subimage_stream(bool iReset,
 
     //hls::stream<layer5_t> layer5_out[N_FILT_5];
     //#pragma HLS stream variable=layer5_out      depth=1
-    if(!layer170_out2[0].empty()) nnet::pool_2d_large_stream_funnel<layer170_t,layer170_t,config174>(layer170_out2,output);
+    if(!layer170_out2[0].empty()) nnet::pool_2d_large_stream_funnel<layer170_t,layer170_t,config174>(iReset, layer170_out2,output);
 }
 

@@ -153,7 +153,54 @@ template<class data_T, class res_T, typename CONFIG_T>
   }
 }
 
+/*
+template<class data_T, class res_T, typename CONFIG_T>
+void pool_2d_large_stream(
+		      hls::stream<data_T> data[CONFIG_T::n_chan],
+		      hls::stream<res_T>  res [CONFIG_T::n_filt]) { 
 
+    const static int lShiftX = CONFIG_T::filt_width-CONFIG_T::pad_left-1;
+    const static int lShiftY = CONFIG_T::filt_height-CONFIG_T::pad_top-1;
+
+    static data_T layer_in_row[CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right][CONFIG_T::filt_height][CONFIG_T::n_chan];
+    #pragma HLS ARRAY_RESHAPE variable=layer_in_row complete dim=3
+
+    static data_T layer_in[CONFIG_T::filt_height*CONFIG_T::filt_width*CONFIG_T::n_chan];
+    //#pragma HLS ARRAY_RESHAPE variable=layer_in block factor=CONFIG_T::n_chan dim=0
+    #pragma HLS ARRAY_RESHAPE variable=layer_in complete dim=0
+
+    static unsigned pX=0;
+    static unsigned pY=0;
+    static bool pPass = false;
+    if(pX == 0 && pY == 0) pPass = false;
+    for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
+       #pragma HLS UNROLL
+       layer_in_row[pX+CONFIG_T::pad_left][(pY+CONFIG_T::pad_top) % CONFIG_T::filt_height][i0] =  data[i0].read();
+    }
+    //Processs image
+    if(pX == 0) nnet::reset_down_2dXNew<data_T,data_T,CONFIG_T>(pX,layer_in_row,layer_in); //check stride
+    if((pX+1) % CONFIG_T::stride_width == 0 && (pY+1) % CONFIG_T::stride_height == 0 && pPass) { 
+      for(unsigned i0 = 0; i0 < CONFIG_T::n_filt; i0++) { 
+        #pragma HLS UNROLL
+	data_T pool[CONFIG_T::pool_height * CONFIG_T::pool_width];
+        #pragma HLS ARRAY_RESHAPE variable=pool complete dim=0
+        for(unsigned i1 = 0; i1 < CONFIG_T::pool_height*CONFIG_T::pool_width; i1++) { 
+         #pragma HLS UNROLL
+	  pool[i1] = layer_in[i1+i0*CONFIG_T::n_filt];
+	}
+	res[i0].write(pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool));
+      }
+      nnet::shift_right_stride_2dNew<data_T,data_T,CONFIG_T>(pX,pY,layer_in_row,layer_in);//check stride
+    }    
+    pX = pX+1;
+    if(pX == CONFIG_T::in_height) { 
+      pX = 0;
+      pY = pY+1;
+      pPass = false;
+    }
+    if(pX == lShiftX && pY > lShiftY-1) pPass = true;
+}
+*/
 template<class data_T, class res_T, typename CONFIG_T>
 void pool_2d_large_stream(
 		      hls::stream<data_T> data[CONFIG_T::n_chan],
@@ -200,6 +247,7 @@ void pool_2d_large_stream(
     }
     if(pX == lShiftX && pY > lShiftY-1) pPass = true;
 }
+
 
 template<class data_T, class res_T, typename CONFIG_T>
 void pool_2d_large_stream_funnel(bool iReset,
