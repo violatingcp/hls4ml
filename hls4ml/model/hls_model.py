@@ -247,12 +247,18 @@ class HLSModel(object):
 
     def remove_node(self, node, rewire=True):
         if rewire:
+            print("here")
             if len(node.inputs) > 1 or len(node.outputs) > 1:
                 raise Exception('Cannot rewire a node with multiple inputs/outputs')
+            #print("Check outputs",node.outputs,"!!!!",self.graph.values())
+            #prev_node = (x for x in self.graph.values() if x == node.inputs[0]) #self.graph.get(node.inputs[0])
+            #next_node = next((x for x in self.graph.values() if x == node),None)
             prev_node = self.graph.get(node.inputs[0])
             next_node = next((x for x in self.graph.values() if x.inputs[0] == node.outputs[0]), None)
+            print("check me",node.inputs[0],node.outputs[0],prev_node,next_node)
             if prev_node is not None:
                 if next_node is not None:
+                    #next_node.inputs[0] = prev_node
                     next_node.inputs[0] = prev_node.outputs[0]
                 else:
                     if node.outputs[0] in self.outputs:
@@ -894,6 +900,99 @@ class Conv2D(Layer):
         else:
             return self._config_template[0].format(**params)
 
+class Conv2DMerge(Layer):
+    def initialize(self):
+        if self.get_attr('data_format') == 'channels_last':
+            shape = [self.attributes['n_filt']]
+            dims = ['N_FILT_{}'.format(self.index)]
+        else:
+            shape = [self.attributes['n_filt']]
+            dims = ['N_FILT_{}'.format(self.index)]
+        self.add_output_variable(shape, dims)
+
+        self.add_weights()
+        self.add_bias()
+        if self.model.config.is_resource_strategy(self):
+            self.set_attr('strategy', 'large')
+            if self.model.config.backend.name == 'Vivado':
+                valid_rf = self.model.config.backend.get_valid_reuse_factors(self)
+                chosen_rf = self.model.config.get_reuse_factor(self)
+                if chosen_rf not in valid_rf:
+                    print('WARNING: Using invalid ReuseFactor={} with "Resource" strategy in layer "{}". Valid ReuseFactor(s): {}'
+                        .format(chosen_rf, self.name, ','.join(map(str, valid_rf))))
+                self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[3, 0, 1, 2]) #(H,W,C,F) => (F,C,H,W)
+                #self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[1, 3, 2, 0]) #(H,W,C,F) => (F,C,H,W)
+        else:
+            self.set_attr('strategy', 'latency')
+
+    def function_cpp(self):
+        params = self._default_function_params()
+        params['strategy'] = self.get_attr('strategy')
+        params['data_format'] = 'cf' if self.get_attr('data_format') == 'channels_first' else 'cl'
+        params['w'] = self.get_weights('weight').name
+        params['b'] = self.get_weights('bias').name
+
+        return [self._function_template.format(**params)]
+
+    def config_cpp(self):
+        params = self._default_config_params()
+        if self.get_attr('data_format') == 'channels_last':
+            params['in_height'] = self.get_input_variable().dim_names[0]
+            params['in_width'] = self.get_input_variable().dim_names[1]
+            params['n_chan'] = self.get_input_variable().dim_names[2]
+            params['out_height'] = self.get_output_variable().dim_names[0]
+            params['out_width'] = self.get_output_variable().dim_names[1]
+            params['n_filt'] = self.get_output_variable().dim_names[2]
+        else:
+            params['n_chan'] = self.get_input_variable().dim_names[0]
+            params['in_height'] = self.get_input_variable().dim_names[1]
+            params['in_width'] = self.get_input_variable().dim_names[2]
+            params['n_filt'] = self.get_output_variable().dim_names[0]
+            params['out_height'] = self.get_output_variable().dim_names[1]
+            params['out_width'] = self.get_output_variable().dim_names[2]
+        params['dilation'] = self.get_attr('dilation', 1)
+        params['nzeros'] = self.get_weights('weight').nzeros
+        params['config_t'] = 'std::nullptr_t'
+
+        if self.model.config.is_resource_strategy(self):
+            params['config_t'] = 'config{}_mult'.format(self.index)
+            conv_config = self._config_template[0].format(**params)
+
+            mult_params = self._default_config_params()
+            mult_params['n_in'] = self.get_attr('n_chan') * self.get_attr('filt_height') * self.get_attr('filt_width')
+            mult_params['n_out'] = self.get_attr('n_filt')
+            mult_config = self._config_template[1].format(**mult_params)
+
+            return mult_config + '\n' + conv_config
+        else:
+            return self._config_template[0].format(**params)
+
+
+        if self.model.config.is_resource_strategy(self):
+            params['config_t'] = 'config{}_norm'.format(self.index)
+            conv_config = self._config_template[0].format(**params)
+
+            relu_params = self._default_config_params()
+            relu_params['n_in'] = self.get_attr('n_filt') 
+
+            relu_config = self._config_template[1].format(**relu_params)
+
+            return relu_config + '\n' + conv_config
+        else:
+            return self._config_template[0].format(**params)
+
+        if self.model.config.is_resource_strategy(self):
+            params['config_t'] = 'config{}_relu'.format(self.index)
+            conv_config = self._config_template[0].format(**params)
+
+            relu_params = self._default_config_params()
+            relu_params['n_in'] = self.get_attr('n_filt') 
+            relu_config = self._config_template[1].format(**relu_params)
+
+            return relu_config + '\n' + conv_config
+        else:
+            return self._config_template[0].format(**params)
+
 class Pooling1D(Layer):
     def initialize(self):
         shape = [self.attributes['n_out'], self.attributes['n_filt']]
@@ -1086,6 +1185,7 @@ layer_map = {
     'TernaryDense'       : Dense,
     'Conv1D'             : Conv1D,
     'Conv2D'             : Conv2D,
+    'Conv2DMerge'        : Conv2DMerge,
     'BinaryConv2D'       : Conv2D,
     'BatchNormalization' : BatchNormalization,
     'MaxPooling1D'       : Pooling1D,

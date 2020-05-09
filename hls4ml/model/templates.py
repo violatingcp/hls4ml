@@ -76,6 +76,59 @@ conv2d_config_template = """struct config{index} : nnet::conv2d_config {{
     typedef {config_t} mult_config;
 }};\n"""
 
+
+conv2dmerge_mult_config_template = """struct config{index}_mult : nnet::dense_config {{
+    static const unsigned n_in = {n_in};
+    static const unsigned n_out = {n_out};
+    static const unsigned reuse_factor = {reuse};
+    typedef {accum_t} accum_t;
+    typedef {bias_t} bias_t;
+    typedef {weight_t} weight_t;
+}};\n"""
+
+
+conv2dmerge_activ_config_template = """struct {type}_config{index}_relu : nnet::activ_config {{
+    static const unsigned n_in = {n_in};
+    static const unsigned table_size = 1024;
+    static const unsigned io_type = nnet::{iotype};
+}};\n"""
+
+conv2dmerge_batchnorm_config_template = """struct config{index}_norm : nnet::batchnorm_config {{
+    static const unsigned n_in = {n_in};
+    static const unsigned n_filt = {n_filt};
+    static const unsigned io_type = nnet::{iotype};
+    static const unsigned reuse_factor = {reuse};
+    static const bool store_weights_in_bram = false;
+    typedef {bias_t} bias_t;
+    typedef {scale_t} scale_t;
+}};\n"""
+
+conv2dmerge_config_template = """struct config{index} : nnet::conv2d_config {{
+    static const unsigned pad_top = {pad_top};
+    static const unsigned pad_bottom = {pad_bottom};
+    static const unsigned pad_left = {pad_left};
+    static const unsigned pad_right = {pad_right};
+    static const unsigned in_height = {in_height};
+    static const unsigned in_width = {in_width};
+    static const unsigned n_chan = {n_chan};
+    static const unsigned filt_height = {filt_height};
+    static const unsigned filt_width = {filt_width};
+    static const unsigned n_filt = {n_filt};
+    static const unsigned stride_height = {stride_height};
+    static const unsigned stride_width = {stride_width};
+    static const unsigned out_height = {out_height};
+    static const unsigned out_width = {out_width};
+    static const unsigned reuse_factor = {reuse};
+    static const unsigned n_zeros = {nzeros};
+    static const bool store_weights_in_bram = false;
+    typedef {accum_t} accum_t;
+    typedef {bias_t} bias_t;
+    typedef {weight_t} weight_t;
+    typedef {config_t} mult_config;
+    typedef {config_t} relu_config;
+    typedef {config_t} norm_config;
+}};\n"""
+
 activ_config_template = """struct {type}_config{index} : nnet::activ_config {{
     static const unsigned n_in = {n_in};
     static const unsigned table_size = 1024;
@@ -131,6 +184,7 @@ config_templates = {
     'BatchNormalization'     : batchnorm_config_template,
     'Conv1D'                 : [conv1d_config_template, conv_mult_config_template],
     'Conv2D'                 : [conv2d_config_template, conv_mult_config_template],
+    'Conv2DMerge'            : [conv2dmerge_config_template, convmerge_mult_config_template,conv2dmerge_activ_config_template,conv2dmerge_norm_config_template],
     'Activation'             : activ_config_template,
     'ParametrizedActivation' : activ_config_template,
     'PReLU'                  : activ_config_template,
@@ -144,6 +198,7 @@ dense_function_template = 'nnet::dense_{strategy}<{input_t}, {output_t}, {config
 batchnorm_function_template = 'nnet::normalize<{input_t}, {output_t}, {config}>({input}, {output}, {scale}, {bias});'
 conv1d_function_template = 'nnet::conv_1d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 conv2d_function_template = 'nnet::conv_2d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
+conv2dmerge_function_template = 'nnet::conv_2d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 activ_function_template = 'nnet::{activation}<{input_t}, {output_t}, {config}>({input}, {output});'
 param_activ_function_template = 'nnet::{activation}<{input_t}, {output_t}, {config}>({input}, {param}, {output});'
 pooling1d_function_template = 'nnet::pooling1d<{input_t}, {config}>({input}, {output});'
@@ -156,6 +211,7 @@ function_templates = {
     'BatchNormalization'     : batchnorm_function_template,
     'Conv1D'                 : conv1d_function_template,
     'Conv2D'                 : conv2d_function_template,
+    'Conv2DMerge'            : conv2dmerge_function_template,
     'Activation'             : activ_function_template,
     'ParametrizedActivation' : param_activ_function_template,
     'PReLU'                  : param_activ_function_template,

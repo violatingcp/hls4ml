@@ -23,10 +23,57 @@
 #include "nnet_common.h"
 #include "nnet_dense.h"
 #include "hls_stream.h"
+//#include "hls_linear_algebra.h"
+
 #include <math.h>
 #include <assert.h>
 
 namespace nnet {
+
+  /*
+template<class data_T, class res_T, typename CONFIG_T>
+void dense_test(
+    data_T data[CONFIG_T::n_in][1],
+    res_T  res[CONFIG_T::n_out],
+    typename CONFIG_T::weight_t weights[CONFIG_T::n_in][CONFIG_T::n_out]) { 
+    
+
+    const int rufactor = CONFIG_T::reuse_factor;
+    const int multfactor = MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
+    const int multiplier_limit = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out, multfactor);
+    const int block_factor = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out, CONFIG_T::reuse_factor);
+    const int multscale = multiplier_limit/CONFIG_T::n_out;
+    const int nin = CONFIG_T::n_in;
+    const int nout = CONFIG_T::n_out;
+    const int nvec = 1;
+
+    //assert((multiplier_limit % nout == 0 || rufactor >= nin) && "The current Reuse Factor is not allowed");
+    //assert((multiplier_limit == block_factor) && "This function is correct only for RF <= N_IN");
+
+    //#pragma HLS function_instantiate variable=weights,biases
+    //#pragma HLS RESOURCE variable=weights core=RAM_2P_BRAM Commenting out the deisgnation HLS seems to choose correctly
+    //#pragma HLS ARRAY_RESHAPE   variable=weights block factor=block_factor
+    //#pragma HLS ARRAY_RESHAPE variable=biases complete
+
+    typename CONFIG_T::accum_t acc[1][CONFIG_T::n_out];
+    #pragma HLS ARRAY_PARTITION variable=acc complete
+
+    //struct MY_CONFIG: hls::matrix_multiply_traits<hls::NoTranspose, hls::NoTranspose,A_ROWS,A_COLS,B_ROWS, B_COLS, MATRIX_T,MATRIX_T>{  
+    //  static const int ARCH = 2; static const int INNER_II = 1; static const int UNROLL_FACTOR = 2;
+    //};    
+
+    //hls::matrix_multiply_top<hls::NoTranspose,hls::NoTranspose,A_ROWS,A_COLS,B_ROWS,B_COLS,C_ROWS,C_COLS,MY_CONFIG,MATRIX_T,MATRIX_T>(A,B,C);
+    
+    hls::matrix_multiply<hls::NoTranspose,hls::NoTranspose,CONFIG_T::n_in,nvec,CONFIG_T::n_in,CONFIG_T::n_out,nvec,CONFIG_T::n_out,data_T,data_T>(data,weights,acc);
+
+    // Cast to "res_t" type
+    Result:
+    for (int ires = 0; ires < CONFIG_T::n_out; ires++) {
+        #pragma HLS UNROLL
+        res[ires] = cast<data_T, res_T, CONFIG_T>(acc[ires]);
+    }
+}
+  */
 
 template<class data_T, class res_T, typename CONFIG_T>
 void dense_large_rf_leq_nin(
