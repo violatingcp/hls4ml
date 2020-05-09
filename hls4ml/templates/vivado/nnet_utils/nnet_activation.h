@@ -74,15 +74,20 @@ void  relu(data_T data[CONFIG_T::n_in], res_T res[CONFIG_T::n_in])
         #pragma HLS PIPELINE
     }
 
+    const int rufactor = 1;//CONFIG_T::reuse_factor;
+    const int multfactor = CONFIG_T::n_in;//MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
+
     data_T datareg;
-    for (int ii=0; ii<CONFIG_T::n_in; ii++) {
-        if (CONFIG_T::io_type == io_serial){
-            #pragma HLS PIPELINE
+    // Calcuate result
+    //for (int ir = 0; ir < rufactor; ir++) {
+    int ir = 0; 
+       for (int ires = 0; ires < multfactor; ires++) {
+        #pragma HLS UNROLL
+            datareg = data[ires*rufactor+ir];
+            if (datareg > 0) res[ires*rufactor+ir] = datareg;
+            else res[ires*rufactor+ir] = 0;
         }
-        datareg = data[ii];
-        if (datareg > 0) res[ii] = datareg;
-        else res[ii] = 0;
-    }
+	 //}
 }
 
 template<class data_T, class res_T, int MAX_INT, typename CONFIG_T>

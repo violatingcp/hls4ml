@@ -25,6 +25,9 @@
 // This is a substitute for "ceil(n/(float)d)".
 #define DIV_ROUNDUP(n,d) ((n + d - 1) / d)
 #define MIN(n,d) (n > d ? d : n)
+#define MAX(n,d) (n > d ? n : d)
+#define SUB(n,d) (n > d ? (n-d) : 0)
+#define MAXZERO(n) (n > 0 ? n : 0)
 
 namespace nnet {
 
