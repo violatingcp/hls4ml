@@ -162,6 +162,10 @@ merge_config_template = """struct config{index} : nnet::merge_config {{
     static const unsigned n_elem = {n_elem};
 }};\n"""
 
+split_config_template = """struct config{index} : nnet::split_config {{
+    static const unsigned n_elem = {n_elem};
+}};\n"""
+
 concat_config_template = """struct config{index} : nnet::concat_config {{
     static const unsigned n_elem1_0 = {n_elem1_0};
     static const unsigned n_elem1_1 = {n_elem1_1};
@@ -186,19 +190,21 @@ concat_config_template = """struct config{index} : nnet::concat_config {{
     'Pooling1D'              : pooling1d_config_template,
     'Pooling2D'              : pooling2d_config_template,
     'Merge'                  : merge_config_template,
+    'Split'                  : split_config_template,
     'Concatenate'            : concat_config_template,
 }'''
 
 dense_function_template = 'nnet::dense_{strategy}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 batchnorm_function_template = 'nnet::normalize<{input_t}, {output_t}, {config}>({input}, {output}, {scale}, {bias});'
 conv1d_function_template = 'nnet::conv_1d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
-conv2d_function_template = 'nnet::conv_2d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
+conv2d_function_template = 'nnet::conv_2d_{strategy}_{data_format}{1x1}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 conv2dmerge_function_template = 'nnet::conv_2d_merge_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 activ_function_template = 'nnet::{activation}<{input_t}, {output_t}, {config}>({input}, {output});'
 param_activ_function_template = 'nnet::{activation}<{input_t}, {output_t}, {config}>({input}, {param}, {output});'
 pooling1d_function_template = 'nnet::pooling1d<{input_t}, {config}>({input}, {output});'
 pooling2d_function_template = 'nnet::pooling2d_{data_format}<{input_t}, {config}>({input}, {output});'
 merge_function_template = 'nnet::{merge}<{input1_t}, {input2_t}, {output_t}, {config}>({input1}, {input2}, {output});'
+split_function_template = 'nnet::split<{input_t}, {output_t}, {config}>({input}, {output1}, {output2});'
 
 '''function_templates = {
     'Dense'                  : dense_function_template,
@@ -214,6 +220,7 @@ merge_function_template = 'nnet::{merge}<{input1_t}, {input2_t}, {output_t}, {co
     'Pooling2D'              : pooling2d_function_template,
     'Merge'                  : merge_function_template,
     'Concatenate'            : merge_function_template,
+    'Split'                  : split_function_template,   
 }'''
 
 class VivadoBackend(Backend):
@@ -223,7 +230,7 @@ class VivadoBackend(Backend):
         self.register_templates('BinaryDense'            , dense_function_template,       dense_config_template)
         self.register_templates('BatchNormalization'     , batchnorm_function_template,   batchnorm_config_template)
         self.register_templates('Conv1D'                 , conv1d_function_template,      [conv1d_config_template, conv_mult_config_template])
-        self.register_templates('Conv2D'                 , conv2d_function_template,      [conv2d_config_template, conv_mult_config_template])
+        self.register_templates('Conv2D'                 , conv2d_function_template,      [conv2d_config_template, conv_mult_config_template,conv_relu_config_template])
         self.register_templates('Conv2DMerge'            , conv2dmerge_function_template, [conv2d_config_template, conv_mult_config_template, conv_norm_config_template, conv_relu_config_template])
         self.register_templates('Activation'             , activ_function_template,       activ_config_template)
         self.register_templates('ParametrizedActivation' , param_activ_function_template, activ_config_template)
@@ -232,6 +239,7 @@ class VivadoBackend(Backend):
         self.register_templates('Pooling2D'              , pooling2d_function_template,   pooling2d_config_template)
         self.register_templates('Merge'                  , merge_function_template,       merge_config_template)
         self.register_templates('Concatenate'            , merge_function_template,       concat_config_template)
+        self.register_templates('Split'                  , split_function_template,       split_config_template)
     
     def get_valid_reuse_factors(self, layer):
         n_in = 0

@@ -52,6 +52,12 @@ conv_mult_config_template = """struct config{index}_mult : nnet::dense_config {{
 }};\n"""
 
 
+conv2d_activ_config_template = """struct {type}_config{index}_relu : nnet::activ_config {{
+    static const unsigned n_in = {n_in};
+    static const unsigned table_size = 1024;
+    static const unsigned io_type = nnet::{iotype};
+}};\n"""
+
 conv2d_config_template = """struct config{index} : nnet::conv2d_config {{
     static const unsigned pad_top = {pad_top};
     static const unsigned pad_bottom = {pad_bottom};
@@ -74,6 +80,7 @@ conv2d_config_template = """struct config{index} : nnet::conv2d_config {{
     typedef {bias_t} bias_t;
     typedef {weight_t} weight_t;
     typedef {config_t} mult_config;
+    typedef {config_t} relu_config;
 }};\n"""
 
 
@@ -167,6 +174,11 @@ merge_config_template = """struct config{index} : nnet::merge_config {{
     static const unsigned n_elem = {n_elem};
 }};\n"""
 
+
+split_config_template = """struct config{index} : nnet::split_config {{
+    static const unsigned n_elem = {n_elem};
+}};\n"""
+
 concat_config_template = """struct config{index} : nnet::concat_config {{
     static const unsigned n_elem1_0 = {n_elem1_0};
     static const unsigned n_elem1_1 = {n_elem1_1};
@@ -183,27 +195,29 @@ config_templates = {
     'BinaryDense'            : dense_config_template,
     'BatchNormalization'     : batchnorm_config_template,
     'Conv1D'                 : [conv1d_config_template, conv_mult_config_template],
-    'Conv2D'                 : [conv2d_config_template, conv_mult_config_template],
-    'Conv2DMerge'            : [conv2dmerge_config_template, convmerge_mult_config_template,conv2dmerge_activ_config_template,conv2dmerge_norm_config_template],
+    'Conv2D'                 : [conv2d_config_template, conv_mult_config_template,conv2d_activ_config_template],
+    'Conv2DMerge'            : [conv2dmerge_config_template, conv2dmerge_mult_config_template,conv2dmerge_activ_config_template,conv2dmerge_norm_config_template],
     'Activation'             : activ_config_template,
     'ParametrizedActivation' : activ_config_template,
     'PReLU'                  : activ_config_template,
     'Pooling1D'              : pooling1d_config_template,
     'Pooling2D'              : pooling2d_config_template,
     'Merge'                  : merge_config_template,
+    'Split'                  : split_config_template,
     'Concatenate'            : concat_config_template,
 }
 
 dense_function_template = 'nnet::dense_{strategy}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 batchnorm_function_template = 'nnet::normalize<{input_t}, {output_t}, {config}>({input}, {output}, {scale}, {bias});'
 conv1d_function_template = 'nnet::conv_1d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
-conv2d_function_template = 'nnet::conv_2d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
-conv2dmerge_function_template = 'nnet::conv_2d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
+conv2d_function_template = 'if(!{input}[0].empty())nnet::conv_2d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
+conv2dmerge_function_template = 'nnet::conv_2d_merge_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 activ_function_template = 'nnet::{activation}<{input_t}, {output_t}, {config}>({input}, {output});'
 param_activ_function_template = 'nnet::{activation}<{input_t}, {output_t}, {config}>({input}, {param}, {output});'
 pooling1d_function_template = 'nnet::pooling1d<{input_t}, {config}>({input}, {output});'
 pooling2d_function_template = 'nnet::pooling2d_{data_format}<{input_t}, {config}>({input}, {output});'
 merge_function_template = 'nnet::{merge}<{input1_t}, {input2_t}, {output_t}, {config}>({input1}, {input2}, {output});'
+split_function_template = 'nnet::split<{input1_t}, {output_t}, {config}>({input}, {output1}, {output2});'
 
 function_templates = {
     'Dense'                  : dense_function_template,
@@ -219,6 +233,7 @@ function_templates = {
     'Pooling2D'              : pooling2d_function_template,
     'Merge'                  : merge_function_template,
     'Concatenate'            : merge_function_template,
+    'Split'                  : split_function_template,
 }
 
 def get_config_template(kind):

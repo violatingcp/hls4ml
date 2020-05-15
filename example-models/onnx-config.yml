@@ -10,13 +10,17 @@ IOType: io_serial # options: io_serial/io_parallel
 HLSConfig:
   Model:
     Precision: ap_fixed<8,0>
-    ReuseFactor: 1048576
+    ReuseFactor: 200000
   LayerType:
     Dense:
       ReuseFactor: 1048576
       Strategy: Latency
-      Compression: True
+      Compression: False
     Conv2D:
       ReuseFactor: 1048576
-      Strategy: Latency
-      Compression: True
+      Strategy: Resource
+      Compression: False
+    Conv2DMerge:
+      ReuseFactor: 1048576
+      Strategy: Resource
+      Compression: False
