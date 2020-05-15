@@ -955,7 +955,8 @@ class Conv2D(Layer):
             shapeinternal = [self.attributes['out_height'], self.attributes['out_width']]
             diminternal   = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
         self.is1x1 = False
-        if(self.attributes['out_height'] == 1 and self.attributes['out_width'] == 1) : 
+        #self.get_attr('filt_height') * self.get_attr('filt_width')
+        if(self.attributes['filt_height'] == 1 and self.attributes['filt_width'] == 1) : 
             self.is1x1 = True
         self.add_output_variable(shape, dims)
         #self.add_internal_variable(shapeinternal,diminternal)
@@ -1166,10 +1167,16 @@ class Pooling2D(Layer):
         dims = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
         self.add_output_variable(shape, dims)
         self.set_attr('pool_op', self.get_attr('class_name').split('Pooling')[0])
+        self.is1x1 = False
+        if(self.attributes['out_height'] == 1 and self.attributes['out_width'] == 1) : 
+            self.is1x1 = True
 
     def function_cpp(self):
         params = self._default_function_params()
         params['data_format'] = 'cf' if self.get_attr('data_format') == 'channels_first' else 'cl'
+        params['1x1'] = ''
+        if self.is1x1:
+            params['1x1'] = '_1x1'
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
             header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '

@@ -202,7 +202,7 @@ conv2dmerge_function_template = 'nnet::conv_2d_merge_{strategy}_{data_format}<{i
 activ_function_template = 'nnet::{activation}<{input_t}, {output_t}, {config}>({input}, {output});'
 param_activ_function_template = 'nnet::{activation}<{input_t}, {output_t}, {config}>({input}, {param}, {output});'
 pooling1d_function_template = 'nnet::pooling1d<{input_t}, {config}>({input}, {output});'
-pooling2d_function_template = 'nnet::pooling2d_{data_format}<{input_t}, {config}>({input}, {output});'
+pooling2d_function_template = 'nnet::pooling2d_{data_format}{1x1}<{input_t}, {config}>({input}, {output});'
 merge_function_template = 'nnet::{merge}<{input1_t}, {input2_t}, {output_t}, {config}>({input1}, {input2}, {output});'
 split_function_template = 'nnet::split<{input_t}, {output_t}, {config}>({input}, {output1}, {output2});'
 
