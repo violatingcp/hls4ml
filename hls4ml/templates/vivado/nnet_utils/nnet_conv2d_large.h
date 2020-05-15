@@ -179,12 +179,12 @@ void conv_2d_large_cl(
    #pragma HLS UNROLL
    layer_in_row[pX+CONFIG_T::pad_left][(CONFIG_T::pad_top+pY) % CONFIG_T::filt_height][i0] =  data[i0].read();
   } 
-  if(pX == lShiftX && pPass) nnet::shift_down<data_T,data_T,CONFIG_T>(pY,layer_in_row,layer_in);
+  if(pX == lShiftX && pPass) nnet::reset_down<data_T,data_T,CONFIG_T>(pY,layer_in_row,layer_in);
   if((pX+1) % CONFIG_T::stride_width == 0 && (pY+1) % CONFIG_T::stride_height == 0 && pPass) { 
     nnet::shift_right_stride<data_T,data_T,CONFIG_T>(pX,pY,layer_in_row,layer_in);
     nnet::dense_large<data_T,res_T,typename CONFIG_T::mult_config>(layer_in,layer_out,weights,biases);
     nnet::relu<res_T,res_T,typename CONFIG_T::relu_config>(layer_out, layer_reluout);
-    nnet::fill_image_2dS1<data_T,data_T,CONFIG_T>(layer_reluout,res);
+    nnet::fill_image<data_T,data_T,CONFIG_T>(layer_reluout,res);
   }
   pX = pX+1;
   if(pX == CONFIG_T::in_height) { 

@@ -1189,10 +1189,7 @@ class Pooling2D(Layer):
         params['out_height'] = self.get_output_variable().dim_names[0]
         params['out_width'] = self.get_output_variable().dim_names[1]
         params['n_filt'] = self.get_output_variable().dim_names[2]
-        header=''
-        if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='if(!{input}[0].empty()) '
-        return header+self._config_template.format(**params)
+        return self._config_template.format(**params)
 
 class Activation(Layer):
     def initialize(self):
@@ -1310,7 +1307,7 @@ class Merge(Layer):
 
     def config_cpp(self):
         params = self._default_config_params()
-        params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp()
+        params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
 
         return self._config_template.format(**params)
 
@@ -1339,7 +1336,7 @@ class Split(Layer):
 
     def config_cpp(self):
         params = self._default_config_params()
-        params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp()
+        params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
         return self._config_template.format(**params)
 
 class Concatenate(Merge):
