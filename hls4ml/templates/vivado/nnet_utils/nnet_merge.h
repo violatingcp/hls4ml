@@ -31,6 +31,11 @@ struct merge_config
     static const unsigned n_elem = 10;
 };
 
+struct split_config
+{
+    static const unsigned n_elem = 10;
+};
+
 struct concat_config {
     static const unsigned n_elem1_0 = 10;
     static const unsigned n_elem1_1 = 10;

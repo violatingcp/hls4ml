@@ -1,0 +1,9 @@
+INFO: [SIM 2] *************** CSIM start ***************
+INFO: [SIM 4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../myproject_test.cpp in debug mode
+   Compiling ../../../../firmware/myproject.cpp in debug mode
+   Generating csim.exe
+INFO: Unable to open input/predictions file, using default input.
+WARNING: Hls::stream 'hls::stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0> >.2' is read while empty, which may result in RTL simulation hanging.
+ERR: [SIM 100] CSim failed with errors.
+INFO: [SIM 3] *************** CSIM finish ***************
