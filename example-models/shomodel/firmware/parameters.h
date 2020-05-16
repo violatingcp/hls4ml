@@ -129,17 +129,17 @@ struct config4 : nnet::conv1d_config {
 
 struct config5 : nnet::flatten_config {
     static const unsigned n_in = N_FILT_4;
-    static const unsigned n_out = N_OUTPUTS_4*N_FILT_4;
-    static const unsigned n_iter = N_OUTPUTS_4;
+    static const unsigned n_out = N_FILT_4;
+    static const unsigned n_iter = 1;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
 };
 
 struct config6 : nnet::dense_config {
-    static const unsigned n_in = N_OUTPUTS_4*N_FILT_4;
+    static const unsigned n_in = N_FILT_4;
     static const unsigned n_out = N_LAYER_6;
     static const unsigned io_type = nnet::io_parallel;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 64;
     static const unsigned n_zeros = 0;
     static const unsigned n_nonzeros = 32768;
     static const bool store_weights_in_bram = false;
@@ -215,8 +215,16 @@ struct relu_config13 : nnet::activ_config {
     static const unsigned io_type = nnet::io_parallel;
 };
 
-struct config14 : nnet::dense_config {
+struct config135 : nnet::flatten_config {
     static const unsigned n_in = N_LAYER_12;
+    static const unsigned n_out = N_OUTPUTS_4*N_LAYER_12;
+    static const unsigned n_iter = 1;
+    static const unsigned table_size = 1024;
+    static const unsigned io_type = nnet::io_parallel;
+};
+
+struct config14 : nnet::dense_config {
+    static const unsigned n_in = N_OUTPUTS_4*N_LAYER_12;
     static const unsigned n_out = N_LAYER_14;
     static const unsigned io_type = nnet::io_parallel;
     static const unsigned reuse_factor = 128;

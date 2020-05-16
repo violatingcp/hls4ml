@@ -54,7 +54,6 @@ void dense_large_rf_leq_nin(
 
     typename CONFIG_T::accum_t acc[CONFIG_T::n_out];
     #pragma HLS ARRAY_PARTITION variable=acc complete
-
     InitAccum:
     for (int iacc = 0; iacc < nout; iacc++) {
         #pragma HLS UNROLL
@@ -70,11 +69,9 @@ void dense_large_rf_leq_nin(
         int acc_step = 0;
 	typename CONFIG_T::accum_t tmpmult[block_factor];
         #pragma HLS ARRAY_RESHAPE variable=tmpmult complete
-
         MultLoop:
         for (int im = 0; im < block_factor; im++) {
          #pragma HLS UNROLL
-            
             tmpmult[im] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::accum_t>(data[in_index], weights[w_index]);
 	    w_index += rufactor;
 	    in_index += rufactor;
@@ -91,7 +88,7 @@ void dense_large_rf_leq_nin(
             } else {
                 acc_step++;
             }
-       }
+        }
 	
     }
 
@@ -272,8 +269,8 @@ void dense_large(
     typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
     typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
 
-  //    #pragma HLS INLINE region
-
+    #pragma HLS INLINE region
+  
     if (CONFIG_T::reuse_factor <= CONFIG_T::n_in) {
        dense_large_rf_leq_nin<data_T, res_T, CONFIG_T>(data, res, weights, biases);
     } else if (CONFIG_T::reuse_factor % CONFIG_T::n_in == 0) {

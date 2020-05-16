@@ -98,6 +98,21 @@ void flatten(
 }
 
 template<class input_T, class res_T, typename CONFIG_T>
+void flatten(
+	 input_T               data[CONFIG_T::n_in],
+	 res_T                 res [CONFIG_T::n_out])
+{
+  static unsigned pY = 0; 
+    for (int ii=0; ii<CONFIG_T::n_in; ii++) {
+      #pragma HLS UNROLL
+      input_T pData = data[ii];
+      res[pY*CONFIG_T::n_in+ii] = pData;
+    }
+    pY = pY + 1;
+    if(pY == CONFIG_T::n_iter) pY = 0;
+}
+
+template<class input_T, class res_T, typename CONFIG_T>
 void split(
 	 hls::stream<input_T>  data[CONFIG_T::n_chan],
 	 hls::stream<res_T>    res1[CONFIG_T::n_chan],

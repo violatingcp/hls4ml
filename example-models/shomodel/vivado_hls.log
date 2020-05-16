@@ -6,7 +6,7 @@
 
 source /data/Xilinx/Vivado/Vivado/2019.1/scripts/vivado_hls/hls.tcl -notrace
 INFO: [HLS 200-10] Running '/data/Xilinx/Vivado/Vivado/2019.1/bin/unwrapped/lnx64.o/vivado_hls'
-INFO: [HLS 200-10] For user 'pharris' on host 'correlator2.fnal.gov' (Linux_x86_64 version 3.10.0-957.21.3.el7.x86_64) on Fri May 15 23:31:53 CDT 2020
+INFO: [HLS 200-10] For user 'pharris' on host 'correlator2.fnal.gov' (Linux_x86_64 version 3.10.0-957.21.3.el7.x86_64) on Sat May 16 00:43:12 CDT 2020
 INFO: [HLS 200-10] On os "Scientific Linux release 7.6 (Nitrogen)"
 INFO: [HLS 200-10] In directory '/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel'
 Sourcing Tcl script 'build_prj.tcl'
@@ -27,19 +27,11 @@ INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
    Compiling ../../../../firmware/myproject.cpp in debug mode
    Generating csim.exe
 INFO: Unable to open input/predictions file, using default input.
-WARNING: Hls::stream 'hls::stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0> >.2' is read while empty, which may result in RTL simulation hanging.
-@E Simulation failed: SIGSEGV.
-ERROR: [SIM 211-100] CSim failed with errors.
+0.255859 0 0.0703125 0 
+INFO: Saved inference results to file: tb_data/csim_results.log
+INFO: [SIM 211-1] CSim done with 0 errors.
 INFO: [SIM 211-3] *************** CSIM finish ***************
-4
-    while executing
-"source build_prj.tcl"
-    invoked from within
-"hls::main build_prj.tcl"
-    ("uplevel" body line 1)
-    invoked from within
-"uplevel 1 hls::main {*}$args"
-    (procedure "hls_proc" line 5)
-    invoked from within
-"hls_proc $argv"
-INFO: [Common 17-206] Exiting vivado_hls at Fri May 15 23:32:02 2020...
+***** C SIMULATION COMPLETED IN 0h0m27s *****
+***** C/RTL SYNTHESIS *****
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file 'firmware/myproject.cpp' ... 

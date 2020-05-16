@@ -71,7 +71,8 @@ int main(int argc, char **argv)
 
       //hls-fpga-machine-learning insert top-level-function
       unsigned short size_in1,size_out1;
-      myproject(input1,layer19_out,size_in1,size_out1);
+      model_default_t w14[1277952];
+      myproject(input1,layer19_out,w14,size_in1,size_out1);
 
       //hls-fpga-machine-learning insert tb-output
       for(int i = 0; i < N_LAYER_18; i++) {
@@ -104,7 +105,8 @@ int main(int argc, char **argv)
 
     //hls-fpga-machine-learning insert top-level-function
     unsigned short size_in1,size_out1;
-    myproject(input1,layer19_out,size_in1,size_out1);
+    model_default_t w14[1277952];
+    myproject(input1,layer19_out,w14,size_in1,size_out1);
 
     //hls-fpga-machine-learning insert output
     for(int i = 0; i < N_LAYER_18; i++) {
