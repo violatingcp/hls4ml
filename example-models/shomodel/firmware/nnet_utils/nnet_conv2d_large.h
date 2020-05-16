@@ -206,7 +206,6 @@ void conv_2d_large_cl(
     pPass = false;
   }
 }
-
 template<class data_T, class res_T, typename CONFIG_T>
   void conv_1d_stream(bool iReset,
 		    hls::stream<data_T> data[CONFIG_T::n_chan],
@@ -215,6 +214,9 @@ template<class data_T, class res_T, typename CONFIG_T>
 		    typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
 		    ) {
   const static int lShiftX = CONFIG_T::filt_width-CONFIG_T::pad_left-1;
+  
+  static ap_shift_reg<data_T, (CONFIG_T::filt_width)> layer_in_row[CONFIG_T::n_chan];
+  #pragma HLS ARRAY_RESHAPE variable=layer_in_row complete dim=2  
   
   static data_T layer_in[CONFIG_T::filt_width*CONFIG_T::n_chan];
   #pragma HLS ARRAY_RESHAPE variable=layer_in complete dim=0
@@ -231,12 +233,19 @@ template<class data_T, class res_T, typename CONFIG_T>
   }
   static bool pPass = false;    
   if(pX == lShiftX) pPass = true;
-  nnet::shift_right<data_T,CONFIG_T>(layer_in);
-  for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) {
-   #pragma HLS UNROLL
-    layer_in[i0] =  data[i0].read();
-  } 
+  for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
+    #pragma HLS UNROLL
+    data_T tmp = data[i0].read();
+    layer_in_row[i0].shift(0,tmp);
+  }
   if((pX+1) % CONFIG_T::stride == 0 && pPass) { 
+   for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
+     #pragma HLS UNROLL
+     for(int i1 = 0; i1 < CONFIG_T::filt_width; i0++) {
+      data_T tmp = layer_in_row[i0].read(i1);
+      layer_in[i1*CONFIG_T::n_chan+i0] = tmp;		       
+     }
+    }
     nnet::dense_large<data_T,res_T,typename CONFIG_T::mult_config>(layer_in,layer_out,weights,biases);
     nnet::relu<res_T,res_T,typename CONFIG_T::relu_config>(layer_out, layer_reluout);
     nnet::fill_image<data_T,data_T,CONFIG_T>(layer_reluout,res);
