@@ -1,9 +1,49 @@
 INFO: [SIM 2] *************** CSIM start ***************
 INFO: [SIM 4] CSIM will launch GCC as the compiler.
    Compiling ../../../../firmware/myproject.cpp in debug mode
-   Generating csim.exe
-INFO: Unable to open input/predictions file, using default input.
-0.0126953 0.4375 0.402344 0.533203 0 0 0 0 0 0 0 0 0 0 0 0 28.1084 0 0 0 22.7852 0 0 0 0 0.0742188 0 0 4.8584 1.51172 4.04102 5.03223 10.0508 11.71 9.68262 10.2988 9.06641 18.3311 19.7949 26.4775 28.7217 30.1563 22.6299 24.8672 0 22.4697 31.8545 0 1.0293 0 0 0 12.5 0 0 0 0 0 0 0 22.2285 0 0 0 29.2432 0 0 0 31.8506 5.45215 6.53027 9.94434 11.7705 12.3955 8.56836 12.8232 0 11.3633 13.6973 18.7139 0 19.1426 18.3174 14.7666 26.6035 28.6992 24.8877 26.2158 23.6738 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 26.374 0 0 0.782227 30.2051 0.939453 0.787109 5.80566 0 5.69922 6.37109 6.01953 21.873 15.8701 21.042 23.0781 0 18.4443 20.9092 14.7686 0 22.7969 27.3789 31.2285 
-INFO: Saved inference results to file: tb_data/csim_results.log
-INFO: [SIM 1] CSim done with 0 errors.
+../../../../firmware/myproject.cpp: In function ‘void myproject(input_t*, result_t*, model_default_t*, model_default_t*, short unsigned int&, short unsigned int&)’:
+../../../../firmware/myproject.cpp:109:46: error: no match for ‘operator=’ (operand types are ‘layer13_t {aka ap_fixed<16, 6>}’ and ‘hls::stream<ap_fixed<16, 6> >’)
+         layer136_out[pY+i1] = layer135_out[i1];//.write(layer135_out[i1].read());
+                                              ^
+In file included from /data/Xilinx/Vivado/Vivado/2019.1/include/ap_int.h:367:0,
+                 from ../../../../firmware/myproject.h:24,
+                 from ../../../../firmware/myproject.cpp:21:
+/data/Xilinx/Vivado/Vivado/2019.1/include/ap_fixed.h:201:20: note: candidate: ap_fixed<_AP_W, _AP_I, _AP_Q, _AP_O, _AP_N>& ap_fixed<_AP_W, _AP_I, _AP_Q, _AP_O, _AP_N>::operator=(const ap_fixed<_AP_W, _AP_I, _AP_Q, _AP_O, _AP_N>&) [with int _AP_W = 16; int _AP_I = 6; ap_q_mode _AP_Q = (ap_q_mode)5u; ap_o_mode _AP_O = (ap_o_mode)3u; int _AP_N = 0]
+   INLINE ap_fixed& operator=(
+                    ^~~~~~~~
+/data/Xilinx/Vivado/Vivado/2019.1/include/ap_fixed.h:201:20: note:   no known conversion for argument 1 from ‘hls::stream<ap_fixed<16, 6> >’ to ‘const ap_fixed<16, 6>&’
+/data/Xilinx/Vivado/Vivado/2019.1/include/ap_fixed.h:207:15: note: candidate: void ap_fixed<_AP_W, _AP_I, _AP_Q, _AP_O, _AP_N>::operator=(const ap_fixed<_AP_W, _AP_I, _AP_Q, _AP_O, _AP_N>&) volatile [with int _AP_W = 16; int _AP_I = 6; ap_q_mode _AP_Q = (ap_q_mode)5u; ap_o_mode _AP_O = (ap_o_mode)3u; int _AP_N = 0]
+   INLINE void operator=(
+               ^~~~~~~~
+/data/Xilinx/Vivado/Vivado/2019.1/include/ap_fixed.h:207:15: note:   no known conversion for argument 1 from ‘hls::stream<ap_fixed<16, 6> >’ to ‘const ap_fixed<16, 6>&’
+/data/Xilinx/Vivado/Vivado/2019.1/include/ap_fixed.h:212:20: note: candidate: ap_fixed<_AP_W, _AP_I, _AP_Q, _AP_O, _AP_N>& ap_fixed<_AP_W, _AP_I, _AP_Q, _AP_O, _AP_N>::operator=(const volatile ap_fixed<_AP_W, _AP_I, _AP_Q, _AP_O, _AP_N>&) [with int _AP_W = 16; int _AP_I = 6; ap_q_mode _AP_Q = (ap_q_mode)5u; ap_o_mode _AP_O = (ap_o_mode)3u; int _AP_N = 0]
+   INLINE ap_fixed& operator=(
+                    ^~~~~~~~
+/data/Xilinx/Vivado/Vivado/2019.1/include/ap_fixed.h:212:20: note:   no known conversion for argument 1 from ‘hls::stream<ap_fixed<16, 6> >’ to ‘const volatile ap_fixed<16, 6>&’
+/data/Xilinx/Vivado/Vivado/2019.1/include/ap_fixed.h:218:15: note: candidate: void ap_fixed<_AP_W, _AP_I, _AP_Q, _AP_O, _AP_N>::operator=(const volatile ap_fixed<_AP_W, _AP_I, _AP_Q, _AP_O, _AP_N>&) volatile [with int _AP_W = 16; int _AP_I = 6; ap_q_mode _AP_Q = (ap_q_mode)5u; ap_o_mode _AP_O = (ap_o_mode)3u; int _AP_N = 0]
+   INLINE void operator=(
+               ^~~~~~~~
+/data/Xilinx/Vivado/Vivado/2019.1/include/ap_fixed.h:218:15: note:   no known conversion for argument 1 from ‘hls::stream<ap_fixed<16, 6> >’ to ‘const volatile ap_fixed<16, 6>&’
+../../../../firmware/myproject.cpp:118:49: error: ‘layer13_t {aka struct ap_fixed<16, 6>}’ has no member named ‘empty’
+    if(!layer136_out[(N_LAYER_12-1)*N_OUTPUTS_4].empty()) nnet::dense_large<layer13_t, layer14_t, config14>(layer136_out, layer14_out, w14, b14);
+                                                 ^~~~~
+../../../../firmware/myproject.cpp:129:23: error: ‘layer14_t {aka struct ap_fixed<16, 6>}’ has no member named ‘empty’
+    if(!layer14_out[0].empty()) nnet::relu_stream<layer14_t, layer15_t, relu_config15>(layer14_out, layer15_out);
+                       ^~~~~
+../../../../firmware/myproject.cpp:129:111: error: no matching function for call to ‘relu_stream(layer14_t [128], hls::stream<ap_fixed<16, 6> > [128])’
+    if(!layer14_out[0].empty()) nnet::relu_stream<layer14_t, layer15_t, relu_config15>(layer14_out, layer15_out);
+                                                                                                               ^
+In file included from ../../../../firmware/nnet_utils/nnet_conv2d_large.h:5:0,
+                 from ../../../../firmware/parameters.h:14,
+                 from ../../../../firmware/myproject.h:27,
+                 from ../../../../firmware/myproject.cpp:21:
+../../../../firmware/nnet_utils/nnet_activation.h:94:7: note: candidate: template<class data_T, class res_T, class CONFIG_T> void nnet::relu_stream(hls::stream<in_T>*, hls::stream<out_T>*)
+ void  relu_stream(hls::stream<data_T> data[CONFIG_T::n_in], hls::stream<res_T> res[CONFIG_T::n_in])
+       ^~~~~~~~~~~
+../../../../firmware/nnet_utils/nnet_activation.h:94:7: note:   template argument deduction/substitution failed:
+../../../../firmware/myproject.cpp:129:111: note:   cannot convert ‘layer14_out’ (type ‘layer14_t [128] {aka ap_fixed<16, 6> [128]}’) to type ‘hls::stream<ap_fixed<16, 6> >*’
+    if(!layer14_out[0].empty()) nnet::relu_stream<layer14_t, layer15_t, relu_config15>(layer14_out, layer15_out);
+                                                                                                               ^
+make: *** [obj/myproject.o] Error 1
+ERR: [SIM 100] 'csim_design' failed: compilation error(s).
 INFO: [SIM 3] *************** CSIM finish ***************
