@@ -81,6 +81,7 @@ void myproject(
 
     //hls-fpga-machine-learning insert layers
     hls::stream<input_t> sInput[N_INPUT_2_1];
+    #pragma HLS STREAM variable=sInput depth=1 dim=1
 
     hls::stream<layer13_t>             layer135_out[N_LAYER_12];
     #pragma HLS STREAM variable=layer135_out depth=1 dim=1

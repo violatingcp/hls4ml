@@ -143,3 +143,401 @@ INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dens
 INFO: [XFORM 203-131] Reshaping array 'b8.V'  in dimension 1 completely.
 INFO: [XFORM 203-131] Reshaping array 'acc.V' (firmware/nnet_utils/nnet_dense_large_stream.h:55) in dimension 1 completely.
 INFO: [XFORM 203-131] Reshaping array 'tmpdata.V' (firmware/nnet_utils/nnet_dense_large_stream.h:63) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large_stream.h:77) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w6.V'  in dimension 1 with a block factor of 512.
+INFO: [XFORM 203-131] Reshaping array 'b6.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'acc.V' (firmware/nnet_utils/nnet_dense_large_stream.h:55) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpdata.V' (firmware/nnet_utils/nnet_dense_large_stream.h:63) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large_stream.h:77) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer19_out.V' (firmware/myproject.cpp:46) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w8.V' (firmware/myproject.cpp:47) in dimension 1 with a block factor of 2048.
+INFO: [XFORM 203-131] Reshaping array 'w14.V' (firmware/myproject.cpp:48) in dimension 1 with a block factor of 128.
+INFO: [XFORM 203-102] Automatically partitioning shift register array 'layer_in_row.Array.V.1' .
+INFO: [XFORM 203-102] Automatically partitioning shift register array 'layer_in_row.Array.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer9_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer8_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer7_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer6_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer4_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer2_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer12_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer11_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer10_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'sInput.V.V' (firmware/myproject.cpp:83) .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer135_out.V.V' (firmware/myproject.cpp:85) .
+INFO: [XFORM 203-101] Partitioning array 'layer136_out.V' (firmware/myproject.cpp:88) in dimension 1 with a block factor 78.
+INFO: [XFORM 203-101] Partitioning array 'layer14_out.V' (firmware/myproject.cpp:114) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer15_out.V' (firmware/myproject.cpp:118) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer16_out.V' (firmware/myproject.cpp:122) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer17_out.V' (firmware/myproject.cpp:126) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer18_out.V' (firmware/myproject.cpp:130) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:55) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:55) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:55) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer_in_row.Array.V.1' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer_in_row.Array.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer9_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer8_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer7_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer6_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer4_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer2_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer12_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer11_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer10_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'sInput.V.V' (firmware/myproject.cpp:83) in dimension 1 completely.
+WARNING: [XFORM 203-104] Completely partitioning array 'layer135_out.V.V' (firmware/myproject.cpp:85) accessed through non-constant indices on dimension 1 (firmware/myproject.cpp:107:24), which may result in long runtime and suboptimal QoR due to large multiplexers. Please consider wrapping the array access into a function or using a register file core instead.
+INFO: [XFORM 203-101] Partitioning array 'layer135_out.V.V' (firmware/myproject.cpp:85) in dimension 1 completely.
+WARNING: [XFORM 203-104] Completely partitioning array 'layer17_out.V' (firmware/myproject.cpp:126) accessed through non-constant indices on dimension 1 (firmware/nnet_utils/nnet_dense_large.h:75:16), which may result in long runtime and suboptimal QoR due to large multiplexers. Please consider wrapping the array access into a function or using a register file core instead.
+WARNING: [XFORM 203-104] Completely partitioning array 'layer15_out.V' (firmware/myproject.cpp:118) accessed through non-constant indices on dimension 1 (firmware/nnet_utils/nnet_dense_large.h:75:16), which may result in long runtime and suboptimal QoR due to large multiplexers. Please consider wrapping the array access into a function or using a register file core instead.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::conv_1d_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' into 'image_stream' (firmware/myproject.cpp:164) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' (firmware/nnet_utils/nnet_dense_large.h:99->firmware/nnet_utils/nnet_dense_large.h:275) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' (firmware/nnet_utils/nnet_dense_large.h:99->firmware/nnet_utils/nnet_dense_large.h:275) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' (firmware/nnet_utils/nnet_dense_large.h:99->firmware/nnet_utils/nnet_dense_large.h:275) automatically.
+INFO: [XFORM 203-721] Changing loop 'Loop_1_proc' (firmware/myproject.cpp:93) to a process function for dataflow in function 'myproject'.
+ERROR: [XFORM 203-733] An internal stream 'sInput[0].V.V2' (firmware/myproject.cpp:83) with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'sInput[1].V.V3' (firmware/myproject.cpp:83) with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[78].V.V83' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[79].V.V84' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[80].V.V85' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[81].V.V86' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[82].V.V87' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[83].V.V88' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[84].V.V89' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[85].V.V90' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[86].V.V91' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[87].V.V92' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[88].V.V93' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[89].V.V94' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[90].V.V95' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[91].V.V96' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[92].V.V97' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[93].V.V98' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[94].V.V99' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[95].V.V100' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[96].V.V101' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[97].V.V102' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[98].V.V103' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[99].V.V104' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[100].V.V105' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[101].V.V106' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[102].V.V107' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[103].V.V108' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[104].V.V109' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[105].V.V110' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[106].V.V111' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[107].V.V112' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[108].V.V113' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[109].V.V114' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[110].V.V115' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[111].V.V116' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[112].V.V117' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[113].V.V118' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[114].V.V119' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[115].V.V120' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[116].V.V121' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[117].V.V122' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[118].V.V123' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[119].V.V124' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[120].V.V125' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[121].V.V126' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[122].V.V127' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[123].V.V128' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[124].V.V129' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[125].V.V130' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[126].V.V131' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[127].V.V132' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+ERROR: [XFORM 203-733] An internal stream 'sInput[0].V.V2' (firmware/myproject.cpp:83) with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'sInput[1].V.V3' (firmware/myproject.cpp:83) with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[78].V.V83' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[79].V.V84' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[80].V.V85' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[81].V.V86' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[82].V.V87' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[83].V.V88' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[84].V.V89' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[85].V.V90' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[86].V.V91' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[87].V.V92' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[88].V.V93' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[89].V.V94' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[90].V.V95' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[91].V.V96' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[92].V.V97' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[93].V.V98' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[94].V.V99' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[95].V.V100' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[96].V.V101' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[97].V.V102' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[98].V.V103' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[99].V.V104' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[100].V.V105' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[101].V.V106' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[102].V.V107' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[103].V.V108' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[104].V.V109' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[105].V.V110' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[106].V.V111' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[107].V.V112' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[108].V.V113' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[109].V.V114' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[110].V.V115' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[111].V.V116' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[112].V.V117' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[113].V.V118' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[114].V.V119' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[115].V.V120' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[116].V.V121' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[117].V.V122' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[118].V.V123' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[119].V.V124' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[120].V.V125' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[121].V.V126' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[122].V.V127' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[123].V.V128' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[124].V.V129' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[125].V.V130' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[126].V.V131' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[127].V.V132' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.9' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.8' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.7' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.63' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.62' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.61' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.60' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.6' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.59' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.58' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.57' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.56' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.55' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.54' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.53' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.52' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.51' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.50' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.5' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.49' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.48' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.47' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.46' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.45' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.44' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.43' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.42' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.41' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.40' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.4' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.39' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.38' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.37' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.36' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.35' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.34' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.33' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.32' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.31' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.30' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.3' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.29' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.28' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.27' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.26' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.25' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.24' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.23' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.22' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.21' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.20' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.2' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.19' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.18' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.17' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.16' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.15' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.14' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.13' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.12' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.11' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.10' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.1' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.0' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.99' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.98' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.97' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.96' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.95' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.94' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.93' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.92' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.91' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.90' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.9' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.89' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.88' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.87' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.86' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.85' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.84' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.83' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.82' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.81' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.80' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.8' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.79' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.78' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.77' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.76' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.75' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.74' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.73' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.72' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.71' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.70' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.7' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.69' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.68' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.67' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.66' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.65' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.64' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.63' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.62' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.61' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.60' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.6' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.59' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.58' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.57' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.56' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.55' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.54' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.53' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.52' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.51' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.50' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.5' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.49' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.48' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.47' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.46' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.45' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.44' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.43' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.42' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.41' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.40' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.4' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.39' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.38' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.37' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.36' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.35' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.34' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.33' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.32' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.31' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.30' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.3' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.29' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.28' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.27' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.26' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.25' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.24' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.23' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.22' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.21' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.20' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.2' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.19' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.18' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.17' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.16' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.15' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.14' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.13' is invalid: it has no data producer
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.1 (64-bit)
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 5ns.
+INFO: [HLS 200-10] Setting target device to 'xcku115-flvb2104-2-i'
+INFO: [XFORM 203-101] Allowed max sub elements number after partition is 4096.
+INFO: [XFORM 203-101] Allowed max sub elements number after partition is 4096.
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file 'firmware/myproject.cpp' ... 
+WARNING: [HLS 214-114] Since the only kind of statements allowed in a dataflow region are variable declarations and function calls, the compiler may not be able to correctly handle the region: firmware/nnet_utils/nnet_dense.h:139:9
+WARNING: [HLS 214-104] Only for-loops and functions support the dataflow: firmware/nnet_utils/nnet_dense.h:151:9
+WARNING: [HLS 214-104] Only for-loops and functions support the dataflow: firmware/nnet_utils/nnet_batchnorm.h:76:9
+WARNING: [HLS 214-114] Since the only kind of statements allowed in a dataflow region are variable declarations and function calls, the compiler may not be able to correctly handle the region: firmware/myproject.cpp:60:2
+WARNING: [HLS 200-471] Dataflow form checks found 4 issue(s) in file firmware/myproject.cpp
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:01:26 ; elapsed = 00:01:29 . Memory (MB): peak = 987.637 ; gain = 199.098 ; free physical = 26138 ; free virtual = 157674
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:01:26 ; elapsed = 00:01:29 . Memory (MB): peak = 987.637 ; gain = 199.098 ; free physical = 26138 ; free virtual = 157674
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' (firmware/nnet_utils/nnet_dense_large_stream.h:282).
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' (firmware/nnet_utils/nnet_dense_large_stream.h:282).
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' (firmware/nnet_utils/nnet_dense_large_stream.h:282).
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large_stream.h:282).
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' (firmware/nnet_utils/nnet_dense_large.h:275).
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' (firmware/nnet_utils/nnet_dense_large.h:275).
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' (firmware/nnet_utils/nnet_dense_large.h:275).
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:06:01 ; elapsed = 00:06:05 . Memory (MB): peak = 1595.641 ; gain = 807.102 ; free physical = 25471 ; free virtual = 157007
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' (firmware/nnet_utils/nnet_dense_large.h:99->firmware/nnet_utils/nnet_dense_large.h:275) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' (firmware/nnet_utils/nnet_dense_large.h:99->firmware/nnet_utils/nnet_dense_large.h:275) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' (firmware/nnet_utils/nnet_dense_large.h:99->firmware/nnet_utils/nnet_dense_large.h:275) automatically.
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:06:16 ; elapsed = 00:06:20 . Memory (MB): peak = 1595.641 ; gain = 807.102 ; free physical = 25472 ; free virtual = 157007
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config19>' (firmware/nnet_utils/nnet_activation.h:73:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:63) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' for pipelining.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config17>' (firmware/nnet_utils/nnet_activation.h:73:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:63) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' for pipelining.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config15>' (firmware/nnet_utils/nnet_activation.h:73:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:63) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' for pipelining.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config13>' (firmware/nnet_utils/nnet_activation.h:96:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large_stream.h:70) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' for pipelining.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' (firmware/nnet_utils/nnet_activation.h:96:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large_stream.h:70) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' for pipelining.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config9>' (firmware/nnet_utils/nnet_activation.h:96:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large_stream.h:70) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' for pipelining.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config7>' (firmware/nnet_utils/nnet_activation.h:96:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large_stream.h:70) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' for pipelining.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1.1' (firmware/myproject.cpp:95) in function 'myproject' completely with a factor of 2.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config19>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:58) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:73) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.2' (firmware/nnet_utils/nnet_dense_large.h:82) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:97) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config17>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:58) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:73) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.2' (firmware/nnet_utils/nnet_dense_large.h:82) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:97) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config15>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:58) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:73) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.2' (firmware/nnet_utils/nnet_dense_large.h:82) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:97) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:107) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config13>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large_stream.h:58) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_dense_large_stream.h:65) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large_stream.h:80) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' completely with a factor of 128.

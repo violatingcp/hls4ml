@@ -1908,3 +1908,753 @@ INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dens
 INFO: [XFORM 203-131] Reshaping array 'w10.V'  in dimension 1 with a block factor of 512.
 INFO: [XFORM 203-131] Reshaping array 'b10.V'  in dimension 1 completely.
 INFO: [XFORM 203-131] Reshaping array 'acc.V' (firmware/nnet_utils/nnet_dense_large_stream.h:55) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpdata.V' (firmware/nnet_utils/nnet_dense_large_stream.h:63) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large_stream.h:77) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'b8.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'acc.V' (firmware/nnet_utils/nnet_dense_large_stream.h:55) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpdata.V' (firmware/nnet_utils/nnet_dense_large_stream.h:63) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large_stream.h:77) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w6.V'  in dimension 1 with a block factor of 512.
+INFO: [XFORM 203-131] Reshaping array 'b6.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'acc.V' (firmware/nnet_utils/nnet_dense_large_stream.h:55) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpdata.V' (firmware/nnet_utils/nnet_dense_large_stream.h:63) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large_stream.h:77) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer19_out.V' (firmware/myproject.cpp:46) in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'w8.V' (firmware/myproject.cpp:47) in dimension 1 with a block factor of 2048.
+INFO: [XFORM 203-131] Reshaping array 'w14.V' (firmware/myproject.cpp:48) in dimension 1 with a block factor of 128.
+INFO: [XFORM 203-102] Automatically partitioning shift register array 'layer_in_row.Array.V.1' .
+INFO: [XFORM 203-102] Automatically partitioning shift register array 'layer_in_row.Array.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer9_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer8_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer7_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer6_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer4_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer2_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer12_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer11_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer10_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'sInput.V.V' (firmware/myproject.cpp:83) .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer135_out.V.V' (firmware/myproject.cpp:85) .
+INFO: [XFORM 203-101] Partitioning array 'layer136_out.V' (firmware/myproject.cpp:88) in dimension 1 with a block factor 78.
+INFO: [XFORM 203-101] Partitioning array 'layer14_out.V' (firmware/myproject.cpp:114) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer15_out.V' (firmware/myproject.cpp:118) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer16_out.V' (firmware/myproject.cpp:122) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer17_out.V' (firmware/myproject.cpp:126) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer18_out.V' (firmware/myproject.cpp:130) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:55) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:55) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:55) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer_in_row.Array.V.1' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer_in_row.Array.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer9_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer8_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer7_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer6_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer4_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer2_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer12_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer11_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer10_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'sInput.V.V' (firmware/myproject.cpp:83) in dimension 1 completely.
+WARNING: [XFORM 203-104] Completely partitioning array 'layer135_out.V.V' (firmware/myproject.cpp:85) accessed through non-constant indices on dimension 1 (firmware/myproject.cpp:107:24), which may result in long runtime and suboptimal QoR due to large multiplexers. Please consider wrapping the array access into a function or using a register file core instead.
+INFO: [XFORM 203-101] Partitioning array 'layer135_out.V.V' (firmware/myproject.cpp:85) in dimension 1 completely.
+WARNING: [XFORM 203-104] Completely partitioning array 'layer17_out.V' (firmware/myproject.cpp:126) accessed through non-constant indices on dimension 1 (firmware/nnet_utils/nnet_dense_large.h:75:16), which may result in long runtime and suboptimal QoR due to large multiplexers. Please consider wrapping the array access into a function or using a register file core instead.
+WARNING: [XFORM 203-104] Completely partitioning array 'layer15_out.V' (firmware/myproject.cpp:118) accessed through non-constant indices on dimension 1 (firmware/nnet_utils/nnet_dense_large.h:75:16), which may result in long runtime and suboptimal QoR due to large multiplexers. Please consider wrapping the array access into a function or using a register file core instead.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::conv_1d_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' into 'image_stream' (firmware/myproject.cpp:164) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' (firmware/nnet_utils/nnet_dense_large.h:99->firmware/nnet_utils/nnet_dense_large.h:275) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' (firmware/nnet_utils/nnet_dense_large.h:99->firmware/nnet_utils/nnet_dense_large.h:275) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' (firmware/nnet_utils/nnet_dense_large.h:99->firmware/nnet_utils/nnet_dense_large.h:275) automatically.
+INFO: [XFORM 203-721] Changing loop 'Loop_1_proc' (firmware/myproject.cpp:93) to a process function for dataflow in function 'myproject'.
+ERROR: [XFORM 203-733] An internal stream 'sInput[0].V.V2' (firmware/myproject.cpp:83) with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'sInput[1].V.V3' (firmware/myproject.cpp:83) with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[78].V.V83' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[79].V.V84' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[80].V.V85' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[81].V.V86' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[82].V.V87' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[83].V.V88' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[84].V.V89' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[85].V.V90' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[86].V.V91' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[87].V.V92' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[88].V.V93' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[89].V.V94' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[90].V.V95' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[91].V.V96' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[92].V.V97' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[93].V.V98' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[94].V.V99' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[95].V.V100' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[96].V.V101' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[97].V.V102' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[98].V.V103' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[99].V.V104' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[100].V.V105' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[101].V.V106' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[102].V.V107' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[103].V.V108' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[104].V.V109' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[105].V.V110' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[106].V.V111' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[107].V.V112' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[108].V.V113' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[109].V.V114' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[110].V.V115' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[111].V.V116' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[112].V.V117' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[113].V.V118' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[114].V.V119' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[115].V.V120' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[116].V.V121' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[117].V.V122' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[118].V.V123' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[119].V.V124' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[120].V.V125' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[121].V.V126' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[122].V.V127' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[123].V.V128' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[124].V.V129' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[125].V.V130' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[126].V.V131' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[127].V.V132' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+ERROR: [XFORM 203-733] An internal stream 'sInput[0].V.V2' (firmware/myproject.cpp:83) with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+ERROR: [XFORM 203-733] An internal stream 'sInput[1].V.V3' (firmware/myproject.cpp:83) with default size is used in a non-dataflow region, which may result in deadlock. Please consider to resize the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[78].V.V83' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[79].V.V84' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[80].V.V85' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[81].V.V86' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[82].V.V87' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[83].V.V88' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[84].V.V89' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[85].V.V90' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[86].V.V91' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[87].V.V92' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[88].V.V93' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[89].V.V94' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[90].V.V95' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[91].V.V96' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[92].V.V97' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[93].V.V98' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[94].V.V99' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[95].V.V100' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[96].V.V101' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[97].V.V102' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[98].V.V103' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[99].V.V104' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[100].V.V105' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[101].V.V106' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[102].V.V107' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[103].V.V108' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[104].V.V109' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[105].V.V110' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[106].V.V111' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[107].V.V112' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[108].V.V113' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[109].V.V114' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[110].V.V115' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[111].V.V116' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[112].V.V117' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[113].V.V118' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[114].V.V119' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[115].V.V120' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[116].V.V121' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[117].V.V122' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[118].V.V123' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[119].V.V124' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[120].V.V125' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[121].V.V126' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[122].V.V127' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[123].V.V128' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[124].V.V129' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[125].V.V130' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[126].V.V131' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer135_out[127].V.V132' (firmware/myproject.cpp:85) is invalid: it has no data consumer.
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.9' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.8' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.7' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.63' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.62' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.61' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.60' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.6' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.59' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.58' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.57' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.56' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.55' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.54' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.53' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.52' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.51' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.50' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.5' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.49' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.48' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.47' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.46' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.45' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.44' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.43' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.42' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.41' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.40' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.4' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.39' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.38' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.37' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.36' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.35' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.34' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.33' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.32' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.31' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.30' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.3' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.29' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.28' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.27' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.26' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.25' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.24' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.23' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.22' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.21' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.20' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.2' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.19' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.18' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.17' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.16' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.15' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.14' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.13' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.12' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.11' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.10' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.1' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer4_out.V.V.0' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.99' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.98' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.97' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.96' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.95' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.94' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.93' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.92' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.91' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.90' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.9' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.89' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.88' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.87' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.86' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.85' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.84' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.83' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.82' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.81' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.80' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.8' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.79' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.78' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.77' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.76' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.75' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.74' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.73' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.72' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.71' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.70' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.7' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.69' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.68' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.67' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.66' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.65' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.64' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.63' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.62' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.61' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.60' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.6' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.59' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.58' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.57' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.56' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.55' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.54' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.53' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.52' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.51' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.50' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.5' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.49' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.48' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.47' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.46' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.45' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.44' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.43' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.42' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.41' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.40' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.4' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.39' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.38' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.37' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.36' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.35' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.34' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.33' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.32' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.31' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.30' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.3' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.29' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.28' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.27' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.26' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.25' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.24' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.23' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.22' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.21' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.20' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.2' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.19' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.18' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.17' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.16' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.15' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.14' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.13' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.127' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.126' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.125' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.124' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.123' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.122' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.121' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.120' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.12' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.119' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.118' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.117' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.116' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.115' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.114' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.113' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.112' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.111' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.110' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.11' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.109' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.108' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.107' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.106' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.105' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.104' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.103' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.102' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.101' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.100' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.10' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.1' is invalid: it has no data producer
+WARNING: [XFORM 203-731] Internal stream variable 'layer2_out.V.V.0' is invalid: it has no data producer
+Command         transform done; error code: 1; 4095.34 sec.
+ERROR: [HLS 200-70] Pre-synthesis failed.
+Command       opt_and_import_c done; error code: 2; 4393.34 sec.
+Command     elaborate done; error code: 2; 4474.25 sec.
+Command   csynth_design done; error code: 2; 4474.26 sec.
+Command ap_source done; error code: 1; 4479.15 sec.
+Execute cleanup_all 
+Command cleanup_all done; 1.03 sec.
+INFO-FLOW: Workspace /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1 opened at Sun May 17 23:09:55 CDT 2020
+Execute     config_clock -quiet -name default -period 5 -default=false 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 5ns.
+Execute     open_platform DefaultPlatform 
+Execute     import_lib /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/kintexu 
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.lib 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/xilinx_interface.lib 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/plb46.lib 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/fsl.lib 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/axi4.lib 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.lib 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.lib 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.lib 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/xfft.lib 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/xfir.lib 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/dds_compiler.lib 
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.hlp 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/target_info.tcl 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/xilinx_interface.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.hlp 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.hlp 
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/dsp48e2.hlp 
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.hlp 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/target_info.tcl 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/xilinx_interface.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.hlp 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.hlp 
+Execute     source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/kintexu.gen 
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/plb46.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/fsl.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/axi4.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/nativeAXI4.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/scripts/xilinxcoregen.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/XilEDKCoreGen.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/dds_compiler.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/util.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/xfft.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/xfir.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.gen 
+Command       ap_source done; 0.13 sec.
+Command     ap_source done; 0.13 sec.
+Execute     open_platform DefaultPlatform 
+Execute     import_lib /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/kintexu_fpv7 
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx_fp.lib 
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx_fp.hlp 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/target_info.tcl 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/xilinx_interface.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.hlp 
+Execute     source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/kintexu_fpv7.gen 
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx_fp.gen 
+Execute     set_part xcku115-flvb2104-2-i 
+Execute       ap_part_info -name xcku115-flvb2104-2-i -data single -quiet 
+Command       ap_part_info done; 0.86 sec.
+Execute       ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute       add_library xilinx/kintexu/kintexu:xcku115:-flvb2104:-2-i 
+Execute         get_default_platform 
+Execute         license_isbetapart xcku115 
+Command         license_isbetapart done; error code: 1; 
+Execute         open_platform DefaultPlatform 
+Execute         import_lib /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/kintexu 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.lib 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/xilinx_interface.lib 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/plb46.lib 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/fsl.lib 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/axi4.lib 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.lib 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.lib 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.lib 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/xfft.lib 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/xfir.lib 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/dds_compiler.lib 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/target_info.tcl 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/xilinx_interface.hlp 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.hlp 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/dsp48e2.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/target_info.tcl 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/xilinx_interface.hlp 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.hlp 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.hlp 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/kintexu.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/plb46.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/fsl.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/axi4.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/nativeAXI4.gen 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.gen 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/scripts/xilinxcoregen.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/XilEDKCoreGen.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/dds_compiler.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/util.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/xfft.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/xfir.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.gen 
+Execute         ap_part_info -data single -name xcku115-flvb2104-2-i 
+Execute         ap_part_info -name xcku115-flvb2104-2-i -data resources 
+Execute         ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute         ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute         config_chip_info -quiet -resource {SLICE 82920} {LUT 663360} {FF 1326720} {DSP48E 5520} {BRAM 4320} {URAM 0} {SLR 2} 
+Execute         ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute         config_chip_info -quiet -speed medium 
+Command       add_library done; 0.11 sec.
+Execute       add_library xilinx/kintexu/kintexu_fpv7 
+Execute         get_default_platform 
+Execute         open_platform DefaultPlatform 
+Execute         import_lib /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/kintexu_fpv7 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx_fp.lib 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx_fp.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.hlp 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/target_info.tcl 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/xilinx_interface.hlp 
+Execute                 source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.hlp 
+Execute                 source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.hlp 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.hlp 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/kintexu_fpv7.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx_fp.gen 
+INFO: [HLS 200-10] Setting target device to 'xcku115-flvb2104-2-i'
+Execute       ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute       get_default_platform 
+Command     set_part done; 1.03 sec.
+Execute     ap_part_info -data single -name xcku115-flvb2104-2-i 
+Execute     ap_part_info -name xcku115-flvb2104-2-i -data resources 
+Execute     ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute     ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute     config_chip_info -quiet -resource {SLICE 82920} {LUT 663360} {FF 1326720} {DSP48E 5520} {BRAM 4320} {URAM 0} {SLR 2} 
+Execute     ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute     config_chip_info -quiet -speed medium 
+Execute     config_array_partition -maximum_size=4096 
+INFO: [XFORM 203-101] Allowed max sub elements number after partition is 4096.
+Command   open_solution done; 1.22 sec.
+Execute   config_array_partition -maximum_size 4096 
+INFO: [XFORM 203-101] Allowed max sub elements number after partition is 4096.
+Execute   set_part xcku115-flvb2104-2-i 
+Execute     ap_part_info -name xcku115-flvb2104-2-i -data single -quiet 
+Execute     ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute     add_library xilinx/kintexu/kintexu:xcku115:-flvb2104:-2-i 
+Execute       get_default_platform 
+Execute       license_isbetapart xcku115 
+Command       license_isbetapart done; error code: 1; 
+Execute       open_platform DefaultPlatform 
+Execute       import_lib /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/kintexu 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.lib 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/xilinx_interface.lib 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/plb46.lib 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/fsl.lib 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/axi4.lib 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.lib 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.lib 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.lib 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/xfft.lib 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/xfir.lib 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/dds_compiler.lib 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/target_info.tcl 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/xilinx_interface.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.hlp 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/dsp48e2.hlp 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/target_info.tcl 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/xilinx_interface.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.hlp 
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/kintexu.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/plb46.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/fsl.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/axi4.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/nativeAXI4.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.gen 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/scripts/xilinxcoregen.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/XilEDKCoreGen.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/dds_compiler.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/util.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/xfft.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/ip/xfir.gen 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.gen 
+Execute       ap_part_info -data single -name xcku115-flvb2104-2-i 
+Execute       ap_part_info -name xcku115-flvb2104-2-i -data resources 
+Execute       ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute       ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute       config_chip_info -quiet -resource {SLICE 82920} {LUT 663360} {FF 1326720} {DSP48E 5520} {BRAM 4320} {URAM 0} {SLR 2} 
+Execute       ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute       config_chip_info -quiet -speed medium 
+Execute     add_library xilinx/kintexu/kintexu_fpv7 
+Execute       get_default_platform 
+Execute       open_platform DefaultPlatform 
+Execute       import_lib /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/kintexu_fpv7 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx_fp.lib 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx_fp.hlp 
+Execute           source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/target_info.tcl 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/xilinx_interface.hlp 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/maxi.hlp 
+Execute               source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/interface/saxilite.hlp 
+Execute             source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/dsp48.hlp 
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/kintexu/kintexu_fpv7.gen 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/common/technology/xilinx/common/xilinx_fp.gen 
+Execute     ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute     get_default_platform 
+Command   set_part done; 0.17 sec.
+Execute   create_clock -period 5 -name default 
+Execute   csim_design 
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+Execute     source csim/.lst_opt.tcl 
+Execute     is_encrypted /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_test.cpp 
+Execute     is_xip /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_test.cpp 
+Execute     is_encrypted /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/firmware/myproject.cpp 
+Execute     is_xip /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/firmware/myproject.cpp 
+Execute     ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute     source run_sim.tcl 
+Command     ap_source done; 1.16 sec.
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+Command   csim_design done; 3.58 sec.
+Execute   csynth_design 
+Execute     get_config_compile -dump_cfg 
+Execute     get_config_compile -effort 
+Execute     get_config_compile -enable_clang39 
+Execute     get_config_compile -g 
+Execute     get_config_compile -ng 
+Execute     get_config_compile -opt_fp 
+Execute     get_config_compile -skip_cdt 
+Execute     get_config_compile -skip_syncheck 
+Execute     get_config_compile -skip_transform 
+Execute     get_config_compile -keep_printf 
+Execute     elaborate -effort=medium -skip_syncheck=0 -keep_printf=0 -skip_cdt=0 -skip_transform=0 -ng=0 -g=0 -opt_fp=0 -from_csynth_design=1 
+Execute       get_config_schedule -relax_ii_for_timing 
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+Execute       get_config_schedule -suppress_dependence_error_break 
+INFO: [HLS 200-10] Analyzing design file 'firmware/myproject.cpp' ... 
+INFO-FLOW: Compiling one TU...
+Execute       is_m_axi_addr64 
+INFO-FLOW: Handling firmware/myproject.cpp as C++
+Execute       ap_part_info -name xcku115-flvb2104-2-i -data info 
+Execute       is_encrypted firmware/myproject.cpp 
+Execute       ap_part_info -name xcku115-flvb2104-2-i -data info 
+INFO-FLOW: Running: GCC PP
+INFO-FLOW: Source preprocessing
+Execute       clang  -fno-limit-debug-info -gcc-toolchain "/data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/gcc" -hls  -fno-exceptions  -D__llvm__  -E "firmware/myproject.cpp"   -std=c++0x  -fno-math-errno -c -emit-llvm -O0  -mllvm -disable-llvm-optzns -fno-threadsafe-statics  -fno-use-cxa-atexit  -fno-threadsafe-statics -fno-use-cxa-atexit -D__CLANG_3_1__ -DAESL_SYN -D__SYNTHESIS__ -D__HLS_SYN__ -I "/data/Xilinx/Vivado/Vivado/2019.1/common/technology/autopilot" -I "/data/Xilinx/Vivado/Vivado/2019.1/common/technology/autopilot/ap_sysc" -include etc/autopilot_ssdm_op.h -D__DSP48E2__  -o "/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp" 
+INFO-FLOW: exec /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/clang/bin/clang -fno-limit-debug-info -gcc-toolchain /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/gcc -hls -fno-exceptions -D__llvm__ -E firmware/myproject.cpp -std=c++0x -fno-math-errno -c -emit-llvm -O0 -mllvm -disable-llvm-optzns -fno-threadsafe-statics -fno-use-cxa-atexit -fno-threadsafe-statics -fno-use-cxa-atexit -D__CLANG_3_1__ -DAESL_SYN -D__SYNTHESIS__ -D__HLS_SYN__ -I /data/Xilinx/Vivado/Vivado/2019.1/common/technology/autopilot -I /data/Xilinx/Vivado/Vivado/2019.1/common/technology/autopilot/ap_sysc -include etc/autopilot_ssdm_op.h -D__DSP48E2__ -o /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp
+Command       clang done; 1.67 sec.
+Execute       tidy_31 xilinx-xfmat-array-geometry /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp std=c++0x 
+INFO-FLOW: exec /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/clang-3.9-csynth/bin/tidy-3.1 -header-filter=.* -checks=-*,xilinx-xfmat-array-geometry -quiet -fix /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp -- -std=c++0x -fhls -ferror-limit=0
+Command       tidy_31 done; 8.66 sec.
+INFO-FLOW: Syntax Checking before pre-processing...
+Execute       clang -syntaxcheck -src /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp  -fno-limit-debug-info -gcc-toolchain "/data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/gcc" -hls  -std=c++0x  -fno-math-errno -c -emit-llvm -O0  -mllvm -disable-llvm-optzns -fno-threadsafe-statics  -fno-use-cxa-atexit  -fno-threadsafe-statics -fno-use-cxa-atexit -D__CLANG_3_1__ -DAESL_SYN -D__SYNTHESIS__ -D__HLS_SYN__ -I "/data/Xilinx/Vivado/Vivado/2019.1/common/technology/autopilot" -I "/data/Xilinx/Vivado/Vivado/2019.1/common/technology/autopilot/ap_sysc" -include etc/autopilot_ssdm_op.h -D__DSP48E2__  "/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp"  -o "/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/useless.bc"  
+INFO-FLOW: exec /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/clang/bin/clang -fno-limit-debug-info -gcc-toolchain /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/gcc -hls -std=c++0x -fno-math-errno -c -emit-llvm -O0 -mllvm -disable-llvm-optzns -fno-threadsafe-statics -fno-use-cxa-atexit -fno-threadsafe-statics -fno-use-cxa-atexit -D__CLANG_3_1__ -DAESL_SYN -D__SYNTHESIS__ -D__HLS_SYN__ -I /data/Xilinx/Vivado/Vivado/2019.1/common/technology/autopilot -I /data/Xilinx/Vivado/Vivado/2019.1/common/technology/autopilot/ap_sysc -include etc/autopilot_ssdm_op.h -D__DSP48E2__ /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp -o /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/useless.bc
+Command       clang done; 9.44 sec.
+INFO-FLOW: Done: GCC PP time: 19.8 seconds per iteration
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/tps/tcl/tcllib1.11.1/yaml/huddle.tcl 
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/tps/tcl/tcllib1.11.1/yaml/json2huddle.tcl 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/tps/tcl/tcllib1.11.1/try/try.tcl 
+Execute       list_core -type functional_unit 
+Execute       tidy_31 xilinx-systemc-detector /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp std=c++0x -directive=/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/.systemc_flag 
+INFO-FLOW: exec /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/clang-3.9-csynth/bin/tidy-3.1 -header-filter=.* -checks=-*,xilinx-systemc-detector -import-directive=/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/.systemc_flag -quiet -fix-errors /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp -- -std=c++0x -fhls -ferror-limit=0
+Command       tidy_31 done; 8.35 sec.
+INFO-FLOW: Running: tidy-3.1 CDT preprocess
+Execute       tidy_31 xilinx-directive2pragma /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp std=c++0x -directive=/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/all.directive.json 
+INFO-FLOW: exec /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/clang-3.9-csynth/bin/tidy-3.1 -header-filter=.* -checks=-*,xilinx-directive2pragma -import-directive=/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/all.directive.json -quiet -fix-errors /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp -- -std=c++0x -fhls -ferror-limit=0
+Command       tidy_31 done; 8.34 sec.
+Execute       get_config_dataflow -strict_mode 
+Execute       ap_eval exec -ignorestderr /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/clang-3.9-csynth/bin/xilinx-dataflow-lawyer -export-fixes=/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/xilinx-dataflow-lawyer.myproject.pp.0.cpp.diag.yml /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp -- -std=c++0x -fhls -ferror-limit=0 -fstrict-dataflow > /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/xilinx-dataflow-lawyer.myproject.pp.0.cpp.out.log 2> /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/xilinx-dataflow-lawyer.myproject.pp.0.cpp.err.log 
+Command       ap_eval done; 7.29 sec.
+Execute       source /data/Xilinx/Vivado/Vivado/2019.1/tps/tcl/tcllib1.11.1/yaml/yaml.tcl 
+Execute         source /data/Xilinx/Vivado/Vivado/2019.1/tps/tcl/tcllib1.11.1/cmdline/cmdline.tcl 
+WARNING: [HLS 214-114] Since the only kind of statements allowed in a dataflow region are variable declarations and function calls, the compiler may not be able to correctly handle the region: firmware/nnet_utils/nnet_dense.h:139:9
+WARNING: [HLS 214-104] Only for-loops and functions support the dataflow: firmware/nnet_utils/nnet_dense.h:151:9
+WARNING: [HLS 214-104] Only for-loops and functions support the dataflow: firmware/nnet_utils/nnet_batchnorm.h:76:9
+WARNING: [HLS 214-114] Since the only kind of statements allowed in a dataflow region are variable declarations and function calls, the compiler may not be able to correctly handle the region: firmware/myproject.cpp:60:2
+Execute       send_msg_by_id WARNING @200-471@%s%s 4 firmware/myproject.cpp 
+WARNING: [HLS 200-471] Dataflow form checks found 4 issue(s) in file firmware/myproject.cpp
+Execute       tidy_31 -errorcheck xilinx-constantarray-param,xilinx-resource-pragma-transformer,xilinx-xfmat-array-geometry /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp std=c++0x 
+Execute         ap_eval exec -ignorestderr /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/clang-3.9-csynth/bin/tidy-3.1 -export-fixes=/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/tidy-3.1.myproject.pp.0.cpp.diag.yml -header-filter=.* -checks=-*,xilinx-constantarray-param,xilinx-resource-pragma-transformer,xilinx-xfmat-array-geometry -quiet -fix-errors /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp -- -std=c++0x -fhls -ferror-limit=0 > /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/tidy-3.1.myproject.pp.0.cpp.out.log 2> /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/tidy-3.1.myproject.pp.0.cpp.err.log 
+Command         ap_eval done; 9.84 sec.
+Execute         ap_eval exec -ignorestderr /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/clang-3.9-csynth/bin/xilinx-legacy-rewriter /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pp.0.cpp -- -std=c++0x -fhls -ferror-limit=0 > /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/xilinx-legacy-rewriter.myproject.pp.0.cpp.out.log 2> /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/xilinx-legacy-rewriter.myproject.pp.0.cpp.err.log 
+Command         ap_eval done; 7.27 sec.
+Command       tidy_31 done; 17.25 sec.
+INFO-FLOW: Done: tidy-3.1 CDT preprocess time: 33 seconds per iteration
+INFO-FLOW: Pragma Handling...
+Execute       tidy_31 xilinx-ssdm-intrinsics-arguments /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pragma.1.cpp std=c++0x 
+INFO-FLOW: exec /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/clang-3.9-csynth/bin/tidy-3.1 -header-filter=.* -checks=-*,xilinx-ssdm-intrinsics-arguments -quiet -fix-errors /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pragma.1.cpp -- -std=c++0x -fhls -ferror-limit=0
+Command       tidy_31 done; 11.52 sec.
+Execute       ap_part_info -name xcku115-flvb2104-2-i -data info 
+INFO-FLOW: Processing labels
+Execute       clang -src /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pragma.2.cpp  -fno-limit-debug-info -gcc-toolchain /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/gcc -hls -hls-analyze-label -hls-analyze-pragma -fno-exceptions  -D__llvm__  -w  "/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pragma.2.cpp"  -std=c++0x  -fno-math-errno -c -emit-llvm -O0  -mllvm -disable-llvm-optzns -fno-threadsafe-statics  -fno-use-cxa-atexit -DAESL_SYN -D__SYNTHESIS__ -D__HLS_SYN__ -I "/data/Xilinx/Vivado/Vivado/2019.1/common/technology/autopilot" -I "/data/Xilinx/Vivado/Vivado/2019.1/common/technology/autopilot/ap_sysc" -include etc/autopilot_ssdm_op.h -D__DSP48E2__ -g -o "/home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.bc" 
+INFO-FLOW: exec /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/clang/bin/clang -fno-limit-debug-info -gcc-toolchain /data/Xilinx/Vivado/Vivado/2019.1/lnx64/tools/gcc -hls -hls-analyze-label -hls-analyze-pragma -fno-exceptions -D__llvm__ -w /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.pragma.2.cpp -std=c++0x -fno-math-errno -c -emit-llvm -O0 -mllvm -disable-llvm-optzns -fno-threadsafe-statics -fno-use-cxa-atexit -DAESL_SYN -D__SYNTHESIS__ -D__HLS_SYN__ -I /data/Xilinx/Vivado/Vivado/2019.1/common/technology/autopilot -I /data/Xilinx/Vivado/Vivado/2019.1/common/technology/autopilot/ap_sysc -include etc/autopilot_ssdm_op.h -D__DSP48E2__ -g -o /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.bc
+Command       clang done; 8.44 sec.
+INFO-FLOW: Linking Debug ...
+Execute       llvm-ld /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/myproject.g.bc -hls-opt -except-internalize myproject -L/data/Xilinx/Vivado/Vivado/2019.1/lnx64/lib -lhlsm -lhlsmc++ -o /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.g 
+Command       llvm-ld done; 2.07 sec.
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:01:26 ; elapsed = 00:01:29 . Memory (MB): peak = 987.637 ; gain = 199.098 ; free physical = 26138 ; free virtual = 157674
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:01:26 ; elapsed = 00:01:29 . Memory (MB): peak = 987.637 ; gain = 199.098 ; free physical = 26138 ; free virtual = 157674
+Execute       get_config_sdx -target 
+Execute       opt_and_import_c a -opt_level=2 -skip_syncheck=0 -ng=0 -keep_printf=0 
+Execute         cleanup_all_models 
+INFO: [HLS 200-10] Starting code transformations ...
+Execute         transform -promote-dbg-pointer /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.pp.bc -o /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.pp.0.bc -f 
+Command         transform done; 0.72 sec.
+Execute         llvm-ld /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.pp.0.bc -disable-opt -L/data/Xilinx/Vivado/Vivado/2019.1/lnx64/lib -lfloatconversion -o /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.g.0 
+Command         llvm-ld done; 2.01 sec.
+INFO-FLOW: Running Standard Transforms...
+Execute         transform -hls -share-std-xform -demangle-name -inline-byval-memcpy -always-inline -promote-dbg-pointer -interface-preproc -mem2reg -scalarrepl -mem2reg -keep-read-access -instcombine -dce -promote-dbg-pointer -bitop-raise -loop-simplify -indvarspre -indvars -loop-simplify -xunroll -constprop -instcombine -simplifycfg -indvars -simplifycfg -dce -globaldce -basicaa -simplifycfg -mem2reg -globalopt -global-constprop -deadargelim -instcombine -simplifycfg -prune-eh -simplifycfg -scalarrepl -instcombine -reassociate -licm -simplifycfg -loop-simplify -indvars -instcombine -simplifycfg -mem2reg -loop-simplify -indvars -instcombine -gvn -gvn -instcombine -adce -break-crit-edges -simplifycfg -loop-delete -global-array-opt -dce -dse -adce -find-syn-modules -top myproject -deadargelim -mem2reg -instcombine -dce -presyn-prepare -auto-rom-infer -interface-preproc -syn-check -check-rec-only -find-region -simplifycfg -func-extr -function-inline -globaldce -mem2reg -instcombine -dce -gvn -globaldce -adce -adse -constprop -instcombine -bit-constprop -instcombine -dce -simplifycfg -bitop-raise -simplifycfg -dce -loop-delete -reassociate -globalopt -global-privatize -mem2reg -dce -global-constprop -pointer-simplify -constprop -dce -func-inst -deadargelim -auto-shift-reg-idiom -promote-dbg-pointer -norm-name /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.g.0.bc -o /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.g.1.bc -f -phase std-opt 
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' (firmware/nnet_utils/nnet_dense_large_stream.h:282).
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' (firmware/nnet_utils/nnet_dense_large_stream.h:282).
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' (firmware/nnet_utils/nnet_dense_large_stream.h:282).
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large_stream.h:282).
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' (firmware/nnet_utils/nnet_dense_large.h:275).
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' (firmware/nnet_utils/nnet_dense_large.h:275).
+INFO: [XFORM 203-603] Inlining function 'nnet::dense_large_rf_leq_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' (firmware/nnet_utils/nnet_dense_large.h:275).
+Command         transform done; 273.65 sec.
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:06:01 ; elapsed = 00:06:05 . Memory (MB): peak = 1595.641 ; gain = 807.102 ; free physical = 25471 ; free virtual = 157007
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO-FLOW: Checking Synthesizability 1/2..
+Execute         transform -hls -syn-check -check-rec-only -disaggr -scalarrepl -norm-name -dce -mem2reg -instcombine -function-uniquify -directive-preproc -mem2reg -dse -dce -auto-rom-infer -dce -pag -array-normalize -instcombine -dce -warn-fifo-pointer -array-seg-normalize -instcombine -dce -array-flatten -instcombine -dce -array-burst -dce -deadargelim -promote-global-argument -simplifycfg -mem2reg -globaldce -dce -deadargelim -dce -instcombine -function-inline -globaldce -dce -doublePtrSimplify -doublePtrElim -dce -doublePtrSimplify -promote-dbg-pointer -dce -scalarrepl -dse -adse -instcombine -ptrLegalization -simplifycfg -dce -instcombine -pointer-simplify -ptrArgReplace -dce -instcombine -resolve-double-ptr -disaggr -scalarrepl -norm-name -dce -mem2reg -instcombine -ptrLegalization -simplifycfg -deadargelim -instcombine -dce -inst-simplify -function-uniquify -directive-preproc -mem2reg -dse -dce -globaldce -check-dspbuiltin /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.g.1.bc -o /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.g.2.prechk.bc -f 
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large_stream.h:106->firmware/nnet_utils/nnet_dense_large_stream.h:282) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' (firmware/nnet_utils/nnet_dense_large.h:99->firmware/nnet_utils/nnet_dense_large.h:275) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' (firmware/nnet_utils/nnet_dense_large.h:99->firmware/nnet_utils/nnet_dense_large.h:275) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' into 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' (firmware/nnet_utils/nnet_dense_large.h:99->firmware/nnet_utils/nnet_dense_large.h:275) automatically.
+Command         transform done; 15.02 sec.
+INFO-FLOW: Checking Synthesizability 2/2..
+Execute         transform -syn-check /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.g.2.prechk.bc -o /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.g.2.bc -f -phase syn-check 
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:06:16 ; elapsed = 00:06:20 . Memory (MB): peak = 1595.641 ; gain = 807.102 ; free physical = 25472 ; free virtual = 157007
+INFO-FLOW: Compiler optimizing ...
+INFO-FLOW: Share syncheck's 1.bc for syn flow: copy /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.g.1.bc to /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.o.1.bc
+INFO-FLOW: Presyn 1...
+Execute         transform -hls -tmp /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db -interface-port-rename -type-info -function-uniquify -directive-preproc -mem2reg -dse -dce -disaggr -scalarrepl -norm-name -deadargelim -mem2reg -instcombine -dce -simplifycfg -auto-rom-infer -dce -function-uniquify -resource-proc -clib-intrinsic-prepare -dce -func-buffer -dce -pag -array-normalize -func-legal -instcombine -gvn -constprop -dce -simplifycfg -mem2reg -globaldce -resolve-double-ptr -dce -deadargelim -dce -instcombine -ptrArgReplace -mem2reg -dce -array-seg-normalize -deadargelim -instcombine -dce -pointer-simplify -dce -port-alignment -dce -interface-preproc -data-pack -instcombine -dce -basicaa -aggr-aa -aggrmodref-aa -aggr-aa -gvn -gvn -basicaa -aggr-aa -aggrmodref-aa -aggr-aa -dse -adse -adce -loop-simplify -indvars -instcombine -gvn -loop-simplify -mem2reg -dce -find-region -instcombine -auto-loop-pipeline -inst-simplify -interface-preproc -cfgopt -instcombine -indvars -auto-loop-unroll -loop-simplify -loop-bound -xunroll -constprop -instcombine -simplifycfg -indvars -simplifycfg -dce -globaldce -clean-region -attach-range -gvn -inst-simplify -constprop -simplifycfg -dce -pointer-simplify -dce -globalopt -constprop -dce -array-promote -constprop -dce -ptrArgReplace -mem2reg -simplifycfg -dce -auto-par -instcombine -dce -array-transform-check -array-reshape -instcombine -simplifycfg -dce -ptrArgReplace -deadargelim -mem2reg -instcombine -simplifycfg -dce -indvars -loop-simplify -loop-bound -xunroll -constprop -instcombine -simplifycfg -indvars -simplifycfg -dce -globaldce -basicaa -aggr-aa -aggrmodref-aa -aggr-aa -dse -duplicate-dataflow-processes -globaldce -instcombine -array-partition -instcombine -simplifycfg -dce -ptrArgReplace -global-constprop -deadargelim -mem2reg -func-legal -dce -global-constprop -deadargelim -mem2reg -simplifycfg -dce -merge-param -deadargelim -globalopt -constprop -dce -array-promote -constprop -dce -ptrArgReplace -mem2reg -simplifycfg -dce -mem-intrinsic-preproc -dce -global-internalize -global-privatize -mem2reg -globaldce -promote-global-argument -ptrArgReplace -mem2reg -dce -globalopt -mergereturn -simplify-global-access -mem2reg -dce -pointer-simplify -dce -functionattrs -basicaa -aggr-aa -aggrmodref-aa -aggr-aa -gvn -gvn -basicaa -aggr-aa -aggrmodref-aa -aggr-aa -dse -adse -adce -dce -norm-name -function-inline -complex-op-raise -inst-simplify -globaldce -func-inst -constprop -instcombine -simplifycfg -dce -func-legal -dce -loop-bound -arraycheck -bitwidthmin -on-by-dataflow -loop-delete -instcombine -simplifycfg -globaldce -dce -gvn -deadargelim -dce -loop-simplify -clean-region -simplifycfg -propagate-stable-arguments -loop-stream -instcombine -simplifycfg -dce -globaldce -duplicate-dataflow-processes -stream-intrinsic-preproc -dce -check-ap-stream -loop-simplify -eliminate-keepreads -extract-dataflow-in-loop -loop-simplify -dce -gvn -deadargelim -dse -check-dataflow-syntax -legalize-stream-variable -legalize-global -extract-subproc -dce -dead-channel-elimination -canonicalize-gep -globaldce -dce -gvn -deadargelim -annotate-dataflow-channels -scalar-propagation -deadargelim -globaldce -mem2reg -check-dataflow-channels -function-stream -dce -globaldce -prop-fifo-spec -internal-stream-gen -canonicalize-gep -globaldce -dce -gvn -deadargelim -mergereturn -indvars -loop-simplify -instcombine -array-stream -array-seg-normalize -array-partition -func-legal -instcombine -simplifycfg -dce -bundle-memfifo-ops -deadargelim -function-uniquify -directive-preproc -mem2reg -dse -dce -group-axi-access -licm -simplifycfg -dce -loop-delete -norm-name /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.o.1.bc -o /home/pharris/tmp3/test_hack7/tmp2/hls4ml/example-models/shomodel/myproject_prj/solution1/.autopilot/db/a.o.1.tmp.bc -f 
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config19>' (firmware/nnet_utils/nnet_activation.h:73:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:63) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' for pipelining.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config17>' (firmware/nnet_utils/nnet_activation.h:73:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:63) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' for pipelining.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config15>' (firmware/nnet_utils/nnet_activation.h:73:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:63) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' for pipelining.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config13>' (firmware/nnet_utils/nnet_activation.h:96:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large_stream.h:70) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' for pipelining.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' (firmware/nnet_utils/nnet_activation.h:96:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large_stream.h:70) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' for pipelining.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config9>' (firmware/nnet_utils/nnet_activation.h:96:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large_stream.h:70) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' for pipelining.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config7>' (firmware/nnet_utils/nnet_activation.h:96:46).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large_stream.h:70) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' for pipelining.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1.1' (firmware/myproject.cpp:95) in function 'myproject' completely with a factor of 2.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config19>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:58) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:73) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.2' (firmware/nnet_utils/nnet_dense_large.h:82) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:97) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config17>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:58) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:73) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.2' (firmware/nnet_utils/nnet_dense_large.h:82) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:97) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config15>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:58) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:73) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.2' (firmware/nnet_utils/nnet_dense_large.h:82) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:97) in function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:107) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config13>' completely with a factor of 128.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large_stream.h:58) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' completely with a factor of 128.
