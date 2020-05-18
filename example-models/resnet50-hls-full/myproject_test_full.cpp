@@ -31,7 +31,7 @@
 int main(int argc, char **argv)
 {
   //load input data from text file
-  std::ifstream fin("tb_data/tb_input_features.dat");
+  std::ifstream fin("tb_data/layer.in");//tb_input_features.dat");
   //load predictions from text file
   std::ifstream fpr("tb_data/tb_output_predictions.dat");
 
@@ -56,10 +56,10 @@ int main(int argc, char **argv)
     for(int i0 = 0; i0 < N_INPUT_1_1; i0++) { 
       for(int i1 = 0; i1 < N_INPUT_2_1; i1++) { 
 	//input_t var = rand()*0.01;
-	//input_t var;
-	//fin >> var;
+	input_t var;
+	fin >> var;
 	//gpu_0_data_0[i0][i1][i2] = 0;
-	gpu_0_data_0[i0][i1][i2] = 0;
+	//gpu_0_data_0[i0][i1][i2] = 0;
 	//std::cout << i0 << " -- " << i1 << " -- " << i2 << "---> v " << var << std::endl;
       }
     }
