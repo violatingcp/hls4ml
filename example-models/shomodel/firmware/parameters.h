@@ -4,8 +4,9 @@
 #include <complex>
 #include "ap_int.h"
 #include "ap_fixed.h"
-#include "nnet_utils/nnet_dense.h"
+#include "nnet_utils/nnet_dense.h" 
 #include "nnet_utils/nnet_dense_large.h"
+#include "nnet_utils/nnet_dense_large_stream.h"
 #include "nnet_utils/nnet_dense_compressed.h"
 #include "nnet_utils/nnet_conv.h"
 #include "nnet_utils/nnet_conv_large.h"
@@ -31,7 +32,8 @@
 #define N_LAYER_12 128
 #define N_LAYER_14 128
 #define N_LAYER_16 128
-#define N_LAYER_18 4
+#define N_LAYER_18 128
+//#define N_LAYER_18 4
 
 //hls-fpga-machine-learning insert layer-precision
 typedef ap_fixed<16,6> model_default_t;

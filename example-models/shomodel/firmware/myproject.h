@@ -30,14 +30,17 @@
 // Prototype of top level function for C-synthesis
 void myproject(
     input_t input1[N_INPUT_1_1*N_INPUT_2_1],
-    result_t layer19_out[N_LAYER_18],
-    model_default_t w14[1277952],
+    result_t layer135_out[N_LAYER_12],
+    //result_t layer19_out[N_LAYER_18],
+    //model_default_t w14[1277952],
+    model_default_t w8[262144],
     unsigned short &const_size_in_1,
     unsigned short &const_size_out_1
 );
 
 void image_stream(bool iReset,	      
 		  hls::stream<input_t>  input[N_INPUT_2_1],
-                  layer13_t             layer135_out[N_OUTPUTS_4*N_LAYER_12]);
-
+                  layer13_t             layer135_out[N_LAYER_12],
+		  model_default_t w8[262144]);
+		  
 #endif

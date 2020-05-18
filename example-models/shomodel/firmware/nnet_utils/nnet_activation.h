@@ -90,6 +90,51 @@ void  relu(data_T data[CONFIG_T::n_in], res_T res[CONFIG_T::n_in])
 	 //}
 }
 
+template<class data_T, class res_T, typename CONFIG_T>
+void  relu_stream(hls::stream<data_T> data[CONFIG_T::n_in], hls::stream<res_T> res[CONFIG_T::n_in])
+{
+    if (CONFIG_T::io_type == io_parallel){
+        #pragma HLS PIPELINE
+    }
+
+    const int rufactor = 1;//CONFIG_T::reuse_factor;
+    const int multfactor = CONFIG_T::n_in;//MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
+
+    data_T datareg;
+    // Calcuate result
+    //for (int ir = 0; ir < rufactor; ir++) {
+    int ir = 0; 
+       for (int ires = 0; ires < multfactor; ires++) {
+        #pragma HLS UNROLL
+   	    datareg = data[ires*rufactor+ir].read();
+            if (datareg > 0) res[ires*rufactor+ir].write(datareg);
+            else res[ires*rufactor+ir].write(0);
+        }
+	 //}
+}
+template<class data_T, class res_T, typename CONFIG_T>
+void  relu_stream2(hls::stream<data_T> data[CONFIG_T::n_in], res_T res[CONFIG_T::n_in])
+{
+    if (CONFIG_T::io_type == io_parallel){
+        #pragma HLS PIPELINE
+    }
+
+    const int rufactor = 1;//CONFIG_T::reuse_factor;
+    const int multfactor = CONFIG_T::n_in;//MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
+
+    data_T datareg;
+    // Calcuate result
+    //for (int ir = 0; ir < rufactor; ir++) {
+    int ir = 0; 
+       for (int ires = 0; ires < multfactor; ires++) {
+        #pragma HLS UNROLL
+   	    datareg = data[ires*rufactor+ir].read();
+            if (datareg > 0) res[ires*rufactor+ir] = datareg;
+            else res[ires*rufactor+ir] = 0;
+        }
+	 //}
+}
+
 template<class data_T, class res_T, int MAX_INT, typename CONFIG_T>
 void  relu_max(data_T data[CONFIG_T::n_in], res_T res[CONFIG_T::n_in])
 {
