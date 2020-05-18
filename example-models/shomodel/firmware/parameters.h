@@ -229,7 +229,7 @@ struct config14 : nnet::dense_config {
     static const unsigned n_in = N_OUTPUTS_4*N_LAYER_12;
     static const unsigned n_out = N_LAYER_14;
     static const unsigned io_type = nnet::io_parallel;
-    static const unsigned reuse_factor = 128;
+    static const unsigned reuse_factor = 9984;
     static const unsigned n_zeros = 0;
     static const unsigned n_nonzeros = 1277952;
     static const bool store_weights_in_bram = false;

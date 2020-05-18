@@ -34,23 +34,24 @@
 #include "weights/w12.h"
 #include "weights/b12.h"
 //#include "weights/w14.h"
-//#include "weights/b14.h"
-//#include "weights/w16.h"
-//#include "weights/b16.h"
-//#include "weights/w18.h"
-//#include "weights/b18.h"
+#include "weights/b14.h"
+#include "weights/w16.h"
+#include "weights/b16.h"
+#include "weights/w18.h"
+#include "weights/b18.h"
 
 void myproject(
     input_t input[N_INPUT_1_1*N_INPUT_2_1],
-    result_t layer135_out[N_LAYER_12],
-    //result_t layer19_out[N_LAYER_18],
+    //result_t layer135_out[N_LAYER_12],
+    result_t layer19_out[N_LAYER_18],
     model_default_t w8[262144],
+    model_default_t w14[1277952],
     unsigned short &const_size_in_1,
     unsigned short &const_size_out_1
 ) {
 
     //hls-fpga-machine-learning insert IO
-    #pragma HLS interface bram port=w8
+    #pragma HLS interface bram port=w8,w14
     #pragma HLS ARRAY_RESHAPE variable=input complete dim=0 
     #pragma HLS ARRAY_RESHAPE variable=layer19_out complete dim=0 
     #pragma HLS INTERFACE ap_vld port=input,layer19_out 
@@ -59,12 +60,11 @@ void myproject(
     const_size_in_1 = N_INPUT_1_1*N_INPUT_2_1;
     const_size_out_1 = N_LAYER_18;
 
-    /*
 #ifndef __SYNTHESIS__
     static bool loaded_weights = false;
     if (!loaded_weights) {
         //hls-fpga-machine-learning insert load weights
-        nnet::load_weights_from_txt<model_default_t, 1277952>(w14, "w14.txt");
+        //nnet::load_weights_from_txt<model_default_t, 1277952>(w14, "w14.txt");
         nnet::load_weights_from_txt<model_default_t, 128>(b14, "b14.txt");
         nnet::load_weights_from_txt<model_default_t, 16384>(w16, "w16.txt");
         nnet::load_weights_from_txt<model_default_t, 128>(b16, "b16.txt");
@@ -73,7 +73,7 @@ void myproject(
         loaded_weights = true;
     }
 #endif
-    */
+
 
     // ****************************************
     // NETWORK INSTANTIATION
@@ -82,29 +82,38 @@ void myproject(
     //hls-fpga-machine-learning insert layers
     hls::stream<input_t> sInput[N_INPUT_2_1];
 
-    //layer13_t             layer135_out[N_OUTPUTS_4*N_LAYER_12];
-   //#pragma HLS ARRAY_PARTITION variable=layer135_out block factor=78
-   //factor is N_OUTPUTS_4
+    hls::stream<layer13_t>             layer135_out[N_LAYER_12];
+    #pragma HLS STREAM variable=layer135_out depth=1 dim=1
+
+    layer13_t             layer136_out[N_LAYER_12*N_OUTPUTS_4];
+    #pragma HLS ARRAY_PARTITION variable=layer136_out block factor=78
 
     bool iReset = true;
-    //for(unsigned i0 = 0; i0 < N_INPUT_1_1; i0++) { 
-   for(unsigned i1 = 0; i1 < N_INPUT_2_1; i1++) { 
-    #pragma HLS UNROLL
-  //if(i0*N_INPUT_2_1+i1 < N_INPUT_1_1*N_INPUT_2_1) { 
-  //      sInput[i1].write(input[i0*N_INPUT_2_1+i1]);
-      sInput[i1].write(input[i1]);
-      //} else { 
-      //input_t pVal = 0;
-      //sInput[i1].write(pVal);
-      //} 
+    unsigned pY = 0; 
+    for(unsigned i0 = 0; i0 < N_INPUT_1_1; i0++) { 
+      for(unsigned i1 = 0; i1 < N_INPUT_2_1; i1++) { 
+       #pragma HLS UNROLL
+       //if(i0*N_INPUT_2_1+i1 < N_INPUT_1_1*N_INPUT_2_1) { 
+       //      sInput[i1].write(input[i0*N_INPUT_2_1+i1]);
+       sInput[i1].write(input[i1]);
+       //} else { 
+       //input_t pVal = 0;
+       //sInput[i1].write(pVal);
+       //} 
+      }
+      image_stream(iReset,sInput,layer135_out,w8);
+      if(!layer135_out[0].empty()) { 
+       for(unsigned i1 = 0; i1 < N_OUTPUTS_4; i1++) {
+	layer136_out[pY+i1] = layer135_out[i1].read();
+       }
+       pY += N_LAYER_12;
+      } 
+    iReset = true;
    }
-   image_stream(iReset,sInput,layer135_out,w8);
-   //     iReset = true;
-   //   }
-    /*
+
    layer14_t layer14_out[N_LAYER_14];
    #pragma HLS ARRAY_PARTITION variable=layer14_out complete dim=0
-   nnet::dense_large<layer13_t, layer14_t, config14>(layer135_out, layer14_out, w14, b14);
+   nnet::dense_large<layer13_t, layer14_t, config14>(layer136_out, layer14_out, w14, b14);
 
    layer15_t layer15_out[N_LAYER_14];
    #pragma HLS ARRAY_PARTITION variable=layer15_out complete dim=0
@@ -122,13 +131,11 @@ void myproject(
    #pragma HLS ARRAY_PARTITION variable=layer18_out complete dim=0
    nnet::dense_large<layer17_t, layer18_t, config18>(layer17_out, layer18_out, w18, b18);
    nnet::relu<layer18_t, result_t, relu_config19>(layer18_out, layer19_out);
-
-    */
 }
 
 void image_stream(bool iReset,	      
-		  hls::stream<input_t>  input[N_INPUT_2_1],
-                  layer13_t             layer135_out[N_LAYER_12],
+		  hls::stream<input_t>    input[N_INPUT_2_1],
+                  hls::stream<layer13_t>  layer135_out[N_LAYER_12],
                   model_default_t w8[262144]) { //N_OUTPUTS_4*N_LAYER_12]) { 
   
     #pragma HLS interface bram port=w8
@@ -174,24 +181,22 @@ void image_stream(bool iReset,
 
    static hls::stream<layer9_t> layer9_out[N_LAYER_8];
    #pragma HLS ARRAY_RESHAPE variable=layer9_out complete dim=0
-   nnet::relu_stream<layer8_t, layer9_t, relu_config9>(layer8_out, layer9_out);
+   if(!layer8_out[0].empty()) nnet::relu_stream<layer8_t, layer9_t, relu_config9>(layer8_out, layer9_out);
    //nnet::relu_stream2<layer8_t, layer9_t, relu_config9>(layer8_out, layer135_out);
 
    static hls::stream<layer10_t> layer10_out[N_LAYER_10];
    #pragma HLS STREAM variable=layer10_out depth=1 dim=1
-   nnet::dense_large_stream<layer9_t, layer10_t, config10>(layer9_out, layer10_out, w10, b10);
+   if(!layer9_out[0].empty()) nnet::dense_large_stream<layer9_t, layer10_t, config10>(layer9_out, layer10_out, w10, b10);
 
    static hls::stream<layer11_t> layer11_out[N_LAYER_10];
    #pragma HLS STREAM variable=layer11_out depth=1 dim=1
-   nnet::relu_stream<layer10_t, layer11_t, relu_config11>(layer10_out, layer11_out);
+   if(!layer10_out[0].empty()) nnet::relu_stream<layer10_t, layer11_t, relu_config11>(layer10_out, layer11_out);
 
    static hls::stream<layer12_t> layer12_out[N_LAYER_12];
    #pragma HLS STREAM variable=layer12_out depth=1 dim=1
-   nnet::dense_large_stream<layer11_t, layer12_t, config12>(layer11_out, layer12_out, w12, b12);
+   if(!layer11_out[0].empty()) nnet::dense_large_stream<layer11_t, layer12_t, config12>(layer11_out, layer12_out, w12, b12);
 
    //layer13_t layer13_out[N_LAYER_12];
    //#pragma HLS ARRAY_PARTITION variable=layer13_out complete dim=0
-   nnet::relu_stream2<layer12_t, layer13_t, relu_config13>(layer12_out, layer135_out);
-
-   //nnet::flatten<layer13_t, layer13_t, config135>(layer13_out, layer135_out);
+   if(!layer12_out[0].empty()) nnet::relu_stream<layer12_t, layer13_t, relu_config13>(layer12_out, layer135_out);
 }

@@ -1,15 +1,7 @@
 <AutoPilot:solution xmlns:AutoPilot="com.autoesl.autopilot.solution">
     <config>
         <config_array_partition maximum_size="4096"/>
-        <schedule model="myproject"/>
     </config>
-    <Simulation argv="">
-        <SimFlow name="cosim" setup="false" dumpTrace="all" optimizeCompile="false" ldflags="" mflags="" compiledLibrary="" reduce_diskspace="false" toolName="auto">
-            <Rtl name="systemc" active="false"/>
-            <Rtl name="verilog" active="true"/>
-            <Rtl name="vhdl" active="false"/>
-        </SimFlow>
-    </Simulation>
     <name>
         <value string="solution1"/>
     </name>

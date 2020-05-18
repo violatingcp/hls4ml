@@ -83,7 +83,7 @@ void addrelu(
 }
 
 template<class input_T, class res_T, typename CONFIG_T>
-void flatten(
+void flatten_stream(
 	 hls::stream<input_T>  data[CONFIG_T::n_in],
 	 res_T                 res [CONFIG_T::n_out])
 {
@@ -102,13 +102,13 @@ void flatten(
 	 input_T               data[CONFIG_T::n_in],
 	 res_T                 res [CONFIG_T::n_out])
 {
-  static unsigned pY = 0; 
+    static unsigned pY = 0; 
     for (int ii=0; ii<CONFIG_T::n_in; ii++) {
       #pragma HLS UNROLL
       input_T pData = data[ii];
-      res[pY*CONFIG_T::n_in+ii] = pData;
+      res[pY+ii] = pData;
     }
-    pY = pY + 1;
+    pY += CONFIG_T::n_in;
     if(pY == CONFIG_T::n_iter) pY = 0;
 }
 
