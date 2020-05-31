@@ -378,8 +378,7 @@ void conv_2d_large_cl_nopad(
     if(pY > lShiftY-1 && pX == lShiftX) pPass = true;
     nnet::cnnshift<data_T,res_T,CONFIG_T>(data,layer_in_row,layer_in);
 
-    if(i0 > 0) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in); 
-    if((i0+pX-lShiftX) % CONFIG_T::stride_width == 0 && (i0+pY-lShiftY) % CONFIG_T::stride_height == 0 && pPass) { 
+    if((pX-lShiftX) % CONFIG_T::stride_width == 0 && (pY-lShiftY) % CONFIG_T::stride_height == 0 && pPass) { 
       nnet::dense_large<data_T,res_T,typename CONFIG_T::mult_config>(layer_in,layer_out,weights,biases);
       nnet::relu<res_T,res_T,typename CONFIG_T::relu_config>(layer_out, layer_reluout);
       res_T pPixId = 0;
@@ -395,7 +394,7 @@ void conv_2d_large_cl_nopad(
 }
 
 template<class data_T, class res_T, typename CONFIG_T, typename CONFIG_T2>
-void conv_2d_large_cl_row_stream(bool iReset,
+void conv_2d_large_cl_row_stream(
                                  hls::stream<data_T> data[CONFIG_T::in_width][CONFIG_T::n_chan],
 				 hls::stream<res_T>  res [CONFIG_T::n_split][CONFIG_T::n_filt],
 				 typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt],

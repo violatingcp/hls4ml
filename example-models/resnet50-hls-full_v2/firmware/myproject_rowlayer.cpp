@@ -21,12 +21,12 @@
 #include "myproject_rowlayer.h"
 
 //hls-fpga-machine-learning insert weights
-#include "weights/w2_112.h"
-#include "weights/b2_112.h"
+#include "weights/w2.h"
+#include "weights/b2.h"
 
 void myproject_rowlayer(
-	       hls::stream<input_t>  gpu_0_data_0[N_PIXEL*N_INPUT_1_1],
-	       hls::stream<result_t> layer4_out[N_PIXEL*N_FILT_2]
+	       hls::stream<input_t>  gpu_0_data_0[N_INPUT_2_1][N_INPUT_1_1],
+	       hls::stream<result_t> layer4_out[OUT_WIDTH_2][N_FILT_2]
 	       //model_default_t w2[9408]
 	       //unsigned short &const_size_in_1,
 	       //unsigned short &const_size_out_1
@@ -43,8 +43,8 @@ void myproject_rowlayer(
 #ifndef __SYNTHESIS__
     static bool loaded_weights = false;
     if (!loaded_weights) {
-        nnet::load_weights_from_txt<model_default_t, 56*9408>(w2, "w2_112.txt");
-        nnet::load_weights_from_txt<bias2_t, 56*64>(b2, "b2_112.txt");
+        nnet::load_weights_from_txt<model_default_t, 4704>(w2, "w2.txt");
+        nnet::load_weights_from_txt<bias2_t, 64>(b2, "b2.txt");
         loaded_weights = true;
     }
 #endif
@@ -54,19 +54,5 @@ void myproject_rowlayer(
     // ****************************************
 
     //hls-fpga-machine-learning insert layers
-    static bool lReset = true;
-    /*
-    model_default_t w2p[N_SPLIT][9408];
-    bias2_t b2p[N_SPLIT][64];
-    for(int i0 = 0; i0 < config2::n_pixel; i0++) { 
-      for(int i1 = 0; i1 < 9408; i1++) { 
-       w2p[i0][i1] = w2[i1];
-      }
-      for(int i1 = 0; i1 < 64; i1++) { 
-       b2p[i0][i1] = b2[i1];
-      }
-    }
-    */
-    if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl_row<input_t, result_t, config2P>(lReset, gpu_0_data_0, layer4_out, w2, b2);
-    if(lReset) lReset = false;
+    if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl_row_stream<input_t, result_t, config2M>(gpu_0_data_0, layer4_out, w2, b2);
 }

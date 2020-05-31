@@ -59,7 +59,5 @@ void myproject_layer(
     // ****************************************
 
     //hls-fpga-machine-learning insert layers
-    static bool lReset = true;
-    if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl_small<input_t, result_t, config2>(lReset, gpu_0_data_0, layer4_out, w2, b2);
-    if(lReset) lReset = false;
+    if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl<input_t, result_t, config2>(gpu_0_data_0, layer4_out, w2, b2);
 }

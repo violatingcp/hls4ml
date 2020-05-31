@@ -268,7 +268,7 @@ void myproject(
 
     static hls::stream<layer4_t> layer4_out[N_FILT_2];
     #pragma HLS STREAM variable=layer4_out depth=1 dim=1
-    if(!gpu_0/data_0[0].empty()) nnet::conv_2d_large_cl<input_t, layer4_t, config2>(gpu_0/data_0, layer4_out, w2, b2);
+    if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl<input_t, layer4_t, config2>(gpu_0_data_0, layer4_out, w2, b2);
 
     static hls::stream<layer5_t> layer5_out[N_FILT_5];
     #pragma HLS STREAM variable=layer5_out depth=1 dim=1

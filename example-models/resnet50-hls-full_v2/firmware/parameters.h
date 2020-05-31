@@ -21,12 +21,13 @@
 //hls-fpga-machine-learning insert numbers
 #define N_INPUT_1_1 4
 #define N_INPUT_2_1 224
+#define N_INPUT_2_1M 56
 #define N_INPUT_3_1 224
 #define N_SPLIT  4
 #define N_FILT_2 65
 #define OUT_HEIGHT_2 112
 #define OUT_WIDTH_2 112
-#define OUT_WIDTH_2M 56
+#define OUT_WIDTH_2M 34
 #define OUT_HEIGHT_5 56
 #define OUT_WIDTH_5 56
 #define N_FILT_5 65
