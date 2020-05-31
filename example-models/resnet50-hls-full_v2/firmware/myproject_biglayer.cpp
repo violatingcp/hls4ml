@@ -21,13 +21,13 @@
 #include "myproject_biglayer.h"
 
 //hls-fpga-machine-learning insert weights
-#include "weights/w167.h"
+//#include "weights/w167.h"
 #include "weights/b167.h"
 
 void myproject_biglayer(
 	       hls::stream<input_t>  gpu_0_data_0[N_FILT_164],
-	       hls::stream<result_t> layer4_out[N_FILT_167]
-	       //model_default_t w167[1179648]
+	       hls::stream<result_t> layer4_out[N_FILT_167],
+	       model_default_t w167[1179648]
 ) {
 
     //hls-fpga-machine-learning insert IO
@@ -53,7 +53,5 @@ void myproject_biglayer(
     // ****************************************
 
     //hls-fpga-machine-learning insert layers
-    static bool lReset = true;
     if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl<input_t, result_t, config167>(gpu_0_data_0, layer4_out, w167, b167);
-    if(lReset) lReset = false;
 }

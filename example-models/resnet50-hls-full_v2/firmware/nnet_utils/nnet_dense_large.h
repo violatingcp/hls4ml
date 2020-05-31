@@ -105,14 +105,14 @@ template<class data_T, class res_T, typename CONFIG_T>
 void dense_large_rf_gt_nin_rem0(
     data_T data[CONFIG_T::n_in],
     res_T  res[CONFIG_T::n_out],
-    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
+    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out/2],
     typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
 
-    const int rufactor = MIN(CONFIG_T::reuse_factor, CONFIG_T::n_in * CONFIG_T::n_out);
+    const int rufactor = MIN(CONFIG_T::reuse_factor, CONFIG_T::n_in * CONFIG_T::n_out/2);
     const int multfactor = MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
-    const int multiplier_limit = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out, multfactor);
-    const int block_factor = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out, CONFIG_T::reuse_factor);
-    const int multscale = multiplier_limit/CONFIG_T::n_out;
+    const int multiplier_limit = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/2, multfactor);
+    const int block_factor = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/2, CONFIG_T::reuse_factor);
+    const int multscale = 2*multiplier_limit/CONFIG_T::n_out;
     const int nin = CONFIG_T::n_in;
     const int nout = CONFIG_T::n_out;
 
@@ -150,7 +150,7 @@ void dense_large_rf_gt_nin_rem0(
     ReuseLoop:
     for (int ir = 0; ir < rufactor; ir++) {
         #pragma HLS PIPELINE II=1 rewind
-	typename CONFIG_T::accum_t tmpmult[block_factor];
+	typename CONFIG_T::weight_t tmpmult[block_factor];
         #pragma HLS ARRAY_RESHAPE variable=tmpmult complete
         w_index = ir;
         out_index = outidx[ir]/*outstep*/;
@@ -158,19 +158,21 @@ void dense_large_rf_gt_nin_rem0(
         MultLoop:
         for (int im = 0; im < block_factor; im++) {
             #pragma HLS UNROLL
-            tmpmult[im] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::accum_t>(data[in_index], weights[w_index]);
+            tmpmult[im] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::weight_t>(data[in_index], weights[w_index]);
             w_index += rufactor;
             if (w_index >= CONFIG_T::n_in * CONFIG_T::n_out) break; // check out of bounds
         }
         for (int im = 0; im < block_factor; im++) {
-            acc[out_index] += tmpmult[im];
-            out_index += outscale;
+            acc[out_index] += tmpmult[im].range(7,0);
+            acc[out_index+1] += tmpmult[im].range(25,18);
+            out_index += 2*outscale;
        }
         in_index++;
         if (in_index >= nin) {
             in_index = 0;
             //outstep++; // This causes a huge increase in scheduling and RTL generation times, hence the above workaround.
         }
+
     }
 
     // Cast to "res_t" type
@@ -185,14 +187,14 @@ template<class data_T, class res_T, typename CONFIG_T>
 void dense_large_rf_gt_nin(
     data_T data[CONFIG_T::n_in],
     res_T  res[CONFIG_T::n_out],
-    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
+    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out/2],
     typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
 
     const int rufactor = CONFIG_T::reuse_factor;
     const int multfactor = MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
     const int multiplier_limit = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out, multfactor);
-    const int block_factor = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out, CONFIG_T::reuse_factor);
-    const int multscale = multiplier_limit/CONFIG_T::n_out;
+    const int block_factor = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/2, CONFIG_T::reuse_factor);
+    const int multscale = 2*multiplier_limit/CONFIG_T::n_out;
     const int nin = CONFIG_T::n_in;
     const int nout = CONFIG_T::n_out;
 
@@ -216,7 +218,7 @@ void dense_large_rf_gt_nin(
     ReuseLoop:
     for (int ir = 0; ir < rufactor; ir++) {
         #pragma HLS PIPELINE II=1 rewind
-        typename CONFIG_T::accum_t tmpmult[block_factor];
+        typename CONFIG_T::weight_t tmpmult[block_factor];
         #pragma HLS ARRAY_PARTITION variable=tmpmult complete
 
         MultLoop:
@@ -225,7 +227,7 @@ void dense_large_rf_gt_nin(
             int w_index = ir + rufactor * im;
             int in_index = w_index % nin;
             if (w_index >= CONFIG_T::n_in*CONFIG_T::n_out) continue; // check out of bounds
-            tmpmult[im] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::accum_t>(data[in_index], weights[w_index]);
+            tmpmult[im] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::weight_t>(data[in_index], weights[w_index]);
         }
 
         typename CONFIG_T::accum_t mult[multiplier_limit];
@@ -241,9 +243,10 @@ void dense_large_rf_gt_nin(
         for (int im = 0; im < block_factor; im++) {
             #pragma HLS UNROLL
             int w_index = ir + rufactor * im;
-            int out_index = w_index / multfactor;
+            int out_index = 2*w_index / multfactor;
             if (out_index >= multiplier_limit) continue; // check out of bounds
-            mult[out_index] += tmpmult[im];
+            mult[out_index]   += tmpmult[im].range(7,0);
+            mult[out_index+1] += tmpmult[im].range(25,18);
         }
 
         AccumLoop2:
