@@ -21,7 +21,7 @@
 //hls-fpga-machine-learning insert numbers
 #define N_INPUT_1_1 4
 #define N_INPUT_2_1 224
-#define N_INPUT_2_1M 62
+#define N_INPUT_2_1M 63
 #define N_INPUT_3_1 224
 #define N_SPLIT  4
 #define N_FILT_2 65
@@ -473,6 +473,7 @@ struct config2 : nnet::conv2d_config {
     static const unsigned out_width = OUT_WIDTH_2;
     static const unsigned reuse_factor = 16;
     static const unsigned n_zeros = 0;
+    static const unsigned n_split = N_SPLIT;
     static const bool store_weights_in_bram = false;
     typedef ap_uint<8> accum_t;
     typedef bias2_t bias_t;
@@ -499,7 +500,7 @@ struct config2M : nnet::conv2d_config {
     static const unsigned reuse_factor = 16;
     static const unsigned n_zeros = 0;
     static const bool store_weights_in_bram = false;
-    typedef ap_fixed<8,8> accum_t;
+    typedef ap_uint<8> accum_t;
     typedef bias2_t bias_t;
     typedef model_default_t weight_t;
     typedef config2_mult mult_config;

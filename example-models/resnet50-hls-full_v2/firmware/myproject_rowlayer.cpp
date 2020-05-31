@@ -26,19 +26,14 @@
 
 void myproject_rowlayer(
 	       hls::stream<input_t>  gpu_0_data_0[N_INPUT_2_1][N_INPUT_1_1],
-	       hls::stream<result_t> layer4_out[OUT_WIDTH_2][N_FILT_2]
-	       //model_default_t w2[9408]
-	       //unsigned short &const_size_in_1,
-	       //unsigned short &const_size_out_1
+	       hls::stream<result_t> layer4_out[N_SPLIT][N_FILT_2]
 ) {
 
     //hls-fpga-machine-learning insert IO
     #pragma HLS INTERFACE axis port=gpu_0_data_0,layer4_out 
     #pragma HLS DATAFLOW 
-    //#pragma HLS interface bram port=w2
-
-  //const_size_in_1 = N_INPUT_1_1*N_INPUT_2_1*N_INPUT_3_1;
-  //const_size_out_1 = N_LAYER_175;
+   //const_size_in_1 = N_INPUT_1_1*N_INPUT_2_1*N_INPUT_3_1;
+   //const_size_out_1 = N_LAYER_175;
 
 #ifndef __SYNTHESIS__
     static bool loaded_weights = false;
@@ -54,5 +49,5 @@ void myproject_rowlayer(
     // ****************************************
 
     //hls-fpga-machine-learning insert layers
-    if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl_row_stream<input_t, result_t, config2M>(gpu_0_data_0, layer4_out, w2, b2);
+    if(!gpu_0_data_0[0][0].empty()) nnet::conv_2d_large_cl_row_stream<input_t, result_t, config2, config2M>(gpu_0_data_0, layer4_out, w2, b2);
 }

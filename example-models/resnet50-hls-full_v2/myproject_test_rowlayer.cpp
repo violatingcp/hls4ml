@@ -46,19 +46,19 @@ int main(int argc, char **argv)
   int e = 0;
 
   bool iReset=true;
-  hls::stream<input_t>  inputstream[N_PIXEL*N_INPUT_1_1];
-  hls::stream<result_t> outputstream[N_PIXEL*N_FILT_2];//175];
-  //model_default_t w2[config2::mult_config::n_in*config2::mult_config::n_out]; 
-  //model_default_t w167[config167::mult_config::n_in*config167::mult_config::n_out]; 
+  hls::stream<input_t>  inputstream[N_INPUT_2_1][N_INPUT_1_1];
+  hls::stream<result_t> outputstream[N_SPLIT][N_FILT_2];
   
   input_t pTmp = 0; 
-  for(int i1 = 0; i1 < N_PIXEL; i1++) { 
-    for(int i0 = 0; i0 < N_INPUT_1_1; i0++) { 
-      inputstream[i1*N_INPUT_1_1+i0].write(pTmp);
+  for(int i2 = 0; i2 < 20; i2++) { 
+    for(int i1 = 0; i1 < N_INPUT_2_1; i1++) { 
+      for(int i0 = 0; i0 < N_INPUT_1_1; i0++) { 
+	inputstream[i1][i0].write(pTmp);
+      }
+      pTmp = pTmp+1;
     }
-    pTmp = pTmp+1;
+    myproject_rowlayer(inputstream,outputstream);
   }
-  myproject_rowlayer(inputstream,outputstream);
   std::cout << "INFO: Saved inference results to file: " << RESULTS_LOG << std::endl;
 
   return 0;
