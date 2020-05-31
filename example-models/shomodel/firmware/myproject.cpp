@@ -104,43 +104,58 @@ void myproject(
        //} 
       }
       image_stream(iReset,sInput,layer135_out,w8);
-      if(!layer135_out[0].empty()) { 
-       for(unsigned i1 = 0; i1 < N_OUTPUTS_4; i1++) {
-        layer136_out[pY+i1] = layer135_out[i1];//.write(layer135_out[i1].read());
-       }
-       pY += N_LAYER_12;
-      } 
-    iReset = true;
+      if(!layer135_out[0].empty()) nnet::flatten2<layer13_t,layer13_t,config135>(layer135_out,layer136_out); 
+      iReset = true;
    }
 
    layer14_t layer14_out[N_LAYER_14];
    #pragma HLS ARRAY_PARTITION variable=layer14_out complete
-   if(!layer136_out[(N_LAYER_12-1)*N_OUTPUTS_4].empty()) nnet::dense_large<layer13_t, layer14_t, config14>(layer136_out, layer14_out, w14, b14);
+   //if(!layer136_out[(N_LAYER_12-1)*N_OUTPUTS_4].empty()) 
+   nnet::dense_large<layer13_t, layer14_t, config14>(layer136_out, layer14_out, w14, b14);
    
-   hls::stream<layer14_t> layer14s_out[N_LAYER_14];
-   #pragma HLS STREAM variable=layer14_out depth=1 dim=1
-   for(int i0 = 0; i0 < N_LAYER_14; i0++) { 
-    #pragma HLS UNROLL
-    layer14s_out[i0].write(layer14_out[i0]); 
-   }
+   layer15_t layer15_out[N_LAYER_14];
+   #pragma HLS ARRAY_PARTITION variable=layer15_out complete
+   nnet::relu<layer14_t, layer15_t, relu_config15>(layer14_out, layer15_out);
 
-   hls::stream<layer15_t> layer15_out[N_LAYER_14];
-   #pragma HLS STREAM variable=layer15_out depth=1 dim=1
-   if(!layer14_out[0].empty()) nnet::relu_stream<layer14_t, layer15_t, relu_config15>(layer14_out, layer15_out);
+   layer16_t layer16_out[N_LAYER_16];
+   #pragma HLS ARRAY_PARTITION variable=layer16_out complete
+   nnet::dense_large<layer15_t, layer16_t, config16>(layer15_out, layer16_out, w16, b16);
 
-   hls::stream<layer16_t> layer16_out[N_LAYER_16];
-   #pragma HLS STREAM variable=layer16_out depth=1 dim=1
-   if(!layer15_out[0].empty()) nnet::dense_large_stream<layer15_t, layer16_t, config16>(layer15_out, layer16_out, w16, b16);
+   layer17_t layer17_out[N_LAYER_16];
+   #pragma HLS ARRAY_PARTITION variable=layer17_out complete
+   nnet::relu<layer16_t, layer17_t, relu_config17>(layer16_out, layer17_out);
 
-   hls::stream<layer17_t> layer17_out[N_LAYER_16];
-   #pragma HLS STREAM variable=layer17_out depth=1 dim=1
-   if(!layer16_out[0].empty()) nnet::relu_stream<layer16_t, layer17_t, relu_config17>(layer16_out, layer17_out);
+   layer18_t layer18_out[N_LAYER_18];
+   #pragma HLS ARRAY_PARTITION variable=layer18_out complete
+   nnet::dense_large<layer17_t, layer18_t, config18>(layer17_out, layer18_out, w18, b18);
 
-  hls::stream<layer18_t> layer18_out[N_LAYER_18];
-  #pragma HLS STREAM variable=layer18_out depth=1 dim=1
-  if(!layer17_out[0].empty()) nnet::dense_large_stream<layer17_t, layer18_t, config18>(layer17_out, layer18_out, w18, b18);
+   nnet::relu<layer18_t, result_t, relu_config19>(layer18_out, layer19_out);
 
-  if(!layer18_out[0].empty()) nnet::relu_stream2<layer18_t, result_t, relu_config19>(layer18_out, layer19_out);
+   //hls::stream<layer14_t> layer14s_out[N_LAYER_14];
+   //#pragma HLS STREAM variable=layer14_out depth=1 dim=1
+   //for(int i0 = 0; i0 < N_LAYER_14; i0++) { 
+   // #pragma HLS UNROLL
+   // layer14s_out[i0].write(layer14_out[i0]); 
+   //}
+
+   //hls::stream<layer15_t> layer15_out[N_LAYER_14];
+   //#pragma HLS STREAM variable=layer15_out depth=1 dim=1
+   //if(!layer14s_out[0].empty()) nnet::relu_stream<layer14_t, layer15_t, relu_config15>(layer14s_out, layer15_out);
+
+   //hls::stream<layer16_t> layer16_out[N_LAYER_16];
+   //#pragma HLS STREAM variable=layer16_out depth=1 dim=1
+   //if(!layer15_out[0].empty()) nnet::dense_large_stream<layer15_t, layer16_t, config16>(layer15_out, layer16_out, w16, b16);
+
+   //hls::stream<layer17_t> layer17_out[N_LAYER_16];
+   //#pragma HLS STREAM variable=layer17_out depth=1 dim=1
+   //if(!layer16_out[0].empty()) nnet::relu_stream<layer16_t, layer17_t, relu_config17>(layer16_out, layer17_out);
+
+  //hls::stream<layer18_t> layer18_out[N_LAYER_18];
+  //#pragma HLS STREAM variable=layer18_out depth=1 dim=1
+  //if(!layer17_out[0].empty()) nnet::dense_large_stream<layer17_t, layer18_t, config18>(layer17_out, layer18_out, w18, b18);
+  //if(!layer18_out[0].empty()) nnet::relu_stream<layer18_t, result_t, relu_config19>(layer18_out, layer19_out);
+
+  //nnet::relu_stream<layer18_t, result_t, relu_config19>(layer18_out, layer19_out);
 }
 
 void image_stream(bool iReset,	      

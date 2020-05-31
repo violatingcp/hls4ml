@@ -296,6 +296,20 @@ class HLSModel(object):
             quant_data = np.where(data > 0.5, ones, np.where(data <= -0.5, -ones, zeros))
         return quant_data
 
+    def  merge_weights(self, data):
+        quant_data = data.astype(np.int8)
+        quant_data = np.ones(data.shape)
+        quant_data = np.moveaxis(quant_data,len(quant_data.shape)-1,0)
+        #print(data.shape,quant_data[0])
+        shape=list(quant_data.shape)
+        shape[0]=shape[0]/2
+        data_out = np.zeros((shape),dtype=int)
+        #print(data_out.shape)
+        for i0 in range(quant_data.shape[0]/2):
+            data_out[i0] = quant_data[2*i0] + quant_data[2*i0+1]*262144
+        data_out = np.moveaxis(data_out,0,len(data_out.shape)-1)
+        return data_out
+
     def next_layer(self):
         self.index += 1
         return self.index
@@ -407,7 +421,7 @@ class ArrayVariable(Variable):
 
     def size_cpp_cnn(self):
         if len(self.dim_names) > 1:
-            return  self.dim_names[2]
+            return  self.dim_names[0]
         return  self.dim_names[0]
 
 class InplaceVariable():
@@ -637,7 +651,7 @@ class Layer(object):
         precision = None
         type_name = None
         if data is None:
-            data = np.zeros(self.get_output_variable().shape[-1])
+            data = np.zeros(self.get_output_variable().shape[0])
             precision = 'ap_uint<1>'
             type_name = 'bias{index}_t'
             quantize = 0 # Don't quantize non-existant bias
@@ -659,7 +673,7 @@ class Layer(object):
         elif isinstance(data, six.string_types):
             data = self.model.get_weights_data(self.name, data)
 
-        if quantize > 0:
+        if quantize > 0 and quantize < 4:
             data = self.model.quantize_data(data, quantize)
             if quantize == 1:
                 precision = 'ap_uint<1>'
@@ -667,6 +681,8 @@ class Layer(object):
             elif quantize == 2 or quantize == 3:
                 precision = 'ap_int<2>'
                 type_name = name + '{index}_t'
+        #if quantize > 4:
+        data = self.model.merge_weights(data)
 
         if compression:
             rf = self.model.config.get_reuse_factor(self)
@@ -948,10 +964,9 @@ class Conv2D(Layer):
             shapeinternal = [self.attributes['out_height'], self.attributes['out_width']]
             diminternal   = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
         else:
-            shape = [self.attributes['out_height'], self.attributes['out_width'], self.attributes['n_filt']]
-            dims = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
-            #shape = [self.attributes['n_filt']]
-            #dims = ['N_FILT_{}'.format(self.index)]
+            shape = [self.attributes['n_filt'], self.attributes['out_height'], self.attributes['out_width']]
+            dims = ['N_FILT_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
+            print("Conv -shape",shape)
             shapeinternal = [self.attributes['out_height'], self.attributes['out_width']]
             diminternal   = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
         self.is1x1 = False
@@ -1037,6 +1052,7 @@ class Conv2D(Layer):
 
         if self.model.config.is_resource_strategy(self):
             params['config_t'] = 'config{}_mult'.format(self.index)
+            params['config_t_relu'] = 'config{}_relu'.format(self.index)
             conv_config = self._config_template[0].format(**params)
             
             mult_params = self._default_config_params()
@@ -1129,7 +1145,7 @@ class Conv2DMerge(Layer):
 
 
         if self.model.config.is_resource_strategy(self):
-            params['config_t'] = 'config{}_relu'.format(self.index)
+            params['config_t_relu'] = 'config{}_relu'.format(self.index)
             conv_config = self._config_template[0].format(**params)
 
             relu_params = self._default_config_params()

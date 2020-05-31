@@ -220,7 +220,7 @@ struct relu_config13 : nnet::activ_config {
 struct config135 : nnet::flatten_config {
     static const unsigned n_in = N_LAYER_12;
     static const unsigned n_out = N_OUTPUTS_4*N_LAYER_12;
-    static const unsigned n_iter = 1;
+    static const unsigned n_iter = N_OUTPUTS_4;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_parallel;
 };

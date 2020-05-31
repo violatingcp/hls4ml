@@ -78,6 +78,7 @@ conv2d_config_template = """struct config{index} : nnet::conv2d_config {{
     typedef {bias_t} bias_t;
     typedef {weight_t} weight_t;
     typedef {config_t} mult_config;
+    typedef {config_t_relu} relu_config;
 }};\n"""
 
 
@@ -120,8 +121,7 @@ conv2dmerge_config_template = """struct config{index} : nnet::conv2d_config {{
     typedef {bias_t} bias_t;
     typedef {weight_t} weight_t;
     typedef {config_t} mult_config;
-    typedef {config_t} norm_config;
-    typedef {config_t} relu_config;
+    typedef {config_t_relu} relu_config;
 }};\n"""
 
 activ_config_template = """struct {type}_config{index} : nnet::activ_config {{
@@ -144,10 +144,13 @@ pooling2d_config_template = """struct config{index} : nnet::pooling2d_config {{
     static const unsigned in_height = {in_height};
     static const unsigned in_width = {in_width};
     static const unsigned n_filt = {n_filt};
+    static const unsigned n_chan = {n_filt};
     static const unsigned stride_height = {stride_height};
     static const unsigned stride_width = {stride_width};
     static const unsigned pool_height = {pool_height};
     static const unsigned pool_width = {pool_width};
+    static const unsigned filt_height = {pool_height};
+    static const unsigned filt_width = {pool_width};
     static const unsigned out_height = {out_height};
     static const unsigned out_width = {out_width};
     static const unsigned pad_top = {pad_top};
@@ -202,7 +205,7 @@ conv2dmerge_function_template = 'nnet::conv_2d_merge_{strategy}_{data_format}<{i
 activ_function_template = 'nnet::{activation}<{input_t}, {output_t}, {config}>({input}, {output});'
 param_activ_function_template = 'nnet::{activation}<{input_t}, {output_t}, {config}>({input}, {param}, {output});'
 pooling1d_function_template = 'nnet::pooling1d<{input_t}, {config}>({input}, {output});'
-pooling2d_function_template = 'nnet::pooling2d_{data_format}{1x1}<{input_t}, {config}>({input}, {output});'
+pooling2d_function_template = 'nnet::pooling2d_{data_format}{1x1}<{input_t}, {output_t}, {config}>({input}, {output});'
 merge_function_template = 'nnet::{merge}<{input1_t}, {input2_t}, {output_t}, {config}>({input1}, {input2}, {output});'
 split_function_template = 'nnet::split<{input_t}, {output_t}, {config}>({input}, {output1}, {output2});'
 

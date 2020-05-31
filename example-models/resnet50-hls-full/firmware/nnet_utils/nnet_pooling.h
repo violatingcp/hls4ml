@@ -236,6 +236,7 @@ void pool_2d_large_stream(
 	  pool[i1] = layer_in[i1*CONFIG_T::n_filt+i0];
 	}
 	res[i0].write(pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool));
+	std::cout << "====> Pool me once Pool me twice " << pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool) << std::endl;
       }
       nnet::shift_right_stride_2dNew<data_T,data_T,CONFIG_T>(pX,pY,layer_in_row,layer_in);//check stride
     }    
