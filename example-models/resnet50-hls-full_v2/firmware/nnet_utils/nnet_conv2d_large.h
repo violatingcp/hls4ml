@@ -392,8 +392,76 @@ void conv_2d_large_cl_nopad(
     }
 }
 
+template<unsigned iX,class data_T, typename CONFIG_T>
+void split_inputs(//unsigned iX, 
+		  hls::stream<data_T> data[CONFIG_T::in_width][CONFIG_T::n_chan_in],
+		  hls::stream<data_T> tmpdata[CONFIG_T::n_chan_in],
+		  data_T tmpdata_arr[CONFIG_T::n_split-1][CONFIG_T::filt_width-1][CONFIG_T::n_chan_in]
+		  ) { 
+
+    #pragma HLS PIPELINE
+    static const unsigned nrange = CONFIG_T::in_width/CONFIG_T::n_split;
+    for(int i0 = 0; i0 < nrange; i0++) {
+      if(i0 < CONFIG_T::pad_left && iX == 0) {
+	for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
+         #pragma HLS UNROLL
+	 if(i2 == 0) { 
+	  data_T pTmp = 1; 
+	  tmpdata[i2].write(pTmp);
+	 } else { 
+	  data_T pTmp = 0; 
+	  tmpdata[i2].write(pTmp);
+	 }
+	} 
+      } else {
+      for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
+	#pragma HLS UNROLL
+	data_T pData = data[iX*nrange+i0-CONFIG_T::pad_left][i2].read();
+	tmpdata[i2].write(pData);
+	if(i0 <  CONFIG_T::filt_width-1 && iX > 0) tmpdata_arr[iX-1][i0][i2] = pData; 
+      }
+     }
+    }
+}
+template<unsigned iX, class data_T, typename CONFIG_T>
+  void fill_ends(//unsigned iX, 
+	       hls::stream<data_T> data[CONFIG_T::in_width][CONFIG_T::n_chan_in],
+	       hls::stream<data_T> tmpdata[CONFIG_T::n_chan_in],
+	       data_T tmpdata_arr[CONFIG_T::n_split-1][CONFIG_T::filt_width-1][CONFIG_T::n_chan_in]
+	       ) { 
+
+  #pragma HLS PIPELINE
+  for(int i0 = 0; i0 < CONFIG_T::filt_width-1; i0++) {
+    if(iX == CONFIG_T::n_split-1) {
+      if(i0 < CONFIG_T::pad_left) { 
+	for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
+	  data_T pData = data[CONFIG_T::in_width-CONFIG_T::pad_left][i2].read();
+	  tmpdata[i2].write(pData);
+	}
+      } else { 
+	for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
+         #pragma HLS UNROLL
+	  if(i2 == 0) { 
+	    data_T pTmp = 1; 
+	    tmpdata[i2].write(pTmp);
+	  } else { 
+	    data_T pTmp = 0; 
+	    tmpdata[i2].write(pTmp);
+	  }
+	}
+      }
+    } else { 
+      for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) {
+	tmpdata[i2].write(tmpdata_arr[iX][i0][i2]);
+      } 
+    }
+  }
+}
+     
+
+
 template<class data_T, class res_T, typename CONFIG_T, typename CONFIG_T2>
-void conv_2d_large_cl_row_stream(bool iReset,
+void conv_2d_large_cl_row_stream(
                                  hls::stream<data_T> data[CONFIG_T::in_width][CONFIG_T::n_chan_in],
 				 hls::stream<res_T>  res [CONFIG_T::n_split][CONFIG_T::n_filt_in],
 				 typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/2],
@@ -405,43 +473,57 @@ void conv_2d_large_cl_row_stream(bool iReset,
 
   static const unsigned nrange = CONFIG_T::in_width/CONFIG_T::n_split;
   static const unsigned ntotal = nrange+CONFIG_T::filt_width-1;
+
   hls::stream<data_T> tmpdata[CONFIG_T::n_split][CONFIG_T::n_chan_in];
   #pragma HLS STREAM variable=tmpdata depth=ntotal dim=2
 
-  for(int i0 = 0; i0 < CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right; i0++) {
-    unsigned pIndex = i0/nrange;
-    if(pIndex > CONFIG_T::n_split-1) pIndex = CONFIG_T::n_split-1;                                                                                                                                                             
-    if(i0 < CONFIG_T::pad_left) {
-      for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
-       #pragma HLS UNROLL
-       if(i2 == 0) { 
-         data_T pTmp = 1; 
-         tmpdata[pIndex][i2].write(pTmp);
-       } else { 
-         data_T pTmp = 0; 
-	 tmpdata[pIndex][i2].write(pTmp);
-       }
-      } 
-    } else if(i0 > ( CONFIG_T::in_width+CONFIG_T::pad_left-1) ) { 
-      for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
-       #pragma HLS UNROLL
-       if(i2 == 0) { 
-         data_T pTmp = 1; 
-         tmpdata[pIndex][i2].write(pTmp);
-       } else { 
-         data_T pTmp = 0; 
-	 tmpdata[pIndex][i2].write(pTmp);
-       }
-      } 
-    } else { 
-      for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
-	#pragma HLS UNROLL
-	data_T pData = data[i0-CONFIG_T::pad_left][i2].read();
-	tmpdata[pIndex][i2].write(pData);
-	if(i0 % nrange <  CONFIG_T::filt_width && i0 > nrange) tmpdata[pIndex-1][i2].write(pData);
+  data_T tmpdata_arr[CONFIG_T::n_split][ntotal][CONFIG_T::n_chan_in];
+  #pragma HLS ARRAY_RESHAPE variable=tmpdata_arr complete dim=0
+
+  for(int i0 = 0; i0 < CONFIG_T::pad_left; i0++) { 
+    for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
+      tmpdata_arr[0][i0][i2] = 0;
+    }
+  } 
+  for(int i0 = 0; i0 < CONFIG_T::pad_right; i0++) { 
+    for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
+      tmpdata_arr[CONFIG_T::n_split-1][ntotal-CONFIG_T::pad_right+i0][i2] = 0;
+    }
+  } 
+  for(int i0 = 0; i0 < CONFIG_T::in_width; i0++) { 
+    unsigned pIndex = (CONFIG_T::pad_left+i0)/nrange;
+    if(pIndex == CONFIG_T::n_split) pIndex =  CONFIG_T::n_split-1;
+    unsigned pId    = (CONFIG_T::pad_left+i0) - pIndex*nrange;
+    for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
+      tmpdata_arr[pIndex][pId][i2] = data[i0][i2].read();
+    }
+  }
+  for(int i0     = 0; i0 < CONFIG_T::n_split-1; i0++) { 
+    for(int i1   = 0; i1 < CONFIG_T::filt_width-1; i1++) {
+      for(int i2 = 0; i2 < CONFIG_T::n_chan_in;  i2++) {
+	tmpdata_arr[i0][nrange+i1][i2] = tmpdata_arr[i0+1][i1][i2];
       }
     }
   }
+  for(int i1   = 0; i1 < ntotal; i1++) {
+    for(int i0     = 0; i0 < CONFIG_T::n_split;      i0++) {
+      for(int i2 = 0; i2 < CONFIG_T::n_chan_in;  i2++) {
+	tmpdata[i0][i2].write(tmpdata_arr[i0][nrange+i1][i2]);
+      }
+    }
+  } 
+  //for(unsigned iX = 0; iX < CONFIG_T::n_split; iX++) { 
+  //#pragma HLS UNROLL
+  ///split_inputs<0,data_T,CONFIG_T>(data,tmpdata[0],tmpdata_arr);
+  //split_inputs<1,data_T,CONFIG_T>(data,tmpdata[1],tmpdata_arr);
+  //split_inputs<2,data_T,CONFIG_T>(data,tmpdata[2],tmpdata_arr);
+  //split_inputs<3,data_T,CONFIG_T>(data,tmpdata[3],tmpdata_arr);
+  //fill_ends<0,data_T,CONFIG_T>(data,tmpdata[0],tmpdata_arr);
+  //fill_ends<1,data_T,CONFIG_T>(data,tmpdata[1],tmpdata_arr);
+  //fill_ends<2,data_T,CONFIG_T>(data,tmpdata[2],tmpdata_arr);
+  //fill_ends<3,data_T,CONFIG_T>(data,tmpdata[3],tmpdata_arr);
+  //}
+  
   for(int i1 = 0; i1 < ntotal; i1++) {
     conv_2d_large_cl_nopad<1,data_T,res_T,CONFIG_T2>(tmpdata[0],res[0],weights,biases);
     conv_2d_large_cl_nopad<2,data_T,res_T,CONFIG_T2>(tmpdata[1],res[1],weights,biases);

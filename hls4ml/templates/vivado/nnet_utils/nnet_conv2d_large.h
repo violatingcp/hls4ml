@@ -122,22 +122,22 @@ template<class data_T, class res_T, typename CONFIG_T>
   void fill_image(
 		  data_T input[CONFIG_T::n_filt],
 		  res_T  pPixId,
-		  hls::stream<res_T>  data [CONFIG_T::n_filt]) { //CONFIG_T::n_filt2
+		  hls::stream<res_T>  data [CONFIG_T::n_filt_in]) { //CONFIG_T::n_filt2
   #pragma HLS PIPELINE
-  for(unsigned i2 = 0; i2 < CONFIG_T::n_filt; i2++) {
+  for(unsigned i2 = 0; i2 < CONFIG_T::n_filt_in; i2++) {
    #pragma HLS UNROLL
    if(i2 == 0) { 
     data[i2].write(pPixId);
    } else { 
-    data[i2].write(input[i2]);
+    data[i2].write(input[i2-1]);
    }  
   }
 }
 
 template<class data_T, class res_T, typename CONFIG_T>
 void conv_2d_large_cl_1x1(
-			      hls::stream<data_T> data[CONFIG_T::n_chan],
-			      hls::stream<res_T>  res [CONFIG_T::n_filt], //Filt Width clocks to read output
+			      hls::stream<data_T> data[CONFIG_T::n_chan_in],
+			      hls::stream<res_T>  res [CONFIG_T::n_filt_in], //Filt Width clocks to read output
 			      typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/2],
 			      typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
 			      ) {
@@ -160,7 +160,7 @@ void conv_2d_large_cl_1x1(
     }
     for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) {
       #pragma HLS UNROLL
-      layer_in[i0] =  data[i0].read();
+      layer_in[i0] =  data[1+i0].read();
     }
     if((pX+1) % CONFIG_T::stride_width == 0 && (pY+1) % CONFIG_T::stride_height == 0) { 
       nnet::dense_large<data_T,res_T,typename CONFIG_T::mult_config>(layer_in,layer_out,weights,biases);
@@ -178,8 +178,8 @@ void conv_2d_large_cl_1x1(
 
 template<class data_T, class res_T, typename CONFIG_T>
   void conv_2d_large_cl_stride(
-			       hls::stream<data_T> data[CONFIG_T::n_chan],
-			       hls::stream<res_T>  res [CONFIG_T::n_filt], //Filt Width clocks to read output
+			       hls::stream<data_T> data[CONFIG_T::n_chan_in],
+			       hls::stream<res_T>  res [CONFIG_T::n_filt_in], //Filt Width clocks to read output
 			       typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/2],
 			       typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
 			       ) {
@@ -232,7 +232,7 @@ template<class data_T, class res_T, typename CONFIG_T>
 
 
 template<class data_T, class res_T, typename CONFIG_T>
-  void cnnshift(hls::stream<data_T> data[CONFIG_T::n_chan],
+  void cnnshift(hls::stream<data_T> data[CONFIG_T::n_chan_in],
 		ap_shift_reg<data_T, (CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right)> layer_in_row[(CONFIG_T::filt_height)-1][CONFIG_T::n_chan],
 		data_T output[(CONFIG_T::filt_height*CONFIG_T::filt_width)*(CONFIG_T::n_chan)]) { 
 
@@ -285,9 +285,9 @@ template<class data_T, class res_T, typename CONFIG_T>
 
 template<class data_T, class res_T, typename CONFIG_T>
 void conv_2d_large_cl(
-		      hls::stream<data_T> data[CONFIG_T::n_chan],
-		      hls::stream<res_T>  res [CONFIG_T::n_filt], 
-		      typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt],
+		      hls::stream<data_T> data[CONFIG_T::n_chan_in],
+		      hls::stream<res_T>  res [CONFIG_T::n_filt_in], 
+		      typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/2],
 		      typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
 		      ) {
   
@@ -343,9 +343,9 @@ void conv_2d_large_cl(
 
 template<unsigned id,class data_T, class res_T, typename CONFIG_T>
 void conv_2d_large_cl_nopad(
-			    hls::stream<data_T> data[CONFIG_T::n_chan],
-			    hls::stream<res_T>  res [CONFIG_T::n_filt], //Filt Width clocks to read output
-			    typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt],
+			    hls::stream<data_T> data[CONFIG_T::n_chan_in],
+			    hls::stream<res_T>  res [CONFIG_T::n_filt_in], //Filt Width clocks to read output
+			    typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/2],
 			    typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
 			    ) {
   
@@ -378,8 +378,7 @@ void conv_2d_large_cl_nopad(
     if(pY > lShiftY-1 && pX == lShiftX) pPass = true;
     nnet::cnnshift<data_T,res_T,CONFIG_T>(data,layer_in_row,layer_in);
 
-    if(i0 > 0) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in); 
-    if((i0+pX-lShiftX) % CONFIG_T::stride_width == 0 && (i0+pY-lShiftY) % CONFIG_T::stride_height == 0 && pPass) { 
+    if((pX-lShiftX) % CONFIG_T::stride_width == 0 && (pY-lShiftY) % CONFIG_T::stride_height == 0 && pPass) { 
       nnet::dense_large<data_T,res_T,typename CONFIG_T::mult_config>(layer_in,layer_out,weights,biases);
       nnet::relu<res_T,res_T,typename CONFIG_T::relu_config>(layer_out, layer_reluout);
       res_T pPixId = 0;
@@ -396,9 +395,9 @@ void conv_2d_large_cl_nopad(
 
 template<class data_T, class res_T, typename CONFIG_T, typename CONFIG_T2>
 void conv_2d_large_cl_row_stream(bool iReset,
-                                 hls::stream<data_T> data[CONFIG_T::in_width][CONFIG_T::n_chan],
-				 hls::stream<res_T>  res [CONFIG_T::n_split][CONFIG_T::n_filt],
-				 typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt],
+                                 hls::stream<data_T> data[CONFIG_T::in_width][CONFIG_T::n_chan_in],
+				 hls::stream<res_T>  res [CONFIG_T::n_split][CONFIG_T::n_filt_in],
+				 typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/2],
 				 typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
 				 ) {
 
@@ -407,14 +406,14 @@ void conv_2d_large_cl_row_stream(bool iReset,
 
   static const unsigned nrange = CONFIG_T::in_width/CONFIG_T::n_split;
   static const unsigned ntotal = nrange+CONFIG_T::filt_width-1;
-  hls::stream<data_T> tmpdata[CONFIG_T::n_split][CONFIG_T::n_chan];
+  hls::stream<data_T> tmpdata[CONFIG_T::n_split][CONFIG_T::n_chan_in];
   #pragma HLS STREAM variable=tmpdata depth=ntotal dim=2
 
   for(int i0 = 0; i0 < CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right; i0++) {
     unsigned pIndex = i0/nrange;
     if(pIndex > CONFIG_T::n_split-1) pIndex = CONFIG_T::n_split-1;                                                                                                                                                             
     if(i0 < CONFIG_T::pad_left) {
-      for(int i2 = 0; i2 < CONFIG_T::n_chan+1; i2++) { 
+      for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
        #pragma HLS UNROLL
        if(i2 == 0) { 
          data_T pTmp = 1; 
@@ -425,7 +424,7 @@ void conv_2d_large_cl_row_stream(bool iReset,
        }
       } 
     } else if(i0 > ( CONFIG_T::in_width+CONFIG_T::pad_left-1) ) { 
-      for(int i2 = 0; i2 < CONFIG_T::n_chan+1; i2++) { 
+      for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
        #pragma HLS UNROLL
        if(i2 == 0) { 
          data_T pTmp = 1; 
@@ -436,7 +435,7 @@ void conv_2d_large_cl_row_stream(bool iReset,
        }
       } 
     } else { 
-      for(int i2 = 0; i2 < CONFIG_T::n_chan+1; i2++) { 
+      for(int i2 = 0; i2 < CONFIG_T::n_chan_in; i2++) { 
 	#pragma HLS UNROLL
 	data_T pData = data[i0-CONFIG_T::pad_left][i2].read();
 	tmpdata[pIndex][i2].write(pData);

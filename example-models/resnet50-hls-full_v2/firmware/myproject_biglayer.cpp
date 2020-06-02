@@ -21,19 +21,18 @@
 #include "myproject_biglayer.h"
 
 //hls-fpga-machine-learning insert weights
-//#include "weights/w167.h"
+#include "weights/w167.h"
 #include "weights/b167.h"
 
 void myproject_biglayer(
 	       hls::stream<input_t>  gpu_0_data_0[N_FILT_164],
-	       hls::stream<result_t> layer4_out[N_FILT_167],
-	       model_default_t w167[1179648]
+	       hls::stream<result_t> layer4_out[N_FILT_167]
 ) {
 
     //hls-fpga-machine-learning insert IO
     #pragma HLS INTERFACE axis port=gpu_0_data_0,layer4_out 
     #pragma HLS DATAFLOW 
-    #pragma HLS interface bram port=w167
+   //#pragma HLS interface bram port=w167
 
   //const_size_in_1 = N_INPUT_1_1*N_INPUT_2_1*N_INPUT_3_1;
   //const_size_out_1 = N_LAYER_175;
@@ -53,5 +52,6 @@ void myproject_biglayer(
     // ****************************************
 
     //hls-fpga-machine-learning insert layers
-    if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl<input_t, result_t, config167>(gpu_0_data_0, layer4_out, w167, b167);
+    //if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl<input_t, result_t, config167>(gpu_0_data_0, layer4_out, w167, b167);
+    if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl_stride<input_t, result_t, config167>(gpu_0_data_0, layer4_out, w167, b167);
 }

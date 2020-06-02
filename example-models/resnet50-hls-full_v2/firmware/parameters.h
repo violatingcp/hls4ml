@@ -193,7 +193,8 @@
 #define N_LAYER_175 1000
 
 //hls-fpga-machine-learning insert layer-precision
-typedef ap_uint<27> model_default_t;
+typedef ap_uint<16> model_default_t;
+typedef ap_uint<27> model_bigdefault_t;
 typedef ap_uint<8> input_t;
 typedef ap_uint<8> layer2_t;
 typedef ap_uint<1> bias2_t;
@@ -450,10 +451,11 @@ struct config2_relu : nnet::activ_config {
 struct config2_mult : nnet::dense_config {
     static const unsigned n_in = 147;
     static const unsigned n_out = 64;
-    static const unsigned reuse_factor = 7;
+    static const unsigned reuse_factor = 21;
     typedef ap_uint<8> accum_t;
     typedef bias2_t bias_t;
     typedef model_default_t weight_t;
+    typedef model_bigdefault_t weightmult_t;
 };
 
 struct config2 : nnet::conv2d_config {
@@ -2767,10 +2769,11 @@ struct config167_relu : nnet::activ_config {
 struct config167_mult : nnet::dense_config {
     static const unsigned n_in = 4608;
     static const unsigned n_out = 512;
-    static const unsigned reuse_factor = 2304;
+    static const unsigned reuse_factor = 4608;
     typedef ap_uint<8> accum_t;
     typedef bias167_t bias_t;
     typedef model_default_t weight_t;
+    typedef model_bigdefault_t weightmult_t;
 };
 
 struct config167 : nnet::conv2d_config {

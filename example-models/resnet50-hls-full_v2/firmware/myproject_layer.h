@@ -30,7 +30,7 @@
 // Prototype of top level function for C-synthesis
 void myproject_layer(
 	       hls::stream<input_t>  gpu_0_data_0[N_INPUT_1_1],
-	       hls::stream<result_t> layer4_out[N_FILT_2]
+	       hls::stream<result_t> layer5_out[N_FILT_2]
 	       //model_default_t w167[9408]
 	       //unsigned short &const_size_in_1,
 	       //unsigned short &const_size_out_1

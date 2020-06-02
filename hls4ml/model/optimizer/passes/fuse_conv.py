@@ -95,6 +95,7 @@ class FuseConv(OptimizerPass):
         dense_weight = dense_node.weights['weight']
         dense_bias = dense_node.weights['bias']
         bn_scale = norm_node.weights['scale']
+        bn_scale_um = norm_node.weights['scale_unmerged']
         bn_bias = norm_node.weights['bias']
 
         print("fusing",bn_scale.data.shape,dense_weight.data.shape, dense_bias.data.shape, bn_bias.data.shape)
@@ -104,7 +105,7 @@ class FuseConv(OptimizerPass):
             fused_weight = (bn_scale.data * dense_weight.data.T).T
         #fused_weight = bn_scale.data * dense_weight.data
         
-        fused_bias = bn_scale.data * dense_bias.data + bn_bias.data
+        fused_bias = bn_scale_um.data * dense_bias.data + bn_bias.data
 
         print(dense_node.precision,relu_node.precision) 
         dense_node.precision.update(relu_node.precision)
@@ -124,6 +125,7 @@ class FuseConv(OptimizerPass):
         #model.remove_node(norm_node,rewire=False)
         dense_node.weights['weight'].data = fused_weight
         dense_node.weights['bias'].data = fused_bias
+        del  dense_node.weights['weight_unmerged']
         #dense_node.__class__.__name__ = 'Conv2DMerge'
         return True
 
@@ -146,14 +148,15 @@ class FuseConv2(OptimizerPass):
         dense_weight = dense_node.weights['weight']
         dense_bias = dense_node.weights['bias']
 
-        bn_scale = norm_node.weights['scale']
-        bn_bias = norm_node.weights['bias']
+        bn_scale    = norm_node.weights['scale']
+        bn_scale_um = norm_node.weights['scale_unmerged']
+        bn_bias     = norm_node.weights['bias']
 
         if dense_node.get_attr('strategy') != 'large':
             fused_weight = bn_scale.data * dense_weight.data
         else:
             fused_weight = (bn_scale.data * dense_weight.data.T).T
-        fused_bias = bn_scale.data * dense_bias.data + bn_bias.data
+        fused_bias = bn_scale_um.data * dense_bias.data + bn_bias.data
 
         #next_node = next(x for x in model.graph.values() if x.inputs[0] == norm_node.outputs[0])
         #next_node.inputs[0]  = dense_node.outputs[0]
@@ -169,6 +172,7 @@ class FuseConv2(OptimizerPass):
         #model.remove_node(norm_node, rewire=False)
         dense_node.weights['weight'].data = fused_weight
         dense_node.weights['bias'].data = fused_bias
+        del  dense_node.weights['weight_unmerged']
         #dense_node.__class__.__name__ = 'Conv2DMerge'
         return True
 

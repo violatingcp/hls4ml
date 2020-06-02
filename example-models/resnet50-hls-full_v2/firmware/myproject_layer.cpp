@@ -28,7 +28,7 @@
 
 void myproject_layer(
 	       hls::stream<input_t>  gpu_0_data_0[N_INPUT_1_1],
-	       hls::stream<result_t> layer4_out[N_FILT_2]
+	       hls::stream<result_t> layer5_out[N_FILT_2]
 	       //model_default_t w2[9408]
 	       //unsigned short &const_size_in_1,
 	       //unsigned short &const_size_out_1
@@ -59,5 +59,8 @@ void myproject_layer(
     // ****************************************
 
     //hls-fpga-machine-learning insert layers
-    if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl<input_t, result_t, config2>(gpu_0_data_0, layer4_out, w2, b2);
+    static hls::stream<layer4_t> layer4_out[N_FILT_2];
+    #pragma HLS STREAM variable=layer4_out depth=1 dim=1
+    if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl_stride<input_t, result_t, config2>(gpu_0_data_0, layer4_out, w2, b2);
+    if(!layer4_out[0].empty()) nnet::pooling2d_cl_stride<layer4_t, layer5_t, config5>(layer4_out, layer5_out);
 }

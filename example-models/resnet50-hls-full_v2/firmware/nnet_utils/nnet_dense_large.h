@@ -68,12 +68,12 @@ void dense_large_rf_leq_nin(
         int in_index = ir;
         int out_index = 0;
         int acc_step = 0;
-	typename CONFIG_T::weight_t tmpmult[block_factor];
+	typename CONFIG_T::weightmult_t tmpmult[block_factor];
         #pragma HLS ARRAY_RESHAPE variable=tmpmult complete
         MultLoop:
         for (int im = 0; im < block_factor; im++) {
             #pragma HLS UNROLL
-            tmpmult[im] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::weight_t>(data[in_index], weights[w_index]);
+            tmpmult[im] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::weightmult_t>(data[in_index], weights[w_index]);
 	    w_index += rufactor;
 	    in_index += rufactor;
             if (in_index >= nin) {
