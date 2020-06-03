@@ -451,7 +451,7 @@ struct config2_relu : nnet::activ_config {
 struct config2_mult : nnet::dense_config {
     static const unsigned n_in = 147;
     static const unsigned n_out = 64;
-    static const unsigned reuse_factor = 21;
+    static const unsigned reuse_factor = 7;
     typedef ap_uint<8> accum_t;
     typedef bias2_t bias_t;
     typedef model_default_t weight_t;
@@ -2769,7 +2769,7 @@ struct config167_relu : nnet::activ_config {
 struct config167_mult : nnet::dense_config {
     static const unsigned n_in = 4608;
     static const unsigned n_out = 512;
-    static const unsigned reuse_factor = 4608;
+    static const unsigned reuse_factor = 2304;
     typedef ap_uint<8> accum_t;
     typedef bias167_t bias_t;
     typedef model_default_t weight_t;
