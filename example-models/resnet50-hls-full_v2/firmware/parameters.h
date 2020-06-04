@@ -516,10 +516,10 @@ struct config2M : nnet::conv2d_config {
 struct config5 : nnet::pooling2d_config {
     static const unsigned in_height = 112;
     static const unsigned in_width = OUT_HEIGHT_2;
-    static const unsigned n_filt = OUT_WIDTH_5-1;
-    static const unsigned n_chan = OUT_WIDTH_5-1;
-    static const unsigned n_filt_in = OUT_WIDTH_5;
-    static const unsigned n_chan_in = OUT_WIDTH_5;
+    static const unsigned n_filt = N_FILT_5-1;
+    static const unsigned n_chan = N_FILT_2-1;
+    static const unsigned n_filt_in = N_FILT_5;
+    static const unsigned n_chan_in = N_FILT_2;
     static const unsigned stride_height = 2;
     static const unsigned stride_width = 2;
     static const unsigned pool_height = 3;
