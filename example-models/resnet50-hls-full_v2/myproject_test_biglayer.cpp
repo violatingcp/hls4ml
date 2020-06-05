@@ -50,15 +50,20 @@ int main(int argc, char **argv)
   hls::stream<input_t>  inputstream[N_FILT_164];
   hls::stream<result_t> outputstream[N_FILT_167];
   //model_default_t w2[config2::mult_config::n_in*config2::mult_config::n_out]; 
-  //model_default_t w167[config167::mult_config::n_in*config167::mult_config::n_out/2]; 
+  model_default_t w167[config167::mult_config::n_in*config167::mult_config::n_out/2]; 
   
   input_t pTmp = 0; 
-  for(int i1 = 0; i1 < 7*3; i1++) { 
+  for(int i1 = 0; i1 < 7*7; i1++) { 
     for(int i0 = 0; i0 < N_FILT_164; i0++) { 
       inputstream[i0].write(pTmp);
     }
-    myproject_biglayer(inputstream,outputstream);
     pTmp = pTmp+1;
+  }
+  myproject_biglayer(inputstream,outputstream,w167);
+  for(int i1 = 0; i1 < 49; i1++) { 
+    for(int i0 = 0; i0 < N_FILT_167; i0++) {
+      outputstream[i0].read();
+    }
   }
   std::cout << "INFO: Saved inference results to file: " << RESULTS_LOG << std::endl;
 
