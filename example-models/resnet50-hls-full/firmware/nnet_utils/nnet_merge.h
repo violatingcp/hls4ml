@@ -31,6 +31,12 @@ struct merge_config
     static const unsigned n_elem = 10;
 };
 
+
+struct split_config
+{
+    static const unsigned n_elem = 10;
+};
+
 struct concat_config {
     static const unsigned n_elem1_0 = 10;
     static const unsigned n_elem1_1 = 10;
@@ -44,11 +50,11 @@ struct concat_config {
 
 template<class input1_T, class input2_T, class res_T, typename CONFIG_T>
 void add(
-    input1_T data1[CONFIG_T::n_filt],
-    input2_T data2[CONFIG_T::n_filt],
+    input1_T data1[CONFIG_T::n_elem],
+    input2_T data2[CONFIG_T::n_elem],
     res_T res[CONFIG_T::n_elem])
 {
-    for (int ii=0; ii<CONFIG_T::n_filt; ii++) {
+    for (int ii=0; ii<CONFIG_T::n_elem; ii++) {
       #pragma HLS UNROLL
       res[ii] = data1[ii] + data2[ii];
     }
@@ -57,11 +63,11 @@ void add(
 
 template<class input1_T, class input2_T, class res_T, typename CONFIG_T>
 void addrelu(
-    input1_T data1[CONFIG_T::n_filt],
-    input2_T data2[CONFIG_T::n_filt],
+    input1_T data1[CONFIG_T::n_elem],
+    input2_T data2[CONFIG_T::n_elem],
     res_T res[CONFIG_T::n_filt])
 {
-    for (int ii=0; ii<CONFIG_T::n_filt; ii++) {
+    for (int ii=0; ii<CONFIG_T::n_elem; ii++) {
       #pragma HLS UNROLL
       res[ii] = data1[ii] + data2[ii];
       if(res[ii] < 0) res[ii] = 0; 
@@ -70,11 +76,11 @@ void addrelu(
 
 template<class input_T, class res_T, typename CONFIG_T>
 void split(
-	 hls::stream<input_T>  data[CONFIG_T::n_chan],
-	 hls::stream<res_T>    res1[CONFIG_T::n_chan],
-	 hls::stream<res_T>    res2[CONFIG_T::n_chan])
+	 hls::stream<input_T>  data[CONFIG_T::n_elem],
+	 hls::stream<res_T>    res1[CONFIG_T::n_elem],
+	 hls::stream<res_T>    res2[CONFIG_T::n_elem])
 {
-    for (int ii=0; ii<CONFIG_T::n_chan; ii++) {
+    for (int ii=0; ii<CONFIG_T::n_elem; ii++) {
       #pragma HLS UNROLL
       input_T pData = data[ii].read();
       res1[ii].write(pData);
@@ -84,9 +90,9 @@ void split(
 
 template<class input_T, class res_T, typename CONFIG_T>
 void add(
-	 hls::stream<input_T> data1[CONFIG_T::n_filt],
-	 hls::stream<input_T> data2[CONFIG_T::n_filt],
-	 hls::stream<res_T>   res  [CONFIG_T::n_filt])
+	 hls::stream<input_T> data1[CONFIG_T::n_elem],
+	 hls::stream<input_T> data2[CONFIG_T::n_elem],
+	 hls::stream<res_T>   res  [CONFIG_T::n_elem])
 {
     for (int ii=0; ii<CONFIG_T::n_filt; ii++) {
       #pragma HLS UNROLL
