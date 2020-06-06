@@ -459,7 +459,7 @@ template<unsigned iX, class data_T, typename CONFIG_T>
 }
      
 
-
+/*
 template<class data_T, class res_T, typename CONFIG_T, typename CONFIG_T2>
 void conv_2d_large_cl_row_stream(
                                  hls::stream<data_T> data[CONFIG_T::in_width][CONFIG_T::n_chan_in],
@@ -531,6 +531,43 @@ void conv_2d_large_cl_row_stream(
     conv_2d_large_cl_nopad<4,data_T,res_T,CONFIG_T2>(tmpdata[3],res[3],weights,biases);
   }
 }
+*/
+
+
+ template<class data_T, class res_T, typename CONFIG_T, typename CONFIG_T2>
+   void conv_2d_large_cl_row_stream(
+				    hls::stream<data_T> data[CONFIG_T::n_split][CONFIG_T::n_chan_in],
+				    hls::stream<res_T>  res [CONFIG_T::n_split][CONFIG_T::n_filt_in],
+				    typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt],
+				    typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
+				    ) {
+
+  #pragma HLS DATAFLOW
+  #pragma HLS ARRAY_RESHAPE variable=data complete dim=0
+
+   static const unsigned nrange = CONFIG_T::in_width/CONFIG_T::n_split;
+   static const unsigned ntotal = nrange+CONFIG_T::filt_width-1;
+
+   for(int i1 = 0; i1 < ntotal; i1++) {
+     conv_2d_large_cl_nopad<1,data_T,res_T,CONFIG_T2>(data[0],res[0],weights,biases);
+     conv_2d_large_cl_nopad<2,data_T,res_T,CONFIG_T2>(data[1],res[1],weights,biases);
+     conv_2d_large_cl_nopad<3,data_T,res_T,CONFIG_T2>(data[2],res[2],weights,biases);
+     conv_2d_large_cl_nopad<4,data_T,res_T,CONFIG_T2>(data[3],res[3],weights,biases);
+     conv_2d_large_cl_nopad<5,data_T,res_T,CONFIG_T2>(data[4],res[4],weights,biases);
+     conv_2d_large_cl_nopad<6,data_T,res_T,CONFIG_T2>(data[5],res[5],weights,biases);
+     conv_2d_large_cl_nopad<7,data_T,res_T,CONFIG_T2>(data[6],res[6],weights,biases);
+     conv_2d_large_cl_nopad<8,data_T,res_T,CONFIG_T2>(data[7],res[7],weights,biases);
+
+     //conv_2d_large_cl_nopad<9,data_T,res_T,CONFIG_T2>(data[8],res[8],weights,biases);
+     //conv_2d_large_cl_nopad<10,data_T,res_T,CONFIG_T2>(data[9],res[9],weights,biases);
+     //conv_2d_large_cl_nopad<11,data_T,res_T,CONFIG_T2>(data[10],res[10],weights,biases);
+     //conv_2d_large_cl_nopad<12,data_T,res_T,CONFIG_T2>(data[11],res[11],weights,biases);
+     //conv_2d_large_cl_nopad<13,data_T,res_T,CONFIG_T2>(data[12],res[12],weights,biases);
+     //conv_2d_large_cl_nopad<14,data_T,res_T,CONFIG_T2>(data[13],res[13],weights,biases);
+     //conv_2d_large_cl_nopad<15,data_T,res_T,CONFIG_T2>(data[14],res[14],weights,biases);
+     //conv_2d_large_cl_nopad<16,data_T,res_T,CONFIG_T2>(data[15],res[15],weights,biases);
+   }
+ }
 
 
 
