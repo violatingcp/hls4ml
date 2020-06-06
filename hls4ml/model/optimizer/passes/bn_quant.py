@@ -77,13 +77,13 @@ hls_model.register_layer('BatchNormalizationQuantizedTanh', BatchNormalizationQu
 templates.get_backend('Vivado').register_templates('BatchNormalizationQuantizedTanh', batchnorm_quantized_tanh_function_template, batchnorm_quantized_tanh_config_template)
 
 class MergeBatchNormAndQuantizedTanh(OptimizerPass):
-    def match(self, node):
+    def match(self, node,lastnodes=None):
         is_match = (node.__class__.__name__ == 'Activation'
             and node.get_attr('activation') in ['binary_tanh', 'ternary_tanh']
             and node.get_input_node().__class__.__name__ == 'BatchNormalization')
         return is_match
 
-    def transform(self, model, node):
+    def transform(self, model, node,lastnodes=None):
         bn_layer = node.get_input_node()
         # Remove the Activation layer
         model.remove_node(node, rewire=True)
@@ -110,12 +110,12 @@ class MergeBatchNormAndQuantizedTanh(OptimizerPass):
         return True
 
 class QuantizeDenseOutput(OptimizerPass):
-    def match(self, node):
+    def match(self, node,lastnodes=None):
         is_match = (node.__class__.__name__ == 'Dense' and node.get_attr('quantize', default=0) > 1
             and node.get_input_node().__class__.__name__ == 'BatchNormalizationQuantizedTanh')
         return is_match
 
-    def transform(self, model, node):
+    def transform(self, model, node,lastnodes=None):
         # Compute the required precision and update the variables
         # Number of bits for output is log2 of number of input nodes
         # Since this is the number of uint<1>'s which are summed

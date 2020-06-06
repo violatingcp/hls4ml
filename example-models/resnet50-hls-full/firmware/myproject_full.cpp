@@ -224,6 +224,7 @@ void subimage(
       for(unsigned i2 = 0; i2 < N_INPUT_3_1; i2++) { 
           #pragma HLS UNROLL
 	if(i0*N_INPUT_2_1+i1 < N_INPUT_1_1*N_INPUT_1_1) { 
+	  std::cout << "===>  in " << i0 << " -- " << i1 << " -- " << i2 << " -- " << input[i0][i1][i2] << std::endl;
 	  sInput[i2].write(input[i0][i1][i2]);
 	} else { 
 	  input_t pVal = 0;

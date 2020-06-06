@@ -1940,9 +1940,9 @@ struct config92 : nnet::conv2d_config {
     static const unsigned pad_bottom = 0;
     static const unsigned pad_left = 0;
     static const unsigned pad_right = 0;
-    static const unsigned in_height = OUT_HEIGHT_86;
-    static const unsigned in_width = OUT_WIDTH_86;
-    static const unsigned n_chan = N_FILT_86;
+    static const unsigned in_height = OUT_HEIGHT_88;//86
+    static const unsigned in_width = OUT_WIDTH_88;//86
+    static const unsigned n_chan = N_FILT_88;//86
     static const unsigned filt_height = 1;
     static const unsigned filt_width = 1;
     static const unsigned n_filt = N_FILT_92;

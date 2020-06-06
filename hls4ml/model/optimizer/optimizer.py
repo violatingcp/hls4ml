@@ -3,10 +3,10 @@ class OptimizerPass(object):
     def __init__(self):
         pass
 
-    def match(self, node):
+    def match(self, node, lastnodes=None):
         raise NotImplementedError
     
-    def transform(self, model, node):
+    def transform(self, model, node, lastnodes=None):
         raise NotImplementedError
 
 optimizer_map = {}
@@ -29,13 +29,16 @@ def optimize_model(model, passes=None):
         passes = optimizer_map.keys()
     optimizers = [get_optimizer(opt_pass) for opt_pass in passes]
     optimization_done = False
+    lastnodes = [None,None]
     while not optimization_done:
         for opt in optimizers:
             for node in model.graph.values():
-                if opt.match(node):
-                    res = opt.transform(model, node)
+                if opt.match(node,lastnodes):
+                    res = opt.transform(model, node, lastnodes)
                     if res:
                         break
+                lastnodes[1] = lastnodes[0]
+                lastnodes[0] = node
             else:
                 continue
             break

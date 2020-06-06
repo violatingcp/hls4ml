@@ -1,18 +1,26 @@
-OnnxModel: onnx/three_layer_keras.onnx
+OnnxModel: onnx/resnet50.onnx
 #InputData: keras/KERAS_3layer_input_features.dat
 #OutputPredictions: keras/KERAS_3layer_predictions.dat
-OutputDir: my-hls-test
+OutputDir: my-hls-test-onnx-v2_v5
 ProjectName: myproject
-XilinxPart: xcku115-flvb2104-2-i
+XilinxPart: xcvu9p-flgc2104-2-i
 ClockPeriod: 5
 
-IOType: io_parallel # options: io_serial/io_parallel
+IOType: io_serial # options: io_serial/io_parallel
 HLSConfig:
   Model:
-    Precision: ap_fixed<16,6>
-    ReuseFactor: 1
-#  LayerType:
-#    Dense:
-#      ReuseFactor: 2
-#      Strategy: Resource
-#      Compression: True
+    Precision: ap_uint<8>
+    ReuseFactor: 200000
+  LayerType:
+    Dense:
+      ReuseFactor: 200000
+      Strategy: Latency
+      Compression: False
+    Conv2D:
+      ReuseFactor: 200000
+      Strategy: Resource
+      Compression: False
+    Conv2DMerge:
+      ReuseFactor: 200000
+      Strategy: Resource
+      Compression: False
