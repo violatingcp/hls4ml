@@ -47,21 +47,21 @@ int main(int argc, char **argv)
   int e = 0;
 
   bool iReset=true;
-  hls::stream<input_t>  inputstream[N_FILT_164];
-  hls::stream<result_t> outputstream[N_FILT_167];
+  hls::stream<input_t>  inputstream[N_FILT_115];
+  hls::stream<result_t> outputstream[N_FILT_118];
   //model_default_t w2[config2::mult_config::n_in*config2::mult_config::n_out]; 
-  model_default_t w167[config167::mult_config::n_in*config167::mult_config::n_out/2]; 
+  model_default_t w118[config118::mult_config::n_in*config118::mult_config::n_out/2]; 
   
   input_t pTmp = 0; 
-  for(int i1 = 0; i1 < 7*7; i1++) { 
-    for(int i0 = 0; i0 < N_FILT_164; i0++) { 
+  for(int i1 = 0; i1 < 10; i1++) { 
+    for(int i0 = 0; i0 < N_FILT_115; i0++) { 
       inputstream[i0].write(pTmp);
     }
     pTmp = pTmp+1;
+    myproject_biglayer(inputstream,outputstream,w118);
   }
-  myproject_biglayer(inputstream,outputstream,w167);
-  for(int i1 = 0; i1 < 49; i1++) { 
-    for(int i0 = 0; i0 < N_FILT_167; i0++) {
+  for(int i1 = 0; i1 < 10; i1++) { 
+    for(int i0 = 0; i0 < N_FILT_118; i0++) {
       outputstream[i0].read();
     }
   }

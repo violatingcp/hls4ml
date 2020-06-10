@@ -22,28 +22,24 @@
 
 //hls-fpga-machine-learning insert weights
 //#include "weights/w167.h"
-#include "weights/b167.h"
+#include "weights/b118.h"
 
 void myproject_biglayer(
-	       hls::stream<input_t>  gpu_0_data_0[N_FILT_164],
-	       hls::stream<result_t> layer4_out[N_FILT_167],
-	       model_default_t w167[1179648]
+	       hls::stream<input_t>  gpu_0_data_0[N_FILT_115],
+	       hls::stream<result_t> layer4_out[N_FILT_118],
+	       model_default_t w118[131072]
 ) {
 
     //hls-fpga-machine-learning insert IO
     #pragma HLS INTERFACE axis port=gpu_0_data_0,layer4_out 
     #pragma HLS DATAFLOW 
-   //#pragma HLS interface bram port=w167
-
-  //const_size_in_1 = N_INPUT_1_1*N_INPUT_2_1*N_INPUT_3_1;
-  //const_size_out_1 = N_LAYER_175;
+    #pragma HLS interface bram port=w118
 
 #ifndef __SYNTHESIS__
     static bool loaded_weights = false;
     if (!loaded_weights) {
-        //hls-fpga-machine-learning insert load weights
-        nnet::load_weights_from_txt<model_default_t, 1179648>(w167, "w167.txt");
-        nnet::load_weights_from_txt<bias167_t, 512>(b167, "b167.txt");
+        nnet::load_weights_from_txt<model_default_t, 131072>(w118, "w118.txt");
+        nnet::load_weights_from_txt<bias118_t, 1024>(b118, "b118.txt");
         loaded_weights = true;
     }
 #endif
@@ -54,7 +50,8 @@ void myproject_biglayer(
 
     //hls-fpga-machine-learning insert layers
     //if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl<input_t, result_t, config167>(gpu_0_data_0, layer4_out, w167, b167);
-    for(int i0 = 0; i0 < 49; i0++) { 
-     if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl<input_t, result_t, config167>(gpu_0_data_0, layer4_out, w167, b167);
-    }
+    //for(int i0 = 0; i0 < 49; i0++) { 
+    // if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl<input_t, result_t, config167>(gpu_0_data_0, layer4_out, w167, b167);
+    //}
+    if(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl_1x1<layer117_t, layer119_t, config118>(gpu_0_data_0, layer4_out, w118, b118);
 }

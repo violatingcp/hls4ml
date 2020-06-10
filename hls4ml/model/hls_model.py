@@ -247,7 +247,6 @@ class HLSModel(object):
 
     def remove_node(self, node, rewire=True):
         if rewire:
-            print("here")
             if len(node.inputs) > 1 or len(node.outputs) > 1:
                 raise Exception('Cannot rewire a node with multiple inputs/outputs')
             #print("Check outputs",node.outputs,"!!!!",self.graph.values())
@@ -306,7 +305,7 @@ class HLSModel(object):
         data_out = np.zeros((shape),dtype=int)
         #print(data_out.shape)
         for i0 in range(quant_data.shape[0]/2):
-            data_out[i0] = quant_data[2*i0] + quant_data[2*i0+1]*262144
+            data_out[i0] = quant_data[2*i0] + quant_data[2*i0+1]*256
         data_out = np.moveaxis(data_out,0,len(data_out.shape)-1)
         return data_out
 
@@ -681,12 +680,11 @@ class Layer(object):
             elif quantize == 2 or quantize == 3:
                 precision = 'ap_int<2>'
                 type_name = name + '{index}_t'
-        print(self.name,name)
-        if not ('bias' in name and 'mm' not in self.name): # and 'Conv' in self.name): #only weights
-            var = WeightVariable(var_name, type_name=type_name, precision=precision, data=data, index=self.index)
-            #quick hack to fuse batch norm
-            self.weights[name+'_unmerged']=var
-            data = self.model.merge_weights(data)
+        #if not ('bias' in name and 'mm' not in self.name): # and 'Conv' in self.name): #only weights
+        #    var = WeightVariable(var_name, type_name=type_name, precision=precision, data=data, index=self.index)
+        #    #quick hack to fuse batch norm
+        #    self.weights[name+'_unmerged']=var
+        #    data = self.model.merge_weights(data)
 
         if compression:
             rf = self.model.config.get_reuse_factor(self)
@@ -905,7 +903,6 @@ class Conv2D(Layer):
         else:
             shape = [self.attributes['n_filt'], self.attributes['out_height'], self.attributes['out_width']]
             dims = ['N_FILT_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
-            print("Conv -shape",shape)
             shapeinternal = [self.attributes['out_height'], self.attributes['out_width']]
             diminternal   = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
         self.is1x1 = False
@@ -1130,10 +1127,10 @@ class Pooling1D(Layer):
 
 class Pooling2D(Layer):
     def initialize(self):
-        shape = [self.attributes['n_filt'], self.attributes['out_height'], self.attributes['out_width']]
-        dims = ['N_FILT_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
-        #shape = [self.attributes['out_height'], self.attributes['out_width'], self.attributes['n_filt']]
-        #dims = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
+        #shape = [self.attributes['n_filt'], self.attributes['out_height'], self.attributes['out_width']]
+        #dims = ['N_FILT_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
+        shape = [self.attributes['out_height'], self.attributes['out_width'], self.attributes['n_filt']]
+        dims = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
         self.add_output_variable(shape, dims)
         self.set_attr('pool_op', self.get_attr('class_name').split('Pooling')[0])
         self.is1x1 = False

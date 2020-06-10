@@ -17,6 +17,7 @@
 #include "nnet_utils/nnet_pooling.h"
 #include "nnet_utils/nnet_merge.h"
 #include "nnet_utils/nnet_helpers.h"
+#include "nnet_utils/nnet_dense_large_stream.h"
 
 //hls-fpga-machine-learning insert numbers
 #define N_INPUT_1_1 4
@@ -188,12 +189,13 @@
 #define OUT_HEIGHT_170 7
 #define OUT_WIDTH_170 7
 #define N_FILT_174 2049
+#define N_LAYER_174 2048
 #define OUT_HEIGHT_174 1
 #define OUT_WIDTH_174 1
 #define N_LAYER_175 1000
 
 //hls-fpga-machine-learning insert layer-precision
-typedef ap_uint<16> model_default_t;
+typedef ap_uint<27> model_default_t;
 typedef ap_uint<27> model_bigdefault_t;
 typedef ap_uint<8> input_t;
 typedef ap_uint<8> layer2_t;
@@ -451,7 +453,7 @@ struct config2_relu : nnet::activ_config {
 struct config2_mult : nnet::dense_config {
     static const unsigned n_in = 147;
     static const unsigned n_out = 64;
-    static const unsigned reuse_factor = 7;
+    static const unsigned reuse_factor = 3;
     typedef ap_uint<8> accum_t;
     typedef bias2_t bias_t;
     typedef model_default_t weight_t;
@@ -466,11 +468,11 @@ struct config2 : nnet::conv2d_config {
     static const unsigned in_height = N_INPUT_2_1;
     static const unsigned in_width = N_INPUT_3_1;
     static const unsigned n_chan = N_INPUT_1_1-1;
-    static const unsigned n_chan_in = N_INPUT_1_1;
+    static const unsigned n_chan_in = N_INPUT_1_1-1;
     static const unsigned filt_height = 7;
     static const unsigned filt_width = 7;
     static const unsigned n_filt = N_FILT_2-1;
-    static const unsigned n_filt_in = N_FILT_2;
+    static const unsigned n_filt_in = N_FILT_2-1;
     static const unsigned stride_height = 2;
     static const unsigned stride_width = 2;
     static const unsigned out_height = OUT_HEIGHT_2;
@@ -2902,32 +2904,32 @@ struct config172 : nnet::merge_config {
 
 struct config174 : nnet::pooling2d_config {
     static const unsigned in_height = 7;
-    static const unsigned in_width = OUT_HEIGHT_170;
-    static const unsigned n_filt = OUT_WIDTH_174-1;
-    static const unsigned n_chan = OUT_WIDTH_174-1;
-    static const unsigned n_filt_in = OUT_WIDTH_174;
-    static const unsigned n_chan_in = OUT_WIDTH_174;
+    static const unsigned in_width =  OUT_WIDTH_170;
+    static const unsigned n_filt =    N_FILT_174-1;
+    static const unsigned n_chan =    N_FILT_174-1;
+    static const unsigned n_filt_in = N_FILT_174;
+    static const unsigned n_chan_in = N_FILT_174;
     static const unsigned stride_height = 1;
     static const unsigned stride_width = 1;
     static const unsigned pool_height = 7;
     static const unsigned pool_width = 7;
     static const unsigned filt_height = 7;
     static const unsigned filt_width = 7;
-    static const unsigned out_height = N_FILT_174;
-    static const unsigned out_width = OUT_HEIGHT_174;
+    static const unsigned out_height = OUT_HEIGHT_174;
+    static const unsigned out_width = OUT_WIDTH_174;
     static const unsigned pad_top = 0;
     static const unsigned pad_bottom = 0;
     static const unsigned pad_left = 0;
     static const unsigned pad_right = 0;
     static const nnet::Pool_Op pool_op = nnet::Average;
-    static const unsigned reuse = 200000;
+    static const unsigned reuse = 1;
 };
 
 struct config175 : nnet::dense_config {
-    static const unsigned n_in = N_FILT_174*OUT_HEIGHT_174*OUT_WIDTH_174;
+    static const unsigned n_in = (N_FILT_174-1)*OUT_HEIGHT_174*OUT_WIDTH_174;
     static const unsigned n_out = N_LAYER_175;
     static const unsigned io_type = nnet::io_serial;
-    static const unsigned reuse_factor = 131072;
+    static const unsigned reuse_factor = 20480;//10*4096;//20480;
     static const unsigned n_zeros = 0;
     static const unsigned n_nonzeros = 1024000;
     static const bool store_weights_in_bram = false;

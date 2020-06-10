@@ -126,11 +126,12 @@ template<class data_T, class res_T, typename CONFIG_T>
   #pragma HLS PIPELINE
   for(unsigned i2 = 0; i2 < CONFIG_T::n_filt_in; i2++) {
    #pragma HLS UNROLL
-   if(i2 == 0) { 
-    data[i2].write(pPixId);
-   } else { 
-    data[i2].write(input[i2-1]);
-   }  
+    if(i2 == 0) { 
+     data[i2].write(pPixId);
+    } else { 
+     data[i2].write(input[i2-1]);
+    }  
+    //data[i2].write(input[i2]);
   }
 }
 
@@ -245,7 +246,8 @@ template<class data_T, class res_T, typename CONFIG_T>
     
     for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) {
       #pragma HLS UNROLL
-      data_T base = data[1+i0].read();
+      data_T base = data[i0].read();
+      //data_T base = data[1+i0].read();
       tmpinput[CONFIG_T::filt_height-1][i0] = base;
       for(unsigned i1 = 1; i1 < CONFIG_T::filt_height; i1++) {
         #pragma HLS UNROLL
@@ -291,7 +293,8 @@ void conv_2d_large_cl(
 		      typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
 		      ) {
   
-    //#pragma HLS inline
+  //#pragma HLS DATAFLOW
+
     const static int lShiftX = CONFIG_T::filt_width-CONFIG_T::pad_left-1;
     const static int lShiftY = CONFIG_T::filt_height-CONFIG_T::pad_top-1;
 
@@ -347,7 +350,8 @@ void conv_2d_large_cl_nopad(
 			    typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/2],
 			    typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
 			    ) {
-  
+  //#pragma HLS DATAFLOW
+
     //#pragma HLS inline
     const static int lShiftX = CONFIG_T::filt_width-CONFIG_T::pad_left-1;
     const static int lShiftY = CONFIG_T::filt_height-CONFIG_T::pad_top-1;
@@ -366,32 +370,34 @@ void conv_2d_large_cl_nopad(
 
     static int pX=0; 
     static int pY=0;
-    
+
+    /*
     data_T iReset = data[0].read();
     if(iReset==0) { 
       pX = 0; 
       pY = 0; 
-    }
+      }*/
 
-    static bool pPass = false;    
-    if(pY > lShiftY-1 && pX == lShiftX) pPass = true;
+    //static bool pPass = false;    
+    //if(pY > lShiftY-1 && pX == lShiftX) pPass = true;
     nnet::cnnshift<data_T,res_T,CONFIG_T>(data,layer_in_row,layer_in);
-
-    if((pX-lShiftX) % CONFIG_T::stride_width == 0 && (pY-lShiftY) % CONFIG_T::stride_height == 0 && pPass) { 
+    //if((pX-lShiftX) % CONFIG_T::stride_width == 0 && (pY-lShiftY) % CONFIG_T::stride_height == 0 && pPass) { 
+    if((pX-lShiftX) % CONFIG_T::stride_width == 0 && (pY-lShiftY) % CONFIG_T::stride_height == 0) { 
       nnet::dense_large<data_T,res_T,typename CONFIG_T::mult_config>(layer_in,layer_out,weights,biases);
       nnet::relu<res_T,res_T,typename CONFIG_T::relu_config>(layer_out, layer_reluout);
-      res_T pPixId = 0;
-      if(pX > 0 || pY > 0) pPixId = 1;
-      nnet::fill_image<data_T,data_T,CONFIG_T>(layer_reluout,pPixId,res);
+      //res_T pPixId = 0;
+      //if(pX > 0 || pY > 0) pPixId = 1;
+      //nnet::fill_image<data_T,data_T,CONFIG_T>(layer_reluout,pPixId,res);
+      nnet::fill_image<data_T,data_T,CONFIG_T>(layer_reluout,res);
     }
     pX = pX+1;
     if(pX == CONFIG_T::in_width) { 
       pX = 0;
       pY = pY+1;
-      pPass = false;
+      //pPass = false;
     }
 }
-
+/*
 template<unsigned iX,class data_T, typename CONFIG_T>
 void split_inputs(//unsigned iX, 
 		  hls::stream<data_T> data[CONFIG_T::in_width][CONFIG_T::n_chan_in],
@@ -531,6 +537,34 @@ void conv_2d_large_cl_row_stream(
     conv_2d_large_cl_nopad<4,data_T,res_T,CONFIG_T2>(tmpdata[3],res[3],weights,biases);
   }
 }
+*/
+
+template<class data_T, class res_T, typename CONFIG_T, typename CONFIG_T2>
+void conv_2d_large_cl_row_stream(
+                                 hls::stream<data_T> data[CONFIG_T::n_split][CONFIG_T::n_chan_in],
+				 hls::stream<res_T>  res [CONFIG_T::n_split][CONFIG_T::n_filt_in],
+				 typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt],
+				 typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
+				 ) {
+
+  #pragma HLS DATAFLOW
+  #pragma HLS ARRAY_RESHAPE variable=data complete dim=0
+  
+  static const unsigned nrange = CONFIG_T::in_width/CONFIG_T::n_split;
+  static const unsigned ntotal = nrange+CONFIG_T::filt_width-1;
+
+  for(int i1 = 0; i1 < ntotal; i1++) {
+    conv_2d_large_cl_nopad<1,data_T,res_T,CONFIG_T2>(data[0],res[0],weights,biases);
+    conv_2d_large_cl_nopad<2,data_T,res_T,CONFIG_T2>(data[1],res[1],weights,biases);
+    conv_2d_large_cl_nopad<3,data_T,res_T,CONFIG_T2>(data[2],res[2],weights,biases);
+    conv_2d_large_cl_nopad<4,data_T,res_T,CONFIG_T2>(data[3],res[3],weights,biases);
+    //conv_2d_large_cl_nopad<5,data_T,res_T,CONFIG_T2>(data[4],res[4],weights,biases);
+    //conv_2d_large_cl_nopad<6,data_T,res_T,CONFIG_T2>(data[5],res[5],weights,biases);
+    //conv_2d_large_cl_nopad<7,data_T,res_T,CONFIG_T2>(data[6],res[6],weights,biases);
+    //conv_2d_large_cl_nopad<8,data_T,res_T,CONFIG_T2>(data[7],res[7],weights,biases);
+  }
+}
+
 
 
 

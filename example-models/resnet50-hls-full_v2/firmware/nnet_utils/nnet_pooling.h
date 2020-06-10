@@ -240,7 +240,7 @@ template<class data_T, class res_T, typename CONFIG_T>
           #pragma HLS UNROLL
 	  pool[i1] = layer_in[i1*CONFIG_T::n_filt+i0];
  	 }
-	 res[i0].write(pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool));
+	 res[i0+1].write(pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool));
 	}
       }
     }
@@ -253,9 +253,9 @@ template<class data_T, class res_T, typename CONFIG_T>
     if(pX == lShiftX && pY > lShiftY-1) pPass = true;
 }
 template<class data_T, class res_T, typename CONFIG_T>
-void pooling2d_cl_1x1(//bool iReset,
+void pooling2d_cl_1x1(
 				 hls::stream<data_T> data[CONFIG_T::n_filt_in],
-				 res_T               res [CONFIG_T::n_filt]) { 
+				 hls::stream<res_T>  res [CONFIG_T::n_filt_in]) { 
 
     const static int lShiftX  = CONFIG_T::pool_width-CONFIG_T::pad_left-1;
     const static int lShiftY  = CONFIG_T::pool_height-CONFIG_T::pad_top-1;  
@@ -273,7 +273,7 @@ void pooling2d_cl_1x1(//bool iReset,
     if(iReset) { 
       pX = 0; 
       pY = 0;
-      for(unsigned i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
+      for(unsigned i0 = 0; i0 < CONFIG_T::n_filt; i0++) { 
 	#pragma HLS UNROLL
 	layer_in[i0] = 0; 
       }
@@ -281,7 +281,7 @@ void pooling2d_cl_1x1(//bool iReset,
 
     static bool pPass = false;
     if(pX == 0 && pY == 0) pPass = false;
-
+    
     for (int ir = 0; ir < rufactor; ir++) {
         #pragma HLS PIPELINE II=1 
         for (int im = 0; im < block_factor; im++) {
@@ -294,11 +294,15 @@ void pooling2d_cl_1x1(//bool iReset,
         }
     }
     if((pX+1) % CONFIG_T::stride_width == 0 && (pY+1) % CONFIG_T::stride_height == 0 && pPass) { 
-     for (int ir = 0; ir < rufactor; ir++) {
+      res_T pId = 1;
+      if(pX == 0 && pY == 0) pId = 0;
+      res[0].write(pId);
+      for (int ir = 0; ir < rufactor; ir++) {
         #pragma HLS PIPELINE II=1 
         for (int im = 0; im < block_factor; im++) {
 	 int iblock = ir*block_factor+im;
-	 res[iblock] = layer_in[iblock]/avg;
+	 res_T tmp =  layer_in[iblock]/avg;
+	 res[iblock+1].write(tmp);
         }
      }
     }

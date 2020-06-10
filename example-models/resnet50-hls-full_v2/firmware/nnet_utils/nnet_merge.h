@@ -49,7 +49,7 @@ struct concat_config {
 };
 
 template<class input1_T, class input2_T, class res_T, typename CONFIG_T>
-void add(
+void add_old(
     input1_T data1[CONFIG_T::n_elem],
     input2_T data2[CONFIG_T::n_elem],
     res_T res[CONFIG_T::n_elem])
@@ -60,6 +60,18 @@ void add(
     }
 }
 
+ template<class input1_T, class input2_T, class res_T, typename CONFIG_T>
+   void add(
+	    hls::stream <input1_T> data1[CONFIG_T::n_elem],
+	    hls::stream <input2_T> data2[CONFIG_T::n_elem],
+	    hls::stream <res_T> res[CONFIG_T::n_elem])
+ {
+   for (int ii=0; ii<CONFIG_T::n_elem; ii++) {
+      #pragma HLS UNROLL
+     res_T pData = data1[ii].read() + data2[ii].read();
+     res[ii].write(pData);
+   }
+ }
 
 template<class input1_T, class input2_T, class res_T, typename CONFIG_T>
 void addrelu(

@@ -50,9 +50,9 @@ set CSIM_RESULTS "./tb_data/csim_results.log"
 set RTL_COSIM_RESULTS "./tb_data/rtl_cosim_results.log"
 
 if {$opt(reset)} {
-  open_project -reset myproject_biglayer_prj
+  open_project -reset myproject_biglayer_prj2
 } else {
-  open_project myproject_biglayer_prj
+  open_project myproject_biglayer_prj2
 }
 set_top myproject_biglayer
 add_files firmware/myproject_biglayer.cpp -cflags "-std=c++0x"

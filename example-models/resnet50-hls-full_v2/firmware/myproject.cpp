@@ -128,8 +128,6 @@
 #include "weights/w170.h"
 #include "weights/b170.h"
 #include "weights/w175.h"
-#include "weights/w175.h"
-#include "weights/b175.h"
 #include "weights/b175.h"
 
 void myproject(

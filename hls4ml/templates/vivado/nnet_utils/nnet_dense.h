@@ -107,11 +107,11 @@ template<class data_T, class res_T, typename CONFIG_T>
 void dense_latency(
     data_T    data[CONFIG_T::n_in],
     res_T     res[CONFIG_T::n_out],
-    typename CONFIG_T::weight_t  weights[CONFIG_T::n_in*CONFIG_T::n_out],
+    typename CONFIG_T::weight_t  weights[CONFIG_T::n_in*CONFIG_T::n_out/2],
     typename CONFIG_T::bias_t    biases[CONFIG_T::n_out])
 {
     data_T cache;
-    typename CONFIG_T::accum_t mult[CONFIG_T::n_in*CONFIG_T::n_out];
+    typename CONFIG_T::weightmult_t mult[CONFIG_T::n_in*CONFIG_T::n_out/2];
     typename CONFIG_T::accum_t acc[CONFIG_T::n_out];
 
     // Use a function_instantiate in case it helps to explicitly optimize unchanging weights/biases
@@ -162,12 +162,12 @@ void dense_latency(
             #pragma HLS PIPELINE
         }
         cache = data[ii];
-        Product2: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
+        Product2: for(int jj = 0; jj < CONFIG_T::n_out/2; jj++) {
             if (CONFIG_T::io_type == io_serial) {
                 int multiplier_limit  = ceil(float(CONFIG_T::n_out) / float(CONFIG_T::reuse_factor));
                 #pragma HLS ALLOCATION instances=product limit=multiplier_limit function
             }
-        int index = ii*CONFIG_T::n_out+jj;
+	    int index = ii*CONFIG_T::n_out/2+jj;
         mult[index] = product<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::accum_t>(cache, weights[index]);
         }
     }
@@ -185,9 +185,12 @@ void dense_latency(
         if (CONFIG_T::io_type == io_serial){
             #pragma HLS PIPELINE
         }
-        Accum2: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
-        int index = ii*CONFIG_T::n_out+jj;
-        acc[jj] += mult[index];
+        Accum2: for(int jj = 0; jj < CONFIG_T::n_out/2; jj++) {
+        //int index = ii*CONFIG_T::n_out+jj;
+        //acc[jj] += mult[index];
+	int index = ii*CONFIG_T::n_out/2+jj;
+	acc[jj] += mult[index].range(7,0);
+	acc[jj+1] += mult[index].range(25,18);
         }
     }
 

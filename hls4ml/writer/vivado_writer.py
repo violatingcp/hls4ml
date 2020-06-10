@@ -23,6 +23,7 @@ class VivadoWriter(Writer):
         h_file = open("{}/firmware/weights/{}.h".format(odir,var.name),"w")
         if write_txt_file:
             txt_file = open("{}/firmware/weights/{}.txt".format(odir,var.name),"w")
+            txt_file = open("{}/firmware/weights/{}.txt".format(odir,var.name),"w")
 
         #meta data
         h_file.write("//Numpy array shape {}\n".format(var.shape))

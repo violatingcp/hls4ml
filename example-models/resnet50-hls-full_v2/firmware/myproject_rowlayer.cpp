@@ -49,5 +49,7 @@ void myproject_rowlayer(
     // ****************************************
 
     //hls-fpga-machine-learning insert layers
-    if(!gpu_0_data_0[0][0].empty()) nnet::conv_2d_large_cl_row_stream<input_t, result_t, config2, config2M>(gpu_0_data_0, layer4_out, w2, b2);
+    for(int i0 = 0; i0 < 224; i0++) {   
+     if(!gpu_0_data_0[0][0].empty()) nnet::conv_2d_large_cl_row_stream<input_t, result_t, config2, config2M>(gpu_0_data_0, layer4_out, w2, b2);
+    }
 }
