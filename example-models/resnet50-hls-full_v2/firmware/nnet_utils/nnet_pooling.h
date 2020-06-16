@@ -310,7 +310,6 @@ void pooling2d_cl_1x1(//bool iReset,
     }
     if(pX == lShiftX && pY > lShiftY-1) pPass = true;
 }
-
 template<class data_T, typename CONFIG_T>
 void maxpool2d_filt_cl(data_T data[CONFIG_T::pool_height * CONFIG_T::pool_width * CONFIG_T::n_filt],
 		       data_T res[CONFIG_T::n_filt]){

@@ -213,6 +213,7 @@ template<class data_T, class res_T, typename CONFIG_T>
     pData = data[i0+1].read();
     layer_in_row[pX+CONFIG_T::pad_left][(CONFIG_T::pad_top+pY) % CONFIG_T::filt_height][i0] =  pData;
   } 
+  //Add for loop for last row
   if(pX == lShiftX && pPass) nnet::reset_down<data_T,data_T,CONFIG_T>(pY,layer_in_row,layer_in);
   if((pX-lShiftX) % CONFIG_T::stride_width == 0 && (pY-lShiftY) % CONFIG_T::stride_height == 0 && pPass) { 
     nnet::shift_right_stride<data_T,data_T,CONFIG_T>(pX,pY,layer_in_row,layer_in);
@@ -282,7 +283,6 @@ template<class data_T, class res_T, typename CONFIG_T>
     }
     shift_right_small<data_T,res_T,CONFIG_T>(tmpinput,output);
 }
-
 template<class data_T, class res_T, typename CONFIG_T>
 void conv_2d_large_cl(
 		      hls::stream<data_T> data[CONFIG_T::n_chan_in],
@@ -294,8 +294,9 @@ void conv_2d_large_cl(
     //#pragma HLS inline
     const static int lShiftX = CONFIG_T::filt_width-CONFIG_T::pad_left-1;
     const static int lShiftY = CONFIG_T::filt_height-CONFIG_T::pad_top-1;
+    const static int rowsize = (CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right);
 
-    static ap_shift_reg<data_T, (CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right)> layer_in_row[(CONFIG_T::filt_height)-1][CONFIG_T::n_chan];
+    static ap_shift_reg<data_T,rowsize> layer_in_row[(CONFIG_T::filt_height)-1][CONFIG_T::n_chan];
     #pragma HLS ARRAY_RESHAPE variable=layer_in_row complete dim=2
     
     static data_T layer_in[CONFIG_T::filt_height*CONFIG_T::filt_width*CONFIG_T::n_chan];
@@ -313,34 +314,33 @@ void conv_2d_large_cl(
     if(iReset==0) { 
       pX = 0; 
       pY = 0; 
-      for(int i0 = 0; i0 < CONFIG_T::pad_left; i0++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
+      for(int i0 = 0; i0 < CONFIG_T::pad_left+CONFIG_T::pad_top*rowsize; i0++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
     }
-
     static bool pPass = false;    
-    if(pY > lShiftY-1 && pX == lShiftX) pPass = true;
     nnet::cnnshift<data_T,res_T,CONFIG_T>(data,layer_in_row,layer_in);
-
+    //Processs image
     unsigned pLoop = 1;
     if(pX == CONFIG_T::in_width-1) pLoop = CONFIG_T::pad_right+1;
+    if(pX == CONFIG_T::in_width-1 && pY == CONFIG_T::in_height-1) pLoop = CONFIG_T::pad_right+1+CONFIG_T::pad_bottom*rowsize; //Fill the end with zeros for bottom paddings
     for(int i0 = 0; i0 < pLoop; i0++) { 
-     if(i0 > 0) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in); 
-      if((i0+pX-lShiftX) % CONFIG_T::stride_width == 0 && (i0+pY-lShiftY) % CONFIG_T::stride_height == 0 && pPass) { 
+      if(i0 > 0) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in); 
+      if(pY > lShiftY-1 && pX == lShiftX) pPass = true;
+      if((pX-lShiftX) % CONFIG_T::stride_width == 0 && (pY-lShiftY) % CONFIG_T::stride_height == 0 && pPass) { 
 	nnet::dense_large<data_T,res_T,typename CONFIG_T::mult_config>(layer_in,layer_out,weights,biases);
 	nnet::relu<res_T,res_T,typename CONFIG_T::relu_config>(layer_out, layer_reluout);
-	res_T pPixId = 0;
-	if(pX > 0 || pY > 0) pPixId = 1;
+	res_T pPixId = 1;
+	if(pX == 0 && pY == 0) pPixId = 0;
 	nnet::fill_image<data_T,data_T,CONFIG_T>(layer_reluout,pPixId,res);
       }
-     }
-    pX = pX+1;
-    if(pX == CONFIG_T::in_width) { 
-      pX = 0;
-      pY = pY+1;
-      pPass = false;
-      for(int i0 = 0; i0 < CONFIG_T::pad_left; i0++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
+      pX = pX+1;
+      if(pX == CONFIG_T::in_width+CONFIG_T::pad_right) { 
+	pX = 0;
+	pY = pY+1;
+	pPass = false;
+	for(int i0 = 0; i0 < CONFIG_T::pad_left; i0++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
+      }
     }
 }
-
 template<unsigned id,class data_T, class res_T, typename CONFIG_T>
 void conv_2d_large_cl_nopad(
 			    hls::stream<data_T> data[CONFIG_T::n_chan_in],

@@ -247,7 +247,6 @@ class HLSModel(object):
 
     def remove_node(self, node, rewire=True):
         if rewire:
-            print("here")
             if len(node.inputs) > 1 or len(node.outputs) > 1:
                 raise Exception('Cannot rewire a node with multiple inputs/outputs')
             #print("Check outputs",node.outputs,"!!!!",self.graph.values())
@@ -306,7 +305,7 @@ class HLSModel(object):
         data_out = np.zeros((shape),dtype=int)
         #print(data_out.shape)
         for i0 in range(quant_data.shape[0]/2):
-            data_out[i0] = quant_data[2*i0] + quant_data[2*i0+1]*262144
+            data_out[i0] = quant_data[2*i0] + quant_data[2*i0+1]*264
         data_out = np.moveaxis(data_out,0,len(data_out.shape)-1)
         return data_out
 
@@ -546,6 +545,7 @@ class Layer(object):
 
         self._function_template = self.model.config.backend.get_function_template(self.__class__.__name__)
         self._config_template = self.model.config.backend.get_config_template(self.__class__.__name__)
+        self._tcl_template = self.model.config.backend.get_tcl_template(self.__class__.__name__)
         self.weights = OrderedDict()
         self.variables = OrderedDict()
         self.precision = OrderedDict()
@@ -681,11 +681,11 @@ class Layer(object):
             elif quantize == 2 or quantize == 3:
                 precision = 'ap_int<2>'
                 type_name = name + '{index}_t'
-        print(self.name,name)
         if not ('bias' in name and 'mm' not in self.name): # and 'Conv' in self.name): #only weights
             var = WeightVariable(var_name, type_name=type_name, precision=precision, data=data, index=self.index)
             #quick hack to fuse batch norm
-            self.weights[name+'_unmerged']=var
+            if 'mm' not in self.name:
+                self.weights[name+'_unmerged']=var
             data = self.model.merge_weights(data)
 
         if compression:
@@ -720,6 +720,27 @@ class Layer(object):
 
         return params
 
+    def _default_tcl_params(self):
+        params = {}
+        params['config'] = 'config{}'.format(self.index)
+        params['input_t'] = self.get_input_variable().type.name
+        params['output_t'] = self.get_output_variable().type.name
+        params['input'] = self.get_input_variable().name
+        params['output'] = self.get_output_variable().name
+        params['weights'] = None
+        params['biases'] = None
+        weights = self.get_weights()
+        if len(weights) > 0:
+            params['weights'] = weights[0].name
+        if len(self.weights) > 1:
+            params['biases'] = weights[1].name
+        params['data_format'] = 'cl'
+        if self.get_attr('data_format') == 'channels_first':
+            params['data_format'] = 'cf'
+        params.update(self.attributes)
+        #print("tcl template",self._tcl_template)
+        return params
+
     def get_layer_precision(self):
         return self.precision
 
@@ -730,7 +751,10 @@ class Layer(object):
     # parameters.h
     def config_cpp(self):
         raise NotImplementedError
-
+        
+    def print_tcl(self):
+        raise NotImplementedError 
+        
     def get_numbers_cpp(self):
         numbers = ''
         for k, v in self.get_output_variable().get_shape():
@@ -784,6 +808,8 @@ class Dense(Layer):
         dims = ['N_LAYER_{}'.format(self.index)]
         quantize = self.get_attr('quantize', default=0)
         compression = self.model.config.get_compression(self)
+        self.set_attr('n_in',self.get_input_variable().size())
+        #self.set_attr('n_out') = self.get_output_variable()
         if self.model.config.is_resource_strategy(self):
             if self.model.config.backend.name == 'Vivado':
                 valid_rf = self.model.config.backend.get_valid_reuse_factors(self)
@@ -817,6 +843,7 @@ class Dense(Layer):
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
             header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            params['strategy'] += '_stream'
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
@@ -827,6 +854,13 @@ class Dense(Layer):
         params['nonzeros'] = self.get_weights('weight').nonzeros
 
         return self._config_template.format(**params)
+
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        params['n_weights']=self.get_weights('weight').data_length
+        params['weights']=self.get_weights('weight').name
+        #params['strategy'] += '_stream'
+        return self._tcl_template.format(**params)
 
 class Conv1D(Layer):
     def initialize(self):
@@ -895,6 +929,12 @@ class Conv1D(Layer):
         else:
             return self._config_template[0].format(**params)
 
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        params['n_filt_in'] = 'N_FILT_{}'.format(self.index)
+        params['n_chan_in'] = input_dims[-1]
+        return self._tcl_template.format(**params)
+
 class Conv2D(Layer):
     def initialize(self):
         if self.get_attr('data_format') == 'channels_last':
@@ -905,7 +945,6 @@ class Conv2D(Layer):
         else:
             shape = [self.attributes['n_filt'], self.attributes['out_height'], self.attributes['out_width']]
             dims = ['N_FILT_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
-            print("Conv -shape",shape)
             shapeinternal = [self.attributes['out_height'], self.attributes['out_width']]
             diminternal   = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
         self.is1x1 = False
@@ -922,6 +961,10 @@ class Conv2D(Layer):
                 valid_rf = self.model.config.backend.get_valid_reuse_factors(self)
                 chosen_rf = self.model.config.get_reuse_factor(self)
                 #use chosen to balance the throughput in clocks
+                if chosen_rf < 6*shape[0]*shape[1]: #6 clock min
+                    print("Chosen latency cannot be achieved with a signle stream!!!!!! Please consider custom stream in ")
+                else: 
+                    chosen_rf = chosen_rf-6*shape[0]*shape[1]
                 approxrf=float(chosen_rf)/shape[1]/shape[2]
                 if self.get_attr('data_format') == 'channels_last':
                     approxrf=float(chosen_rf)/shape[0]/shape[1]
@@ -1004,7 +1047,7 @@ class Conv2D(Layer):
             
             mult_params = self._default_config_params()
             mult_params['reuse'] = params['reuse']
-            mult_params['n_in'] = self.get_attr('n_chan') * self.get_attr('filt_height') * self.get_attr('filt_width')
+            mult_params['n_in'] = self.get_input_variable().shape[0] * self.get_attr('filt_height') * self.get_attr('filt_width')
             mult_params['n_out'] = self.get_attr('n_filt')
             mult_config = self._config_template[1].format(**mult_params)
 
@@ -1016,7 +1059,18 @@ class Conv2D(Layer):
             return relu_config + '\n' + mult_config + '\n' + conv_config
         else:
             return self._config_template[0].format(**params)
+    
 
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        params['n_chan_in'] =  self.get_input_variable().dim_names[0]
+        params['n_filt_in'] = self.get_output_variable().dim_names[0]
+        params['n_weights']=self.get_weights('weight').data_length
+        params['weights']=self.get_weights('weight').name
+        params['1x1'] = ''
+        if self.is1x1:
+            params['1x1'] = '_1x1'
+        return self._tcl_template.format(**params)
 
 class Conv2DMerge(Layer):
     def initialize(self):
@@ -1107,6 +1161,16 @@ class Conv2DMerge(Layer):
         else:
             return self._config_template[0].format(**params)
 
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        params['n_chan_in'] =  self.get_input_variable().dim_names[0]
+        params['n_filt_in'] = self.get_output_variable().dim_names[0]
+        params['n_weights']=self.get_weights('weight').data_length
+        params['weights']=self.get_weights('weight').name
+        if self.is1x1:
+            params['1x1'] = '_1x1'
+        return self._tcl_template.format(**params)
+
 class Pooling1D(Layer):
     def initialize(self):
         shape = [self.attributes['n_out'], self.attributes['n_filt']]
@@ -1127,6 +1191,12 @@ class Pooling1D(Layer):
         params['n_out'] = self.get_output_variable().size_cpp()
 
         return self._config_template.format(**params)
+
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        params['n_chan_in'] =  self.get_input_variable().dim_names[0]
+        params['n_filt_in'] = self.get_output_variable().dim_names[0]
+        return self._tcl_template.format(**params)
 
 class Pooling2D(Layer):
     def initialize(self):
@@ -1154,12 +1224,24 @@ class Pooling2D(Layer):
     def config_cpp(self):
         params = self._default_config_params()
         params['n_in'] = self.get_input_variable().dim_names[0]
-        params['in_width'] = self.get_input_variable().dim_names[1]
-        params['out_height'] = self.get_output_variable().dim_names[0]
-        params['out_width'] = self.get_output_variable().dim_names[1]
-        params['n_filt'] = self.get_output_variable().dim_names[2]+'-1'
-        params['n_filt_in'] = self.get_output_variable().dim_names[2]
+        params['in_height'] = self.get_input_variable().dim_names[1]
+        params['in_width'] = self.get_input_variable().dim_names[2]
+        params['out_height'] = self.get_output_variable().dim_names[1]
+        params['out_width'] = self.get_output_variable().dim_names[2]
+        params['n_filt'] = self.get_output_variable().dim_names[0]+'-1'
+        params['n_filt_in'] = self.get_output_variable().dim_names[0]
+        params['n_chan'] = self.get_input_variable().dim_names[0]+'-1'
+        params['n_chan_in'] = self.get_input_variable().dim_names[0]
         return self._config_template.format(**params)
+
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        params['n_chan_in'] =  self.get_input_variable().dim_names[0]
+        params['n_filt_in'] = self.get_output_variable().dim_names[0]
+        params['1x1'] = ''
+        if self.is1x1:
+            params['1x1'] = '_1x1'        
+        return self._tcl_template.format(**params)
 
 class Activation(Layer):
     def initialize(self):
@@ -1173,8 +1255,10 @@ class Activation(Layer):
         params['activation'] = self.get_attr('activation')
         params['config'] = '{}_config{}'.format(self.get_attr('activation'), self.index)
         header=''
+        params['strategy']=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
             header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            params['strategy'] = '_stream'
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
@@ -1183,6 +1267,15 @@ class Activation(Layer):
         params['n_in'] = self.get_input_variable().size_cpp()
 
         return self._config_template.format(**params)
+
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        params['activation'] = self.get_attr('activation')
+        params['n_in'] = self.get_input_variable().size_cpp()
+        params['strategy']=''
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            params['strategy'] = '_stream'
+        return self._tcl_template.format(**params)
 
 class ParametrizedActivation(Activation):
     def function_cpp(self):
@@ -1202,6 +1295,11 @@ class ParametrizedActivation(Activation):
         else:
             return act # ELU activation
 
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        return self._tcl_template.format(**params)
+
+
 class PReLU(Activation):
     def initialize(self):
         super(PReLU, self).initialize()
@@ -1216,6 +1314,10 @@ class PReLU(Activation):
         if self.model.config.get_config_value('IOType') == 'io_serial':
             header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
         return [header+self._function_template.format(**params)]
+
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        return self._tcl_template.format(**params)
 
 class BatchNormalization(Layer):
     def initialize(self):
@@ -1247,8 +1349,12 @@ class BatchNormalization(Layer):
     def config_cpp(self):
         params = self._default_config_params()
         params['n_in'] = self.get_input_variable().size_cpp()
-
         return self._config_template.format(**params)
+
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        params['n_in'] = self.get_input_variable().size_cpp()
+        return self._tcl_template.format(**params)
 
 class Merge(Layer):
     def initialize(self):
@@ -1278,9 +1384,15 @@ class Merge(Layer):
     def config_cpp(self):
         params = self._default_config_params()
         params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
-
         return self._config_template.format(**params)
 
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        params['merge'] = self.get_attr('op').lower()
+        params['input1_t'] = self.get_input_variable(self.inputs[0]).type.name
+        params['input2_t'] = self.get_input_variable(self.inputs[1]).type.name
+        params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+        return self._tcl_template.format(**params)
 
 class Split(Layer):
     def initialize(self):
@@ -1309,6 +1421,13 @@ class Split(Layer):
         params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
         return self._config_template.format(**params)
 
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+        params['input_t']   = self.get_input_variable(self.inputs[0]).type.name
+        params['output_t'] = self.get_output_variable(self.name+'_output1').type.name
+        return self._tcl_template.format(**params)
+
 class Concatenate(Merge):
     def initialize(self):
         assert(len(self.inputs) == 2)
@@ -1334,6 +1453,14 @@ class Concatenate(Merge):
             params['n_elem2_{}'.format(i)] = s2
 
         return self._config_template.format(**params)
+
+    def print_tcl(self):
+        #params['merge'] = self.get_attr('op').lower()
+        params = self._default_tcl_params()
+        for i, (s1, s2) in enumerate(zip(inp1.shape, inp2.shape)):
+            params['n_elem1_{}'.format(i)] = s1
+            params['n_elem2_{}'.format(i)] = s2
+        return self._tcl_template.format(**params)
 
 layer_map = {
     'InputLayer'         : Input,
