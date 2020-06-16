@@ -1,4 +1,5 @@
 #Resnet50 setup
+
 git clone https://github.com/tarafdar/AIgean.git
 git clone https://github.com/UofT-HPRC/galapagos.git
 git clone https://github.com/violatingcp/hls4ml.git
