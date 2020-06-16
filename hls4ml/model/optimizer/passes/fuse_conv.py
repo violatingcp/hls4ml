@@ -2,81 +2,6 @@ from ..optimizer import OptimizerPass
 import re
 from collections import OrderedDict
 
-class HLSType(object):
-    def __init__(self, name, precision, **kwargs):
-        self.name = name.format(**kwargs)
-        self.precision = precision
-
-    def definition_cpp(self):
-        return 'typedef {precision} {name};\n'.format(name=self.name, precision=self.precision)
-
-class Variable(object):
-    def __init__(self, var_name, type_name, precision, **kwargs):
-        self.name = var_name.format(**kwargs)
-        self.type = HLSType(type_name, precision, **kwargs)
-        self.cppname = re.sub(r'\W|^(?=\d)','_', self.name)
-
-class ArrayVariable(Variable):
-    def __init__(self, shape, dim_names, var_name='layer{index}', type_name='layer{index}_t', precision=None, pragma='partition', **kwargs):
-        super(ArrayVariable, self).__init__(var_name, type_name, precision, **kwargs)
-        self.shape = shape
-        self.dim_names = dim_names
-        self.streamcnn = False
-        if pragma == 'partition':
-            self.partition()
-        elif pragma == 'reshape':
-            self.reshape()
-        elif pragma == 'stream':
-            self.stream()
-            self.streamcnn = True
-        else:
-            self.pragma = None
-
-    def partition(self, type='complete', factor=None, dim=0):
-        if factor:
-            pragma = '#pragma HLS ARRAY_PARTITION variable={name} {type} factor={factor} dim={dim}'
-        else:
-            pragma = '#pragma HLS ARRAY_PARTITION variable={name} {type} dim={dim}'
-
-        self.pragma = pragma.format(name=self.name, type=type, factor=factor, dim=dim)
-
-    def reshape(self, type='complete', factor=None, dim=0):
-        if factor:
-            pragma = '#pragma HLS ARRAY_RESHAPE variable={name} {type} factor={factor} dim={dim}'
-        else:
-            pragma = '#pragma HLS ARRAY_RESHAPE variable={name} {type} dim={dim}'
-
-        self.pragma = pragma.format(name=self.name, type=type, factor=factor, dim=dim)
-
-    def stream(self, depth=1, dim=1):
-        pragma = '#pragma HLS STREAM variable={name} depth={depth} dim={dim}'
-        self.pragma = pragma.format(name=self.name, depth=depth, dim=dim)
-
-    def get_shape(self):
-        return zip(self.dim_names, self.shape)
-
-    def definition_cpp(self):
-        if self.streamcnn:
-            array_shape = self.size_cpp_cnn()
-            return 'static hls::stream<{type}> {name}[{shape}]'.format(type=self.type.name, name=self.cppname, shape=array_shape)
-        else:
-            array_shape = self.size_cpp()
-            return '{type} {name}[{shape}]'.format(type=self.type.name, name=self.cppname, shape=array_shape)
-
-    def size(self):
-        nelem = 1
-        for dim in self.shape:
-            nelem *= dim
-        return nelem
-
-    def size_cpp(self):
-        return '*'.join([str(k) for k in self.dim_names])
-
-    def size_cpp_cnn(self):
-        if len(self.dim_names) > 1:
-            return  self.dim_names[2]
-        return  self.dim_names[0]
-
 class FuseConv(OptimizerPass):
     def match(self, node, lastnodes):
         is_match = node.__class__.__name__  == 'Activation' and \
@@ -114,6 +39,7 @@ class FuseConv(OptimizerPass):
         del  model.output_vars[dense_node.outputs[0]]
         del  model.output_vars[norm_node.outputs[0]]
         del  dense_node.variables[dense_node.outputs[0]]
+
         dense_node.outputs = relu_node.outputs
         dense_node.variables[relu_node.outputs[0]] =  relu_node.variables[relu_node.outputs[0]] 
         next_node = next(x for x in model.graph.values() if x.inputs[0] == relu_node.outputs[0])
@@ -163,7 +89,7 @@ class FuseConv2(OptimizerPass):
 
         dense_node.precision.update(norm_node.precision)
 
-        #del  dense_node.variables[dense_node.outputs[0]]
+        del  dense_node.variables[dense_node.outputs[0]]
         dense_node.outputs = norm_node.outputs
         dense_node.variables[norm_node.outputs[0]] =  norm_node.variables[norm_node.outputs[0]] 
         del model.graph[norm_node.name]
@@ -175,7 +101,6 @@ class FuseConv2(OptimizerPass):
         del  dense_node.weights['weight_unmerged']
         #dense_node.__class__.__name__ = 'Conv2DMerge'
         return True
-
 
 class FuseMerge(OptimizerPass):
     def match(self, node, lastnodes):
@@ -190,6 +115,7 @@ class FuseMerge(OptimizerPass):
         relu_node  = node
         del  model.output_vars[add_node.outputs[0]]
         del  add_node.variables[add_node.outputs[0]]
+        addin_node = next(x for x in model.graph.values() if x.outputs[0] == add_node.inputs[0])
         next_node = next(x for x in model.graph.values() if x.inputs[0] == relu_node.outputs[0])
         add_node.precision.update(relu_node.precision)
         add_node.outputs = relu_node.outputs

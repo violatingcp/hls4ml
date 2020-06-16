@@ -236,15 +236,72 @@ function_templates = {
     'Split'                  : split_function_template,
 }
 
+dense_tcl_template = """set arg_0 "-I . -DN_1={n_in} -DN_2={n_out}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set arg_3 "-DWEIGHTS={weights}  -DBIASES={biases}"
+set args "$arg_0 $arg_1 $arg_2 $arg_3"
+set layer_type dense_{strategy}
+}};\n"""
+
+merge_tcl_template = """set arg_0 "-I . -DN_1={n_elem} -DN_2={n_elem}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_1_T={input1_t} -DINPUT_2_T={input2_t} -DLAYER_T={output_t}"
+set args "$arg_0 $arg_1 $arg_2"
+set layer_type {merge}
+}};\n"""
+
+pooling2d_tcl_template = """set arg_0 "-I . -DN_INPUT={n_chan} -DN_OUTPUT={n_filt}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set args "$arg_0 $arg_1 $arg_2"
+set layer_type pooling2d_{data_format}
+}};\n"""
+
+conv_2d_tcl_template = """set arg_0 "-I . -DN_INPUT={n_chan} -DN_OUTPUT={n_filt}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set arg_3 "-DWEIGHTS={weights}  -DBIASES={biases}"
+set args "$arg_0 $arg_1 $arg_2 $arg_3"
+set layer_type conv_2d_{strategy}_{data_format}
+}};\n"""
+
+split_tcl_template = """set arg_0 "-I . -DN={n_elem}" 
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set args "$arg_0 $arg_1 $arg_2"
+set layer_type nnet_split
+}};\n"""
+
+tcl_templates = {
+    'Dense'                  : dense_tcl_template,
+    'BinaryDense'            : dense_tcl_template,
+    'Conv1D'                 : conv2d_tcl_template,
+    'Conv2D'                 : conv2d_tcl_template,
+    'Activation'             : activ_tcl_template,
+    'Pooling1D'              : pooling2d_tcl_template,
+    'Pooling2D'              : pooling2d_tcl_template,
+    'Merge'                  : merge_tcl_template,
+    'Concatenate'            : merge_tcl_template,
+    'Split'                  : split_tcl_template,   
+}
+
+
+
 def get_config_template(kind):
     return config_templates.get(kind)
 
 def get_function_template(kind):
     return function_templates.get(kind)
 
-def register_templates(name, function_template, config_template):
+def get_tcl_template(kind):
+    return tcl_templates.get(kind)
+
+def register_templates(name, function_template, config_template, tcl_template):
     global function_templates
     global config_templates
+    global tcl_templates
 
     function_templates[name] = function_template
     config_templates[name] = config_template
+    tcl_templates[name] = tcl_template

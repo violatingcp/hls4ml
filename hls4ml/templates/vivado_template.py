@@ -146,9 +146,9 @@ pooling2d_config_template = """struct config{index} : nnet::pooling2d_config {{
     static const unsigned in_height = {in_height};
     static const unsigned in_width = {in_width};
     static const unsigned n_filt = {n_filt};
-    static const unsigned n_chan = {n_filt};
+    static const unsigned n_chan = {n_chan};
     static const unsigned n_filt_in = {n_filt_in};
-    static const unsigned n_chan_in = {n_filt_in};
+    static const unsigned n_chan_in = {n_chan_in};
     static const unsigned stride_height = {stride_height};
     static const unsigned stride_width = {stride_width};
     static const unsigned pool_height = {pool_height};
@@ -206,8 +206,8 @@ batchnorm_function_template = 'nnet::normalize<{input_t}, {output_t}, {config}>(
 conv1d_function_template = 'nnet::conv_1d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 conv2d_function_template = 'nnet::conv_2d_{strategy}_{data_format}{1x1}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 conv2dmerge_function_template = 'nnet::conv_2d_merge_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
-activ_function_template = 'nnet::{activation}<{input_t}, {output_t}, {config}>({input}, {output});'
-param_activ_function_template = 'nnet::{activation}<{input_t}, {output_t}, {config}>({input}, {param}, {output});'
+activ_function_template = 'nnet::{activation}{strategy}<{input_t}, {output_t}, {config}>({input}, {output});'
+param_activ_function_template = 'nnet::{activation}{strategy}<{input_t}, {output_t}, {config}>({input}, {param}, {output});'
 pooling1d_function_template = 'nnet::pooling1d<{input_t}, {config}>({input}, {output});'
 pooling2d_function_template = 'nnet::pooling2d_{data_format}{1x1}<{input_t}, {output_t}, {config}>({input}, {output});'
 merge_function_template = 'nnet::{merge}<{input1_t}, {input2_t}, {output_t}, {config}>({input1}, {input2}, {output});'
@@ -230,23 +230,106 @@ split_function_template = 'nnet::split<{input_t}, {output_t}, {config}>({input},
     'Split'                  : split_function_template,   
 }'''
 
+
+dense_tcl_template = """set arg_0 "-I . -DN_1={n_in} -DN_2={n_out}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set arg_3 "-DN_WEIGHTS={n_weights} -DWEIGHTS={weights}  -DBIASES={biases}"
+set args "$arg_0 $arg_1 $arg_2 $arg_3"
+set layer_type dense_{strategy}
+\n
+source ../common/build.tcl
+\n"""
+
+
+batchnorm_tcl_template = """set arg_0 "-I . -DN_1={n_in} -DN_2={n_filt}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set arg_3 "-DWEIGHTS={scale}  -DBIASES={biases}"
+set args "$arg_0 $arg_1 $arg_2 $arg_3"
+set layer_type normalize
+\n
+source ../common/build.tcl
+\n"""
+
+activ_tcl_template = """set arg_0 "-I . -DN_1={n_in} -DN_2={n_in}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set args "$arg_0 $arg_1 $arg_2"
+set layer_type {activation}{strategy}
+\n
+source ../common/build.tcl
+\n"""
+
+merge_tcl_template = """set arg_0 "-I . -DN_1={n_elem} -DN_2={n_elem}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_1_T={input1_t} -DINPUT_2_T={input2_t} -DLAYER_T={output_t}"
+set args "$arg_0 $arg_1 $arg_2"
+set layer_type {merge}
+\n
+source ../common/build.tcl
+\n"""
+
+pooling2d_tcl_template = """set arg_0 "-I . -DN_INPUT={n_chan_in} -DN_OUTPUT={n_filt_in}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set args "$arg_0 $arg_1 $arg_2"
+set layer_type pooling2d_{data_format}{1x1}
+\n
+source ../common/build.tcl
+\n"""
+
+conv_2d_tcl_template = """set arg_0 "-I . -DN_INPUT={n_chan_in} -DN_OUTPUT={n_filt_in}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set arg_3 "-DN_WEIGHTS={n_weights} -DWEIGHTS={weights}  -DBIASES={biases}"
+set args "$arg_0 $arg_1 $arg_2 $arg_3"
+set layer_type conv_2d_{strategy}_{data_format}{1x1}_port
+\n
+source ../common/build.tcl
+\n"""
+
+split_tcl_template = """set arg_0 "-I . -DN={n_elem}" 
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set args "$arg_0 $arg_1 $arg_2"
+set layer_type nnet_split
+\n
+source ../common/build.tcl
+\n"""
+
+'''tcl_templates = {
+    'Dense'                  : dense_tcl_template,
+    'BinaryDense'            : dense_tcl_template,
+    'BatchNormalization'     : batchnorm_tcl_template,
+    'Conv1D'                 : conv2d_tcl_template,
+    'Conv2D'                 : conv2d_tcl_template,
+    'Activation'             : activ_tcl_template,
+    'Pooling1D'              : pooling2d_tcl_template,
+    'Pooling2D'              : pooling2d_tcl_template,
+    'Merge'                  : merge_tcl_template,
+    'Concatenate'            : merge_tcl_template,
+    'Split'                  : split_tcl_template,   
+}'''
+
+
 class VivadoBackend(Backend):
     def __init__(self):
         super(VivadoBackend, self).__init__('Vivado')
-        self.register_templates('Dense', dense_function_template, dense_config_template)
-        self.register_templates('BinaryDense'            , dense_function_template,       dense_config_template)
-        self.register_templates('BatchNormalization'     , batchnorm_function_template,   batchnorm_config_template)
-        self.register_templates('Conv1D'                 , conv1d_function_template,      [conv1d_config_template, conv_mult_config_template])
-        self.register_templates('Conv2D'                 , conv2d_function_template,      [conv2d_config_template, conv_mult_config_template,conv_relu_config_template])
-        self.register_templates('Conv2DMerge'            , conv2dmerge_function_template, [conv2d_config_template, conv_mult_config_template, conv_norm_config_template, conv_relu_config_template])
-        self.register_templates('Activation'             , activ_function_template,       activ_config_template)
-        self.register_templates('ParametrizedActivation' , param_activ_function_template, activ_config_template)
-        self.register_templates('PReLU'                  , param_activ_function_template, activ_config_template)
-        self.register_templates('Pooling1D'              , pooling1d_function_template,   pooling1d_config_template)
-        self.register_templates('Pooling2D'              , pooling2d_function_template,   pooling2d_config_template)
-        self.register_templates('Merge'                  , merge_function_template,       merge_config_template)
-        self.register_templates('Concatenate'            , merge_function_template,       concat_config_template)
-        self.register_templates('Split'                  , split_function_template,       split_config_template)
+        self.register_templates('Dense'                  , dense_function_template,       dense_config_template, dense_tcl_template)
+        self.register_templates('BinaryDense'            , dense_function_template,       dense_config_template, dense_tcl_template)
+        self.register_templates('BatchNormalization'     , batchnorm_function_template,   batchnorm_config_template, batchnorm_tcl_template)
+        self.register_templates('Conv1D'                 , conv1d_function_template,      [conv1d_config_template, conv_mult_config_template],conv_2d_tcl_template)
+        self.register_templates('Conv2D'                 , conv2d_function_template,      [conv2d_config_template, conv_mult_config_template,conv_relu_config_template],conv_2d_tcl_template)
+        self.register_templates('Conv2DMerge'            , conv2dmerge_function_template, [conv2d_config_template, conv_mult_config_template, conv_norm_config_template, conv_relu_config_template],conv_2d_tcl_template)
+        self.register_templates('Activation'             , activ_function_template,       activ_config_template,activ_tcl_template)
+        self.register_templates('ParametrizedActivation' , param_activ_function_template, activ_config_template,activ_tcl_template)
+        self.register_templates('PReLU'                  , param_activ_function_template, activ_config_template,activ_tcl_template)
+        self.register_templates('Pooling1D'              , pooling1d_function_template,   pooling1d_config_template,pooling2d_tcl_template)
+        self.register_templates('Pooling2D'              , pooling2d_function_template,   pooling2d_config_template,pooling2d_tcl_template)
+        self.register_templates('Merge'                  , merge_function_template,       merge_config_template,merge_tcl_template)
+        self.register_templates('Concatenate'            , merge_function_template,       concat_config_template,merge_tcl_template)
+        self.register_templates('Split'                  , split_function_template,       split_config_template,split_tcl_template)
     
     def get_valid_reuse_factors(self, layer):
         n_in = 0

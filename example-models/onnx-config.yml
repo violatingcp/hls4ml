@@ -14,7 +14,7 @@ HLSConfig:
   LayerType:
     Dense:
       ReuseFactor: 200000
-      Strategy: Latency
+      Strategy: Resource
       Compression: False
     Conv2D:
       ReuseFactor: 200000

@@ -61,6 +61,55 @@ class VivadoWriter(Writer):
         if not os.path.isdir("{}/firmware/weights".format(model.config.get_output_dir())):
             os.makedirs("{}/firmware/weights".format(model.config.get_output_dir()))
 
+    def copy_dir(self,model,indir,outdir):
+        filedir = os.path.dirname(os.path.abspath(__file__))
+        srcpath = os.path.join(filedir,indir)
+        dstpath = ('{}/'+outdir).format(model.config.get_output_dir())
+        if not os.path.exists(dstpath):
+            os.mkdir(dstpath)
+        files = [os.path.basename(h) for h in glob.glob(srcpath + '*.*')]
+        for h in files:
+            copyfile(srcpath + h, dstpath + h)
+
+    def write_tcl_dir(self, model):
+        odir = model.config.get_output_dir()
+        if not os.path.isdir("{}/firmware/ips".format(model.config.get_output_dir())):
+            os.makedirs("{}/firmware/ips".format(model.config.get_output_dir()))
+        for layer in model.get_layers():
+            if 'Input' in layer.__class__.__name__:
+                continue
+            if not os.path.isdir("{}/firmware/ips/layer{}".format(model.config.get_output_dir(),layer.index)):
+                os.makedirs("{}/firmware/ips/layer{}".format(model.config.get_output_dir(),layer.index))
+            t_file = open("{}/firmware/ips/layer{}/synth.tcl".format(odir,layer.index),"w")
+            t_file.write(layer.print_tcl())
+            t_file.close()
+            h_file = open("{}/firmware/ips/layer{}/layer_params.h".format(odir,layer.index),"w")
+            h_file.write("#ifndef LAYER{}_PARAMS\n".format(layer.index))
+            h_file.write("#define LAYER{}_PARAMS\n".format(layer.index))
+            for w in layer.get_weights():
+            #h_file.write("#include \"w{}.h\" \n".format(var.name))
+                if not 'w' in w.name:
+                    h_file.write("#include \"weights/{}.h\" \n".format(w.name))
+            h_file.write("#endif\n".format(layer.index))
+            h_file.close()
+            m_file = open("{}/firmware/ips/layer{}/Makefile".format(odir,layer.index),"w")
+            m_file.write('SUBDIRS := $(wildcard */.)\n\n')
+            m_file.write('.PHONY: all clean\n')
+            m_file.write('include ../common/include.mk\n')
+            m_file.write('SYNTH_ROOT = "."\n\n')
+            m_file.write('all:\n')
+            m_file.write('\t mkdir -p "$(galapagos_dir)/userIP/hls_projects"\n')
+            m_file.write('\t vivado_hls $(SYNTH_ROOT)/synth.tcl -tclargs $(project_name) $(nnet_utils_dir) $(galapagos_dir)\n')
+            m_file.write('\t echo $(project_name)\n\n\n')
+            m_file.write('clean:\n')
+            m_file.write('\t rm -rf $(galapagos_dir)/userIP/hls_projects/resnet_$(project_name)\n')
+            m_file.close()
+
+        self.copy_dir(model,'../templates/vivado/AIgean/srcs/','firmware/ips/srcs/'),
+        self.copy_dir(model,'../templates/vivado/AIgean/common/','firmware/ips/common/'),
+        self.copy_dir(model,'../templates/vivado/AIgean/include/','firmware/ips/include/'),
+        self.copy_dir(model,'../templates/vivado/AIgean/bridges/','firmware/ips/bridges/'),
+
     def write_project_cpp(self, model):
         ###################
         ## myproject.cpp
@@ -393,5 +442,6 @@ class VivadoWriter(Writer):
         self.write_test_bench(model)
         self.write_build_script(model)
         self.write_nnet_utils(model)
+        self.write_tcl_dir(model)
         self.write_tar(model)
         print('Done')
