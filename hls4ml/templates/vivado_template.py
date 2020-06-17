@@ -15,6 +15,7 @@ dense_config_template = """struct config{index} : nnet::dense_config {{
     typedef {accum_t} accum_t;
     typedef {bias_t} bias_t;
     typedef {weight_t} weight_t;
+    typedef {bigweight_t} weightmult_t;
     typedef {index_t} index_t;
 }};\n"""
 
@@ -54,6 +55,7 @@ conv_mult_config_template = """struct config{index}_mult : nnet::dense_config {{
     typedef {accum_t} accum_t;
     typedef {bias_t} bias_t;
     typedef {weight_t} weight_t;
+    typedef {bigweight_t} weightmult_t;
 }};\n"""
 
 conv2d_config_template = """struct config{index} : nnet::conv2d_config {{

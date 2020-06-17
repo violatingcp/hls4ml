@@ -615,7 +615,6 @@ class Layer(object):
                     pragma = 'partition'
 
         out = ArrayVariable(shape, dim_names, var_name=var_name, type_name=type_name, precision=precision, pragma=pragma, index=self.index)
-
         self.variables[out_name] = out
         self.model.register_output_variable(out_name, out)
 
@@ -687,6 +686,10 @@ class Layer(object):
             if 'mm' not in self.name:
                 self.weights[name+'_unmerged']=var
             data = self.model.merge_weights(data)
+            precision='ap_uint<16>' # hardcoded for now
+            type_name='model_weightdefault_t'
+        #if type_name == 'model_default_t':
+        #     precision='ap_uint<16>'
 
         if compression:
             rf = self.model.config.get_reuse_factor(self)
@@ -717,6 +720,7 @@ class Layer(object):
         # data types
         for weight_name, variable in self.weights.items():
             params[weight_name + '_t'] = variable.type.name
+            params['big'+weight_name + '_t'] = 'model_bigdefault_t'
 
         return params
 
@@ -952,7 +956,7 @@ class Conv2D(Layer):
         if(self.attributes['filt_height'] == 1 and self.attributes['filt_width'] == 1) : 
             self.is1x1 = True
         self.add_output_variable(shape, dims)
-        #self.add_internal_variable(shapeinternal,diminternal)
+        #self.add_internal_variable(shapeinternal,diminternal,'dummy','dummy{index}_out',type_name='model_bigdefault_t',precision='ap_uint<27>')
         self.add_weights()
         self.add_bias()
         if self.model.config.is_resource_strategy(self):
@@ -961,10 +965,10 @@ class Conv2D(Layer):
                 valid_rf = self.model.config.backend.get_valid_reuse_factors(self)
                 chosen_rf = self.model.config.get_reuse_factor(self)
                 #use chosen to balance the throughput in clocks
-                if chosen_rf < 6*shape[0]*shape[1]: #6 clock min
-                    print("Chosen latency cannot be achieved with a signle stream!!!!!! Please consider custom stream in ")
+                if chosen_rf < 6*shape[1]*shape[2]: #6 clock min
+                    print("Chosen latency cannot be achieved with a signle stream!!!!!! Please consider custom stream in ",self.index,shape[1],shape[2])
                 else: 
-                    chosen_rf = chosen_rf-6*shape[0]*shape[1]
+                    chosen_rf = chosen_rf-6*shape[1]*shape[2]
                 approxrf=float(chosen_rf)/shape[1]/shape[2]
                 if self.get_attr('data_format') == 'channels_last':
                     approxrf=float(chosen_rf)/shape[0]/shape[1]

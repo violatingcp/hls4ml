@@ -23,7 +23,6 @@ class FuseConv(OptimizerPass):
         bn_scale_um = norm_node.weights['scale_unmerged']
         bn_bias = norm_node.weights['bias']
 
-        print("fusing",bn_scale.data.shape,dense_weight.data.shape, dense_bias.data.shape, bn_bias.data.shape)
         if dense_node.get_attr('strategy') != 'large':
             fused_weight = bn_scale.data * dense_weight.data
         else:
@@ -32,7 +31,6 @@ class FuseConv(OptimizerPass):
         
         fused_bias = bn_scale_um.data * dense_bias.data + bn_bias.data
 
-        print(dense_node.precision,relu_node.precision) 
         dense_node.precision.update(relu_node.precision)
         dense_node.precision.update(norm_node.precision)
 
