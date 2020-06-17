@@ -87,7 +87,8 @@ inline typename std::enable_if<(not std::is_same<data_T, ap_uint<1>>::value)
 product(data_T a, weight_T w){
     // 'Normal' product
     #pragma HLS inline off
-    return a * w;
+    ret_T w1 = 262144*w.range(15,8) + w.range(7,0);
+    return a * w1;
 }
 
 template<class data_T, class res_T, typename CONFIG_T>

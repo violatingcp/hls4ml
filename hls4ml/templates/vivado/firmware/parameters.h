@@ -21,6 +21,7 @@
 //hls-fpga-machine-learning insert numbers
 
 //hls-fpga-machine-learning insert layer-precision
+typedef ap_uint<27> model_bigdefault_t;
 
 //hls-fpga-machine-learning insert layer-config
 
