@@ -255,7 +255,7 @@ source ../common/build.tcl
 \n"""
 
 activ_tcl_template = """set arg_0 "-I . -DN_1={n_in} -DN_2={n_in}"
-set arg_1 "-DCONFIG={config}"
+set arg_1 "-DCONFIG={activation}_{config}"
 set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
 set args "$arg_0 $arg_1 $arg_2"
 set layer_type {activation}{strategy}

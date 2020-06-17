@@ -15,10 +15,10 @@ void _add(
 
 
 
-        
+
         
     if(!input_1[0].empty()){
-      nnet::add<_INPUT_1_T, _INPUT_2_T, _LAYER_T,_CONFIG>(input_1, input_2, output);
+      nnet::addrelu<_INPUT_1_T, _INPUT_2_T, _LAYER_T,_CONFIG>(input_1, input_2, output);
     }
 
 }

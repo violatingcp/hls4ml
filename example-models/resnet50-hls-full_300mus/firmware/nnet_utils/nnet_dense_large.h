@@ -283,7 +283,7 @@ void dense_large(
     }
 }
 
-template<class data_T, class res_T, typename CONFIG_T,typename CONFIG_T2>
+template<class data_T, class res_T, typename CONFIG_T>
 void dense_large_stream(
       hls::stream<data_T> data[CONFIG_T::n_in],
       hls::stream<res_T>  res[CONFIG_T::n_out],

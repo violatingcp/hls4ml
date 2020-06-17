@@ -7,7 +7,7 @@
 void conv_2d_large_cl_1x1_port( 
         hls::stream<INPUT_T> input[N_INPUT], 
         hls::stream<LAYER_T> output[N_OUTPUT],
-        model_default_t WEIGHTS[N_WEIGHTS]
+        model_weightdefault_t WEIGHTS[N_WEIGHTS]
         ){
 
 #pragma HLS INTERFACE ap_ctrl_none port=return
