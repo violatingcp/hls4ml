@@ -436,6 +436,7 @@ typedef ap_uint<8> layer172_t;
 typedef ap_uint<8> layer173_t;
 typedef ap_uint<8> layer174_t;
 typedef ap_uint<8> layer175_t;
+typedef ap_uint<8> bias175_t;
 typedef ap_uint<8> result_t;
 typedef ap_uint<27> model_bigdefault_t;
 
@@ -1102,7 +1103,7 @@ struct config46_relu : nnet::activ_config {
 struct config46_mult : nnet::dense_config {
     static const unsigned n_in = 256;
     static const unsigned n_out = 512;
-    static const unsigned reuse_factor = 16;
+    static const unsigned reuse_factor = 64;
     typedef ap_uint<8> accum_t;
     typedef bias46_t bias_t;
     typedef model_weightdefault_t weight_t;
@@ -1693,7 +1694,7 @@ struct config88_relu : nnet::activ_config {
 struct config88_mult : nnet::dense_config {
     static const unsigned n_in = 512;
     static const unsigned n_out = 1024;
-    static const unsigned reuse_factor = 64;
+    static const unsigned reuse_factor = 128;
     typedef ap_uint<8> accum_t;
     typedef bias88_t bias_t;
     typedef model_weightdefault_t weight_t;

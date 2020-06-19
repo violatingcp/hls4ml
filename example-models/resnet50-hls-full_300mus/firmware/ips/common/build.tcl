@@ -16,7 +16,8 @@ catch {config_array_partition -maximum_size 4096}
 add_files $curDir/../srcs/$layer_type.cpp -cflags "-std=c++11  -I $curDir/$nnet_utils_dir -I $curDir  -I $curDir/../include $args"
 create_clock -period 250MHz -name default
 csynth_design
-export_design -flow syn  -format ip_catalog 
+export_design  -format ip_catalog 
+#export_design -flow syn  -format ip_catalog 
 close_project
 
 quit
