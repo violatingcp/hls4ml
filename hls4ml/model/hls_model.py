@@ -80,6 +80,12 @@ class HLSConfig(object):
 
         return rf
 
+    def get_merge_factor(self, layer):
+        mf = self.model_mf
+        if mf is None:
+            mf = 1
+        return mf
+
     def get_strategy(self, layer):
         strategy = self.layer_name_strategy.get(layer.name.lower())
         if strategy is None:
@@ -114,6 +120,7 @@ class HLSConfig(object):
                     self.model_precision['default'] = precision_cfg # Default precision for everything
 
             self.model_rf = model_cfg.get('ReuseFactor')
+            self.model_mf = model_cfg.get('MergeFactor')
             self.model_strategy = model_cfg.get('Strategy', 'Latency')
             self.model_compression = bool(model_cfg.get('Compression', 0))
 
@@ -680,16 +687,19 @@ class Layer(object):
             elif quantize == 2 or quantize == 3:
                 precision = 'ap_int<2>'
                 type_name = name + '{index}_t'
-        if not ('bias' in name and 'mm' not in self.name): # and 'Conv' in self.name): #only weights
-            var = WeightVariable(var_name, type_name=type_name, precision=precision, data=data, index=self.index)
-            #quick hack to fuse batch norm
-            if 'mm' not in self.name:
-                self.weights[name+'_unmerged']=var
-            data = self.model.merge_weights(data)
-            precision='ap_uint<16>' # hardcoded for now
-            type_name='model_weightdefault_t'
-        #if type_name == 'model_default_t':
-        #     precision='ap_uint<16>'
+        merge_factor = self.model.config.get_merge_factor(self) # merge weights
+        if merge_factor == 2: 
+            if not ('bias' in name and 'mm' not in self.name): # and 'Conv' in self.name): #only weights
+                var = WeightVariable(var_name, type_name=type_name, precision=precision, data=data, index=self.index)
+                #quick hack to fuse batch norm
+                if 'mm' not in self.name:
+                    self.weights[name+'_unmerged']=var
+                data = self.model.merge_weights(data)
+                precision='ap_uint<16>' # hardcoded for now
+        
+        type_name='model_weightdefault_t'
+                #if type_name == 'model_default_t':
+                #     precision='ap_uint<16>'
 
         if compression:
             rf = self.model.config.get_reuse_factor(self)
@@ -720,7 +730,11 @@ class Layer(object):
         # data types
         for weight_name, variable in self.weights.items():
             params[weight_name + '_t'] = variable.type.name
-            params['big'+weight_name + '_t'] = 'model_bigdefault_t'
+            mf = self.model.config.get_merge_factor(self)
+            if mf > 1:
+                params['big'+weight_name + '_t'] = 'model_bigdefault_t'
+            else:
+                params['big'+weight_name + '_t'] = 'model_default_t'
 
         return params
 

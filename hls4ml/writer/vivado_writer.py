@@ -67,8 +67,9 @@ class VivadoWriter(Writer):
         dstpath = ('{}/'+outdir).format(model.config.get_output_dir())
         if not os.path.exists(dstpath):
             os.mkdir(dstpath)
-        files = [os.path.basename(h) for h in glob.glob(srcpath + '*.*')]
+        files = [os.path.basename(h) for h in glob.glob(srcpath + '*')]
         for h in files:
+            print("copying ",h," -- ",srcpath)
             copyfile(srcpath + h, dstpath + h)
 
     def write_tcl_dir(self, model):
@@ -105,6 +106,7 @@ class VivadoWriter(Writer):
             m_file.write('\t rm -rf $(galapagos_dir)/userIP/hls_projects/resnet_$(project_name)\n')
             m_file.close()
 
+        print("here")
         self.copy_dir(model,'../templates/vivado/AIgean/srcs/','firmware/ips/srcs/'),
         self.copy_dir(model,'../templates/vivado/AIgean/common/','firmware/ips/common/'),
         self.copy_dir(model,'../templates/vivado/AIgean/include/','firmware/ips/include/'),
@@ -442,6 +444,7 @@ class VivadoWriter(Writer):
         self.write_test_bench(model)
         self.write_build_script(model)
         self.write_nnet_utils(model)
+        print('Tcl')
         self.write_tcl_dir(model)
         self.write_tar(model)
         print('Done')

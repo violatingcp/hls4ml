@@ -93,7 +93,9 @@ void  relu(data_T data[CONFIG_T::n_in], res_T res[CONFIG_T::n_in])
 template<class data_T, class res_T, typename CONFIG_T>
   void  relu_stream(hls::stream<data_T> data[CONFIG_T::n_in], hls::stream<res_T> res[CONFIG_T::n_in]) {
     data_T data_cache[CONFIG_T::n_in];
+    #pragma HLS ARRAY_PARTITION variable=data_cache complete
     res_T  res_cache [CONFIG_T::n_in];
+    #pragma HLS ARRAY_PARTITION variable=res_cache complete
     for (int ii=0; ii<CONFIG_T::n_in; ii++) {
       #pragma HLS UNROLL
       data_cache[ii] = data[ii].read();
@@ -293,7 +295,9 @@ void  softmax(data_T data[CONFIG_T::n_in], res_T res[CONFIG_T::n_in])
 template<class data_T, class res_T, typename CONFIG_T>
   void  softmax_stream(hls::stream<data_T> data[CONFIG_T::n_in], hls::stream<res_T> res[CONFIG_T::n_in]) {
     data_T data_cache[CONFIG_T::n_in];
+    #pragma HLS ARRAY_PARTITION variable=data_cache complete
     res_T  res_cache [CONFIG_T::n_in];
+    #pragma HLS ARRAY_PARTITION variable=res_cache complete
     for (int ii=0; ii<CONFIG_T::n_in; ii++) {
       #pragma HLS UNROLL
       data_cache[ii] = data[ii].read();
