@@ -48,6 +48,17 @@ conv1d_config_template = """struct config{index} : nnet::conv1d_config {{
     typedef {config_t} mult_config;
 }};\n"""
 
+upsampling2d_config_template = """struct config{index} : nnet::upsampling2d_config {{
+    static const unsigned height_factor = {height_factor};
+    static const unsigned width_factor = {width_factor};
+    static const unsigned in_height = {in_height};
+    static const unsigned in_width = {in_width};
+    static const unsigned out_height = {out_height};
+    static const unsigned out_width = {out_width};
+    static const unsigned n_channel = {n_channel};
+    static const nnet::Interp_Op interp_op = nnet::{interp_op};
+}};\n"""
+
 conv_mult_config_template = """struct config{index}_mult : nnet::dense_config {{
     static const unsigned n_in = {n_in};
     static const unsigned n_out = {n_out};
@@ -192,6 +203,7 @@ concat_config_template = """struct config{index} : nnet::concat_config {{
     'BatchNormalization'     : batchnorm_config_template,
     'Conv1D'                 : [conv1d_config_template, conv_mult_config_template],
     'Conv2D'                 : [conv2d_config_template, conv_mult_config_template],
+    'Upsampling2D'           : upsampling2d_config_template,
     'Conv2DMerge'            : [conv2dmerge_config_template, convmerge_mult_config_template],
     'Activation'             : activ_config_template,
     'ParametrizedActivation' : activ_config_template,
@@ -207,6 +219,7 @@ dense_function_template = 'nnet::dense_{strategy}<{input_t}, {output_t}, {config
 batchnorm_function_template = 'nnet::normalize<{input_t}, {output_t}, {config}>({input}, {output}, {scale}, {bias});'
 conv1d_function_template = 'nnet::conv_1d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 conv2d_function_template = 'nnet::conv_2d_{strategy}_{data_format}{1x1}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
+upsampling2d_function_template = 'nnet::upsampling2d_{data_format}{strategy}<{input_t}, {output_t}, {config}>({input}, {output});'
 conv2dmerge_function_template = 'nnet::conv_2d_merge_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 activ_function_template = 'nnet::{activation}{strategy}<{input_t}, {output_t}, {config}>({input}, {output});'
 param_activ_function_template = 'nnet::{activation}{strategy}<{input_t}, {output_t}, {config}>({input}, {param}, {output});'
@@ -222,6 +235,7 @@ split_function_template = 'nnet::split<{input_t}, {output_t}, {config}>({input},
     'Conv1D'                 : conv1d_function_template,
     'Conv2D'                 : conv2d_function_template,
     'Conv2DMerge'            : conv2dmerge_function_template,
+    'UpSampling2D'           : upsampling2d_function_template,
     'Activation'             : activ_function_template,
     'ParametrizedActivation' : param_activ_function_template,
     'PReLU'                  : param_activ_function_template,
@@ -250,6 +264,15 @@ set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
 set arg_3 "-DWEIGHTS={scale}  -DBIASES={biases}"
 set args "$arg_0 $arg_1 $arg_2 $arg_3"
 set layer_type normalize
+\n
+source ../common/build.tcl
+\n"""
+
+upsampling2d_tcl_template = """set arg_0 "-I . -DN_1={n_in} -DN_2={n_in}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set args "$arg_0 $arg_1 $arg_2 $arg_3"
+set layer_type upsampling2d{strategy}
 \n
 source ../common/build.tcl
 \n"""
@@ -306,6 +329,7 @@ source ../common/build.tcl
     'BatchNormalization'     : batchnorm_tcl_template,
     'Conv1D'                 : conv2d_tcl_template,
     'Conv2D'                 : conv2d_tcl_template,
+    'UpSampling2D'           : upsampling2d_tcl_template,
     'Activation'             : activ_tcl_template,
     'Pooling1D'              : pooling2d_tcl_template,
     'Pooling2D'              : pooling2d_tcl_template,
@@ -324,6 +348,7 @@ class VivadoBackend(Backend):
         self.register_templates('Conv1D'                 , conv1d_function_template,      [conv1d_config_template, conv_mult_config_template],conv_2d_tcl_template)
         self.register_templates('Conv2D'                 , conv2d_function_template,      [conv2d_config_template, conv_mult_config_template,conv_relu_config_template],conv_2d_tcl_template)
         self.register_templates('Conv2DMerge'            , conv2dmerge_function_template, [conv2d_config_template, conv_mult_config_template, conv_norm_config_template, conv_relu_config_template],conv_2d_tcl_template)
+        self.register_templates('UpSampling2D'           , upsampling2d_function_template, upsampling2d_config_template,upsampling2d_tcl_template)
         self.register_templates('Activation'             , activ_function_template,       activ_config_template,activ_tcl_template)
         self.register_templates('ParametrizedActivation' , param_activ_function_template, activ_config_template,activ_tcl_template)
         self.register_templates('PReLU'                  , param_activ_function_template, activ_config_template,activ_tcl_template)

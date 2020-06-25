@@ -55,7 +55,7 @@ def keras_to_hls(yamlConfig):
 
     #Define supported laers
     core_layers = ['InputLayer', 'Dropout', 'Flatten', 'Dense', 'BinaryDense', 'TernaryDense', 'Reshape']
-    conv_layers = ['Conv1D', 'Conv2D', 'BinaryConv2D']
+    conv_layers = ['Conv1D', 'Conv2D', 'BinaryConv2D', 'UpSampling2D']
     pooling_layers = ['MaxPooling1D', 'MaxPooling2D', 'AveragePooling1D', 'AveragePooling2D']
     norm_layers = ['BatchNormalization']
     activation_layers = ['Activation', 'LeakyReLU', 'ThresholdedReLU', 'ELU', 'PReLU']
@@ -231,6 +231,32 @@ def keras_to_hls(yamlConfig):
                 layer['pad_right'] = 0
             if layer['data_format'] == 'channels_first': current_shape=[current_shape[0], layer['n_filt'], layer['out_height'], layer['out_width']]
             else: current_shape=[current_shape[0], layer['out_height'], layer['out_width'], layer['n_filt']]
+        elif layer['class_name']=='UpSampling2D':
+            # Scaling
+            size_factor=keras_layer['config'].get('size', (1, 1)) 
+            layer['height_factor']=size_factor[0]
+            layer['width_factor']=size_factor[1]
+
+            # data_format
+            layer['data_format'] = keras_layer['config'].get('data_format', 'channels_last')
+            layer['in_height']=current_shape[1]
+            layer['in_width']=current_shape[2]
+            layer['n_channel']=current_shape[3]
+            if layer['data_format'] == 'channels_first':
+                layer['in_height']=current_shape[2]
+                layer['in_width']=current_shape[3]
+                layer['n_channel']=current_shape[1]
+            
+            layer['out_height'] = layer['in_height'] * layer['height_factor']
+            layer['out_width']  = layer['in_width']  * layer['width_factor']
+            # layer['out_channel']= layer['in_channel']
+
+            # interpolation type
+            # options: nearest (neighbor)*, bilinear
+            layer['interpolation'] = keras_layer['config'].get('interpolation', 'nearest')
+
+            if layer['data_format'] == 'channels_first': current_shape=[current_shape[0], layer['n_channel'], layer['out_height'], layer['out_width']]
+            else: current_shape=[current_shape[0], layer['out_height'], layer['out_width'], layer['n_channel']]
         elif layer['class_name']=='BatchNormalization':
             in_size = 1
             for dim in current_shape[1:]:
@@ -364,6 +390,6 @@ def keras_to_hls(yamlConfig):
     reader = KerasDataReader(yamlConfig)
     print('Creating HLS model')
     hls_model = HLSModel(yamlConfig, reader, layer_list, input_layers, output_layers)
-    optimizers = ['eliminate_linear_activation', 'merge_batch_norm_quantized_tanh', 'quantize_dense_output', 'fuse_dense_batch_norm']
+    optimizers = ['fuse_conv','fuse_conv2','fuse_merge','eliminate_linear_activation', 'merge_batch_norm_quantized_tanh', 'quantize_dense_output']#, 'fuse_dense_batch_norm']
     optimize_model(hls_model, optimizers)
     return hls_model
