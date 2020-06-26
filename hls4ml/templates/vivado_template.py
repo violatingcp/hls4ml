@@ -55,7 +55,7 @@ upsampling2d_config_template = """struct config{index} : nnet::upsampling2d_conf
     static const unsigned in_width = {in_width};
     static const unsigned out_height = {out_height};
     static const unsigned out_width = {out_width};
-    static const unsigned n_channel = {n_channel};
+    static const unsigned n_chan    = {n_channel};
     static const nnet::Interp_Op interp_op = nnet::{interp_op};
 }};\n"""
 
@@ -216,10 +216,10 @@ concat_config_template = """struct config{index} : nnet::concat_config {{
 }'''
 
 dense_function_template = 'nnet::dense_{strategy}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
-batchnorm_function_template = 'nnet::normalize<{input_t}, {output_t}, {config}>({input}, {output}, {scale}, {bias});'
+batchnorm_function_template = 'nnet::normalize{strategy}<{input_t}, {output_t}, {config}>({input}, {output}, {scale}, {bias});'
 conv1d_function_template = 'nnet::conv_1d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 conv2d_function_template = 'nnet::conv_2d_{strategy}_{data_format}{1x1}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
-upsampling2d_function_template = 'nnet::upsampling2d_{data_format}{strategy}<{input_t}, {output_t}, {config}>({input}, {output});'
+upsampling2d_function_template = 'nnet::upsampling2d_{strategy}<{input_t}, {output_t}, {config}>({input}, {output});'
 conv2dmerge_function_template = 'nnet::conv_2d_merge_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 activ_function_template = 'nnet::{activation}{strategy}<{input_t}, {output_t}, {config}>({input}, {output});'
 param_activ_function_template = 'nnet::{activation}{strategy}<{input_t}, {output_t}, {config}>({input}, {param}, {output});'

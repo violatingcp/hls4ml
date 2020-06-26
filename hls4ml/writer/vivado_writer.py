@@ -69,7 +69,6 @@ class VivadoWriter(Writer):
             os.mkdir(dstpath)
         files = [os.path.basename(h) for h in glob.glob(srcpath + '*')]
         for h in files:
-            print("copying ",h," -- ",srcpath)
             copyfile(srcpath + h, dstpath + h)
 
     def write_tcl_dir(self, model):
@@ -106,7 +105,6 @@ class VivadoWriter(Writer):
             m_file.write('\t rm -rf $(galapagos_dir)/userIP/hls_projects/resnet_$(project_name)\n')
             m_file.close()
 
-        print("here")
         self.copy_dir(model,'../templates/vivado/AIgean/srcs/','firmware/ips/srcs/'),
         self.copy_dir(model,'../templates/vivado/AIgean/common/','firmware/ips/common/'),
         self.copy_dir(model,'../templates/vivado/AIgean/include/','firmware/ips/include/'),
@@ -135,6 +133,8 @@ class VivadoWriter(Writer):
                 outputs_str = ', '.join([o.definition_cpp() for o in model_outputs])
                 insize_str = ', '.join(['unsigned short &const_size_in_{}'.format(i) for i in range(1, len(model_inputs) + 1)])
                 outsize_str = ', '.join(['unsigned short &const_size_out_{}'.format(i) for i in range(1, len(model_outputs) + 1)])
+                inputs_str=inputs_str.replace('static','')
+                outputs_str=outputs_str.replace('static','')
 
                 newline = ''
                 newline += indent + inputs_str + ',\n'
@@ -444,7 +444,6 @@ class VivadoWriter(Writer):
         self.write_test_bench(model)
         self.write_build_script(model)
         self.write_nnet_utils(model)
-        print('Tcl')
         self.write_tcl_dir(model)
         self.write_tar(model)
         print('Done')

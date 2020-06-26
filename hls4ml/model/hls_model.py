@@ -273,7 +273,6 @@ class HLSModel(object):
             else:
                 raise Exception('Cannot rewire a node without a parent')
 
-        print("removing",node.outputs[0])
         del self.output_vars[node.outputs[0]]
         del self.graph[node.name]
 
@@ -371,11 +370,13 @@ class Variable(object):
         self.cppname = re.sub(r'\W|^(?=\d)','_', self.name)
 
 class ArrayVariable(Variable):
-    def __init__(self, shape, dim_names, var_name='layer{index}', type_name='layer{index}_t', precision=None, pragma='partition',depth=1, **kwargs):
+    def __init__(self, shape, dim_names, var_name='layer{index}', type_name='layer{index}_t', precision=None, pragma='partition',depth=1,cl=False, **kwargs):
         super(ArrayVariable, self).__init__(var_name, type_name, precision, **kwargs)
         self.shape = shape
         self.dim_names = dim_names
         self.streamcnn = False
+        self.depth     = depth
+        self.cl        = cl
         if pragma == 'partition':
             self.partition()
         elif pragma == 'reshape':
@@ -404,7 +405,7 @@ class ArrayVariable(Variable):
 
     def stream(self, depth=1, dim=1):
         pragma = '#pragma HLS STREAM variable={name} depth={depth} dim={dim}'
-        self.pragma = pragma.format(name=self.name, depth=depth, dim=dim)
+        self.pragma = pragma.format(name=self.name, depth=self.depth, dim=dim)
 
     def get_shape(self):
         return zip(self.dim_names, self.shape)
@@ -426,9 +427,14 @@ class ArrayVariable(Variable):
     def size_cpp(self):
         return '*'.join([str(k) for k in self.dim_names])
 
-    def size_cpp_cnn(self):
-        if len(self.dim_names) > 1:
-            return  self.dim_names[0]
+    def size_cpp_cnn(self, cl=False):
+        if len(self.dim_names) > 1 and self.cl:
+            return  self.dim_names[2]
+        if len(self.dim_names) > 1 and not self.cl:
+            if 'FILT' in self.dim_names[0]:
+                return  self.dim_names[0]
+            else:
+                return  self.dim_names[2]
         return  self.dim_names[0]
 
 class InplaceVariable():
@@ -604,7 +610,7 @@ class Layer(object):
     def get_variables(self):
         return self.variables.values()
 
-    def add_output_variable(self, shape, dim_names, out_name=None, var_name='layer{index}_out', type_name='layer{index}_t', precision=None, pragma='auto', depth=1):
+    def add_output_variable(self, shape, dim_names, out_name=None, var_name='layer{index}_out', type_name='layer{index}_t', precision=None, pragma='auto', depth=1, cl=False):
         if out_name is None:
             out_name = self.outputs[0]
 
@@ -622,7 +628,7 @@ class Layer(object):
                 else:
                     pragma = 'partition'
 
-        out = ArrayVariable(shape, dim_names, var_name=var_name, type_name=type_name, precision=precision, pragma=pragma, index=self.index, depth=depth)
+        out = ArrayVariable(shape, dim_names, var_name=var_name, type_name=type_name, precision=precision, pragma=pragma, index=self.index, depth=depth, cl=cl)
         self.variables[out_name] = out
         self.model.register_output_variable(out_name, out)
 
@@ -883,14 +889,16 @@ class Dense(Layer):
 
 class Conv1D(Layer):
     def initialize(self):
+        cl=False
         if self.get_attr('data_format') == 'channels_last':
             shape = [self.attributes['n_out'], self.attributes['n_filt']]
             dims = ['N_OUTPUTS_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
+            cl=True
         else:
             shape = [self.attributes['n_filt'], self.attributes['n_out']]
             dims = ['N_FILT_{}'.format(self.index), 'N_OUTPUTS_{}'.format(self.index)]
-        self.depth=1
-        self.add_output_variable(shape, dims, self.depth)
+        depth=1
+        self.add_output_variable(shape, dims, depth=depth,cl=cl)
         self.add_weights()
         self.add_bias()
         if self.model.config.is_resource_strategy(self):
@@ -956,22 +964,20 @@ class Conv1D(Layer):
 
 class Conv2D(Layer):
     def initialize(self):
+        cl=False
         if self.get_attr('data_format') == 'channels_last':
             shape = [self.attributes['out_height'], self.attributes['out_width'], self.attributes['n_filt']]
             dims = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
-            shapeinternal = [self.attributes['out_height'], self.attributes['out_width']]
-            diminternal   = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
+            cl=True
         else:
             shape = [self.attributes['n_filt'], self.attributes['out_height'], self.attributes['out_width']]
             dims = ['N_FILT_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
-            shapeinternal = [self.attributes['out_height'], self.attributes['out_width']]
-            diminternal   = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
         self.is1x1 = False
         #self.get_attr('filt_height') * self.get_attr('filt_width')
         if(self.attributes['filt_height'] == 1 and self.attributes['filt_width'] == 1) : 
             self.is1x1 = True
-        self.depth=(self.attributes['pad_right']+1+self.attributes['pad_bottom']*(self.attributes['out_width']+self.attributes['pad_right']))
-        self.add_output_variable(shape, dims,depth=self.depth)
+        depth=(self.attributes['pad_right']+1+self.attributes['pad_bottom']*(self.attributes['out_width']+self.attributes['pad_right']))
+        self.add_output_variable(shape, dims,depth=depth,cl=cl)
         #self.add_internal_variable(shapeinternal,diminternal,'dummy','dummy{index}_out',type_name='model_bigdefault_t',precision='ap_uint<27>')
         self.add_weights()
         self.add_bias()
@@ -1067,7 +1073,10 @@ class Conv2D(Layer):
             
             mult_params = self._default_config_params()
             mult_params['reuse'] = params['reuse']
-            mult_params['n_in'] = self.get_input_variable().shape[0] * self.get_attr('filt_height') * self.get_attr('filt_width')
+            if self.get_attr('data_format') == 'channels_last':
+                mult_params['n_in'] = self.get_input_variable().shape[2] * self.get_attr('filt_height') * self.get_attr('filt_width')
+            else:
+                mult_params['n_in'] = self.get_input_variable().shape[0] * self.get_attr('filt_height') * self.get_attr('filt_width')
             mult_params['n_out'] = self.get_attr('n_filt')
             mult_config = self._config_template[1].format(**mult_params)
 
@@ -1083,8 +1092,12 @@ class Conv2D(Layer):
 
     def print_tcl(self):
         params = self._default_tcl_params()
-        params['n_chan_in'] =  self.get_input_variable().dim_names[0]
-        params['n_filt_in'] = self.get_output_variable().dim_names[0]
+        if self.get_attr('data_format') == 'channels_last':
+            params['n_chan_in'] =  self.get_input_variable().dim_names[2]
+            params['n_filt_in'] = self.get_output_variable().dim_names[2]
+        else:
+            params['n_chan_in'] =  self.get_input_variable().dim_names[0]
+            params['n_filt_in'] = self.get_output_variable().dim_names[0]
         params['n_weights']=self.get_weights('weight').data_length
         params['weights']=self.get_weights('weight').name
         params['1x1'] = ''
@@ -1094,13 +1107,15 @@ class Conv2D(Layer):
 
 class Conv2DMerge(Layer):
     def initialize(self):
+        cl=False
         if self.get_attr('data_format') == 'channels_last':
             shape = [self.attributes['n_filt']]
             dims = ['N_FILT_{}'.format(self.index)]
+            cl=True
         else:
             shape = [self.attributes['n_filt']]
             dims = ['N_FILT_{}'.format(self.index)]
-        self.add_output_variable(shape, dims)
+        self.add_output_variable(shape, dims,cl=cl)
 
         self.add_weights()
         self.add_bias()
@@ -1220,11 +1235,18 @@ class Pooling1D(Layer):
 
 class Pooling2D(Layer):
     def initialize(self):
-        shape = [self.attributes['n_filt'], self.attributes['out_height'], self.attributes['out_width']]
-        dims = ['N_FILT_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
+        cl=False
+        if self.get_attr('data_format') == 'channels_last':
+            shape = [self.attributes['out_height'],self.attributes['out_width'],self.attributes['n_filt']]
+            dims = ['OUT_HEIGHT_{}'.format(self.index),'OUT_WIDTH_{}'.format(self.index),'N_FILT_{}'.format(self.index)]
+            cl=True
+        else:
+            shape = [self.attributes['n_filt'], self.attributes['out_height'], self.attributes['out_width']]
+            dims = ['N_FILT_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
+
         #shape = [self.attributes['out_height'], self.attributes['out_width'], self.attributes['n_filt']]
         #dims = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
-        self.add_output_variable(shape, dims)
+        self.add_output_variable(shape, dims,cl=cl)
         self.set_attr('pool_op', self.get_attr('class_name').split('Pooling')[0])
         self.is1x1 = False
         if(self.attributes['out_height'] == 1 and self.attributes['out_width'] == 1) : 
@@ -1243,21 +1265,36 @@ class Pooling2D(Layer):
 
     def config_cpp(self):
         params = self._default_config_params()
-        params['n_in'] = self.get_input_variable().dim_names[0]
-        params['in_height'] = self.get_input_variable().dim_names[1]
-        params['in_width'] = self.get_input_variable().dim_names[2]
-        params['out_height'] = self.get_output_variable().dim_names[1]
-        params['out_width'] = self.get_output_variable().dim_names[2]
-        params['n_filt'] = self.get_output_variable().dim_names[0]+'-1'
-        params['n_filt_in'] = self.get_output_variable().dim_names[0]
-        params['n_chan'] = self.get_input_variable().dim_names[0]+'-1'
-        params['n_chan_in'] = self.get_input_variable().dim_names[0]
+        if self.get_attr('data_format') == 'channels_last':
+            params['n_in'] = self.get_input_variable().dim_names[2]
+            params['in_height'] = self.get_input_variable().dim_names[0]
+            params['in_width'] = self.get_input_variable().dim_names[1]
+            params['out_height'] = self.get_output_variable().dim_names[0]
+            params['out_width'] = self.get_output_variable().dim_names[1]
+            params['n_filt'] = self.get_output_variable().dim_names[2]+'-1'
+            params['n_filt_in'] = self.get_output_variable().dim_names[2]
+            params['n_chan'] = self.get_input_variable().dim_names[2]+'-1'
+            params['n_chan_in'] = self.get_input_variable().dim_names[2]
+        else:
+            params['n_in'] = self.get_input_variable().dim_names[0]
+            params['in_height'] = self.get_input_variable().dim_names[1]
+            params['in_width'] = self.get_input_variable().dim_names[2]
+            params['out_height'] = self.get_output_variable().dim_names[1]
+            params['out_width'] = self.get_output_variable().dim_names[2]
+            params['n_filt'] = self.get_output_variable().dim_names[0]+'-1'
+            params['n_filt_in'] = self.get_output_variable().dim_names[0]
+            params['n_chan'] = self.get_input_variable().dim_names[0]+'-1'
+            params['n_chan_in'] = self.get_input_variable().dim_names[0]
         return self._config_template.format(**params)
 
     def print_tcl(self):
         params = self._default_tcl_params()
-        params['n_chan_in'] =  self.get_input_variable().dim_names[0]
-        params['n_filt_in'] = self.get_output_variable().dim_names[0]
+        if self.get_attr('data_format') == 'channels_last':
+            params['n_chan_in'] =  self.get_input_variable().dim_names[2]
+            params['n_filt_in'] = self.get_output_variable().dim_names[2]
+        else:
+            params['n_chan_in'] =  self.get_input_variable().dim_names[0]
+            params['n_filt_in'] = self.get_output_variable().dim_names[0]
         params['1x1'] = ''
         if self.is1x1:
             params['1x1'] = '_1x1'        
@@ -1353,6 +1390,9 @@ class BatchNormalization(Layer):
         inp = self.get_input_variable()
         shape = inp.shape
         dims = inp.dim_names
+        #if 'FILT' not in dims[0] and len(dims) > 2:
+        #    dims  = [dims[2],dims[1],dims[0]]
+        #    shape = [shape[2],shape[1],shape[0]]
         self.add_output_variable(shape, dims)
 
         gamma = self.model.get_weights_data(self.name, 'gamma')
@@ -1370,14 +1410,18 @@ class BatchNormalization(Layer):
         params = self._default_function_params()
         params['scale'] = self.get_weights('scale').name
         params['bias'] = self.get_weights('bias').name
+        params['strategy'] = ''
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            params['strategy'] = '_stream'
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
         params = self._default_config_params()
         params['n_in'] = self.get_input_variable().size_cpp()
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            params['n_in'] = self.get_input_variable().dim_names[0]
         return self._config_template.format(**params)
 
     def print_tcl(self):
@@ -1389,13 +1433,15 @@ class BatchNormalization(Layer):
 
 class UpSampling2D(Layer):
     def initialize(self):
+        cl=False
         if self.get_attr('data_format') == 'channels_last':
             shape = [self.attributes['out_height'], self.attributes['out_width'], self.attributes['n_channel']]
             dims = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index), 'N_CHANNEL_{}'.format(self.index)]
+            cl=True
         else:
             shape = [self.attributes['n_channel'], self.attributes['out_height'], self.attributes['out_width']]
             dims = ['N_CHANNEL_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
-        self.add_output_variable(shape, dims)
+        self.add_output_variable(shape, dims, cl=cl)
         self.set_attr('interp_op', self.get_attr('interpolation'))
 
 

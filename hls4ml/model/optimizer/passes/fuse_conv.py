@@ -4,9 +4,9 @@ from collections import OrderedDict
 
 class FuseConv(OptimizerPass):
     def match(self, node, lastnodes):
-        is_match = node.__class__.__name__  == 'Activation' and \
-            lastnodes[0].__class__.__name__ == 'BatchNormalization' and \
-            (lastnodes[1].__class__.__name__ == 'Conv2D' or lastnodes[1].__class__.__name__ == 'Conv2DMerge')
+        is_match = (node.__class__.__name__  == 'Activation' or node.__class__.__name__ == 'ParametrizedActivation') and \
+                   lastnodes[0].__class__.__name__ == 'BatchNormalization' and \
+                   (lastnodes[1].__class__.__name__ == 'Conv2D' or lastnodes[1].__class__.__name__ == 'Conv2DMerge')
         
         #print "Class:",node.__class__.__name__,lastnodes[0].__class__.__name__,lastnodes[1].__class__.__name__,is_match
         return is_match
@@ -36,6 +36,10 @@ class FuseConv(OptimizerPass):
 
         dense_node.precision.update(relu_node.precision)
         dense_node.precision.update(norm_node.precision)
+
+        model.output_vars[relu_node.outputs[0]].depth  = model.output_vars[dense_node.outputs[0]].depth
+        model.output_vars[relu_node.outputs[0]].cl    = model.output_vars[dense_node.outputs[0]].cl
+        model.output_vars[relu_node.outputs[0]].stream()
 
         del  model.output_vars[dense_node.outputs[0]]
         del  model.output_vars[norm_node.outputs[0]]
@@ -95,6 +99,10 @@ class FuseConv2(OptimizerPass):
         #next_node.inputs[0]  = dense_node.outputs[0]
 
         dense_node.precision.update(norm_node.precision)
+
+        model.output_vars[norm_node.outputs[0]].depth  = model.output_vars[dense_node.outputs[0]].depth
+        model.output_vars[norm_node.outputs[0]].cl     = model.output_vars[dense_node.outputs[0]].cl
+        model.output_vars[norm_node.outputs[0]].stream()
 
         del  dense_node.variables[dense_node.outputs[0]]
         dense_node.outputs = norm_node.outputs

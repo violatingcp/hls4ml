@@ -158,7 +158,7 @@ void upsampling2d_stream(
 			 hls::stream<res_T>  res[CONFIG_T::n_chan]
 ) {
   static unsigned pX=0; 
-  static data_T layer_in_row[CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right][CONFIG_T::n_chan];
+  static data_T layer_in_row[CONFIG_T::in_width][CONFIG_T::n_chan];
   #pragma HLS ARRAY_RESHAPE variable=layer_in_row complete dim=0
 
   static data_T layer_in[CONFIG_T::n_chan];
@@ -166,7 +166,7 @@ void upsampling2d_stream(
   for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) {
       #pragma HLS UNROLL
       data_T pTmp = data[i0].read();
-      layer_in_row[pX+CONFIG_T::pad_left][i0] =  pTmp;
+      layer_in_row[pX][i0] =  pTmp;
       layer_in[i0] = pTmp;
   }
   for(unsigned iW = 0; iW < CONFIG_T::width_factor; iW++) { 
