@@ -755,10 +755,11 @@ class Layer(object):
         params['weights'] = None
         params['biases'] = None
         weights = self.get_weights()
-        if len(weights) > 0:
-            params['weights'] = weights[0].name
-        if len(self.weights) > 1:
-            params['biases'] = weights[1].name
+        if len(weights) > 1:
+            name_weights =  self.get_weights('weight').name
+            name_bias    =  self.get_weights('bias').name
+            params['weights']=name_weights
+            params['biases']=name_bias
         params['data_format'] = 'cl'
         if self.get_attr('data_format') == 'channels_first':
             params['data_format'] = 'cf'

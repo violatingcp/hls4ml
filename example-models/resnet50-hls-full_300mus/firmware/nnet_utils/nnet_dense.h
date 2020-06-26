@@ -32,11 +32,14 @@ struct dense_config
     // Internal data type definitions
     typedef float bias_t;
     typedef float weight_t;
+    typedef ap_uint<16> weightmult_t;
     typedef float accum_t;
 
     // Layer Sizes
     static const unsigned n_in = 10;
     static const unsigned n_out = 10;
+    // For merging of weights
+    static const unsigned merge_factor = 1;
 
     // Resource reuse info
     static const unsigned io_type = io_parallel;
@@ -85,6 +88,15 @@ template<class data_T, class weight_T, class ret_T>
 inline typename std::enable_if<(not std::is_same<data_T, ap_uint<1>>::value)
         and (not std::is_same<weight_T, ap_uint<1>>::value), ret_T>::type
 product(data_T a, weight_T w){
+    // 'Normal' product
+    #pragma HLS inline off
+    return a * w;
+}
+
+template<class data_T, class weight_T, class ret_T>
+inline typename std::enable_if<(not std::is_same<data_T, ap_uint<1>>::value)
+        and (not std::is_same<weight_T, ap_uint<1>>::value), ret_T>::type
+product_merge(data_T a, weight_T w){
     // 'Normal' product
     #pragma HLS inline off
     ret_T w1 = 262144*w.range(15,8) + w.range(7,0);

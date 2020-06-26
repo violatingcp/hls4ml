@@ -59,7 +59,8 @@ class FuseConv(OptimizerPass):
         try:
             del  dense_node.weights['weight_unmerged']
         except:
-            print("NO unmerged")
+            return True
+            #print("NO unmerged")
         #dense_node.__class__.__name__ = 'Conv2DMerge'
         return True
 
@@ -116,7 +117,8 @@ class FuseConv2(OptimizerPass):
         try:
             del  dense_node.weights['weight_unmerged']
         except:
-            print("NO unmerged")
+            return True
+            #print("NO unmerged")
         #dense_node.__class__.__name__ = 'Conv2DMerge'
         return True
 
