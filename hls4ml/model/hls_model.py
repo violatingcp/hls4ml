@@ -767,8 +767,12 @@ class Layer(object):
                 name_weights =  self.get_weights('weight').name
                 name_bias    =  self.get_weights('bias').name
             except:
-                name_weights =  weights[0].name
-                name_bias    =  weights[1].name
+                try:
+                    name_weights =  self.get_weights('scale').name
+                    name_bias    =  self.get_weights('bias').name
+                except:
+                    name_weights =  weights[0].name
+                    name_bias    =  weights[1].name
             params['weights']=name_weights
             params['biases']=name_bias
         params['data_format'] = 'cl'
