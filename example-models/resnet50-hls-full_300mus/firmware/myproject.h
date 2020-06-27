@@ -29,7 +29,7 @@
 
 // Prototype of top level function for C-synthesis
 void myproject(
-    static hls::stream<input_t> gpu_0_data_0[N_INPUT_1_1],
+    static hls::stream<input_t> gpu_0_data_0[N_INPUT_3_1],
     static hls::stream<result_t> layer176_out[N_LAYER_175],
     unsigned short &const_size_in_1,
     unsigned short &const_size_out_1

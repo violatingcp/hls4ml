@@ -117,6 +117,33 @@ void normalize2(
 	  //}
 }
 
+template<class data_T, class res_T, typename CONFIG_T>
+void normalize_stream(
+    hls::stream<data_T>    data[CONFIG_T::n_in],
+    hls::stream<res_T>     res[CONFIG_T::n_in],
+    typename CONFIG_T::scale_t  scale[CONFIG_T::n_in],
+    typename CONFIG_T::bias_t   bias[CONFIG_T::n_in] ) {
+   
+    // Use a function_instantiate in case it helps to explicitly optimize unchanging weights/biases
+    //#pragma HLS function_instantiate variable=scale,bias
+    #pragma HLS ARRAY_RESHAPE variable=scale complete
+    #pragma HLS ARRAY_RESHAPE variable=bias complete
+
+    const int rufactor = 1;//CONFIG_T::reuse_factor;
+    const int multfactor = CONFIG_T::n_in-1;//MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
+
+    // Calcuate result
+    //for (int ir = 0; ir < rufactor; ir++) {
+    int ir = 0; 
+    data_T tmp = data[0].read();
+    res[0].write(tmp);
+    for (int ires = 0; ires < multfactor; ires++) {
+            #pragma HLS UNROLL
+            data_T pTmp = (data[ires*rufactor+ir+1].read())*scale[ires*rufactor+ir+1] + bias[ires*rufactor+ir+1];
+	    res[ires*rufactor+ir+1].write(pTmp);
+    }
+	  //}
+}
 // ****************************************************
 //       Merged Batch Normalization and Quantized Tanh
 // ****************************************************

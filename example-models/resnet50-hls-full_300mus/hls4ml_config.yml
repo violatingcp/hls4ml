@@ -11,6 +11,7 @@ HLSConfig:
   Model:
     Precision: ap_uint<8>
     ReuseFactor: 60000
+    MergeWeights: 2    # compress 8 bit weights to 16 bit weights and use DSPs
   LayerType:
     Dense:
       ReuseFactor: 60000
