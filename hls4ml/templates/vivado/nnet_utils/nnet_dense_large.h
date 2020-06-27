@@ -545,7 +545,7 @@ void dense_large_stream(
        tmpdata[i0+pX*(CONFIG_T::n_input-1)] = data[i0+1].read();
       }
       pX = pX+1;
-      if(pX == CONFIG_T::n_factor) {
+      if(pX == CONFIG_T::block_factor) {
 	data_T tmpres[CONFIG_T::n_out];
         #pragma HLS ARRAY_PARTITION variable=tmpdres complete
 	dense_large<data_T, res_T, CONFIG_T>(tmpdata,tmpres,weights,biases);
