@@ -884,6 +884,7 @@ class Dense(Layer):
             params['n_output'] = self.get_output_variable().size_cpp()
             params['n_in'] = self.get_input_variable().size_cpp()
             params['n_out'] = self.get_output_variable().size_cpp()+'-1'
+            print("Here")
             if self.get_attr('data_format') == 'channels_last':
                 params['block_factor'] =  self.get_input_variable().size()/self.get_input_variable().shape[2]
             else:
