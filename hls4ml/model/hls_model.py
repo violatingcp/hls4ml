@@ -764,8 +764,8 @@ class Layer(object):
         weights = self.get_weights()
         if len(weights) > 1:
             try:
-                name_weights =  weights('weight').name
-                name_bias    =  weights('bias').name
+                name_weights =  self.get_weights('weight').name
+                name_bias    =  self.get_weights('bias').name
             except:
                 name_weights =  weights[0].name
                 name_bias    =  weights[1].name
