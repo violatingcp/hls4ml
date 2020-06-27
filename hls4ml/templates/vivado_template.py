@@ -5,6 +5,9 @@ import math
 from .templates import Backend
 
 dense_config_template = """struct config{index} : nnet::dense_config {{
+    static const unsigned block_factor = {block_factor};
+    static const unsigned n_input = {n_input};
+    static const unsigned n_output = {n_output};
     static const unsigned n_in = {n_in};
     static const unsigned n_out = {n_out};
     static const unsigned io_type = nnet::{iotype};

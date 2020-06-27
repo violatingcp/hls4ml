@@ -425,8 +425,14 @@ class ArrayVariable(Variable):
         return nelem
 
     def size_cpp(self):
-        return '*'.join([str(k) for k in self.dim_names])
-
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            dim_names = self.dim_names
+            for i0 in range(len(dim_names)):
+                if 'FILT' in dim_names[i0]:
+                    dim_names[i0] = '('+dim_names+'-1)'
+            return '*'.join([str(k) for k in dim_names])
+        else:
+            return '*'.join([str(k) for k in self.dim_names])
     def size_cpp_cnn(self, cl=False):
         if len(self.dim_names) > 1 and self.cl:
             return  self.dim_names[2]
@@ -873,8 +879,21 @@ class Dense(Layer):
 
     def config_cpp(self):
         params = self._default_config_params()
-        params['n_in'] = self.get_input_variable().size_cpp()
-        params['n_out'] = self.get_output_variable().size_cpp()
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            params['n_input'] = self.get_input_variable().size_cpp_cnn()
+            params['n_output'] = self.get_output_variable().size_cpp()
+            params['n_in'] = self.get_input_variable().size_cpp()
+            params['n_out'] = self.get_output_variable().size_cpp()+'-1'
+            if self.get_attr('data_format') == 'channels_last':
+                params['block_factor'] =  self.get_input_variable().size()/self.get_input_variable().shape[2]
+            else:
+                params['block_factor'] =  self.get_input_variable().size()/self.get_input_variable().shape[1]
+        else:
+            params['n_input'] = self.get_input_variable().size_cpp()
+            params['n_output'] = self.get_output_variable().size_cpp()
+            params['n_in'] = self.get_input_variable().size_cpp()
+            params['n_out'] = self.get_output_variable().size_cpp()
+            params['block_factor'] = 1
         params['nzeros'] = self.get_weights('weight').nzeros
         params['nonzeros'] = self.get_weights('weight').nonzeros
 
@@ -1246,7 +1265,8 @@ class Pooling2D(Layer):
 
         #shape = [self.attributes['out_height'], self.attributes['out_width'], self.attributes['n_filt']]
         #dims = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
-        self.add_output_variable(shape, dims,cl=cl)
+        depth=(self.attributes['pad_right']+1+self.attributes['pad_bottom']*(self.attributes['out_width']+self.attributes['pad_right']))
+        self.add_output_variable(shape, dims,cl=cl,depth=depth)
         self.set_attr('pool_op', self.get_attr('class_name').split('Pooling')[0])
         self.is1x1 = False
         if(self.attributes['out_height'] == 1 and self.attributes['out_width'] == 1) : 
@@ -1393,7 +1413,8 @@ class BatchNormalization(Layer):
         #if 'FILT' not in dims[0] and len(dims) > 2:
         #    dims  = [dims[2],dims[1],dims[0]]
         #    shape = [shape[2],shape[1],shape[0]]
-        self.add_output_variable(shape, dims)
+        depth=15 # randome number for now
+        self.add_output_variable(shape, dims,depth=depth)
 
         gamma = self.model.get_weights_data(self.name, 'gamma')
         beta = self.model.get_weights_data(self.name, 'beta')
@@ -1441,7 +1462,10 @@ class UpSampling2D(Layer):
         else:
             shape = [self.attributes['n_channel'], self.attributes['out_height'], self.attributes['out_width']]
             dims = ['N_CHANNEL_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
-        self.add_output_variable(shape, dims, cl=cl)
+        depth=(self.attributes['out_width']/self.attributes['in_width'])
+        if (self.attributes['out_height']/self.attributes['in_height']) > 1:
+            depth*=(self.attributes['out_height']/self.attributes['in_height'])*self.attributes['out_width']
+        self.add_output_variable(shape, dims, cl=cl,depth=depth)
         self.set_attr('interp_op', self.get_attr('interpolation'))
 
 

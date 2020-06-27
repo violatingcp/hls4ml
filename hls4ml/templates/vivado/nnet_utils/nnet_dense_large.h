@@ -529,26 +529,35 @@ void dense_large(
 
 template<class data_T, class res_T, typename CONFIG_T>
 void dense_large_stream(
-      hls::stream<data_T> data[CONFIG_T::n_in],
-      hls::stream<res_T>  res[CONFIG_T::n_out],
+      hls::stream<data_T> data[CONFIG_T::n_input],
+      hls::stream<res_T>  res[CONFIG_T::n_output],
       typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
       typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
 
-  //#pragma HLS STREAM variable=data,res depth=1 dim=1
+      static unsigned pX = 0; 
+      data_T pStatus = data[0].read();
+      if(pStatus == 0) pX = 0;
+
       data_T tmpdata[CONFIG_T::n_in];
       #pragma HLS ARRAY_PARTITION variable=tmpdata complete
-      for(int i0 = 0; i0 < CONFIG_T::n_in; i0++) { 
+      for(int i0 = 0; i0 < CONFIG_T::n_input-1; i0++) { 
        #pragma HLS UNROLL
-       tmpdata[i0] = data[i0].read();
+       tmpdata[i0+pX*(CONFIG_T::n_input-1)] = data[i0+1].read();
       }
-      data_T tmpres[CONFIG_T::n_out];
-      #pragma HLS ARRAY_PARTITION variable=tmpdres complete
-      dense_large<data_T, res_T, CONFIG_T>(tmpdata,tmpres,weights,biases);
-      for(int i0 = 0; i0 < CONFIG_T::n_out; i0++) { 
-       #pragma HLS UNROLL
-       res_T pTmp = tmpres[i0];
-       res[i0].write(pTmp);
-      }
+      pX = pX+1;
+      if(pX == CONFIG_T::n_factor) {
+	data_T tmpres[CONFIG_T::n_out];
+        #pragma HLS ARRAY_PARTITION variable=tmpdres complete
+	dense_large<data_T, res_T, CONFIG_T>(tmpdata,tmpres,weights,biases);
+	res_T pOStatus = 0;
+	res[0].write(pOStatus);
+	for(int i0 = 0; i0 < CONFIG_T::n_out; i0++) { 
+         #pragma HLS UNROLL
+	 res_T pTmp = tmpres[i0];
+         res[i0+1].write(pTmp);
+        }
+	pX = 0;
+     }
 }
 
 
