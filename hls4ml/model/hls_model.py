@@ -1365,8 +1365,8 @@ class Activation(Layer):
         shape = inp.shape
         dims = inp.dim_names
         cl=inp.cl
-        depth=inp.cl
-        self.add_output_variable(shape, dims,cl=cl)
+        depth=inp.depth
+        self.add_output_variable(shape, dims,cl=cl,depth=depth)
         
     def function_cpp(self,iFirst=False):
         params = self._default_function_params()

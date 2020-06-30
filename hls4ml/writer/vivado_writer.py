@@ -205,7 +205,7 @@ class VivadoWriter(Writer):
 
                     print(layer.name,"!!!",first)
                     func = layer.function_cpp(first)
-                    if 'Input' not in layer.name:
+                    if 'put' not in layer.name:
                         first=False
                     if func:
                         for line in func:
@@ -503,21 +503,7 @@ class VivadoWriter(Writer):
                 for out in model.get_output_variables():
                     shape=out.shape
                     for i0 in range(len(shape)): 
-                        if i0 != len(shape)-1:
-                            newline += indent + 'for(int i{} = 0; i{} < {}; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
-                    cl=out.cl
-                    val=2 if not cl and len(shape) > 1 else 0
-                    newline += indent + '  fout << {}[i{}].read() << " ";\n'.format(out.cppname,val)
-                    for i0 in range(len(shape)): 
-                        newline += indent + '}\n'
-                    newline += indent + 'fout << std::endl;\n'
-            elif '//hls-fpga-machine-learning insert output' in line or '//hls-fpga-machine-learning insert quantized' in line:
-                newline = line
-                for out in model.get_output_variables():
-                    shape=out.shape
-                    for i0 in range(len(shape)): 
-                        if i0 != len(shape)-1:
-                            newline += indent + 'for(int i{} = 0; i{} < {}; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
+                        newline += indent + 'for(int i{} = 0; i{} < {}; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
                     cl=out.cl
                     val=2 if not cl and len(shape) > 1 else 0
                     newline += indent + '  fout << {}[i{}].read() << " ";\n'.format(out.cppname,val)
