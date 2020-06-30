@@ -6,11 +6,13 @@
 #KerasH5:    keras/sho_model_weights.h5
 #KerasJson:  keras/LargeAE.json
 #KerasH5:    keras/LargeAE.h5
-KerasJson:  keras/deepcalo_flat.json
-KerasH5:    keras/deepcalo_flat_weights.h5
+#KerasJson:  keras/deepcalo_flat.json
+#KerasH5:    keras/deepcalo_flat_weights.h5
+KerasJson:  keras/DC.json
+KerasH5:    keras/DC.h5
 #InputData: keras/KERAS_3layer_input_features.dat
 #OutputPredictions: keras/KERAS_3layer_predictions.dat
-OutputDir: ecal_cnn_test_2
+OutputDir: andrew_test
 ProjectName: myproject
 XilinxPart: xcku115-flvb2104-2-i
 ClockPeriod: 5
@@ -20,7 +22,7 @@ IOType: io_serial # options: io_serial/io_parallel
 HLSConfig:
   Model:
     Precision: ap_fixed<16,6>
-    ReuseFactor: 25000
+    ReuseFactor: 10
     Strategy: Resource
   LayerType:
     Dense:
