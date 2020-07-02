@@ -86,6 +86,10 @@ class HLSConfig(object):
             mf = 1
         return mf
 
+    def get_bram_size(self, layer):
+        bf = self.model_bf
+        return bf
+
     def get_strategy(self, layer):
         strategy = self.layer_name_strategy.get(layer.name.lower())
         if strategy is None:
@@ -121,9 +125,10 @@ class HLSConfig(object):
 
             self.model_rf = model_cfg.get('ReuseFactor')
             self.model_mf = model_cfg.get('MergeFactor')
+            self.model_bf = model_cfg.get('BramFactor')
             self.model_strategy = model_cfg.get('Strategy', 'Latency')
             self.model_compression = bool(model_cfg.get('Compression', 0))
-
+            
         layer_type_cfg = hls_config.get('LayerType')
         if layer_type_cfg is not None:
             for layer_type, layer_cfg in layer_type_cfg.items():
@@ -205,11 +210,12 @@ class HLSModel(object):
         # If not provided, assumes layer_list[0] is input, and layer_list[-1] is output
         self.inputs = inputs if inputs is not None else [layer_list[0]['name']]
         self.outputs = outputs if outputs is not None else [layer_list[-1]['name']]
+        self.brams   = []
 
         self.index = 0
         self.graph = OrderedDict()
         self.output_vars = {}
-
+        self.bram_vars = {}
         self._make_graph(layer_list)
 
     def _make_graph(self, layer_list):
@@ -340,6 +346,16 @@ class HLSModel(object):
             variables.append(self.output_vars[out])
         return variables
 
+    def register_bram_variable(self, out_name, variable):
+        self.brams.append(out_name)
+        self.bram_vars[out_name] = variable
+
+    def get_bram_variables(self):
+        variables = []
+        for bram in self.brams:
+            variables.append(self.bram_vars[bram])
+        return variables
+
     def get_layer_output_variable(self, output_name):
         return self.output_vars[output_name]
 
@@ -424,8 +440,15 @@ class ArrayVariable(Variable):
             nelem *= dim
         return nelem
 
-    def size_cpp(self):
-        return '*'.join([str(k) for k in self.dim_names])
+    def size_cpp(self,isSerial=False):
+        if isSerial:
+            dim_names = self.dim_names
+            for i0 in range(len(dim_names)):
+                if 'FILT' in dim_names[i0]:
+                    dim_names[i0] = '('+dim_names[i0]+'-1)'
+            return '*'.join([str(k) for k in dim_names])
+        else:
+            return '*'.join([str(k) for k in self.dim_names])
 
     def size_cpp_cnn(self, cl=False):
         if len(self.dim_names) > 1 and self.cl:
@@ -500,7 +523,7 @@ class WeightVariable(Variable):
         return '{type} {name}[{size}]'.format(type=self.type.name, name=self.cppname, size=self.data_length)
 
 class CompressedWeightVariable(WeightVariable):
-    def __init__(self, var_name, type_name, precision, data, reuse_factor, **kwargs):
+    def __init__(self, var_name, type_name, precision, data, reuse_factor, bramport_size, **kwargs):
         super(CompressedWeightVariable, self).__init__(var_name, type_name, precision, data, **kwargs)
         self.extra_zeros = 0
         self.data_length = np.prod(data.shape) - self.nzeros
@@ -531,7 +554,6 @@ class CompressedWeightVariable(WeightVariable):
         if max_idx > 0:
             index_precision = int(np.log2(max_idx) + 1)
         self.type = CompressedType(type_name, precision, 'ap_uint<{}>'.format(index_precision), **kwargs)
-
         self.data = weights
 
     def __iter__(self):
@@ -656,7 +678,6 @@ class Layer(object):
 
     def add_weights(self, quantize=0, compression=False):
         data = self.model.get_weights_data(self.name, 'kernel')
-
         self.add_weights_variable(name='weight', var_name='w{index}', data=data, quantize=quantize, compression=compression)
 
     def add_bias(self, quantize=0):
@@ -708,6 +729,7 @@ class Layer(object):
                 #if type_name == 'model_default_t':
                 #     precision='ap_uint<16>'
 
+        bramport_size = self.model.config.get_bram_size(self) # merge weights
         if compression:
             rf = self.model.config.get_reuse_factor(self)
             var = CompressedWeightVariable(var_name, type_name=type_name, precision=precision, data=data, reuse_factor=rf, index=self.index)
@@ -716,6 +738,9 @@ class Layer(object):
 
         self.weights[name] = var
         self.precision[var.type.name] = var.type
+        if(np.prod(data.shape) > bramport_size):
+            var_out = var_name.replace("{index}",str(self.index))
+            self.model.register_bram_variable(var_out,var)
 
     def _default_function_params(self):
         params = {}
@@ -756,8 +781,16 @@ class Layer(object):
         params['biases'] = None
         weights = self.get_weights()
         if len(weights) > 1:
-            name_weights =  self.get_weights('weight').name
-            name_bias    =  self.get_weights('bias').name
+            try:
+                name_weights =  self.get_weights('weight').name
+                name_bias    =  self.get_weights('bias').name
+            except:
+                try:
+                    name_weights =  self.get_weights('scale').name
+                    name_bias    =  self.get_weights('bias').name
+                except:
+                    name_weights =  weights[0].name
+                    name_bias    =  weights[1].name
             params['weights']=name_weights
             params['biases']=name_bias
         params['data_format'] = 'cl'
@@ -771,7 +804,7 @@ class Layer(object):
         return self.precision
 
     # myproject.cpp/h
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         raise NotImplementedError
 
     # parameters.h
@@ -784,11 +817,15 @@ class Layer(object):
     def get_numbers_cpp(self):
         numbers = ''
         for k, v in self.get_output_variable().get_shape():
-            if 'FILT' in k:
-                numbers += '#define {} {}\n'.format(k,v+1)
+            if self.model.config.get_config_value('IOType') == 'io_serial':
+                if 'FILT' in k:
+                    numbers += '#define {} {}\n'.format(k,v+1)
+                elif 'INPUT_3_1' in k:
+                    numbers += '#define {} {}\n'.format(k,v+1)
+                else:
+                    numbers += '#define {} {}\n'.format(k,v)
             else:
                 numbers += '#define {} {}\n'.format(k,v)
-
         return numbers
 
     def precision_cpp(self):
@@ -800,9 +837,10 @@ class Input(Layer):
         if shape[0] is None:
             shape = shape[1:]
         dims = ['N_INPUT_{}_{}'.format(i, self.index) for i in range(1, len(shape) + 1)]
-        self.add_output_variable(shape, dims, var_name=self.name, type_name='input_t')
+        cl=True if self.get_attr('data_format') == 'channels_last' else False 
+        self.add_output_variable(shape, dims, var_name=self.name, type_name='input_t',cl=cl)
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         return None
 
     def config_cpp(self):
@@ -822,7 +860,7 @@ class Reshape(Layer):
         self.variables[out_name] = out
         self.model.register_output_variable(out_name, out)
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         return None
 
     def config_cpp(self):
@@ -849,6 +887,9 @@ class Dense(Layer):
                 self.set_attr('strategy', 'large')
         else:
             self.set_attr('strategy', 'latency')
+        
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            shape[0] += 1
         self.add_output_variable(shape, dims)
         self.add_weights(quantize=quantize, compression=compression)
         index_t = 'ap_uint<1>'
@@ -861,21 +902,40 @@ class Dense(Layer):
         self.set_attr('index_t', index_t)
         self.add_bias(quantize=quantize)
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         params = self._default_function_params()
         params['strategy'] = self.get_attr('strategy')
         params['w'] = self.get_weights('weight').name
         params['b'] = self.get_weights('bias').name
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
             params['strategy'] += '_stream'
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
         params = self._default_config_params()
-        params['n_in'] = self.get_input_variable().size_cpp()
-        params['n_out'] = self.get_output_variable().size_cpp()
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            params['n_input'] = self.get_input_variable().size_cpp_cnn()
+            params['n_output'] = self.get_output_variable().size_cpp(isSerial=True)
+            params['n_in'] = self.get_input_variable().size_cpp(isSerial=True)+'-1'
+            params['n_out'] = self.get_output_variable().size_cpp(isSerial=True)+'-1'
+            if len(self.get_input_variable().shape) > 1:
+                params['block_factor'] =  (self.get_input_variable().size()/self.get_input_variable().shape[2])
+            #elif len(self.get_input_variable().shape) > 1:
+            #    print('input2',self.get_input_variable(),',',self.get_input_variable().shape,',',self.get_input_variable().size())
+            #    params['block_factor'] =  (self.get_input_variable().size()/self.get_input_variable().shape[1])
+            else:
+                params['block_factor'] = 1
+        else:
+            params['n_input'] = self.get_input_variable().size_cpp(isSerial=False)
+            params['n_output'] = self.get_output_variable().size_cpp(isSerial=False)
+            params['n_in'] = self.get_input_variable().size_cpp(isSerial=False)
+            params['n_out'] = self.get_output_variable().size_cpp(isSerial=False)
+            params['block_factor'] = 1
         params['nzeros'] = self.get_weights('weight').nzeros
         params['nonzeros'] = self.get_weights('weight').nonzeros
 
@@ -915,7 +975,7 @@ class Conv1D(Layer):
         else:
             self.set_attr('strategy', 'latency')
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         params = self._default_function_params()
         params['strategy'] = self.get_attr('strategy')
         params['data_format'] = 'cf' if self.get_attr('data_format') == 'channels_first' else 'cl'
@@ -923,7 +983,10 @@ class Conv1D(Layer):
         params['b'] = self.get_weights('bias').name
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
@@ -977,7 +1040,7 @@ class Conv2D(Layer):
         #self.get_attr('filt_height') * self.get_attr('filt_width')
         if(self.attributes['filt_height'] == 1 and self.attributes['filt_width'] == 1) : 
             self.is1x1 = True
-        depth=(self.attributes['pad_right']+1+self.attributes['pad_bottom']*(self.attributes['out_width']+self.attributes['pad_right']))
+        depth=(self.attributes['pad_right']+2+self.attributes['pad_bottom']*(self.attributes['out_width']+self.attributes['pad_right']))
         self.add_output_variable(shape, dims,depth=depth,cl=cl)
         #self.add_internal_variable(shapeinternal,diminternal,'dummy','dummy{index}_out',type_name='model_bigdefault_t',precision='ap_uint<27>')
         self.add_weights()
@@ -1010,7 +1073,7 @@ class Conv2D(Layer):
         else:
             self.set_attr('strategy', 'latency')
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         params = self._default_function_params()
         params['strategy'] = self.get_attr('strategy')
         params['data_format'] = 'cf' if self.get_attr('data_format') == 'channels_first' else 'cl'
@@ -1023,7 +1086,10 @@ class Conv2D(Layer):
         if self.model.config.get_config_value('IOType') == 'io_serial':
             self.get_input_variable(self.inputs[0]).name = self.get_input_variable(self.inputs[0]).name.replace("/","_")
             params['input']=params['input'].replace("/","_")
-            header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
@@ -1133,7 +1199,7 @@ class Conv2DMerge(Layer):
         else:
             self.set_attr('strategy', 'latency')
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         params = self._default_function_params()
         params['strategy'] = self.get_attr('strategy')
         params['data_format'] = 'cf' if self.get_attr('data_format') == 'channels_first' else 'cl'
@@ -1141,7 +1207,10 @@ class Conv2DMerge(Layer):
         params['b'] = self.get_weights('bias').name
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
@@ -1214,11 +1283,14 @@ class Pooling1D(Layer):
         self.add_output_variable(shape, dims)
         self.set_attr('pool_op', self.get_attr('class_name').split('Pooling')[0])
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         params = self._default_function_params()
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
@@ -1245,15 +1317,14 @@ class Pooling2D(Layer):
             shape = [self.attributes['n_filt'], self.attributes['out_height'], self.attributes['out_width']]
             dims = ['N_FILT_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
 
-        #shape = [self.attributes['out_height'], self.attributes['out_width'], self.attributes['n_filt']]
-        #dims = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
-        self.add_output_variable(shape, dims,cl=cl)
+        depth=(self.attributes['pad_right']+1+self.attributes['pad_bottom']*(self.attributes['out_width']+self.attributes['pad_right']))
+        self.add_output_variable(shape, dims,cl=cl,depth=depth)
         self.set_attr('pool_op', self.get_attr('class_name').split('Pooling')[0])
         self.is1x1 = False
         if(self.attributes['out_height'] == 1 and self.attributes['out_width'] == 1) : 
             self.is1x1 = True
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         params = self._default_function_params()
         params['data_format'] = 'cf' if self.get_attr('data_format') == 'channels_first' else 'cl'
         params['1x1'] = ''
@@ -1261,7 +1332,10 @@ class Pooling2D(Layer):
             params['1x1'] = '_1x1'
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
@@ -1306,23 +1380,31 @@ class Activation(Layer):
         inp = self.get_input_variable()
         shape = inp.shape
         dims = inp.dim_names
-        self.add_output_variable(shape, dims)
-
-    def function_cpp(self):
+        cl=inp.cl
+        depth=inp.depth
+        self.add_output_variable(shape, dims,cl=cl,depth=depth)
+        
+    def function_cpp(self,iFirst=False):
         params = self._default_function_params()
         params['activation'] = self.get_attr('activation')
         params['config'] = '{}_config{}'.format(self.get_attr('activation'), self.index)
-        header=''
         params['strategy']=''
+        header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
             params['strategy'] = '_stream'
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
         params = self._default_config_params()
         params['type'] = self.get_attr('activation')
-        params['n_in'] = self.get_input_variable().size_cpp()
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            params['n_in'] = self.get_input_variable().size_cpp_cnn()
+        else:
+            params['n_in'] = self.get_input_variable().size_cpp()
 
         return self._config_template.format(**params)
 
@@ -1336,7 +1418,7 @@ class Activation(Layer):
         return self._tcl_template.format(**params)
 
 class ParametrizedActivation(Activation):
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         params = self._default_function_params()
         params['activation'] = self._get_act_function_name()
         params['param'] = self.get_attr('activ_param', 1.0)
@@ -1344,7 +1426,10 @@ class ParametrizedActivation(Activation):
         header=''
         params['strategy']=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
             params['strategy'] = '_stream'
         return [header+self._function_template.format(**params)]
 
@@ -1372,14 +1457,17 @@ class PReLU(Activation):
         super(PReLU, self).initialize()
         self.add_weights_variable(name='alpha', var_name='a{index}')
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         params = self._default_function_params()
         params['activation'] = self.get_attr('activation').lower()
         params['param'] = self.get_weights('alpha').name
         params['config'] = '{}_config{}'.format(self.get_attr('activation'), self.index)
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
         return [header+self._function_template.format(**params)]
 
     def print_tcl(self):
@@ -1394,7 +1482,8 @@ class BatchNormalization(Layer):
         #if 'FILT' not in dims[0] and len(dims) > 2:
         #    dims  = [dims[2],dims[1],dims[0]]
         #    shape = [shape[2],shape[1],shape[0]]
-        self.add_output_variable(shape, dims)
+        depth=15 # randome number for now
+        self.add_output_variable(shape, dims,depth=depth)
 
         gamma = self.model.get_weights_data(self.name, 'gamma')
         beta = self.model.get_weights_data(self.name, 'beta')
@@ -1407,14 +1496,17 @@ class BatchNormalization(Layer):
         self.add_weights_variable(name='scale', var_name='s{index}', data=scale)
         self.add_weights_variable(name='bias', var_name='b{index}', data=bias)
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         params = self._default_function_params()
         params['scale'] = self.get_weights('scale').name
         params['bias'] = self.get_weights('bias').name
         params['strategy'] = ''
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
             params['strategy'] = '_stream'
         return [header+self._function_template.format(**params)]
 
@@ -1422,7 +1514,10 @@ class BatchNormalization(Layer):
         params = self._default_config_params()
         params['n_in'] = self.get_input_variable().size_cpp()
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            params['n_in'] = self.get_input_variable().dim_names[0]
+            if not self.get_input_variable().cl or len(self.get_input_variable().dim_names) < 3:
+                params['n_in'] = self.get_input_variable().dim_names[0]
+            else:
+                params['n_in'] = self.get_input_variable().dim_names[2]
         return self._config_template.format(**params)
 
     def print_tcl(self):
@@ -1442,16 +1537,22 @@ class UpSampling2D(Layer):
         else:
             shape = [self.attributes['n_channel'], self.attributes['out_height'], self.attributes['out_width']]
             dims = ['N_CHANNEL_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
-        self.add_output_variable(shape, dims, cl=cl)
+        depth=(self.attributes['out_width']/self.attributes['in_width'])
+        if (self.attributes['out_height']/self.attributes['in_height']) > 1:
+            depth*=(self.attributes['out_height']/self.attributes['in_height'])*self.attributes['out_width']
+        self.add_output_variable(shape, dims, cl=cl,depth=depth)
         self.set_attr('interp_op', self.get_attr('interpolation'))
 
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         params = self._default_function_params()
         params['data_format'] = 'cf' if self.get_attr('data_format') == 'channels_first' else 'cl'
         params['strategy'] = ''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
             params['strategy'] = 'stream'
         return [self._function_template.format(**params)]
 
@@ -1489,7 +1590,7 @@ class Merge(Layer):
         dims = inp1.dim_names
         self.add_output_variable(shape, dims)
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         params = {}
         params['merge'] = self.get_attr('op').lower()
         params['config'] = 'config{}'.format(self.index)
@@ -1501,12 +1602,18 @@ class Merge(Layer):
         params['output'] = self.get_output_variable().name
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
         params = self._default_config_params()
-        params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+        else:
+            params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp()
         return self._config_template.format(**params)
 
     def print_tcl(self):
@@ -1514,7 +1621,10 @@ class Merge(Layer):
         params['merge'] = self.get_attr('op').lower()
         params['input1_t'] = self.get_input_variable(self.inputs[0]).type.name
         params['input2_t'] = self.get_input_variable(self.inputs[1]).type.name
-        params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+        else:
+            params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp()
         return self._tcl_template.format(**params)
 
 class Split(Layer):
@@ -1526,7 +1636,7 @@ class Split(Layer):
         self.add_output_variable(shape, dims,self.name+'_output1',"layer{index}_out1")
         self.add_output_variable(shape, dims,self.name+'_output2',"layer{index}_out2")
 
-    def function_cpp(self):
+    def function_cpp(self,iFirst=False):
         params = {}
         params['config']    = 'config{}'.format(self.index)
         params['input_t']   = self.get_input_variable(self.inputs[0]).type.name
@@ -1536,17 +1646,26 @@ class Split(Layer):
         params['output2']   = self.get_output_variable(self.name+'_output2').name
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            if iFirst:
+                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+            else:
+                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
         params = self._default_config_params()
-        params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+        else:
+            params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp()
         return self._config_template.format(**params)
 
     def print_tcl(self):
         params = self._default_tcl_params()
-        params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+        else:
+            params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp()
         params['input_t']   = self.get_input_variable(self.inputs[0]).type.name
         params['output_t'] = self.get_output_variable(self.name+'_output1').type.name
         return self._tcl_template.format(**params)
