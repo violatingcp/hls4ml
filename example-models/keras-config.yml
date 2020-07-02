@@ -6,15 +6,15 @@
 #KerasH5:    keras/sho_model_weights.h5
 #KerasJson:  keras/LargeAE.json
 #KerasH5:    keras/LargeAE.h5
-#KerasJson:  keras/deepcalo_flat.json
-#KerasH5:    keras/deepcalo_flat_weights.h5
-KerasJson:  keras/DC.json
-KerasH5:    keras/DC.h5
+KerasJson:  keras/deepcalo_flat.json
+KerasH5:    keras/deepcalo_flat_weights.h5
+#KerasJson:  keras/DC.json
+#KerasH5:    keras/DC.h5
 #InputData: keras/KERAS_3layer_input_features.dat
 #OutputPredictions: keras/KERAS_3layer_predictions.dat
-OutputDir: andrew_test
+OutputDir: deepcalo_test_5
 ProjectName: myproject
-XilinxPart: xcku115-flvb2104-2-i
+XilinxPart: xcvu9p-flgb2104-2-i
 ClockPeriod: 5
 Backend: Vivado
 
@@ -22,7 +22,7 @@ IOType: io_serial # options: io_serial/io_parallel
 HLSConfig:
   Model:
     Precision: ap_fixed<16,6>
-    ReuseFactor: 10
+    ReuseFactor: 25000
     Strategy: Resource
   LayerType:
     Dense:
