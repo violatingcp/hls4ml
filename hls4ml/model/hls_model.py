@@ -86,6 +86,10 @@ class HLSConfig(object):
             mf = 1
         return mf
 
+    def get_bram_size(self, layer):
+        bf = self.model_bf
+        return bf
+
     def get_strategy(self, layer):
         strategy = self.layer_name_strategy.get(layer.name.lower())
         if strategy is None:
@@ -121,9 +125,10 @@ class HLSConfig(object):
 
             self.model_rf = model_cfg.get('ReuseFactor')
             self.model_mf = model_cfg.get('MergeFactor')
+            self.model_bf = model_cfg.get('BramFactor')
             self.model_strategy = model_cfg.get('Strategy', 'Latency')
             self.model_compression = bool(model_cfg.get('Compression', 0))
-
+            
         layer_type_cfg = hls_config.get('LayerType')
         if layer_type_cfg is not None:
             for layer_type, layer_cfg in layer_type_cfg.items():
@@ -205,11 +210,12 @@ class HLSModel(object):
         # If not provided, assumes layer_list[0] is input, and layer_list[-1] is output
         self.inputs = inputs if inputs is not None else [layer_list[0]['name']]
         self.outputs = outputs if outputs is not None else [layer_list[-1]['name']]
+        self.brams   = []
 
         self.index = 0
         self.graph = OrderedDict()
         self.output_vars = {}
-
+        self.bram_vars = {}
         self._make_graph(layer_list)
 
     def _make_graph(self, layer_list):
@@ -338,6 +344,16 @@ class HLSModel(object):
         variables = []
         for out in self.outputs:
             variables.append(self.output_vars[out])
+        return variables
+
+    def register_bram_variable(self, out_name, variable):
+        self.brams.append(out_name)
+        self.bram_vars[out_name] = variable
+
+    def get_bram_variables(self):
+        variables = []
+        for bram in self.brams:
+            variables.append(self.bram_vars[bram])
         return variables
 
     def get_layer_output_variable(self, output_name):
@@ -507,7 +523,7 @@ class WeightVariable(Variable):
         return '{type} {name}[{size}]'.format(type=self.type.name, name=self.cppname, size=self.data_length)
 
 class CompressedWeightVariable(WeightVariable):
-    def __init__(self, var_name, type_name, precision, data, reuse_factor, **kwargs):
+    def __init__(self, var_name, type_name, precision, data, reuse_factor, bramport_size, **kwargs):
         super(CompressedWeightVariable, self).__init__(var_name, type_name, precision, data, **kwargs)
         self.extra_zeros = 0
         self.data_length = np.prod(data.shape) - self.nzeros
@@ -538,7 +554,6 @@ class CompressedWeightVariable(WeightVariable):
         if max_idx > 0:
             index_precision = int(np.log2(max_idx) + 1)
         self.type = CompressedType(type_name, precision, 'ap_uint<{}>'.format(index_precision), **kwargs)
-
         self.data = weights
 
     def __iter__(self):
@@ -663,7 +678,6 @@ class Layer(object):
 
     def add_weights(self, quantize=0, compression=False):
         data = self.model.get_weights_data(self.name, 'kernel')
-
         self.add_weights_variable(name='weight', var_name='w{index}', data=data, quantize=quantize, compression=compression)
 
     def add_bias(self, quantize=0):
@@ -715,6 +729,7 @@ class Layer(object):
                 #if type_name == 'model_default_t':
                 #     precision='ap_uint<16>'
 
+        bramport_size = self.model.config.get_bram_size(self) # merge weights
         if compression:
             rf = self.model.config.get_reuse_factor(self)
             var = CompressedWeightVariable(var_name, type_name=type_name, precision=precision, data=data, reuse_factor=rf, index=self.index)
@@ -723,6 +738,9 @@ class Layer(object):
 
         self.weights[name] = var
         self.precision[var.type.name] = var.type
+        if(np.prod(data.shape) > bramport_size):
+            var_out = var_name.replace("{index}",str(self.index))
+            self.model.register_bram_variable(var_out,var)
 
     def _default_function_params(self):
         params = {}
@@ -906,7 +924,6 @@ class Dense(Layer):
             params['n_in'] = self.get_input_variable().size_cpp(isSerial=True)+'-1'
             params['n_out'] = self.get_output_variable().size_cpp(isSerial=True)+'-1'
             if len(self.get_input_variable().shape) > 1:
-                print('input1',self.get_input_variable(),',',self.get_input_variable().shape,',',self.get_input_variable().size())
                 params['block_factor'] =  (self.get_input_variable().size()/self.get_input_variable().shape[2])
             #elif len(self.get_input_variable().shape) > 1:
             #    print('input2',self.get_input_variable(),',',self.get_input_variable().shape,',',self.get_input_variable().size())
@@ -1024,7 +1041,6 @@ class Conv2D(Layer):
         if(self.attributes['filt_height'] == 1 and self.attributes['filt_width'] == 1) : 
             self.is1x1 = True
         depth=(self.attributes['pad_right']+2+self.attributes['pad_bottom']*(self.attributes['out_width']+self.attributes['pad_right']))
-        print("Adding Conv",cl)
         self.add_output_variable(shape, dims,depth=depth,cl=cl)
         #self.add_internal_variable(shapeinternal,diminternal,'dummy','dummy{index}_out',type_name='model_bigdefault_t',precision='ap_uint<27>')
         self.add_weights()
