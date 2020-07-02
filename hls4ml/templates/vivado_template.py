@@ -250,7 +250,7 @@ split_function_template = 'nnet::split<{input_t}, {output_t}, {config}>({input},
 }'''
 
 
-dense_tcl_template = """set arg_0 "-I . -DN_1={n_in} -DN_2={n_out}"
+dense_tcl_template = """set arg_0 "-I . -DN_1={n_input} -DN_2={n_output}"
 set arg_1 "-DCONFIG={config}"
 set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
 set arg_3 "-DN_WEIGHTS={n_weights} -DWEIGHTS={weights}  -DBIASES={biases}"

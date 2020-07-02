@@ -1,7 +1,7 @@
 OnnxModel: onnx/resnet50.onnx
 #InputData: keras/KERAS_3layer_input_features.dat
 #OutputPredictions: keras/KERAS_3layer_predictions.dat
-OutputDir: resnet50-hls-full_300mus
+OutputDir: resnet50-hls-full_300mus_2
 ProjectName: myproject
 XilinxPart: xcvu9p-flgc2104-2-i
 ClockPeriod: 5

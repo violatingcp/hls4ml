@@ -352,6 +352,8 @@ class VivadoWriter(Writer):
         self.copy_dir(model,'../templates/vivado/AIgean/common/','firmware/ips/common/'),
         self.copy_dir(model,'../templates/vivado/AIgean/include/','firmware/ips/include/'),
         self.copy_dir(model,'../templates/vivado/AIgean/bridges/','firmware/ips/bridges/'),
+        self.copy_dir(model,'../templates/vivado/AIgean/bridges/','firmware/ips/bridges/'),
+        copyfile("../templates/vivado/AIgean/Makefile","firmware/ips/Makefile")
 
     def write_project_cpp(self, model):
         ###################
