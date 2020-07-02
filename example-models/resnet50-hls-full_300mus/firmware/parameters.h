@@ -188,7 +188,7 @@
 #define N_FILT_174 2049
 #define OUT_HEIGHT_174 1
 #define OUT_WIDTH_174 1
-#define N_LAYER_175 1001
+#define N_LAYER_175 1000
 
 //hls-fpga-machine-learning insert layer-precision
 typedef ap_uint<8> model_default_t;
@@ -2842,11 +2842,8 @@ struct config174 : nnet::pooling2d_config {
 };
 
 struct config175 : nnet::dense_config {
-    static const unsigned block_factor = 2048.0;
-    static const unsigned n_input = N_FILT_174;
-    static const unsigned n_output = N_LAYER_175;
-    static const unsigned n_in = (N_FILT_174-1)*OUT_HEIGHT_174*OUT_WIDTH_174-1;
-    static const unsigned n_out = N_LAYER_175-1;
+    static const unsigned n_in = N_FILT_174*OUT_HEIGHT_174*OUT_WIDTH_174;
+    static const unsigned n_out = N_LAYER_175;
     static const unsigned io_type = nnet::io_serial;
     static const unsigned reuse_factor = 60000;
     static const unsigned n_zeros = 0;

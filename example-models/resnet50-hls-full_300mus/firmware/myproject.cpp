@@ -130,7 +130,7 @@
 #include "weights/w175.h"
 #include "weights/b175.h"
 
-void myproject_in(
+void myproject(
      hls::stream<input_t> gpu_0_data_0[N_INPUT_3_1],
      hls::stream<result_t> layer176_out[N_LAYER_175],
     unsigned short &const_size_in_1,
@@ -271,14 +271,14 @@ void myproject_in(
     while(!gpu_0_data_0[0].empty()) nnet::conv_2d_large_cl<input_t, layer4_t, config2>(gpu_0_data_0, layer4_out, w2, b2);
 
     static hls::stream<layer5_t> layer5_out[N_FILT_5];
-    #pragma HLS STREAM variable=layer5_out depth=59 dim=1
+    #pragma HLS STREAM variable=layer5_out depth=1 dim=1
     while(!layer4_out[0].empty()) nnet::pooling2d_cl<layer4_t, layer5_t, config5>(layer4_out, layer5_out);
 
     static hls::stream<layer177_t> layer177_out1[N_FILT_5];
     #pragma HLS STREAM variable=layer177_out1 depth=1 dim=1
     static hls::stream<layer177_t> layer177_out2[N_FILT_5];
     #pragma HLS STREAM variable=layer177_out2 depth=1 dim=1
-    while(!layer5_out[0].empty()) nnet::split<layer5_t, layer177_t, config177>(layer5_out, layer177_out1, layer177_out2);
+    if(!layer5_out[0].empty()) nnet::split<layer5_t, layer177_t, config177>(layer5_out, layer177_out1, layer177_out2);
 
     static hls::stream<layer8_t> layer8_out[N_FILT_6];
     #pragma HLS STREAM variable=layer8_out depth=1 dim=1
@@ -298,13 +298,13 @@ void myproject_in(
 
     static hls::stream<layer17_t> layer17_out[N_FILT_12];
     #pragma HLS STREAM variable=layer17_out depth=1 dim=1
-    while(!layer13_out[0].empty()) nnet::add<layer13_t, layer15_t, layer17_t, config16>(layer13_out, layer15_out, layer17_out);
+    if(!layer13_out[0].empty()) nnet::add<layer13_t, layer15_t, layer17_t, config16>(layer13_out, layer15_out, layer17_out);
 
     static hls::stream<layer178_t> layer178_out1[N_FILT_12];
     #pragma HLS STREAM variable=layer178_out1 depth=1 dim=1
     static hls::stream<layer178_t> layer178_out2[N_FILT_12];
     #pragma HLS STREAM variable=layer178_out2 depth=1 dim=1
-    while(!layer17_out[0].empty()) nnet::split<layer17_t, layer178_t, config178>(layer17_out, layer178_out1, layer178_out2);
+    if(!layer17_out[0].empty()) nnet::split<layer17_t, layer178_t, config178>(layer17_out, layer178_out1, layer178_out2);
 
     static hls::stream<layer20_t> layer20_out[N_FILT_18];
     #pragma HLS STREAM variable=layer20_out depth=1 dim=1
@@ -320,13 +320,13 @@ void myproject_in(
 
     static hls::stream<layer27_t> layer27_out[N_FILT_24];
     #pragma HLS STREAM variable=layer27_out depth=1 dim=1
-    while(!layer25_out[0].empty()) nnet::add<layer25_t, layer178_t, layer27_t, config26>(layer25_out, layer178_out2, layer27_out);
+    if(!layer25_out[0].empty()) nnet::add<layer25_t, layer178_t, layer27_t, config26>(layer25_out, layer178_out2, layer27_out);
 
     static hls::stream<layer179_t> layer179_out1[N_FILT_24];
     #pragma HLS STREAM variable=layer179_out1 depth=1 dim=1
     static hls::stream<layer179_t> layer179_out2[N_FILT_24];
     #pragma HLS STREAM variable=layer179_out2 depth=1 dim=1
-    while(!layer27_out[0].empty()) nnet::split<layer27_t, layer179_t, config179>(layer27_out, layer179_out1, layer179_out2);
+    if(!layer27_out[0].empty()) nnet::split<layer27_t, layer179_t, config179>(layer27_out, layer179_out1, layer179_out2);
 
     static hls::stream<layer30_t> layer30_out[N_FILT_28];
     #pragma HLS STREAM variable=layer30_out depth=1 dim=1
@@ -342,13 +342,13 @@ void myproject_in(
 
     static hls::stream<layer37_t> layer37_out[N_FILT_34];
     #pragma HLS STREAM variable=layer37_out depth=1 dim=1
-    while(!layer35_out[0].empty()) nnet::add<layer35_t, layer179_t, layer37_t, config36>(layer35_out, layer179_out2, layer37_out);
+    if(!layer35_out[0].empty()) nnet::add<layer35_t, layer179_t, layer37_t, config36>(layer35_out, layer179_out2, layer37_out);
 
     static hls::stream<layer180_t> layer180_out1[N_FILT_34];
     #pragma HLS STREAM variable=layer180_out1 depth=1 dim=1
     static hls::stream<layer180_t> layer180_out2[N_FILT_34];
     #pragma HLS STREAM variable=layer180_out2 depth=1 dim=1
-    while(!layer37_out[0].empty()) nnet::split<layer37_t, layer180_t, config180>(layer37_out, layer180_out1, layer180_out2);
+    if(!layer37_out[0].empty()) nnet::split<layer37_t, layer180_t, config180>(layer37_out, layer180_out1, layer180_out2);
 
     static hls::stream<layer40_t> layer40_out[N_FILT_38];
     #pragma HLS STREAM variable=layer40_out depth=1 dim=1
@@ -368,13 +368,13 @@ void myproject_in(
 
     static hls::stream<layer49_t> layer49_out[N_FILT_44];
     #pragma HLS STREAM variable=layer49_out depth=1 dim=1
-    while(!layer45_out[0].empty()) nnet::add<layer45_t, layer47_t, layer49_t, config48>(layer45_out, layer47_out, layer49_out);
+    if(!layer45_out[0].empty()) nnet::add<layer45_t, layer47_t, layer49_t, config48>(layer45_out, layer47_out, layer49_out);
 
     static hls::stream<layer181_t> layer181_out1[N_FILT_44];
     #pragma HLS STREAM variable=layer181_out1 depth=1 dim=1
     static hls::stream<layer181_t> layer181_out2[N_FILT_44];
     #pragma HLS STREAM variable=layer181_out2 depth=1 dim=1
-    while(!layer49_out[0].empty()) nnet::split<layer49_t, layer181_t, config181>(layer49_out, layer181_out1, layer181_out2);
+    if(!layer49_out[0].empty()) nnet::split<layer49_t, layer181_t, config181>(layer49_out, layer181_out1, layer181_out2);
 
     static hls::stream<layer52_t> layer52_out[N_FILT_50];
     #pragma HLS STREAM variable=layer52_out depth=1 dim=1
@@ -390,13 +390,13 @@ void myproject_in(
 
     static hls::stream<layer59_t> layer59_out[N_FILT_56];
     #pragma HLS STREAM variable=layer59_out depth=1 dim=1
-    while(!layer57_out[0].empty()) nnet::add<layer57_t, layer181_t, layer59_t, config58>(layer57_out, layer181_out2, layer59_out);
+    if(!layer57_out[0].empty()) nnet::add<layer57_t, layer181_t, layer59_t, config58>(layer57_out, layer181_out2, layer59_out);
 
     static hls::stream<layer182_t> layer182_out1[N_FILT_56];
     #pragma HLS STREAM variable=layer182_out1 depth=1 dim=1
     static hls::stream<layer182_t> layer182_out2[N_FILT_56];
     #pragma HLS STREAM variable=layer182_out2 depth=1 dim=1
-    while(!layer59_out[0].empty()) nnet::split<layer59_t, layer182_t, config182>(layer59_out, layer182_out1, layer182_out2);
+    if(!layer59_out[0].empty()) nnet::split<layer59_t, layer182_t, config182>(layer59_out, layer182_out1, layer182_out2);
 
     static hls::stream<layer62_t> layer62_out[N_FILT_60];
     #pragma HLS STREAM variable=layer62_out depth=1 dim=1
@@ -412,13 +412,13 @@ void myproject_in(
 
     static hls::stream<layer69_t> layer69_out[N_FILT_66];
     #pragma HLS STREAM variable=layer69_out depth=1 dim=1
-    while(!layer67_out[0].empty()) nnet::add<layer67_t, layer182_t, layer69_t, config68>(layer67_out, layer182_out2, layer69_out);
+    if(!layer67_out[0].empty()) nnet::add<layer67_t, layer182_t, layer69_t, config68>(layer67_out, layer182_out2, layer69_out);
 
     static hls::stream<layer183_t> layer183_out1[N_FILT_66];
     #pragma HLS STREAM variable=layer183_out1 depth=1 dim=1
     static hls::stream<layer183_t> layer183_out2[N_FILT_66];
     #pragma HLS STREAM variable=layer183_out2 depth=1 dim=1
-    while(!layer69_out[0].empty()) nnet::split<layer69_t, layer183_t, config183>(layer69_out, layer183_out1, layer183_out2);
+    if(!layer69_out[0].empty()) nnet::split<layer69_t, layer183_t, config183>(layer69_out, layer183_out1, layer183_out2);
 
     static hls::stream<layer72_t> layer72_out[N_FILT_70];
     #pragma HLS STREAM variable=layer72_out depth=1 dim=1
@@ -434,13 +434,13 @@ void myproject_in(
 
     static hls::stream<layer79_t> layer79_out[N_FILT_76];
     #pragma HLS STREAM variable=layer79_out depth=1 dim=1
-    while(!layer77_out[0].empty()) nnet::add<layer77_t, layer183_t, layer79_t, config78>(layer77_out, layer183_out2, layer79_out);
+    if(!layer77_out[0].empty()) nnet::add<layer77_t, layer183_t, layer79_t, config78>(layer77_out, layer183_out2, layer79_out);
 
     static hls::stream<layer184_t> layer184_out1[N_FILT_76];
     #pragma HLS STREAM variable=layer184_out1 depth=1 dim=1
     static hls::stream<layer184_t> layer184_out2[N_FILT_76];
     #pragma HLS STREAM variable=layer184_out2 depth=1 dim=1
-    while(!layer79_out[0].empty()) nnet::split<layer79_t, layer184_t, config184>(layer79_out, layer184_out1, layer184_out2);
+    if(!layer79_out[0].empty()) nnet::split<layer79_t, layer184_t, config184>(layer79_out, layer184_out1, layer184_out2);
 
     static hls::stream<layer82_t> layer82_out[N_FILT_80];
     #pragma HLS STREAM variable=layer82_out depth=1 dim=1
@@ -460,13 +460,13 @@ void myproject_in(
 
     static hls::stream<layer91_t> layer91_out[N_FILT_86];
     #pragma HLS STREAM variable=layer91_out depth=1 dim=1
-    while(!layer87_out[0].empty()) nnet::add<layer87_t, layer89_t, layer91_t, config90>(layer87_out, layer89_out, layer91_out);
+    if(!layer87_out[0].empty()) nnet::add<layer87_t, layer89_t, layer91_t, config90>(layer87_out, layer89_out, layer91_out);
 
     static hls::stream<layer185_t> layer185_out1[N_FILT_86];
     #pragma HLS STREAM variable=layer185_out1 depth=1 dim=1
     static hls::stream<layer185_t> layer185_out2[N_FILT_86];
     #pragma HLS STREAM variable=layer185_out2 depth=1 dim=1
-    while(!layer91_out[0].empty()) nnet::split<layer91_t, layer185_t, config185>(layer91_out, layer185_out1, layer185_out2);
+    if(!layer91_out[0].empty()) nnet::split<layer91_t, layer185_t, config185>(layer91_out, layer185_out1, layer185_out2);
 
     static hls::stream<layer94_t> layer94_out[N_FILT_92];
     #pragma HLS STREAM variable=layer94_out depth=1 dim=1
@@ -482,13 +482,13 @@ void myproject_in(
 
     static hls::stream<layer101_t> layer101_out[N_FILT_98];
     #pragma HLS STREAM variable=layer101_out depth=1 dim=1
-    while(!layer99_out[0].empty()) nnet::add<layer99_t, layer185_t, layer101_t, config100>(layer99_out, layer185_out2, layer101_out);
+    if(!layer99_out[0].empty()) nnet::add<layer99_t, layer185_t, layer101_t, config100>(layer99_out, layer185_out2, layer101_out);
 
     static hls::stream<layer186_t> layer186_out1[N_FILT_98];
     #pragma HLS STREAM variable=layer186_out1 depth=1 dim=1
     static hls::stream<layer186_t> layer186_out2[N_FILT_98];
     #pragma HLS STREAM variable=layer186_out2 depth=1 dim=1
-    while(!layer101_out[0].empty()) nnet::split<layer101_t, layer186_t, config186>(layer101_out, layer186_out1, layer186_out2);
+    if(!layer101_out[0].empty()) nnet::split<layer101_t, layer186_t, config186>(layer101_out, layer186_out1, layer186_out2);
 
     static hls::stream<layer104_t> layer104_out[N_FILT_102];
     #pragma HLS STREAM variable=layer104_out depth=1 dim=1
@@ -504,13 +504,13 @@ void myproject_in(
 
     static hls::stream<layer111_t> layer111_out[N_FILT_108];
     #pragma HLS STREAM variable=layer111_out depth=1 dim=1
-    while(!layer109_out[0].empty()) nnet::add<layer109_t, layer186_t, layer111_t, config110>(layer109_out, layer186_out2, layer111_out);
+    if(!layer109_out[0].empty()) nnet::add<layer109_t, layer186_t, layer111_t, config110>(layer109_out, layer186_out2, layer111_out);
 
     static hls::stream<layer187_t> layer187_out1[N_FILT_108];
     #pragma HLS STREAM variable=layer187_out1 depth=1 dim=1
     static hls::stream<layer187_t> layer187_out2[N_FILT_108];
     #pragma HLS STREAM variable=layer187_out2 depth=1 dim=1
-    while(!layer111_out[0].empty()) nnet::split<layer111_t, layer187_t, config187>(layer111_out, layer187_out1, layer187_out2);
+    if(!layer111_out[0].empty()) nnet::split<layer111_t, layer187_t, config187>(layer111_out, layer187_out1, layer187_out2);
 
     static hls::stream<layer114_t> layer114_out[N_FILT_112];
     #pragma HLS STREAM variable=layer114_out depth=1 dim=1
@@ -526,13 +526,13 @@ void myproject_in(
 
     static hls::stream<layer121_t> layer121_out[N_FILT_118];
     #pragma HLS STREAM variable=layer121_out depth=1 dim=1
-    while(!layer119_out[0].empty()) nnet::add<layer119_t, layer187_t, layer121_t, config120>(layer119_out, layer187_out2, layer121_out);
+    if(!layer119_out[0].empty()) nnet::add<layer119_t, layer187_t, layer121_t, config120>(layer119_out, layer187_out2, layer121_out);
 
     static hls::stream<layer188_t> layer188_out1[N_FILT_118];
     #pragma HLS STREAM variable=layer188_out1 depth=1 dim=1
     static hls::stream<layer188_t> layer188_out2[N_FILT_118];
     #pragma HLS STREAM variable=layer188_out2 depth=1 dim=1
-    while(!layer121_out[0].empty()) nnet::split<layer121_t, layer188_t, config188>(layer121_out, layer188_out1, layer188_out2);
+    if(!layer121_out[0].empty()) nnet::split<layer121_t, layer188_t, config188>(layer121_out, layer188_out1, layer188_out2);
 
     static hls::stream<layer124_t> layer124_out[N_FILT_122];
     #pragma HLS STREAM variable=layer124_out depth=1 dim=1
@@ -548,13 +548,13 @@ void myproject_in(
 
     static hls::stream<layer131_t> layer131_out[N_FILT_128];
     #pragma HLS STREAM variable=layer131_out depth=1 dim=1
-    while(!layer129_out[0].empty()) nnet::add<layer129_t, layer188_t, layer131_t, config130>(layer129_out, layer188_out2, layer131_out);
+    if(!layer129_out[0].empty()) nnet::add<layer129_t, layer188_t, layer131_t, config130>(layer129_out, layer188_out2, layer131_out);
 
     static hls::stream<layer189_t> layer189_out1[N_FILT_128];
     #pragma HLS STREAM variable=layer189_out1 depth=1 dim=1
     static hls::stream<layer189_t> layer189_out2[N_FILT_128];
     #pragma HLS STREAM variable=layer189_out2 depth=1 dim=1
-    while(!layer131_out[0].empty()) nnet::split<layer131_t, layer189_t, config189>(layer131_out, layer189_out1, layer189_out2);
+    if(!layer131_out[0].empty()) nnet::split<layer131_t, layer189_t, config189>(layer131_out, layer189_out1, layer189_out2);
 
     static hls::stream<layer134_t> layer134_out[N_FILT_132];
     #pragma HLS STREAM variable=layer134_out depth=1 dim=1
@@ -570,13 +570,13 @@ void myproject_in(
 
     static hls::stream<layer141_t> layer141_out[N_FILT_138];
     #pragma HLS STREAM variable=layer141_out depth=1 dim=1
-    while(!layer139_out[0].empty()) nnet::add<layer139_t, layer189_t, layer141_t, config140>(layer139_out, layer189_out2, layer141_out);
+    if(!layer139_out[0].empty()) nnet::add<layer139_t, layer189_t, layer141_t, config140>(layer139_out, layer189_out2, layer141_out);
 
     static hls::stream<layer190_t> layer190_out1[N_FILT_138];
     #pragma HLS STREAM variable=layer190_out1 depth=1 dim=1
     static hls::stream<layer190_t> layer190_out2[N_FILT_138];
     #pragma HLS STREAM variable=layer190_out2 depth=1 dim=1
-    while(!layer141_out[0].empty()) nnet::split<layer141_t, layer190_t, config190>(layer141_out, layer190_out1, layer190_out2);
+    if(!layer141_out[0].empty()) nnet::split<layer141_t, layer190_t, config190>(layer141_out, layer190_out1, layer190_out2);
 
     static hls::stream<layer144_t> layer144_out[N_FILT_142];
     #pragma HLS STREAM variable=layer144_out depth=1 dim=1
@@ -596,13 +596,13 @@ void myproject_in(
 
     static hls::stream<layer153_t> layer153_out[N_FILT_148];
     #pragma HLS STREAM variable=layer153_out depth=1 dim=1
-    while(!layer149_out[0].empty()) nnet::add<layer149_t, layer151_t, layer153_t, config152>(layer149_out, layer151_out, layer153_out);
+    if(!layer149_out[0].empty()) nnet::add<layer149_t, layer151_t, layer153_t, config152>(layer149_out, layer151_out, layer153_out);
 
     static hls::stream<layer191_t> layer191_out1[N_FILT_148];
     #pragma HLS STREAM variable=layer191_out1 depth=1 dim=1
     static hls::stream<layer191_t> layer191_out2[N_FILT_148];
     #pragma HLS STREAM variable=layer191_out2 depth=1 dim=1
-    while(!layer153_out[0].empty()) nnet::split<layer153_t, layer191_t, config191>(layer153_out, layer191_out1, layer191_out2);
+    if(!layer153_out[0].empty()) nnet::split<layer153_t, layer191_t, config191>(layer153_out, layer191_out1, layer191_out2);
 
     static hls::stream<layer156_t> layer156_out[N_FILT_154];
     #pragma HLS STREAM variable=layer156_out depth=1 dim=1
@@ -618,13 +618,13 @@ void myproject_in(
 
     static hls::stream<layer163_t> layer163_out[N_FILT_160];
     #pragma HLS STREAM variable=layer163_out depth=1 dim=1
-    while(!layer161_out[0].empty()) nnet::add<layer161_t, layer191_t, layer163_t, config162>(layer161_out, layer191_out2, layer163_out);
+    if(!layer161_out[0].empty()) nnet::add<layer161_t, layer191_t, layer163_t, config162>(layer161_out, layer191_out2, layer163_out);
 
     static hls::stream<layer192_t> layer192_out1[N_FILT_160];
     #pragma HLS STREAM variable=layer192_out1 depth=1 dim=1
     static hls::stream<layer192_t> layer192_out2[N_FILT_160];
     #pragma HLS STREAM variable=layer192_out2 depth=1 dim=1
-    while(!layer163_out[0].empty()) nnet::split<layer163_t, layer192_t, config192>(layer163_out, layer192_out1, layer192_out2);
+    if(!layer163_out[0].empty()) nnet::split<layer163_t, layer192_t, config192>(layer163_out, layer192_out1, layer192_out2);
 
     static hls::stream<layer166_t> layer166_out[N_FILT_164];
     #pragma HLS STREAM variable=layer166_out depth=1 dim=1
@@ -640,7 +640,7 @@ void myproject_in(
 
     static hls::stream<layer173_t> layer173_out[N_FILT_170];
     #pragma HLS STREAM variable=layer173_out depth=1 dim=1
-    while(!layer171_out[0].empty()) nnet::add<layer171_t, layer192_t, layer173_t, config172>(layer171_out, layer192_out2, layer173_out);
+    if(!layer171_out[0].empty()) nnet::add<layer171_t, layer192_t, layer173_t, config172>(layer171_out, layer192_out2, layer173_out);
 
     static hls::stream<layer174_t> layer174_out[N_FILT_174];
     #pragma HLS STREAM variable=layer174_out depth=1 dim=1
@@ -648,22 +648,8 @@ void myproject_in(
 
     static hls::stream<layer175_t> layer175_out[N_LAYER_175];
     #pragma HLS STREAM variable=layer175_out depth=1 dim=1
-    while(!layer174_out[0].empty()) nnet::dense_large_stream<layer174_t, layer175_t, config175>(layer174_out, layer175_out, w175, b175);
+    if(!layer174_out[0].empty()) nnet::dense_large_stream<layer174_t, layer175_t, config175>(layer174_out, layer175_out, w175, b175);
 
     while(!layer175_out[0].empty()) nnet::softmax_stream<layer175_t, result_t, softmax_config176>(layer175_out, layer176_out);
 
-}
-
-
-void myproject(
-     hls::stream<input_t> gpu_0_data_0[N_INPUT_3_1],
-     hls::stream<result_t> layer176_out[N_LAYER_175],
-    unsigned short &const_size_in_1,
-    unsigned short &const_size_out_1
-) { 
-for(int i0 = 0; i0 < 224; i0++) {
-    for(int i1 = 0; i1 < 224; i1++) {
-        myproject_in(gpu_0_data_0,layer176_out,const_size_in_1,const_size_out_1);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
 }

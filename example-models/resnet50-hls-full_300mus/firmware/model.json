@@ -1,0 +1,1729 @@
+{
+    "ips": [
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 4
+                }
+            ],
+            "inst": "layer2",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer5",
+                    "output_port": "input",
+                    "width": 65
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 65
+                }
+            ],
+            "inst": "layer5",
+            "kernel": "pooling2d",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer177",
+                    "output_port": "input",
+                    "width": 65
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 65
+                }
+            ],
+            "inst": "layer6",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer9",
+                    "output_port": "input",
+                    "width": 65
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 65
+                }
+            ],
+            "inst": "layer9",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer12",
+                    "output_port": "input",
+                    "width": 65
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 65
+                }
+            ],
+            "inst": "layer12",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer16",
+                    "output_port": "input1",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 65
+                }
+            ],
+            "inst": "layer14",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer16",
+                    "output_port": "input2",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 257
+                },
+                {
+                    "name": "input2",
+                    "width": 57
+                }
+            ],
+            "inst": "layer16",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer178",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer18",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer21",
+                    "output_port": "input",
+                    "width": 65
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 65
+                }
+            ],
+            "inst": "layer21",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer24",
+                    "output_port": "input",
+                    "width": 65
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 65
+                }
+            ],
+            "inst": "layer24",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer26",
+                    "output_port": "input1",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 257
+                },
+                {
+                    "name": "input2",
+                    "width": 57
+                }
+            ],
+            "inst": "layer26",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer179",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer28",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer31",
+                    "output_port": "input",
+                    "width": 65
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 65
+                }
+            ],
+            "inst": "layer31",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer34",
+                    "output_port": "input",
+                    "width": 65
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 65
+                }
+            ],
+            "inst": "layer34",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer36",
+                    "output_port": "input1",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 257
+                },
+                {
+                    "name": "input2",
+                    "width": 57
+                }
+            ],
+            "inst": "layer36",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer180",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer38",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer41",
+                    "output_port": "input",
+                    "width": 129
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 129
+                }
+            ],
+            "inst": "layer41",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer44",
+                    "output_port": "input",
+                    "width": 129
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 129
+                }
+            ],
+            "inst": "layer44",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer48",
+                    "output_port": "input1",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer46",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer48",
+                    "output_port": "input2",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 513
+                },
+                {
+                    "name": "input2",
+                    "width": 29
+                }
+            ],
+            "inst": "layer48",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer181",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer50",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer53",
+                    "output_port": "input",
+                    "width": 129
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 129
+                }
+            ],
+            "inst": "layer53",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer56",
+                    "output_port": "input",
+                    "width": 129
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 129
+                }
+            ],
+            "inst": "layer56",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer58",
+                    "output_port": "input1",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 513
+                },
+                {
+                    "name": "input2",
+                    "width": 29
+                }
+            ],
+            "inst": "layer58",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer182",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer60",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer63",
+                    "output_port": "input",
+                    "width": 129
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 129
+                }
+            ],
+            "inst": "layer63",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer66",
+                    "output_port": "input",
+                    "width": 129
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 129
+                }
+            ],
+            "inst": "layer66",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer68",
+                    "output_port": "input1",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 513
+                },
+                {
+                    "name": "input2",
+                    "width": 29
+                }
+            ],
+            "inst": "layer68",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer183",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer70",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer73",
+                    "output_port": "input",
+                    "width": 129
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 129
+                }
+            ],
+            "inst": "layer73",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer76",
+                    "output_port": "input",
+                    "width": 129
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 129
+                }
+            ],
+            "inst": "layer76",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer78",
+                    "output_port": "input1",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 513
+                },
+                {
+                    "name": "input2",
+                    "width": 29
+                }
+            ],
+            "inst": "layer78",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer184",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer80",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer83",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer83",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer86",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer86",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer90",
+                    "output_port": "input1",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer88",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer90",
+                    "output_port": "input2",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 1025
+                },
+                {
+                    "name": "input2",
+                    "width": 15
+                }
+            ],
+            "inst": "layer90",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer185",
+                    "output_port": "input",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer92",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer95",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer95",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer98",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer98",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer100",
+                    "output_port": "input1",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 1025
+                },
+                {
+                    "name": "input2",
+                    "width": 15
+                }
+            ],
+            "inst": "layer100",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer186",
+                    "output_port": "input",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer102",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer105",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer105",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer108",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer108",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer110",
+                    "output_port": "input1",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 1025
+                },
+                {
+                    "name": "input2",
+                    "width": 15
+                }
+            ],
+            "inst": "layer110",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer187",
+                    "output_port": "input",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer112",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer115",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer115",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer118",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer118",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer120",
+                    "output_port": "input1",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 1025
+                },
+                {
+                    "name": "input2",
+                    "width": 15
+                }
+            ],
+            "inst": "layer120",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer188",
+                    "output_port": "input",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer122",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer125",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer125",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer128",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer128",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer130",
+                    "output_port": "input1",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 1025
+                },
+                {
+                    "name": "input2",
+                    "width": 15
+                }
+            ],
+            "inst": "layer130",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer189",
+                    "output_port": "input",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer132",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer135",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer135",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer138",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer138",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer140",
+                    "output_port": "input1",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 1025
+                },
+                {
+                    "name": "input2",
+                    "width": 15
+                }
+            ],
+            "inst": "layer140",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer190",
+                    "output_port": "input",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer142",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer145",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer145",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer148",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer148",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer152",
+                    "output_port": "input1",
+                    "width": 2049
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer150",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer152",
+                    "output_port": "input2",
+                    "width": 2049
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 2049
+                },
+                {
+                    "name": "input2",
+                    "width": 8
+                }
+            ],
+            "inst": "layer152",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer191",
+                    "output_port": "input",
+                    "width": 2049
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 2049
+                }
+            ],
+            "inst": "layer154",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer157",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer157",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer160",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer160",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer162",
+                    "output_port": "input1",
+                    "width": 2049
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 2049
+                },
+                {
+                    "name": "input2",
+                    "width": 8
+                }
+            ],
+            "inst": "layer162",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer192",
+                    "output_port": "input",
+                    "width": 2049
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 2049
+                }
+            ],
+            "inst": "layer164",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer167",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer167",
+            "kernel": "conv_2d_large",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer170",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer170",
+            "kernel": "conv_2d_large_1x1",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer172",
+                    "output_port": "input1",
+                    "width": 2049
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input1",
+                    "width": 2049
+                },
+                {
+                    "name": "input2",
+                    "width": 8
+                }
+            ],
+            "inst": "layer172",
+            "kernel": "add",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer174",
+                    "output_port": "input",
+                    "width": 2049
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 2049
+                }
+            ],
+            "inst": "layer174",
+            "kernel": "pooling2d_1x1",
+            "outputs": [
+                {
+                    "dest": 0,
+                    "name": "output",
+                    "width": 2049
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 65
+                }
+            ],
+            "inst": "layer177",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer6",
+                    "output_port": "input",
+                    "width": 65
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer14",
+                    "output_port": "input",
+                    "width": 65
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer178",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer18",
+                    "output_port": "input",
+                    "width": 257
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer26",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer179",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer28",
+                    "output_port": "input",
+                    "width": 257
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer36",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 257
+                }
+            ],
+            "inst": "layer180",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer38",
+                    "output_port": "input",
+                    "width": 257
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer46",
+                    "output_port": "input",
+                    "width": 257
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer181",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer50",
+                    "output_port": "input",
+                    "width": 513
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer58",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer182",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer60",
+                    "output_port": "input",
+                    "width": 513
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer68",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer183",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer70",
+                    "output_port": "input",
+                    "width": 513
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer78",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 513
+                }
+            ],
+            "inst": "layer184",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer80",
+                    "output_port": "input",
+                    "width": 513
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer88",
+                    "output_port": "input",
+                    "width": 513
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer185",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer92",
+                    "output_port": "input",
+                    "width": 1025
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer100",
+                    "output_port": "input",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer186",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer102",
+                    "output_port": "input",
+                    "width": 1025
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer110",
+                    "output_port": "input",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer187",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer112",
+                    "output_port": "input",
+                    "width": 1025
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer120",
+                    "output_port": "input",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer188",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer122",
+                    "output_port": "input",
+                    "width": 1025
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer130",
+                    "output_port": "input",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer189",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer132",
+                    "output_port": "input",
+                    "width": 1025
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer140",
+                    "output_port": "input",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 1025
+                }
+            ],
+            "inst": "layer190",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer142",
+                    "output_port": "input",
+                    "width": 1025
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer150",
+                    "output_port": "input",
+                    "width": 1025
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 2049
+                }
+            ],
+            "inst": "layer191",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer154",
+                    "output_port": "input",
+                    "width": 2049
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer162",
+                    "output_port": "input",
+                    "width": 2049
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 2049
+                }
+            ],
+            "inst": "layer192",
+            "kernel": "nnet_split",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer164",
+                    "output_port": "input",
+                    "width": 2049
+                },
+                {
+                    "name": "output",
+                    "output_inst": "layer172",
+                    "output_port": "input",
+                    "width": 2049
+                }
+            ]
+        }
+    ]
+}

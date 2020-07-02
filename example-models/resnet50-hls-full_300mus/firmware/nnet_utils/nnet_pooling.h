@@ -242,7 +242,7 @@ template<class data_T, class res_T, typename CONFIG_T>
           #pragma HLS UNROLL
 	  pool[i1] = layer_in[i1*CONFIG_T::n_filt+i0];
  	 }
-	 res[i0+1].write(pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool));
+	 res[i0].write(pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool));
 	}
       }
       pX = pX+1;
