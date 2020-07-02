@@ -22,18 +22,15 @@ IOType: io_serial # options: io_serial/io_parallel
 HLSConfig:
   Model:
     Precision: ap_fixed<16,6>
-    ReuseFactor: 25000
+    ReuseFactor: 20000
     Strategy: Resource
+    BramFactor:    500
   LayerType:
     Dense:
-      ReuseFactor: 25000
+      ReuseFactor: 20000
       Strategy: Resource
       Compression: False
     Conv2D:
-      ReuseFactor: 25000
-      Strategy: Resource
-      Compression: False
-    Conv2DMerge:
-      ReuseFactor: 25000
+      ReuseFactor: 20000
       Strategy: Resource
       Compression: False
