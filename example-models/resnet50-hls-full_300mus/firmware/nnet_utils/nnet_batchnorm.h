@@ -139,7 +139,7 @@ void normalize_stream(
     res[0].write(tmp);
     for (int ires = 0; ires < multfactor; ires++) {
             #pragma HLS UNROLL
-            data_T pTmp = (data[ires*rufactor+ir+1].read())*scale[ires*rufactor+ir] + bias[ires*rufactor+ir];
+            data_T pTmp = (data[ires*rufactor+ir+1].read())*scale[ires*rufactor+ir+1] + bias[ires*rufactor+ir+1];
 	    res[ires*rufactor+ir+1].write(pTmp);
     }
 	  //}
