@@ -138,7 +138,7 @@ template<class data_T, class res_T, typename CONFIG_T>
 void conv_2d_large_cl_1x1(
 			      hls::stream<data_T> data[CONFIG_T::n_chan_in],
 			      hls::stream<res_T>  res [CONFIG_T::n_filt_in], //Filt Width clocks to read output
-			      typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/2],
+			      typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/CONFIG_T::mult_config::merge_factor],
 			      typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
 			      ) {
   
@@ -180,7 +180,7 @@ template<class data_T, class res_T, typename CONFIG_T>
   void conv_2d_large_cl_stride(
 			       hls::stream<data_T> data[CONFIG_T::n_chan_in],
 			       hls::stream<res_T>  res [CONFIG_T::n_filt_in], //Filt Width clocks to read output
-			       typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/2],
+			       typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/CONFIG_T::mult_config::merge_factor],
 			       typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
 			       ) {
   const static int lShiftX = CONFIG_T::filt_width-CONFIG_T::pad_left-1;
@@ -287,7 +287,7 @@ template<class data_T, class res_T, typename CONFIG_T>
 void conv_2d_large_cl(
 		      hls::stream<data_T> data[CONFIG_T::n_chan_in],
 		      hls::stream<res_T>  res [CONFIG_T::n_filt_in], 
-		      typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/2],
+		      typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/CONFIG_T::mult_config::merge_factor],
 		      typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
 		      ) {
   
@@ -345,7 +345,7 @@ template<unsigned id,class data_T, class res_T, typename CONFIG_T>
 void conv_2d_large_cl_nopad(
 			    hls::stream<data_T> data[CONFIG_T::n_chan_in],
 			    hls::stream<res_T>  res [CONFIG_T::n_filt_in], //Filt Width clocks to read output
-			    typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/2],
+			    typename CONFIG_T::weight_t weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt/CONFIG_T::mult_config::merge_factor],
 			    typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
 			    ) {
   

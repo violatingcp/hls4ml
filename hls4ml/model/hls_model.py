@@ -1,6 +1,7 @@
 from __future__ import print_function
 import six
 import re
+import copy
 import numpy as np
 from collections import OrderedDict
 
@@ -442,11 +443,11 @@ class ArrayVariable(Variable):
 
     def size_cpp(self,isSerial=False):
         if isSerial:
-            dim_names = self.dim_names
-            for i0 in range(len(dim_names)):
-                if 'FILT' in dim_names[i0]:
-                    dim_names[i0] = '('+dim_names[i0]+'-1)'
-            return '*'.join([str(k) for k in dim_names])
+            tmp_dim_names = copy.copy(self.dim_names)
+            for i0 in range(len(tmp_dim_names)):
+                if 'FILT' in tmp_dim_names[i0]:
+                    tmp_dim_names[i0] = '('+tmp_dim_names[i0]+'-1)'
+            return '*'.join([str(k) for k in tmp_dim_names])
         else:
             return '*'.join([str(k) for k in self.dim_names])
 
@@ -726,6 +727,8 @@ class Layer(object):
                 precision='ap_uint<16>' # hardcoded for now
         
         type_name='model_weightdefault_t'
+        if 'bias' in name:
+            type_name='model_default_t'
                 #if type_name == 'model_default_t':
                 #     precision='ap_uint<16>'
 
@@ -820,7 +823,9 @@ class Layer(object):
             if self.model.config.get_config_value('IOType') == 'io_serial':
                 if 'FILT' in k:
                     numbers += '#define {} {}\n'.format(k,v+1)
-                elif 'INPUT_3_1' in k:
+                elif 'INPUT_3_1' in k and self.get_attr('data_format') == 'channels_last':
+                    numbers += '#define {} {}\n'.format(k,v+1)
+                elif 'INPUT_1_1' in k and not self.get_attr('data_format') == 'channels_last':
                     numbers += '#define {} {}\n'.format(k,v+1)
                 else:
                     numbers += '#define {} {}\n'.format(k,v)
@@ -936,6 +941,8 @@ class Dense(Layer):
             params['n_in'] = self.get_input_variable().size_cpp(isSerial=False)
             params['n_out'] = self.get_output_variable().size_cpp(isSerial=False)
             params['block_factor'] = 1
+        
+        params['merge_factor'] = self.model.config.get_merge_factor(self)
         params['nzeros'] = self.get_weights('weight').nzeros
         params['nonzeros'] = self.get_weights('weight').nonzeros
 
@@ -943,6 +950,7 @@ class Dense(Layer):
 
     def print_tcl(self):
         params = self._default_tcl_params()
+        print(params)
         params['n_weights']=self.get_weights('weight').data_length
         params['weights']=self.get_weights('weight').name
         #params['strategy'] += '_stream'
@@ -1047,31 +1055,41 @@ class Conv2D(Layer):
         self.add_bias()
         if self.model.config.is_resource_strategy(self):
             self.set_attr('strategy', 'large')
-            if self.model.config.backend.name == 'Vivado':
-                valid_rf = self.model.config.backend.get_valid_reuse_factors(self)
-                chosen_rf = self.model.config.get_reuse_factor(self)
-                #use chosen to balance the throughput in clocks
-                if chosen_rf < 6*shape[1]*shape[2]: #6 clock min
-                    print("Chosen latency cannot be achieved with a signle stream!!!!!! Please consider custom stream in ",self.index,shape[1],shape[2])
-                else: 
-                    chosen_rf = chosen_rf-6*shape[1]*shape[2]
-                approxrf=float(chosen_rf)/shape[1]/shape[2]
-                if self.get_attr('data_format') == 'channels_last':
-                    approxrf=float(chosen_rf)/shape[0]/shape[1]
-                for rf in valid_rf:
-                    if approxrf < rf:
-                        break
-                    chosen_rf = rf
-                params = self._default_function_params()
-                params['reuse'] = chosen_rf
-                if chosen_rf not in valid_rf:
-                    print('WARNING: Using invalid ReuseFactor={} with "Resource" strategy in layer "{}". Valid ReuseFactor(s): {}'
-                        .format(chosen_rf, self.name, ','.join(map(str, valid_rf))))
-                self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[3, 0, 1, 2]) #(H,W,C,F) => (F,C,H,W)
-                #self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[1, 3, 2, 0]) #(H,W,C,F) => (F,C,H,W)
-                #print("REUSE:",params['reuse'],approxrf,valid_rf)
         else:
             self.set_attr('strategy', 'latency')
+        params = self._default_function_params()
+        params['reuse'] = self.reuse_factor()
+        self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[3, 0, 1, 2]) #(H,W,C,F) => (F,C,H,W)
+
+    def reuse_factor(self):
+        if self.get_attr('strategy') == 'latency':
+            return self.model.config.get_reuse_factor(self)
+        if self.model.config.backend.name == 'Vivado':
+            valid_rf = self.model.config.backend.get_valid_reuse_factors(self)
+            chosen_rf = self.model.config.get_reuse_factor(self)
+            #use chosen to balance the throughput in clocks
+            shape = self.get_input_variable().shape
+            if chosen_rf < 6*shape[1]*shape[2]: #6 clock min
+                print("Chosen latency cannot be achieved with a signle stream!!!!!! Please consider custom stream in ",self.index,shape[1],shape[2])
+            else: 
+                chosen_rf = chosen_rf-6*shape[1]*shape[2]
+            approxrf=float(chosen_rf)/shape[1]/shape[2]
+            if self.get_attr('data_format') == 'channels_last':
+                approxrf=float(chosen_rf)/shape[0]/shape[1]
+            print("Approx RF2",shape[0],shape[1],shape[2],approxrf,self.get_attr('data_format'))
+            chosen_rf = valid_rf[0]
+            for rf in valid_rf:
+                if approxrf < rf:
+                    break
+                chosen_rf = rf
+            #print("Choosing RF",chosen_rf)
+            params = self._default_function_params()
+            if chosen_rf not in valid_rf:
+                print('WARNING: Using invalid ReuseFactor={} with "Resource" strategy in layer "{}". Valid ReuseFactor(s): {}'
+                      .format(chosen_rf, self.name, ','.join(map(str, valid_rf))))
+            return chosen_rf
+        else:
+            return self.model.config.get_reuse_factor(self)
 
     def function_cpp(self,iFirst=False):
         params = self._default_function_params()
@@ -1104,12 +1122,7 @@ class Conv2D(Layer):
             shape[0] = self.get_input_variable().shape[1]
             shape[1] = self.get_input_variable().shape[2]
 
-        approxrf=float(chosen_rf)/shape[0]/shape[1]
-        for rf in valid_rf:
-            if approxrf < rf:
-                break
-            chosen_rf = rf
-        params['reuse'] = chosen_rf
+        params['reuse'] = self.reuse_factor()
 
         if self.get_attr('data_format') == 'channels_last':
             params['in_height'] = self.get_input_variable().dim_names[0]
@@ -1140,6 +1153,7 @@ class Conv2D(Layer):
             
             mult_params = self._default_config_params()
             mult_params['reuse'] = params['reuse']
+            mult_params['merge_factor'] = self.model.config.get_merge_factor(self)
             if self.get_attr('data_format') == 'channels_last':
                 mult_params['n_in'] = self.get_input_variable().shape[2] * self.get_attr('filt_height') * self.get_attr('filt_width')
             else:
@@ -1174,6 +1188,7 @@ class Conv2D(Layer):
 
 class Conv2DMerge(Layer):
     def initialize(self):
+        print("!!!!!!!!!!!!! the merge")
         cl=False
         if self.get_attr('data_format') == 'channels_last':
             shape = [self.attributes['n_filt']]
@@ -1318,6 +1333,7 @@ class Pooling2D(Layer):
             dims = ['N_FILT_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
 
         depth=(self.attributes['pad_right']+1+self.attributes['pad_bottom']*(self.attributes['out_width']+self.attributes['pad_right']))
+        print("adding :",shape,dims)
         self.add_output_variable(shape, dims,cl=cl,depth=depth)
         self.set_attr('pool_op', self.get_attr('class_name').split('Pooling')[0])
         self.is1x1 = False
@@ -1364,12 +1380,13 @@ class Pooling2D(Layer):
 
     def print_tcl(self):
         params = self._default_tcl_params()
-        if self.get_attr('data_format') == 'channels_last':
+        if self.get_attr('data_format') == 'channels_last':            
             params['n_chan_in'] =  self.get_input_variable().dim_names[2]
             params['n_filt_in'] = self.get_output_variable().dim_names[2]
         else:
             params['n_chan_in'] =  self.get_input_variable().dim_names[0]
             params['n_filt_in'] = self.get_output_variable().dim_names[0]
+
         params['1x1'] = ''
         if self.is1x1:
             params['1x1'] = '_1x1'        
@@ -1522,7 +1539,7 @@ class BatchNormalization(Layer):
 
     def print_tcl(self):
         params = self._default_tcl_params()
-        params['n_in'] = self.get_input_variable().size_cpp()
+        params['n_in'] = self.get_input_variable().size_cpp_cpp()
         params['scale'] = self.get_weights('scale').name
         params['bias'] = self.get_weights('bias').name
         return self._tcl_template.format(**params)
@@ -1574,7 +1591,7 @@ class UpSampling2D(Layer):
 
     def print_tcl(self):
         params = self._default_tcl_params()
-        params['n_in'] = self.get_input_variable().size_cpp()
+        params['n_in'] = self.get_input_variable().size_cpp_cnn()
         params['strategy']=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
             params['strategy'] = '_stream'

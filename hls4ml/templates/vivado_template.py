@@ -6,6 +6,7 @@ from .templates import Backend
 
 dense_config_template = """struct config{index} : nnet::dense_config {{
     static const unsigned block_factor = {block_factor};
+    static const unsigned merge_factor = {merge_factor};
     static const unsigned n_input = {n_input};
     static const unsigned n_output = {n_output};
     static const unsigned n_in = {n_in};
@@ -66,6 +67,7 @@ conv_mult_config_template = """struct config{index}_mult : nnet::dense_config {{
     static const unsigned n_in = {n_in};
     static const unsigned n_out = {n_out};
     static const unsigned reuse_factor = {reuse};
+    static const unsigned merge_factor = {merge_factor};
     typedef {accum_t} accum_t;
     typedef {bias_t} bias_t;
     typedef {weight_t} weight_t;
