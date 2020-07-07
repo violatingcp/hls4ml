@@ -256,13 +256,13 @@ template<class data_T, class res_T, typename CONFIG_T>
 }
 template<class data_T, class res_T, typename CONFIG_T>
 void pooling2d_cl_1x1(//bool iReset,
-				 hls::stream<data_T> data[CONFIG_T::n_filt_in],
-				 hls::stream<res_T>  res [CONFIG_T::n_filt]) { 
+				 hls::stream<data_T> data[CONFIG_T::n_chan_in],
+				 hls::stream<res_T>  res [CONFIG_T::n_filt_in]) { 
 
     const static int lShiftX  = CONFIG_T::pool_width-CONFIG_T::pad_left-1;
     const static int lShiftY  = CONFIG_T::pool_height-CONFIG_T::pad_top-1;  
-    const int        rufactor = CONFIG_T::reuse;
-    const int    block_factor = CONFIG_T::n_filt/CONFIG_T::reuse;
+    const static int rufactor = CONFIG_T::reuse;
+    const static int block_factor = CONFIG_T::n_filt/CONFIG_T::reuse;
     //const data_T  avg         = 1./CONFIG_T::filt_width/CONFIG_T::filt_height;
     const int  avg            = CONFIG_T::filt_width*CONFIG_T::filt_height;
 
@@ -272,7 +272,7 @@ void pooling2d_cl_1x1(//bool iReset,
     static int pX=0; 
     static int pY=0;
     data_T iReset = data[0].read();
-    if(iReset) { 
+    if(iReset == 0) { 
       pX = 0; 
       pY = 0;
       for(unsigned i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
@@ -280,32 +280,37 @@ void pooling2d_cl_1x1(//bool iReset,
 	layer_in[i0] = 0; 
       }
     }
-
     static bool pPass = false;
     if(pX == 0 && pY == 0) pPass = false;
-
     for (int ir = 0; ir < rufactor; ir++) {
         #pragma HLS PIPELINE II=1 
         for (int im = 0; im < block_factor; im++) {
-         int iblock = ir+rufactor*im;
+         int iblock = ir*block_factor+im;
          data_T value1 = data[iblock+1].read();
-         //data_T value2 = layer_in[iblock];
-         //pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool);
-         //if(value1 > value2) layer_in[iblock] = value1;
+	 //if(CONFIG_T::pool_op == Max) { 
+	 //  data_T value2 = layer_in[iblock];
+	 //  if(value1 > value2) layer_in[iblock] = value1;
+	 //} else { 
 	 layer_in[iblock] += value1;
+	 //}
         }
     }
     if((pX+1) % CONFIG_T::stride_width == 0 && (pY+1) % CONFIG_T::stride_height == 0 && pPass) { 
+     res_T pId = 1;
+     if(pX == 0 && pY == 0) pId = 0;
+     res[0].write(pId);
      for (int ir = 0; ir < rufactor; ir++) {
         #pragma HLS PIPELINE II=1 
         for (int im = 0; im < block_factor; im++) {
 	 int iblock = ir*block_factor+im;
-	 res[iblock] = layer_in[iblock]/avg;
+	 res_T pTmp = layer_in[iblock]/avg;
+	 //if(!CONFIG_T::pool_op == Max) pTmp = pTmp/avg;
+	 res[iblock+1].write(pTmp);
         }
      }
     }
     pX = pX+1;
-    if(pX == CONFIG_T::in_height) { 
+    if(pX == CONFIG_T::in_width) { 
       pX = 0;
       pY = pY+1;
       pPass = false;

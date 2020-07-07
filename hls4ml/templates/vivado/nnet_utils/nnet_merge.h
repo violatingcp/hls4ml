@@ -33,7 +33,14 @@ struct merge_config
 
 struct split_config
 {
-    static const unsigned n_elem = 10;
+  static const unsigned n_elem = 10;
+};
+
+struct mux_config
+{
+  static const unsigned n_elem_full = 10;
+  static const unsigned n_elem = 10;
+  static const unsigned mux    = 1;
 };
 
 struct concat_config {
@@ -87,6 +94,62 @@ void split(
     }
 }
 
+
+template<class input_T, class res_T, typename CONFIG_T>
+void mux(
+	 hls::stream<input_T>  data[CONFIG_T::n_elem_full],
+	 hls::stream<res_T>    res [CONFIG_T::n_elem])
+{
+  static const int factor=CONFIG_T::n_elem;
+  for (int jj=0; jj<CONFIG_T::n_mux; jj++) {
+    for (int ii=0; ii<factor; ii++) {
+      #pragma HLS UNROLL
+      input_T pData = data[ii+factor*jj].read();
+      res[ii].write(pData);
+    }
+  }
+}
+
+
+template<class input_T, class res_T, typename CONFIG_T>
+void demux(
+	 hls::stream<input_T>  data[CONFIG_T::n_elem],
+	 hls::stream<res_T>    res [CONFIG_T::n_elem*CONFIG_T::n_mux])
+{
+  static const int factor=CONFIG_T::n_elem;
+  for (int jj=0; jj<CONFIG_T::n_mux; jj++) {
+    for (int ii=0; ii<factor; ii++) {
+      #pragma HLS UNROLL
+      input_T pData = data[ii].read();
+      res[ii+factor*jj].write(pData);
+    }
+  }
+}
+
+template<class input_T, class res_T, typename CONFIG_T>
+void split_mux(
+	 hls::stream<input_T>  data[CONFIG_T::n_elem_full],
+	 hls::stream<res_T>    res1[CONFIG_T::n_elem_full],
+	 hls::stream<res_T>    res2[CONFIG_T::n_elem_full])
+{
+  hls::stream<input_T>  tmpdata[CONFIG_T::n_elem_full];
+  #pragma HLS STREAM variable=tmpdata depth=CONFIG_T::n_mux dim=1
+
+  hls::stream<input_T>  tmpres1[CONFIG_T::n_elem];
+  #pragma HLS STREAM variable=tmpres1 depth=CONFIG_T::n_mux dim=1
+
+  hls::stream<input_T>  tmpres2[CONFIG_T::n_elem];
+  #pragma HLS STREAM variable=tmpres2 depth=CONFIG_T::n_mux dim=1
+
+  mux<input_T,res_T,CONFIG_T>(data,tmpdata);
+  for(unsigned i0 = 0; i0 < CONFIG_T::n_mux; i0++) { 
+	split<input_T,res_T,CONFIG_T>(tmpdata,tmpres1,tmpres2);
+  }
+  demux<input_T,res_T,CONFIG_T>(tmpres1,res1);
+  demux<input_T,res_T,CONFIG_T>(tmpres2,res2);
+  
+}
+
 template<class input_T, class res_T, typename CONFIG_T>
 void add(
 	 hls::stream<input_T> data1[CONFIG_T::n_elem],
@@ -112,6 +175,29 @@ void addrelu(
       if(pData < 0) pData = 0;
       res[ii].write(pData);
     }
+}
+
+ template<class input1_T, class input2_T, class res_T, typename CONFIG_T>
+void addrelu_mux(
+	 hls::stream<input1_T> data1[CONFIG_T::n_elem_full],
+	 hls::stream<input2_T> data2[CONFIG_T::n_elem_full],
+	 hls::stream<res_T>    res  [CONFIG_T::n_elem_full])
+{
+  hls::stream<input1_T>  tmpdata1[CONFIG_T::n_elem];
+  #pragma HLS STREAM variable=tmpdata1 depth=CONFIG_T::n_mux dim=1
+
+  hls::stream<input2_T>  tmpdata2[CONFIG_T::n_elem];
+  #pragma HLS STREAM variable=tmpdata2 depth=CONFIG_T::n_mux dim=1
+
+  hls::stream<res_T>  tmpres[CONFIG_T::n_elem];
+  #pragma HLS STREAM variable=tmpres depth=CONFIG_T::n_mux dim=1
+
+  mux<input1_T,input1_T,CONFIG_T>(data1,tmpdata1);
+  mux<input2_T,input2_T,CONFIG_T>(data2,tmpdata2);
+  for(unsigned i0 = 0; i0 < CONFIG_T::n_mux; i0++) { 
+    addrelu<input1_T,input2_T,res_T,CONFIG_T>(tmpdata1,tmpdata2,tmpres);
+  }
+  demux<res_T,res_T,CONFIG_T>(tmpres,res);
 }
 
 template<class input1_T, class input2_T, class res_T, typename CONFIG_T>
