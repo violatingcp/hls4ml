@@ -828,9 +828,9 @@ class Layer(object):
             if self.model.config.get_config_value('IOType') == 'io_serial':
                 if 'FILT' in k:
                     numbers += '#define {} {}\n'.format(k,v+1)
-                elif 'INPUT_3_1' in k:# and self.get_attr('data_format') == 'channels_last':
-                    numbers += '#define {} {}\n'.format(k,v+1)
-                elif 'INPUT_1_1' in k:# and not self.get_attr('data_format') == 'channels_last':
+                elif 'INPUT_3_1' in k and self.get_attr('data_format') == 'channels_last':
+                    numbers += '#define {} {}\n'.format(k,v)
+                elif 'INPUT_1_1' in k and not self.get_attr('data_format') == 'channels_last':
                     numbers += '#define {} {}\n'.format(k,v+1)
                 else:
                     numbers += '#define {} {}\n'.format(k,v)
