@@ -440,6 +440,11 @@ class ArrayVariable(Variable):
         for dim in self.shape:
             nelem *= dim
         return nelem
+    
+    def size_cnn(self):
+        nelem = 1
+        nelem = self.shape[0]
+        return nelem
 
     def size_cpp(self,isSerial=False):
         if isSerial:
@@ -823,9 +828,9 @@ class Layer(object):
             if self.model.config.get_config_value('IOType') == 'io_serial':
                 if 'FILT' in k:
                     numbers += '#define {} {}\n'.format(k,v+1)
-                elif 'INPUT_3_1' in k and self.get_attr('data_format') == 'channels_last':
+                elif 'INPUT_3_1' in k:# and self.get_attr('data_format') == 'channels_last':
                     numbers += '#define {} {}\n'.format(k,v+1)
-                elif 'INPUT_1_1' in k and not self.get_attr('data_format') == 'channels_last':
+                elif 'INPUT_1_1' in k:# and not self.get_attr('data_format') == 'channels_last':
                     numbers += '#define {} {}\n'.format(k,v+1)
                 else:
                     numbers += '#define {} {}\n'.format(k,v)
@@ -929,6 +934,7 @@ class Dense(Layer):
             params['n_in'] = self.get_input_variable().size_cpp(isSerial=True)+'-1'
             params['n_out'] = self.get_output_variable().size_cpp(isSerial=True)+'-1'
             if len(self.get_input_variable().shape) > 1:
+                params['n_in'] = self.get_input_variable().size_cpp(isSerial=True)
                 params['block_factor'] =  (self.get_input_variable().size()/self.get_input_variable().shape[2])
             #elif len(self.get_input_variable().shape) > 1:
             #    print('input2',self.get_input_variable(),',',self.get_input_variable().shape,',',self.get_input_variable().size())
@@ -1332,7 +1338,7 @@ class Pooling2D(Layer):
             shape = [self.attributes['n_filt'], self.attributes['out_height'], self.attributes['out_width']]
             dims = ['N_FILT_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index)]
 
-        depth=(self.attributes['pad_right']+1+self.attributes['pad_bottom']*(self.attributes['out_width']+self.attributes['pad_right']))
+        depth=(self.attributes['pad_right']+2+self.attributes['pad_bottom']*(self.attributes['out_width']+self.attributes['pad_right']))
         print("adding :",shape,dims)
         self.add_output_variable(shape, dims,cl=cl,depth=depth)
         self.set_attr('pool_op', self.get_attr('class_name').split('Pooling')[0])
@@ -1623,14 +1629,38 @@ class Merge(Layer):
                 header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
             else:
                 header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+        size=1
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            size = self.get_input_variable(self.inputs[0]).size_cnn()
+        else:
+            size = self.get_input_variable(self.inputs[0]).size()
+        params['strategy']=''
+        if size > 1000:
+            params['strategy']='_mux'
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
         params = self._default_config_params()
+        params['n_mux'] = 1
+        size=1
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+            params['n_elem']      = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+            params['n_elem_full'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+            size=self.get_input_variable(self.inputs[0]).size_cnn()
         else:
             params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp()
+            params['n_elem_full'] = self.get_input_variable(self.inputs[0]).size_cpp()
+            size=self.get_input_variable(self.inputs[0]).size()
+        if size > 1000: 
+            n_elem_full = float(size)
+            factor = n_elem_full/float(1000)
+            outfactor = 1
+            for i0 in range(int(factor+1),int(n_elem_full)):
+                if int(n_elem_full) % i0 == 0:
+                    outfactor = i0
+                    break
+            params['n_mux'] = outfactor
+            params['n_elem'] = int(n_elem_full)/int(outfactor)
         return self._config_template.format(**params)
 
     def print_tcl(self):
@@ -1642,6 +1672,14 @@ class Merge(Layer):
             params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
         else:
             params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp()
+        size=1
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            size = self.get_input_variable(self.inputs[0]).size_cnn()
+        else:
+            size = self.get_input_variable(self.inputs[0]).size()
+        params['strategy']=''
+        if size > 1000:
+            strategy='_mux'
         return self._tcl_template.format(**params)
 
 class Split(Layer):
@@ -1667,14 +1705,39 @@ class Split(Layer):
                 header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
             else:
                 header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
+        size=1
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            size = self.get_input_variable(self.inputs[0]).size_cnn()
+        else:
+            size = self.get_input_variable(self.inputs[0]).size()
+        params['strategy']=''
+        if size > 1000:
+            strategy='_mux'
         return [header+self._function_template.format(**params)]
 
     def config_cpp(self):
         params = self._default_config_params()
+        params['n_mux'] = 1
+        size=1
         if self.model.config.get_config_value('IOType') == 'io_serial':
             params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+            params['n_elem_full'] = self.get_input_variable(self.inputs[0]).size_cpp_cnn()
+            size=self.get_input_variable(self.inputs[0]).size_cnn()
         else:
             params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp()
+            params['n_elem_full'] = self.get_input_variable(self.inputs[0]).size_cpp()
+            size=self.get_input_variable(self.inputs[0]).size()
+        if size > 1000: 
+            params['n_elem_full'] = params['n_elem']
+            n_elem_full = float(size)
+            factor = n_elem_full/float(1000)
+            outfactor = 1
+            for i0 in range(int(factor+1),int(n_elem_full)):
+                if int(n_elem_full) % i0 == 0:
+                    outfactor = i0
+                    break
+            params['n_mux'] = outfactor
+            params['n_elem'] = int(n_elem_full)/int(outfactor)
         return self._config_template.format(**params)
 
     def print_tcl(self):
@@ -1685,6 +1748,14 @@ class Split(Layer):
             params['n_elem'] = self.get_input_variable(self.inputs[0]).size_cpp()
         params['input_t']   = self.get_input_variable(self.inputs[0]).type.name
         params['output_t'] = self.get_output_variable(self.name+'_output1').type.name
+        size=1
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            size = self.get_input_variable(self.inputs[0]).size_cnn()
+        else:
+            size = self.get_input_variable(self.inputs[0]).size()
+        params['strategy']=''
+        if size > 1000:
+            strategy='_mux'
         return self._tcl_template.format(**params)
 
 class Concatenate(Merge):
@@ -1719,6 +1790,15 @@ class Concatenate(Merge):
         for i, (s1, s2) in enumerate(zip(inp1.shape, inp2.shape)):
             params['n_elem1_{}'.format(i)] = s1
             params['n_elem2_{}'.format(i)] = s2
+        size=1
+        if self.model.config.get_config_value('IOType') == 'io_serial':
+            size = self.get_input_variable(self.inputs[0]).size_cnn()
+        else:
+            size = self.get_input_variable(self.inputs[0]).size()
+        params['strategy']=''
+        if size > 1000:
+            strategy='_mux'
+        params['strategy']='_mux'
         return self._tcl_template.format(**params)
 
 layer_map = {
