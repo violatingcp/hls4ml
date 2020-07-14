@@ -1074,7 +1074,7 @@ class Conv2D(Layer):
             valid_rf = self.model.config.backend.get_valid_reuse_factors(self)
             chosen_rf = self.model.config.get_reuse_factor(self)
             #use chosen to balance the throughput in clocks
-            shape = self.get_input_variable().shape
+            shape = self.get_output_variable().shape
             if chosen_rf < 6*shape[1]*shape[2]: #6 clock min
                 print("Chosen latency cannot be achieved with a signle stream!!!!!! Please consider custom stream in ",self.index,shape[1],shape[2])
             else: 
@@ -1082,13 +1082,13 @@ class Conv2D(Layer):
             approxrf=float(chosen_rf)/shape[1]/shape[2]
             if self.get_attr('data_format') == 'channels_last':
                 approxrf=float(chosen_rf)/shape[0]/shape[1]
-            print("Approx RF2",shape[0],shape[1],shape[2],approxrf,self.get_attr('data_format'))
+            print("Approx RF2",shape[0],shape[1],shape[2],approxrf,self.get_attr('data_format'),self.name)
             chosen_rf = valid_rf[0]
             for rf in valid_rf:
                 if approxrf < rf:
                     break
                 chosen_rf = rf
-            #print("Choosing RF",chosen_rf)
+            print("Choosing RF",chosen_rf,self.name)
             params = self._default_function_params()
             if chosen_rf not in valid_rf:
                 print('WARNING: Using invalid ReuseFactor={} with "Resource" strategy in layer "{}". Valid ReuseFactor(s): {}'
