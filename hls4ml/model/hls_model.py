@@ -1679,7 +1679,7 @@ class Merge(Layer):
             size = self.get_input_variable(self.inputs[0]).size()
         params['strategy']=''
         if size > 1000:
-            strategy='_mux'
+            params['strategy']='_mux'
         return self._tcl_template.format(**params)
 
 class Split(Layer):
