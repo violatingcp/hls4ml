@@ -20,7 +20,7 @@
 #include "nnet_utils/nnet_helpers.h"
 
 //hls-fpga-machine-learning insert numbers
-#define N_INPUT_1_1 3
+#define N_INPUT_1_1 4
 #define N_INPUT_2_1 224
 #define N_INPUT_3_1 224
 #define N_FILT_2 65

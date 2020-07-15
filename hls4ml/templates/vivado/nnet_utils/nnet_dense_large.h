@@ -267,7 +267,7 @@ template<class data_T, class res_T, typename CONFIG_T>
 void dense_large_rf_leq_nin_merge(
     data_T data[CONFIG_T::n_in],
     res_T  res[CONFIG_T::n_out],
-    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out/2],
+    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out/CONFIG_T::merge_factor],
     typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
 
     const int rufactor = CONFIG_T::reuse_factor;
@@ -339,7 +339,7 @@ template<class data_T, class res_T, typename CONFIG_T>
 void dense_large_rf_gt_nin_rem0_merge(
     data_T data[CONFIG_T::n_in],
     res_T  res[CONFIG_T::n_out],
-    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
+    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out/CONFIG_T::merge_factor],
     typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
 
     const int rufactor = MIN(CONFIG_T::reuse_factor, CONFIG_T::n_in * CONFIG_T::n_out/2);
@@ -421,7 +421,7 @@ template<class data_T, class res_T, typename CONFIG_T>
 void dense_large_rf_gt_nin_merge(
     data_T data[CONFIG_T::n_in],
     res_T  res[CONFIG_T::n_out],
-    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out/2],
+    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out/CONFIG_T::merge_factor],
     typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
 
     const int rufactor = CONFIG_T::reuse_factor;
@@ -504,7 +504,7 @@ template<class data_T, class res_T, typename CONFIG_T>
 void dense_large(
     data_T data[CONFIG_T::n_in],
     res_T  res[CONFIG_T::n_out],
-    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
+    typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out/CONFIG_T::merge_factor],
     typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
 
   //    #pragma HLS INLINE region

@@ -6,6 +6,7 @@ from .templates import Backend
 
 dense_config_template = """struct config{index} : nnet::dense_config {{
     static const unsigned block_factor = {block_factor};
+    static const unsigned merge_factor = {merge_factor};
     static const unsigned n_input = {n_input};
     static const unsigned n_output = {n_output};
     static const unsigned n_in = {n_in};
@@ -66,6 +67,7 @@ conv_mult_config_template = """struct config{index}_mult : nnet::dense_config {{
     static const unsigned n_in = {n_in};
     static const unsigned n_out = {n_out};
     static const unsigned reuse_factor = {reuse};
+    static const unsigned merge_factor = {merge_factor};
     typedef {accum_t} accum_t;
     typedef {bias_t} bias_t;
     typedef {weight_t} weight_t;
@@ -183,10 +185,14 @@ pooling2d_config_template = """struct config{index} : nnet::pooling2d_config {{
 
 merge_config_template = """struct config{index} : nnet::merge_config {{
     static const unsigned n_elem = {n_elem};
+    static const unsigned n_elem_full = {n_elem_full};
+    static const unsigned n_mux       = {n_mux};
 }};\n"""
 
 split_config_template = """struct config{index} : nnet::split_config {{
     static const unsigned n_elem = {n_elem};
+    static const unsigned n_elem_full = {n_elem_full};
+    static const unsigned n_mux       = {n_mux};
 }};\n"""
 
 concat_config_template = """struct config{index} : nnet::concat_config {{
@@ -228,8 +234,8 @@ activ_function_template = 'nnet::{activation}{strategy}<{input_t}, {output_t}, {
 param_activ_function_template = 'nnet::{activation}{strategy}<{input_t}, {output_t}, {config}>({input}, {param}, {output});'
 pooling1d_function_template = 'nnet::pooling1d<{input_t}, {config}>({input}, {output});'
 pooling2d_function_template = 'nnet::pooling2d_{data_format}{1x1}<{input_t}, {output_t}, {config}>({input}, {output});'
-merge_function_template = 'nnet::{merge}<{input1_t}, {input2_t}, {output_t}, {config}>({input1}, {input2}, {output});'
-split_function_template = 'nnet::split<{input_t}, {output_t}, {config}>({input}, {output1}, {output2});'
+merge_function_template = 'nnet::{merge}{strategy}<{input1_t}, {input2_t}, {output_t}, {config}>({input1}, {input2}, {output});'
+split_function_template = 'nnet::split{strategy}<{input_t}, {output_t}, {config}>({input}, {output1}, {output2});'
 
 '''function_templates = {
     'Dense'                  : dense_function_template,
@@ -293,7 +299,7 @@ merge_tcl_template = """set arg_0 "-I . -DN_1={n_elem} -DN_2={n_elem}"
 set arg_1 "-DCONFIG={config}"
 set arg_2 "-DINPUT_1_T={input1_t} -DINPUT_2_T={input2_t} -DLAYER_T={output_t}"
 set args "$arg_0 $arg_1 $arg_2"
-set layer_type {merge}
+set layer_type {merge}{strategy}
 \n
 source ../common/build.tcl
 \n"""
@@ -321,7 +327,7 @@ split_tcl_template = """set arg_0 "-I . -DN={n_elem}"
 set arg_1 "-DCONFIG={config}"
 set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
 set args "$arg_0 $arg_1 $arg_2"
-set layer_type nnet_split
+set layer_type nnet_split{strategy}
 \n
 source ../common/build.tcl
 \n"""
