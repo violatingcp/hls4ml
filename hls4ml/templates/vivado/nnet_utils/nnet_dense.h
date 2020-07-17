@@ -93,6 +93,19 @@ product(data_T a, weight_T w){
     return a * w;
 }
 
+template<class data_T, class weight_T, class ret_T,class out_T>void product_merge_split(data_T a, weight_T w, out_T out[2]){
+    // 'Normal' product
+    #pragma HLS inline off
+    ret_T w1; 
+    w1.range(25,18) = w.range(15,8);
+    w1.range(7,0)   = w.range(7,0);
+    ret_T w2 = a * w1;
+    weight_T wf;
+    out[0]         = w2.range(15, 8);
+    out[1]         = w2.range( 7, 0);
+}
+
+
 template<class data_T, class weight_T, class ret_T>
 inline typename std::enable_if<(not std::is_same<data_T, ap_uint<1>>::value)
         and (not std::is_same<weight_T, ap_uint<1>>::value), ret_T>::type

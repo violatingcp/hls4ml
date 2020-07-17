@@ -272,13 +272,13 @@ void dense_large_rf_leq_nin_merge(
 
     const int rufactor = CONFIG_T::reuse_factor;
     const int multfactor = MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
-    const int multiplier_limit = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/2, multfactor);
-    const int block_factor = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/2, CONFIG_T::reuse_factor);
-    const int multscale = 2*multiplier_limit/CONFIG_T::n_out;
+    const int multiplier_limit = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/CONFIG_T::merge_factor, multfactor);
+    const int block_factor = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/CONFIG_T::merge_factor, CONFIG_T::reuse_factor);
+    const int multscale = CONFIG_T::merge_factor*multiplier_limit/CONFIG_T::n_out;
     const int nin = CONFIG_T::n_in;
     const int nout = CONFIG_T::n_out;
 
-    assert((multiplier_limit % (nout/2) == 0 || rufactor >= nin) && "The current Reuse Factor is not allowed");
+    assert((multiplier_limit % (nout/CONFIG_T::merge_factor) == 0 || rufactor >= nin) && "The current Reuse Factor is not allowed");
     assert((multiplier_limit == block_factor) && "This function is correct only for RF <= N_IN");
 
     #pragma HLS function_instantiate variable=weights,biases
@@ -302,25 +302,22 @@ void dense_large_rf_leq_nin_merge(
         int in_index = ir;
         int out_index = 0;
         int acc_step = 0;
-	typename CONFIG_T::weightmult_t tmpmult[block_factor];
-        #pragma HLS ARRAY_RESHAPE variable=tmpmult complete
         MultLoop:
         for (int im = 0; im < block_factor; im++) {
             #pragma HLS UNROLL
-            tmpmult[im] = product_merge<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::weightmult_t>(data[in_index], weights[w_index]);
+            typename CONFIG_T::accum_t tmpmult[CONFIG_T::merge_factor];
+	    product_merge_split<data_T, typename CONFIG_T::weight_t, typename CONFIG_T::weightmult_t>(data[in_index], weights[w_index],tmpmult);
 	    w_index += rufactor;
 	    in_index += rufactor;
             if (in_index >= nin) {
                 in_index = ir;
             }
-        }
-        for (int im = 0; im < block_factor; im++) {
-            acc[out_index] += tmpmult[im].range(7,0);
-            acc[out_index+1] += tmpmult[im].range(25,18);
+            acc[out_index]   += tmpmult[0];
+            acc[out_index+1] += tmpmult[1];
 	    // Increment out_index
             if (acc_step + 1 >= multscale) {
                 acc_step = 0;
-                out_index+=2;
+		out_index+=CONFIG_T::merge_factor;
             } else {
                 acc_step++;
             }
@@ -342,11 +339,11 @@ void dense_large_rf_gt_nin_rem0_merge(
     typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out/CONFIG_T::merge_factor],
     typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
 
-    const int rufactor = MIN(CONFIG_T::reuse_factor, CONFIG_T::n_in * CONFIG_T::n_out/2);
+    const int rufactor = MIN(CONFIG_T::reuse_factor, CONFIG_T::n_in * CONFIG_T::n_out/CONFIG_T::merge_factor);
     const int multfactor = MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
-    const int multiplier_limit = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/2, multfactor);
-    const int block_factor = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/2, CONFIG_T::reuse_factor);
-    const int multscale = 2*multiplier_limit/CONFIG_T::n_out;
+    const int multiplier_limit = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/CONFIG_T::merge_factor, multfactor);
+    const int block_factor = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/CONFIG_T::merge_factor, CONFIG_T::reuse_factor);
+    const int multscale = CONFIG_T::merge_factor*multiplier_limit/CONFIG_T::n_out;
     const int nin = CONFIG_T::n_in;
     const int nout = CONFIG_T::n_out;
 
@@ -399,7 +396,7 @@ void dense_large_rf_gt_nin_rem0_merge(
 
             w_index += rufactor;
             if (w_index >= CONFIG_T::n_in * CONFIG_T::n_out) break; // check out of bounds
-            out_index += 2*outscale;
+            out_index += CONFIG_T::merge_factor*outscale;
         }
 
         in_index++;
@@ -426,9 +423,9 @@ void dense_large_rf_gt_nin_merge(
 
     const int rufactor = CONFIG_T::reuse_factor;
     const int multfactor = MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
-    const int multiplier_limit = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out, multfactor);
-    const int block_factor = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/2, CONFIG_T::reuse_factor);
-    const int multscale = 2*multiplier_limit/CONFIG_T::n_out;
+    const int multiplier_limit = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/CONFIG_T::merge_factor, multfactor);
+    const int block_factor = DIV_ROUNDUP(CONFIG_T::n_in*CONFIG_T::n_out/CONFIG_T::merge_factor, CONFIG_T::reuse_factor);
+    const int multscale = CONFIG_T::merge_factor*multiplier_limit/CONFIG_T::n_out;
     const int nin = CONFIG_T::n_in;
     const int nout = CONFIG_T::n_out;
 
@@ -477,7 +474,7 @@ void dense_large_rf_gt_nin_merge(
         for (int im = 0; im < block_factor; im++) {
             #pragma HLS UNROLL
             int w_index = ir + rufactor * im;
-            int out_index = 2*w_index / multfactor;
+            int out_index = CONFIG_T::merge_factor*w_index / multfactor;
             if (out_index >= multiplier_limit) continue; // check out of bounds
             mult[out_index]   += tmpmult[im].range(7,0);
             mult[out_index+1] += tmpmult[im].range(25,18);
