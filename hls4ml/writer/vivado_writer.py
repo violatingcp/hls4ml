@@ -339,6 +339,7 @@ class VivadoWriter(Writer):
             m_file.write('.PHONY: all clean\n')
             m_file.write('include ../common/include.mk\n')
             m_file.write('SYNTH_ROOT = "."\n\n')
+            m_file.write('basefile=/home/pharris/aigean/galapagos/userIP/hls_projects/resnet_$(project_name)/solution1/impl/report/verilog/$(project_name)_conv_2d_large_cl_1x1_port_export.rpt\n\n')
             m_file.write('all:\n')
             m_file.write('\t mkdir -p "$(galapagos_dir)/userIP/hls_projects"\n')
             m_file.write('\t vivado_hls $(SYNTH_ROOT)/synth.tcl -tclargs $(project_name) $(nnet_utils_dir) $(galapagos_dir)\n')
