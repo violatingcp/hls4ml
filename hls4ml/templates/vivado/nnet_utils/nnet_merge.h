@@ -104,7 +104,7 @@ void mux(
   for (int jj=0; jj<CONFIG_T::n_mux; jj++) {
     for (int ii=0; ii<factor; ii++) {
       #pragma HLS UNROLL
-      input_T pData = data[1+ii+factor*jj].read();
+      input_T pData = data[1+factor*jj+ii].read();
       res[ii].write(pData);
     }
   }
@@ -114,14 +114,14 @@ void mux(
 template<class input_T, class res_T, typename CONFIG_T>
 void demux(
 	 hls::stream<input_T>  data[CONFIG_T::n_elem],
-	 hls::stream<res_T>    res [CONFIG_T::n_elem*CONFIG_T::n_mux+1])
+	 hls::stream<res_T>    res [CONFIG_T::n_elem_full])
 {
   static const int factor=CONFIG_T::n_elem;
   for (int jj=0; jj<CONFIG_T::n_mux; jj++) {
     for (int ii=0; ii<factor; ii++) {
       #pragma HLS UNROLL
       input_T pData = data[ii].read();
-      res[1+ii+factor*jj].write(pData);
+      res[1+factor*jj+ii].write(pData);
     }
   }
 }
@@ -132,7 +132,7 @@ void split_mux(
 	 hls::stream<res_T>    res1[CONFIG_T::n_elem_full],
 	 hls::stream<res_T>    res2[CONFIG_T::n_elem_full])
 {
-  hls::stream<input_T>  tmpdata[CONFIG_T::n_elem_full-1];
+  hls::stream<input_T>  tmpdata[CONFIG_T::n_elem];
   #pragma HLS STREAM variable=tmpdata depth=CONFIG_T::n_mux dim=1
 
   hls::stream<input_T>  tmpres1[CONFIG_T::n_elem];
