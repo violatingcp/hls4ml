@@ -10,9 +10,11 @@ RUN apt-get install -y \
     && \
     rm -rf /var/lib/apt/lists/*
 
+
 RUN cd /root \
     && git clone https://github.com/violatingcp/hls4ml.git \ 
     && cd /root/hls4ml \
     && git checkout sc20_test \
     && pip install -e .
 
+WORKDIR /root
