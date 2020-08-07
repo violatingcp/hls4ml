@@ -453,34 +453,35 @@ void conv_2d_large_cl_row_stream(bool iReset,
 
 
 
- template<class data_T, class res_T, typename CONFIG_T>
-   void conv_1d_stream(
-		       hls::stream<data_T> data[CONFIG_T::n_chan_in],
-		       hls::stream<res_T>  res [CONFIG_T::n_filt_in], //Filt Width clocks to read output
-		       typename CONFIG_T::weight_t weights[CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt],
-		       typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
-		       ) {
-   const static int lShiftX = CONFIG_T::filt_width-CONFIG_T::pad_left-1;
+template<class data_T, class res_T, typename CONFIG_T>
+void conv_1d_stream(
+		    hls::stream<data_T> data[CONFIG_T::n_chan_in],
+		    hls::stream<res_T>  res [CONFIG_T::n_filt_in], //Filt Width clocks to read output
+		    typename CONFIG_T::weight_t weights[CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt],
+		    typename CONFIG_T::bias_t   biases[CONFIG_T::n_filt]
+		    ) {
+  const static int lShiftX = CONFIG_T::filt_width-CONFIG_T::pad_left-1;
   
-   static ap_shift_reg<data_T, (CONFIG_T::filt_width)> layer_in_row[CONFIG_T::n_chan];
+  static ap_shift_reg<data_T, (CONFIG_T::filt_width)> layer_in_row[CONFIG_T::n_chan];
   #pragma HLS ARRAY_RESHAPE variable=layer_in_row complete dim=2  
   
-   static data_T layer_in[CONFIG_T::filt_width*CONFIG_T::n_chan];
+  static data_T layer_in[CONFIG_T::filt_width*CONFIG_T::n_chan];
   #pragma HLS ARRAY_RESHAPE variable=layer_in complete dim=0
 
-   static res_T layer_reluout[CONFIG_T::n_filt];
+  static res_T layer_reluout[CONFIG_T::n_filt];
   #pragma HLS ARRAY_RESHAPE variable=layer_reluout complete dim=0
 
-   static res_T layer_out[CONFIG_T::n_filt];
+  static res_T layer_out[CONFIG_T::n_filt];
   #pragma HLS ARRAY_RESHAPE variable=layer_out complete dim=0
 
-   static int pX=0; 
-   data_T iReset = data[0].read();
-   if(iReset == 0) { 
-     pX = 0; 
-   }
-   static bool pPass = false;    
-   if(pX == lShiftX) pPass = true;
+  static int pX=0; 
+  data_T iReset = data[0].read();
+  if(iReset == 0) { 
+    pX = 0; 
+    for(int i0 = 0; i0 < CONFIG_T::pad_left; i0++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
+  }
+  static bool pPass = false;    
+  if(pX == lShiftX) pPass = true;
    //Read in the pixel
    for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
     #pragma HLS UNROLL
@@ -499,21 +500,7 @@ void conv_2d_large_cl_row_stream(bool iReset,
      }
      //run Dense
      nnet::dense_large<data_T,res_T,typename CONFIG_T::mult_config>(layer_in,layer_out,weights,biases);
-   
-     // Run activation function
-     if (CONFIG_T::relu_config::activation_type == activ_relu){
-       nnet::relu<res_T, res_T, typename CONFIG_T::relu_config>(layer_out, layer_reluout);
-     }
-     else if (CONFIG_T::relu_config::activation_type == activ_sigmoid){
-       nnet::sigmoid<res_T, res_T, typename CONFIG_T::relu_config>(layer_out, layer_reluout);
-     }
-     else if (CONFIG_T::relu_config::activation_type == activ_tanh){
-       nnet::tanh<res_T, res_T, typename CONFIG_T::relu_config>(layer_out, layer_reluout);
-     }
-     else if (CONFIG_T::relu_config::activation_type == leaky_relu){
-       nnet::leaky_relu<res_T, res_T, typename CONFIG_T::relu_config>(layer_out, layer_reluout);
-     }
-     //Send out the pixel
+     nnet::relu<res_T, res_T, typename CONFIG_T::relu_config>(layer_out, layer_reluout);
      res_T pPixId = (res_T) iReset;
      nnet::fill_image<data_T,data_T,CONFIG_T>(layer_reluout,pPixId,res);
    }
