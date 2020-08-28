@@ -982,6 +982,7 @@ class Conv1D(Layer):
             #dims = ['N_FILT_{}'.format(self.index), 'N_OUTPUTS_{}'.format(self.index)]
             cl=True
         else:
+            print("!!!!!!!!!!!!!!!!!!!1")
             shape = [self.attributes['n_out'], self.attributes['n_filt']]
             dims = ['N_OUTPUTS_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
             #shape = [self.attributes['n_filt'], self.attributes['n_out']]
