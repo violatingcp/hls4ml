@@ -367,7 +367,6 @@ void conv_2d_large_cl_nopad(
     for(int i1 = 0; i1 < CONFIG_T::n_chan; i1++) { 
       tmpdata[i1] = data[i1+1].read(); 
     }
-    data_T iReset = data[0].read();
     if(iReset==0) { 
       pX = 0; 
       pY = 0; 
@@ -384,7 +383,6 @@ void conv_2d_large_cl_nopad(
     if(pX == CONFIG_T::in_width) { 
       pX = 0;
       pY = pY+1;
-      pPass = false;
     }
 }
 

@@ -1020,7 +1020,7 @@ class Conv1D(Layer):
             params['n_chan_in'] = input_dims[-1]-1
         params['dilation'] = self.get_attr('dilation', 1)
         params['n_filt_in'] = 'N_FILT_{}'.format(self.index)
-        params['n_filt'] = 'N_FILT_{}-'.format(self.index)
+        params['n_filt'] = 'N_FILT_{}-1'.format(self.index)
         params['n_out'] = 'N_OUTPUTS_{}'.format(self.index)
         params['nzeros'] = self.get_weights('weight').nzeros
         params['config_t'] = 'std::nullptr_t'
