@@ -457,9 +457,9 @@ class ArrayVariable(Variable):
             return '*'.join([str(k) for k in self.dim_names])
 
     def size_cpp_cnn(self, cl=False):
-        if len(self.dim_names) > 1 and self.cl:
+        if len(self.dim_names) > 2 and self.cl:
             return  self.dim_names[2]
-        if len(self.dim_names) > 1 and not self.cl:
+        if len(self.dim_names) > 2 and not self.cl:
             if 'FILT' in self.dim_names[0]:
                 return  self.dim_names[0]
             else:
@@ -723,7 +723,7 @@ class Layer(object):
                 type_name = name + '{index}_t'
         merge_factor = self.model.config.get_merge_factor(self) # merge weights
         if merge_factor == 2: 
-            if not ('bias' in name and 'mm' not in self.name): # and 'Conv' in self.name): #only weights
+            if not ('bias' in name):# and 'mm' not in self.name): # and 'Conv' in self.name): #only weights
                 var = WeightVariable(var_name, type_name=type_name, precision=precision, data=data, index=self.index)
                 #quick hack to fuse batch norm
                 if 'mm' not in self.name:
@@ -933,7 +933,8 @@ class Dense(Layer):
             params['n_output'] = self.get_output_variable().size_cpp(isSerial=True)
             params['n_in'] = self.get_input_variable().size_cpp(isSerial=True)+'-1'
             params['n_out'] = self.get_output_variable().size_cpp(isSerial=True)+'-1'
-            if len(self.get_input_variable().shape) > 1:
+            print(self.get_input_variable().shape,len(self.get_input_variable().shape))
+            if len(self.get_input_variable().shape) > 2:
                 params['n_in'] = self.get_input_variable().size_cpp(isSerial=True)
                 params['block_factor'] =  (self.get_input_variable().size()/self.get_input_variable().shape[2])
             #elif len(self.get_input_variable().shape) > 1:
@@ -976,6 +977,9 @@ class Conv1D(Layer):
         self.add_output_variable(shape, dims, depth=depth,cl=cl)
         self.add_weights()
         self.add_bias()
+        self.is1x1 = False
+        if(self.attributes['filt_width'] == 1) : 
+            self.is1x1 = True
         if self.model.config.is_resource_strategy(self):
             self.set_attr('strategy', 'large')
             if self.model.config.backend.name == 'Vivado':
@@ -1009,7 +1013,7 @@ class Conv1D(Layer):
         if self.get_attr('data_format') == 'channels_last':
             params['n_in'] = '*'.join([str(k) for k in input_dims[:-1]])
             params['n_chan_in'] = input_dims[-1]
-            params['n_chan'] = input_dims[-1]-1
+            params['n_chan'] = input_dims[-1]+'-1'
         else:
             params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
             params['n_chan'] = input_dims[0]
@@ -1026,6 +1030,7 @@ class Conv1D(Layer):
             conv_config = self._config_template[0].format(**params)
 
             mult_params = self._default_config_params()
+            mult_params['merge_factor'] = self.model.config.get_merge_factor(self)
             mult_params['n_in'] = self.get_attr('n_chan') * self.get_attr('filt_width')
             mult_params['n_out'] = self.get_attr('n_filt')
             mult_config = self._config_template[1].format(**mult_params)
@@ -1036,8 +1041,13 @@ class Conv1D(Layer):
 
     def print_tcl(self):
         params = self._default_tcl_params()
+        input_dims = self.get_input_variable().dim_names
+        params['n_weights']=self.get_weights('weight').data_length
         params['n_filt_in'] = 'N_FILT_{}'.format(self.index)
         params['n_chan_in'] = input_dims[-1]
+        params['1x1'] = ''
+        if self.is1x1:
+            params['1x1'] = '_1x1'
         return self._tcl_template.format(**params)
 
 class Conv2D(Layer):
@@ -1545,7 +1555,7 @@ class BatchNormalization(Layer):
 
     def print_tcl(self):
         params = self._default_tcl_params()
-        params['n_in'] = self.get_input_variable().size_cpp_cpp()
+        params['n_in'] = self.get_input_variable().size_cpp_cnn()
         params['scale'] = self.get_weights('scale').name
         params['bias'] = self.get_weights('bias').name
         return self._tcl_template.format(**params)

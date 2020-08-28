@@ -426,7 +426,7 @@ class VivadoWriter(Writer):
                         newline += indent + '#pragma HLS PIPELINE \n'
                 if model.config.get_config_value("IOType") == "io_serial":
                     newline += indent + '#pragma HLS INTERFACE axis port={},{} \n'.format(','.join(all_inputs), ','.join(all_outputs))
-                    newline += indent + '#pragma HLS DATAFLOW \n'
+                    #newline += indent + '#pragma HLS DATAFLOW \n'
 
                 inval_str = '\n    '.join(['const_size_in_{} = {};'.format(i, inp.size_cpp()) for i, inp in enumerate(model_inputs, 1)])
                 outval_str = '\n    '.join(['const_size_out_{} = {};'.format(i, out.size_cpp()) for i, out in enumerate(model_outputs, 1)])

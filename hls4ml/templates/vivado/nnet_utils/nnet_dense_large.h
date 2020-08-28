@@ -47,7 +47,7 @@ void dense_large_rf_leq_nin(
     assert((multiplier_limit % nout == 0 || rufactor >= nin) && "The current Reuse Factor is not allowed");
     assert((multiplier_limit == block_factor) && "This function is correct only for RF <= N_IN");
 
-    #pragma HLS function_instantiate variable=weights,biases
+    #pragma HLS function_instantiate variable=biases
     //#pragma HLS RESOURCE variable=weights core=RAM_2P_BRAM Commenting out the deisgnation HLS seems to choose correctly
     #pragma HLS ARRAY_RESHAPE   variable=weights block factor=block_factor
     #pragma HLS ARRAY_PARTITION variable=biases complete
@@ -120,7 +120,7 @@ void dense_large_rf_gt_nin_rem0(
     assert((multiplier_limit % nout == 0 || rufactor >= nin) && "The current Reuse Factor is not allowed");
     assert((rufactor > nin && rufactor % nin == 0) && "This function is correct only for RF > N_IN && RF % N_IN == 0");
 
-    #pragma HLS function_instantiate variable=weights,biases
+    #pragma HLS function_instantiate variable=biases
     //#pragma HLS RESOURCE variable=weights core=RAM_2P_BRAM Commenting out the deisgnation HLS seems to choose correctly
     #pragma HLS ARRAY_RESHAPE   variable=weights block factor=block_factor
     #pragma HLS ARRAY_PARTITION variable=biases complete
@@ -199,7 +199,7 @@ void dense_large_rf_gt_nin(
     assert((multiplier_limit % nout == 0 || rufactor >= nin) && "The current Reuse Factor is not allowed");
     assert((rufactor > nin) && "This function is correct only for RF > N_IN");
 
-    #pragma HLS function_instantiate variable=weights,biases
+    #pragma HLS function_instantiate variable=biases
     //#pragma HLS RESOURCE variable=weights core=RAM_2P_BRAM Commenting out the deisgnation HLS seems to choose correctly
     #pragma HLS ARRAY_RESHAPE   variable=weights block factor=block_factor
     #pragma HLS ARRAY_PARTITION variable=biases complete
@@ -281,7 +281,7 @@ void dense_large_rf_leq_nin_merge(
     assert((multiplier_limit % (nout/CONFIG_T::merge_factor) == 0 || rufactor >= nin) && "The current Reuse Factor is not allowed");
     assert((multiplier_limit == block_factor) && "This function is correct only for RF <= N_IN");
 
-    #pragma HLS function_instantiate variable=weights,biases
+    #pragma HLS function_instantiate variable=biases
     //#pragma HLS RESOURCE variable=weights core=RAM_2P_BRAM Commenting out the deisgnation HLS seems to choose correctly
     #pragma HLS ARRAY_RESHAPE   variable=weights block factor=block_factor
     #pragma HLS ARRAY_RESHAPE variable=biases complete
@@ -350,7 +350,7 @@ void dense_large_rf_gt_nin_rem0_merge(
     assert((multiplier_limit % nout == 0 || rufactor >= nin) && "The current Reuse Factor is not allowed");
     assert((rufactor > nin && rufactor % nin == 0) && "This function is correct only for RF > N_IN && RF % N_IN == 0");
 
-    #pragma HLS function_instantiate variable=weights,biases
+    #pragma HLS function_instantiate variable=biases
     //#pragma HLS RESOURCE variable=weights core=RAM_2P_BRAM Commenting out the deisgnation HLS seems to choose correctly
     #pragma HLS ARRAY_RESHAPE   variable=weights block factor=block_factor
     #pragma HLS ARRAY_PARTITION variable=biases complete
@@ -432,7 +432,7 @@ void dense_large_rf_gt_nin_merge(
     assert((multiplier_limit % nout == 0 || rufactor >= nin) && "The current Reuse Factor is not allowed");
     assert((rufactor > nin) && "This function is correct only for RF > N_IN");
 
-    #pragma HLS function_instantiate variable=weights,biases
+    #pragma HLS function_instantiate variable=biases
     //#pragma HLS RESOURCEs variable=weights core=RAM_2P_BRAM Commenting out the deisgnation HLS seems to choose correctly
     #pragma HLS ARRAY_RESHAPE   variable=weights block factor=block_factor
     #pragma HLS ARRAY_RESHAPE variable=biases complete
@@ -535,7 +535,7 @@ void dense_large_stream(
       data_T pStatus = data[0].read();
       if(pStatus == 0) pX = 0;
 
-      data_T tmpdata[CONFIG_T::n_in];
+      static data_T tmpdata[CONFIG_T::n_in];
       #pragma HLS ARRAY_PARTITION variable=tmpdata complete
       for(int i0 = 0; i0 < CONFIG_T::n_input-1; i0++) { 
        #pragma HLS UNROLL

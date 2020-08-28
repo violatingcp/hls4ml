@@ -173,6 +173,7 @@ void upsampling2d_stream(
     #pragma HLS PIPELINE
     for(unsigned i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
       res_T pTmp = layer_in[i0];
+      if(i0 == 0 && iW > 0) pTmp = 1;
       res[i0].write(pTmp); 
     }
   }
@@ -187,7 +188,7 @@ void upsampling2d_stream(
      }
     }
     pX = 0;
-    pX = pX + 1;
+    pX = pX + 1; //FYI this is not working
   }
 }
 

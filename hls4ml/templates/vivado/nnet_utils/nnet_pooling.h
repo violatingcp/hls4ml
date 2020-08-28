@@ -215,24 +215,31 @@ template<class data_T, class res_T, typename CONFIG_T>
     static unsigned pX=0;
     static unsigned pY=0;
 
+    static data_T tmpdata[CONFIG_T::n_chan]; 
+    #pragma HLS ARRAY_RESHAPE variable=tmpdata complete
+
     data_T iReset = data[0].read();
+    for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
+      data_T pTmp = data[i0+1].read();
+      tmpdata[i0] = pTmp;
+    }
+    static res_T  pReset = 0;
     if(iReset==0) { 
       pX = 0; 
       pY = 0;
+      pReset = 0;
       for(int i0 = 0; i0 < CONFIG_T::pad_left+CONFIG_T::pad_top*rowsize; i0++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
     }
-    static bool pPass = false;
-    nnet::cnnshift<data_T,res_T,CONFIG_T>(data,layer_in_row,layer_in);
+    nnet::cnnshift<data_T,res_T,CONFIG_T>(tmpdata,layer_in_row,layer_in);
     //Processs image
     unsigned pLoop = 1;
     if(pX == CONFIG_T::in_width-1) pLoop = CONFIG_T::pad_right+1;
-    if(pX == CONFIG_T::in_width-1 && pY == CONFIG_T::in_height-1) pLoop = CONFIG_T::pad_right+1+CONFIG_T::pad_bottom*rowsize; //Fill the end with zeros for bottom paddings
+    if(pX == CONFIG_T::in_width-1 && pY == CONFIG_T::in_height-1) pLoop = CONFIG_T::pad_right+1+CONFIG_T::pad_bottom*(rowsize-CONFIG_T::pad_left); //Fill the end with zeros for bottom paddings
     for(int i0 = 0; i0 < pLoop; i0++) { 
       if(i0 > 0) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in); 
-      if(pY > lShiftY-1 && pX == lShiftX) pPass = true;
-      if((pX+1) % CONFIG_T::stride_width == 0 && (pY+1) % CONFIG_T::stride_height == 0 && pPass) { 
-	res_T pId = 1;
-	if(pX == 0 && pY == 0) pId = 0;
+      if((pX+1) % CONFIG_T::stride_width == 0 && (pY+1) % CONFIG_T::stride_height == 0 && pY > lShiftY-1 && pX > lShiftX-1) { 
+	res_T pId = pReset;
+	if(pReset == 0) pReset = 1;
 	res[0].write(pId);
 	for(unsigned i0 = 0; i0 < CONFIG_T::n_filt; i0++) { 
          #pragma HLS UNROLL
@@ -243,13 +250,12 @@ template<class data_T, class res_T, typename CONFIG_T>
 	  pool[i1] = layer_in[i1*CONFIG_T::n_filt+i0];
  	 }
 	 res[i0+1].write(pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool));
-	}
+	}				       
       }
       pX = pX+1;
       if(pX == CONFIG_T::in_width+CONFIG_T::pad_right) { 
 	pX = 0;
 	pY = pY+1;
-	pPass = false;
 	for(int i0 = 0; i0 < CONFIG_T::pad_left; i0++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
       }
     }
