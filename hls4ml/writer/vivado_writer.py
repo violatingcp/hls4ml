@@ -490,6 +490,8 @@ class VivadoWriter(Writer):
                 irange=[shape[0],shape[1]]
                 if not cl:
                     irange=[shape[1],shape[2]]
+                if len(shape) == 2: 
+                    irange=[shape[0]] if cl else [shape[1]]
                 for i0 in range(len(irange)):
                     for i1 in range(i0):
                         newline += indent
@@ -501,7 +503,10 @@ class VivadoWriter(Writer):
                 brams=', '.join([i.name for i in model_brams]) 
                 insize=', '.join(['const_size_in_{}'.format(i) for i in range(1, len(model_inputs) + 1)])
                 outsize=', '.join(['const_size_out_{}'.format(o) for o in range(1, len(model_outputs) + 1)])
-                newline += ('{}{}'.format(model.config.get_project_name(),serial))+'('+inputs+','+outputs+','+brams+','+insize+','+outsize+');\n'
+                if len(model_brams) > 0: 
+                       newline += ('{}{}'.format(model.config.get_project_name(),serial))+'('+inputs+','+outputs+','+brams+','+insize+','+outsize+');\n'
+                else:
+                       newline += ('{}{}'.format(model.config.get_project_name(),serial))+'('+inputs+','+outputs+','+insize+','+outsize+');\n'
                 for i0 in irange:
                     for i1 in range(i0):
                         newline += indent
@@ -652,7 +657,7 @@ class VivadoWriter(Writer):
                 input_vars = ','.join([i.cppname for i in model.get_input_variables()])
                 output_vars = ','.join([o.cppname for o in model.get_output_variables()])
                 bram_vars   =', '.join([i.name for i in model.get_bram_variables()]) 
-                if len(bram_vars) > 0: 
+                if len(model.get_bram_variables()) > 0: 
                     top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
                 else: 
                     top_level = indent + '{}({},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, input_size_vars, output_size_vars)
@@ -727,6 +732,8 @@ class VivadoWriter(Writer):
                             newline += indent + 'for(int i{} = 0; i{} < {}+1; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
                     cl=inp.cl
                     val=0 if cl else 2
+                    if val > 0: 
+                        val = len(shape)-1
                     newline += indent + '  {}[i{}].write(in[index]);index++;\n'.format(inp.cppname,val)
                     for i0 in range(len(shape)): 
                         newline += indent + '}\n'
@@ -751,7 +758,8 @@ class VivadoWriter(Writer):
                             newline += indent + 'for(int i{} = 0; i{} < {}+1; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
                     cl=inp.cl
                     val=0 if cl else 2
-                    newline += indent + '  {}[i{}].write(pTest);\n'.format(inp.cppname,val)
+                    if val > 0: 
+                        val = len(shape)-1
                     for i0 in range(len(shape)): 
                         newline += indent + '}\n'
                 for out in model.get_output_variables():
@@ -767,7 +775,10 @@ class VivadoWriter(Writer):
                 input_vars = ','.join([i.cppname for i in model.get_input_variables()])
                 output_vars = ','.join([o.cppname for o in model.get_output_variables()])
                 bram_vars   =', '.join([i.name for i in model.get_bram_variables()]) 
-                top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
+                if len(model.get_bram_variables()) > 0: 
+                    top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
+                else: 
+                    top_level = indent + '{}({},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, input_size_vars, output_size_vars)
                 newline += top_level
             elif '//hls-fpga-machine-learning insert predictions' in line:
                 newline = line
