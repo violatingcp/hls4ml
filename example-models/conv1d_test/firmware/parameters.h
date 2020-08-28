@@ -92,7 +92,7 @@ struct config2 : nnet::conv1d_config {
 };
 
 struct relu_config3 : nnet::activ_config {
-    static const unsigned n_in = N_OUTPUTS_2;
+    static const unsigned n_in = N_FILT_2;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_serial;
 };
@@ -130,7 +130,7 @@ struct config4 : nnet::conv1d_config {
 };
 
 struct relu_config5 : nnet::activ_config {
-    static const unsigned n_in = N_OUTPUTS_4;
+    static const unsigned n_in = N_FILT_4;
     static const unsigned table_size = 1024;
     static const unsigned io_type = nnet::io_serial;
 };
@@ -138,10 +138,10 @@ struct relu_config5 : nnet::activ_config {
 struct config6 : nnet::dense_config {
     static const unsigned block_factor = 1;
     static const unsigned merge_factor = 1;
-    static const unsigned n_input = N_OUTPUTS_4;
+    static const unsigned n_input = N_FILT_4;
     static const unsigned n_output = N_LAYER_6;
-    static const unsigned n_in = N_OUTPUTS_4*(N_FILT_4-1)-1;
-    static const unsigned n_out = N_LAYER_6-1;
+    static const unsigned n_in = (N_FILT_4-1);
+    static const unsigned n_out = (N_LAYER_6-1);
     static const unsigned io_type = nnet::io_serial;
     static const unsigned reuse_factor = 100000;
     static const unsigned n_zeros = 0;

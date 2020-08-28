@@ -465,8 +465,8 @@ void conv_1d_large_cl(
   #pragma HLS ARRAY_RESHAPE variable=layer_out complete dim=0
 
   static int pX=0; 
-  bool iReset = data[0].read();
-  if(iReset) { 
+  data_T iReset = data[0].read();
+  if(iReset == 0) { 
     pX = 0; 
     for(int iX = 0; iX < CONFIG_T::pad_left; iX++) { 
       for(int i0 = 0; i0 < CONFIG_T::n_chan_in; i0++) {
@@ -475,17 +475,15 @@ void conv_1d_large_cl(
       }
     }
   }
-  static bool pPass = false;    
-  if(pX == lShiftX) pPass = true;
   for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
     #pragma HLS UNROLL
     data_T tmp = data[i0+1].read();
     layer_in_row[i0].shift(0,tmp);
   }
-  if((pX+1) % CONFIG_T::stride == 0 && pPass) { 
-   for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
+  if((pX+1) % CONFIG_T::stride == 0 && pX > lShiftX-1) { 
+    for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
      #pragma HLS UNROLL
-     for(int i1 = 0; i1 < CONFIG_T::filt_width; i0++) {
+     for(int i1 = 0; i1 < CONFIG_T::filt_width; i1++) {
       data_T tmp = layer_in_row[i0].read(i1);
       layer_in[i1*CONFIG_T::n_chan+i0] = tmp;		       
      }

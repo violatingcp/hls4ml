@@ -531,12 +531,12 @@ void dense_large_stream(
       typename CONFIG_T::weight_t weights[CONFIG_T::n_in*CONFIG_T::n_out],
       typename CONFIG_T::bias_t   biases[CONFIG_T::n_out]) {
 
+      static data_T tmpdata[CONFIG_T::n_in];
+      #pragma HLS ARRAY_PARTITION variable=tmpdata complete
+
       static unsigned pX = 0; 
       data_T pStatus = data[0].read();
       if(pStatus == 0) pX = 0;
-
-      static data_T tmpdata[CONFIG_T::n_in];
-      #pragma HLS ARRAY_PARTITION variable=tmpdata complete
       for(int i0 = 0; i0 < CONFIG_T::n_input-1; i0++) { 
        #pragma HLS UNROLL
        tmpdata[i0+pX*(CONFIG_T::n_input-1)] = data[i0+1].read();

@@ -117,8 +117,10 @@ int main(int argc, char **argv)
     //hls-fpga-machine-learning insert output
 
     //hls-fpga-machine-learning insert tb-output
-    for(int i0 = 0; i0 < 5; i0++) {
-      fout << layer19_out[i0].read() << " ";
+    for(int iX = 0; iX < 62; iX++) { 
+      for(int i0 = 0; i0 < 5; i0++) {
+	fout << layer19_out[i0].read() << " ";
+      }
     }
     fout << std::endl;
   }

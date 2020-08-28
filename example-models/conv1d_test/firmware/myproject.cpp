@@ -116,7 +116,7 @@ void myproject_in(
     static hls::stream<layer9_t> layer9_out[N_LAYER_8];
     #pragma HLS STREAM variable=layer9_out depth=1 dim=1
     while(!layer8_out[0].empty()) nnet::relu_stream<layer8_t, layer9_t, relu_config9>(layer8_out, layer9_out);
-
+    
     static hls::stream<layer10_t> layer10_out[N_LAYER_10];
     #pragma HLS STREAM variable=layer10_out depth=1 dim=1
     while(!layer9_out[0].empty()) nnet::dense_large_stream<layer9_t, layer10_t, config10>(layer9_out, layer10_out, w10, b10);
