@@ -976,13 +976,14 @@ class Conv1D(Layer):
     def initialize(self):
         cl=False
         if self.get_attr('data_format') == 'channels_last':
+            print("!!!!!!!!!!!!!!!!!!!1")
             shape = [self.attributes['n_out'], self.attributes['n_filt']]
             dims = ['N_OUTPUTS_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
             #shape = [self.attributes['n_filt'], self.attributes['n_out']]
             #dims = ['N_FILT_{}'.format(self.index), 'N_OUTPUTS_{}'.format(self.index)]
             cl=True
         else:
-            print("!!!!!!!!!!!!!!!!!!!1")
+            print("!!!!!!!!!!!!!!!!!!!2")
             shape = [self.attributes['n_out'], self.attributes['n_filt']]
             dims = ['N_OUTPUTS_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
             #shape = [self.attributes['n_filt'], self.attributes['n_out']]
@@ -1025,19 +1026,20 @@ class Conv1D(Layer):
         params = self._default_config_params()
         input_dims = self.get_input_variable().dim_names
         if self.get_attr('data_format') == 'channels_last':
-            params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
+            params['n_in'] = '*'.join([str(k) for k in input_dims[:-1]])
+            #params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
             #if 'INPUT' in params['n_in']:
             #    params['n_in'] = '*'.join([str(k) for k in input_dims[:-1]])
-            params['n_chan_in'] = input_dims[-1]
-            params['n_chan'] = input_dims[-1]+'-1'
+            params['n_chan_in'] = input_dims[1]#input_dims[-1]
+            params['n_chan'] = input_dims[1]+'-1'#input_dims[-1]+'-1'
         else:
-            #params['n_in'] = '*'.join([str(k) for k in input_dims[:-1]])
-            params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
+            params['n_in'] = '*'.join([str(k) for k in input_dims[:-1]])
+            #params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
             #if 'INPUT' in params['n_in']:
             #    params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
             #params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
-            params['n_chan'] = input_dims[-1]
-            params['n_chan_in'] = input_dims[-1]+'-1'
+            params['n_chan'] = input_dims[1]#input_dims[-1]
+            params['n_chan_in'] = input_dims[1]+'-1'#input_dims[-1]+'-1'
         params['dilation'] = self.get_attr('dilation', 1)
         params['n_filt_in'] = 'N_FILT_{}'.format(self.index)
         params['n_filt'] = 'N_FILT_{}-1'.format(self.index)

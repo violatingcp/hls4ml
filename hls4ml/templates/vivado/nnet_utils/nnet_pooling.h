@@ -241,22 +241,22 @@ template<class data_T, class res_T, typename CONFIG_T>
 	res_T pId = pReset;
 	if(pReset == 0) pReset = 1;
 	res[0].write(pId);
-	for(unsigned i0 = 0; i0 < CONFIG_T::n_filt; i0++) { 
+	for(unsigned i1 = 0; i1 < CONFIG_T::n_filt; i1++) { 
          #pragma HLS UNROLL
  	 data_T pool[CONFIG_T::pool_height * CONFIG_T::pool_width];
          #pragma HLS ARRAY_RESHAPE variable=pool complete dim=0
-         for(unsigned i1 = 0; i1 < CONFIG_T::pool_height*CONFIG_T::pool_width; i1++) { 
+         for(unsigned i2 = 0; i2 < CONFIG_T::pool_height*CONFIG_T::pool_width; i2++) { 
           #pragma HLS UNROLL
-	  pool[i1] = layer_in[i1*CONFIG_T::n_filt+i0];
+	  pool[i2] = layer_in[i1*CONFIG_T::n_filt+i1];
  	 }
-	 res[i0+1].write(pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool));
+	 res[i1+1].write(pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool));
 	}				       
       }
       pX = pX+1;
       if(pX == CONFIG_T::in_width+CONFIG_T::pad_right) { 
 	pX = 0;
 	pY = pY+1;
-	for(int i0 = 0; i0 < CONFIG_T::pad_left; i0++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
+	for(int i1 = 0; i1 < CONFIG_T::pad_left; i1++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
       }
     }
 }
