@@ -1253,6 +1253,9 @@ class Pooling1D(Layer):
         params = self._default_tcl_params()
         params['n_chan_in'] =  self.get_input_variable().dim_names[0]
         params['n_filt_in'] = self.get_output_variable().dim_names[0]
+        
+        params['1x1'] = ''
+
         return self._tcl_template.format(**params)
 
 class Pooling2D(Layer):

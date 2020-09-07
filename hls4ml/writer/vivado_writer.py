@@ -194,13 +194,26 @@ class VivadoWriter(Writer):
                 data_format = ''
                 onexone = ''
                 strategy = ''
-                if(layer.get_attr("data_format") == 'channels_last'):
-                    data_format = '_cl'
-                if(layer.is1x1):
-                    onexone = '_1x1'
-                if(layer.get_attr('strategy') != None):
-                    strategy = "_" + layer.get_attr("strategy")
-                kernel_name = "pooling2d" + strategy + data_format + onexone
+
+                #Treat 2D and 1D seperately
+                if 'Pooling2D' in layer.__class__.__name__:
+                    if(layer.get_attr("data_format") == 'channels_last'):
+                        data_format = '_cl'
+                    if(layer.is1x1):
+                        onexone = '_1x1'
+                    if(layer.get_attr('strategy') != None):
+                        strategy = "_" + layer.get_attr("strategy")
+
+                    kernel_name = "pooling2d" + strategy + data_format + onexone
+
+                elif 'Pooling1D' in layer.__class__.__name__:
+                    if(layer.get_attr("data_format") == 'channels_last'):
+                        data_format = '_cl'
+                    if(layer.get_attr('strategy') != None):
+                        strategy = "_" + layer.get_attr("strategy")
+
+                    kernel_name = "pooling1d" + strategy + data_format + onexone
+
                 input_ports = [{"name":"input", "width": layer.get_input_variable().shape[0] +1}]
 
                 if not(tensor_map[layer.get_output_variable().name]['input'] == []):
