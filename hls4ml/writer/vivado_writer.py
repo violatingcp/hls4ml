@@ -626,7 +626,8 @@ class VivadoWriter(Writer):
             elif '//hls-fpga-machine-learning insert header' in line:
                 inputs_str = ', '.join([i.definition_cpp() for i in model_inputs])
                 outputs_str = ', '.join([o.definition_cpp() for o in model_outputs])
-                brams_str  = ',\n'.join([o.definition_cpp() for o in model_brams])
+                if len(model_brams) > 0: 
+                    brams_str  = ',\n'.join([o.definition_cpp() for o in model_brams])
                 insize_str = ', '.join(['unsigned short &const_size_in_{}'.format(i) for i in range(1, len(model_inputs) + 1)])
                 outsize_str = ', '.join(['unsigned short &const_size_out_{}'.format(i) for i in range(1, len(model_outputs) + 1)])
                 inputs_str=inputs_str.replace('static','')
@@ -635,7 +636,8 @@ class VivadoWriter(Writer):
                 newline = ''
                 newline += indent + inputs_str + ',\n'
                 newline += indent + outputs_str + ',\n'
-                newline += indent + brams_str + ',\n'
+                if len(model_brams) > 0: 
+                    newline += indent + brams_str + ',\n'
                 newline += indent + insize_str + ',\n'
                 newline += indent + outsize_str + '\n'
 
@@ -670,7 +672,7 @@ class VivadoWriter(Writer):
                         newline += indent + '#pragma HLS PIPELINE \n'
                 if model.config.get_config_value("IOType") == "io_serial":
                     newline += indent + '#pragma HLS INTERFACE axis port={},{} \n'.format(','.join(all_inputs), ','.join(all_outputs))
-                    newline += indent + '#pragma HLS DATAFLOW \n'
+                    #newline += indent + '#pragma HLS DATAFLOW \n'
 
                 inval_str = '\n    '.join(['const_size_in_{} = {};'.format(i, inp.size_cpp()) for i, inp in enumerate(model_inputs, 1)])
                 outval_str = '\n    '.join(['const_size_out_{} = {};'.format(i, out.size_cpp()) for i, out in enumerate(model_outputs, 1)])
@@ -715,12 +717,14 @@ class VivadoWriter(Writer):
             newline = 'void {}(\n'.format(model.config.get_project_name())
             inputs_str = ', '.join([i.definition_cpp().replace('static','') for i in model_inputs])
             outputs_str = ', '.join([o.definition_cpp().replace('static','') for o in model_outputs])
-            brams_str  = ',\n'.join([o.definition_cpp() for o in model_brams])
+            if len(model_brams) > 0:
+                brams_str  = ',\n'.join([o.definition_cpp() for o in model_brams])
             insize_str = ', '.join(['unsigned short &const_size_in_{}'.format(i) for i in range(1, len(model_inputs) + 1)])
             outsize_str = ', '.join(['unsigned short &const_size_out_{}'.format(o) for o in range(1, len(model_outputs) + 1)])
             newline += indent + inputs_str  + ',\n'
             newline += indent + outputs_str + ',\n'
-            newline += indent + brams_str + ',\n'
+            if len(model_brams) > 0:
+                newline += indent + brams_str + ',\n'
             newline += indent + insize_str  + ',\n'
             newline += indent + outsize_str + '\n'
             newline += ') { \n'
@@ -730,6 +734,8 @@ class VivadoWriter(Writer):
                 irange=[shape[0],shape[1]]
                 if not cl:
                     irange=[shape[1],shape[2]]
+                if len(shape) == 2: 
+                    irange=[shape[0]] if cl else [shape[1]]
                 for i0 in range(len(irange)):
                     for i1 in range(i0):
                         newline += indent
@@ -741,7 +747,10 @@ class VivadoWriter(Writer):
                 brams=', '.join([i.name for i in model_brams])
                 insize=', '.join(['const_size_in_{}'.format(i) for i in range(1, len(model_inputs) + 1)])
                 outsize=', '.join(['const_size_out_{}'.format(o) for o in range(1, len(model_outputs) + 1)])
-                newline += ('{}{}'.format(model.config.get_project_name(),serial))+'('+inputs+','+outputs+','+brams+','+insize+','+outsize+');\n'
+                if len(model_brams) > 0: 
+                       newline += ('{}{}'.format(model.config.get_project_name(),serial))+'('+inputs+','+outputs+','+brams+','+insize+','+outsize+');\n'
+                else:
+                       newline += ('{}{}'.format(model.config.get_project_name(),serial))+'('+inputs+','+outputs+','+insize+','+outsize+');\n'
                 for i0 in irange:
                     for i1 in range(i0):
                         newline += indent
@@ -775,14 +784,16 @@ class VivadoWriter(Writer):
             elif '//hls-fpga-machine-learning insert header' in line:
                 inputs_str  = ', '.join([i.definition_cpp().replace('static','') for i in model_inputs])
                 outputs_str = ', '.join([o.definition_cpp().replace('static','') for o in model_outputs])
-                brams_str   = ',\n'.join([o.definition_cpp() for o in model_brams])
+                if len(model_brams) > 0:
+                    brams_str   = ',\n'.join([o.definition_cpp() for o in model_brams])
                 insize_str  = ', '.join(['unsigned short &const_size_in_{}'.format(i) for i in range(1, len(model_inputs) + 1)])
                 outsize_str = ', '.join(['unsigned short &const_size_out_{}'.format(o) for o in range(1, len(model_outputs) + 1)])
 
                 newline = ''
                 newline += indent + inputs_str + ',\n'
                 newline += indent + outputs_str + ',\n'
-                newline += indent + brams_str + ',\n'
+                if len(model_brams) > 0:
+                    newline += indent + brams_str + ',\n'
                 newline += indent + insize_str + ',\n'
                 newline += indent + outsize_str + '\n'
             else:
@@ -863,7 +874,7 @@ class VivadoWriter(Writer):
                     newline += bram.definition_cpp()+';\n'
                 for inp in model.get_input_variables():
                     input_str = '      ' + inp.definition_cpp() + ' = {};\n'
-                    default_val = ','.join('in[{}]'.format(i) for i in range(inp.size()))
+                    default_val = ','.join('in[{}]'.format(i) for i in range(inp.size()-1))
                     newline += input_str.format('{' + default_val + '}')
                 for out in model.get_output_variables():
                     output_str = '      ' + out.definition_cpp() + ' = {};\n'
@@ -889,8 +900,16 @@ class VivadoWriter(Writer):
 
                 input_vars = ','.join([i.cppname for i in model.get_input_variables()])
                 output_vars = ','.join([o.cppname for o in model.get_output_variables()])
+<<<<<<< HEAD
                 bram_vars   =', '.join([i.name for i in model.get_bram_variables()])
                 top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
+=======
+                bram_vars   =', '.join([i.name for i in model.get_bram_variables()]) 
+                if len(model.get_bram_variables()) > 0: 
+                    top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
+                else: 
+                    top_level = indent + '{}({},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, input_size_vars, output_size_vars)
+>>>>>>> b3a4ca31035ba41216edbe95b6ec6509be67a1c1
                 newline += top_level
             elif '//hls-fpga-machine-learning insert predictions' in line:
                 newline = line
@@ -962,6 +981,8 @@ class VivadoWriter(Writer):
                             newline += indent + 'for(int i{} = 0; i{} < {}+1; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
                     cl=inp.cl
                     val=0 if cl else 2
+                    if val > 0: 
+                        val = len(shape)-1
                     newline += indent + '  {}[i{}].write(in[index]);index++;\n'.format(inp.cppname,val)
                     for i0 in range(len(shape)):
                         newline += indent + '}\n'
@@ -986,8 +1007,14 @@ class VivadoWriter(Writer):
                             newline += indent + 'for(int i{} = 0; i{} < {}+1; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
                     cl=inp.cl
                     val=0 if cl else 2
+<<<<<<< HEAD
                     newline += indent + '  {}[i{}].write(pTest);\n'.format(inp.cppname,val)
                     for i0 in range(len(shape)):
+=======
+                    if val > 0: 
+                        val = len(shape)-1
+                    for i0 in range(len(shape)): 
+>>>>>>> b3a4ca31035ba41216edbe95b6ec6509be67a1c1
                         newline += indent + '}\n'
                 for out in model.get_output_variables():
                     output_str = '    ' + out.definition_cpp().replace('static','') + ';\n'
@@ -1001,8 +1028,16 @@ class VivadoWriter(Writer):
 
                 input_vars = ','.join([i.cppname for i in model.get_input_variables()])
                 output_vars = ','.join([o.cppname for o in model.get_output_variables()])
+<<<<<<< HEAD
                 bram_vars   =', '.join([i.name for i in model.get_bram_variables()])
                 top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
+=======
+                bram_vars   =', '.join([i.name for i in model.get_bram_variables()]) 
+                if len(model.get_bram_variables()) > 0: 
+                    top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
+                else: 
+                    top_level = indent + '{}({},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, input_size_vars, output_size_vars)
+>>>>>>> b3a4ca31035ba41216edbe95b6ec6509be67a1c1
                 newline += top_level
             elif '//hls-fpga-machine-learning insert predictions' in line:
                 newline = line

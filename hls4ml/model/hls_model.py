@@ -448,18 +448,21 @@ class ArrayVariable(Variable):
 
     def size_cpp(self,isSerial=False):
         if isSerial:
-            tmp_dim_names = copy.copy(self.dim_names)
-            for i0 in range(len(tmp_dim_names)):
-                if 'FILT' in tmp_dim_names[i0]:
-                    tmp_dim_names[i0] = '('+tmp_dim_names[i0]+'-1)'
+            if len(self.dim_names) > 2: 
+                tmp_dim_names = copy.copy(self.dim_names)
+                for i0 in range(len(tmp_dim_names)):
+                    if 'FILT' in tmp_dim_names[i0]:
+                        tmp_dim_names[i0] = '('+tmp_dim_names[i0]+'-1)'
+            else:
+                tmp_dim_names=[self.dim_names[0]]
             return '*'.join([str(k) for k in tmp_dim_names])
         else:
             return '*'.join([str(k) for k in self.dim_names])
 
     def size_cpp_cnn(self, cl=False):
-        if len(self.dim_names) > 1 and self.cl:
+        if len(self.dim_names) > 2 and self.cl:
             return  self.dim_names[2]
-        if len(self.dim_names) > 1 and not self.cl:
+        if len(self.dim_names) > 2 and not self.cl:
             if 'FILT' in self.dim_names[0]:
                 return  self.dim_names[0]
             else:
@@ -723,7 +726,7 @@ class Layer(object):
                 type_name = name + '{index}_t'
         merge_factor = self.model.config.get_merge_factor(self) # merge weights
         if merge_factor == 2: 
-            if not ('bias' in name and 'mm' not in self.name): # and 'Conv' in self.name): #only weights
+            if not ('bias' in name):# and 'mm' not in self.name): # and 'Conv' in self.name): #only weights
                 var = WeightVariable(var_name, type_name=type_name, precision=precision, data=data, index=self.index)
                 #quick hack to fuse batch norm
                 if 'mm' not in self.name:
@@ -824,14 +827,20 @@ class Layer(object):
         
     def get_numbers_cpp(self):
         numbers = ''
+        lastinput=''
+        for k, v in self.get_output_variable().get_shape():
+            if 'INPUT' in k:
+                lastinput=k
         for k, v in self.get_output_variable().get_shape():
             if self.model.config.get_config_value('IOType') == 'io_serial':
                 if 'FILT' in k:
                     numbers += '#define {} {}\n'.format(k,v+1)
-                elif 'INPUT_3_1' in k and self.get_attr('data_format') == 'channels_last':
-                    numbers += '#define {} {}\n'.format(k,v)
-                elif 'INPUT_1_1' in k and not self.get_attr('data_format') == 'channels_last':
+                elif 'INPUT_3_1' in k and lastinput==k and self.get_attr('data_format') == 'channels_last':
                     numbers += '#define {} {}\n'.format(k,v+1)
+                elif 'INPUT_2_1' in k and lastinput==k :
+                    numbers += '#define {} {}\n'.format(k,v+1)
+                elif 'INPUT_1_1' in k and not self.get_attr('data_format') == 'channels_last':
+                    numbers += '#define {} {}\n'.format(k,v)
                 else:
                     numbers += '#define {} {}\n'.format(k,v)
             else:
@@ -933,7 +942,7 @@ class Dense(Layer):
             params['n_output'] = self.get_output_variable().size_cpp(isSerial=True)
             params['n_in'] = self.get_input_variable().size_cpp(isSerial=True)+'-1'
             params['n_out'] = self.get_output_variable().size_cpp(isSerial=True)+'-1'
-            if len(self.get_input_variable().shape) > 1:
+            if len(self.get_input_variable().shape) > 2 and (self.get_input_variable().size()/self.get_input_variable().shape[2]) != 1:
                 params['n_in'] = self.get_input_variable().size_cpp(isSerial=True)
                 params['block_factor'] =  (self.get_input_variable().size()/self.get_input_variable().shape[2])
             #elif len(self.get_input_variable().shape) > 1:
@@ -941,6 +950,7 @@ class Dense(Layer):
             #    params['block_factor'] =  (self.get_input_variable().size()/self.get_input_variable().shape[1])
             else:
                 params['block_factor'] = 1
+   
         else:
             params['n_input'] = self.get_input_variable().size_cpp(isSerial=False)
             params['n_output'] = self.get_output_variable().size_cpp(isSerial=False)
@@ -966,16 +976,25 @@ class Conv1D(Layer):
     def initialize(self):
         cl=False
         if self.get_attr('data_format') == 'channels_last':
+            print("!!!!!!!!!!!!!!!!!!!1")
             shape = [self.attributes['n_out'], self.attributes['n_filt']]
             dims = ['N_OUTPUTS_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
+            #shape = [self.attributes['n_filt'], self.attributes['n_out']]
+            #dims = ['N_FILT_{}'.format(self.index), 'N_OUTPUTS_{}'.format(self.index)]
             cl=True
         else:
-            shape = [self.attributes['n_filt'], self.attributes['n_out']]
-            dims = ['N_FILT_{}'.format(self.index), 'N_OUTPUTS_{}'.format(self.index)]
+            print("!!!!!!!!!!!!!!!!!!!2")
+            shape = [self.attributes['n_out'], self.attributes['n_filt']]
+            dims = ['N_OUTPUTS_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
+            #shape = [self.attributes['n_filt'], self.attributes['n_out']]
+            #dims = ['N_FILT_{}'.format(self.index), 'N_OUTPUTS_{}'.format(self.index)]
         depth=1
         self.add_output_variable(shape, dims, depth=depth,cl=cl)
         self.add_weights()
         self.add_bias()
+        self.is1x1 = False
+        if(self.attributes['filt_width'] == 1) : 
+            self.is1x1 = True
         if self.model.config.is_resource_strategy(self):
             self.set_attr('strategy', 'large')
             if self.model.config.backend.name == 'Vivado':
@@ -1008,15 +1027,22 @@ class Conv1D(Layer):
         input_dims = self.get_input_variable().dim_names
         if self.get_attr('data_format') == 'channels_last':
             params['n_in'] = '*'.join([str(k) for k in input_dims[:-1]])
-            params['n_chan_in'] = input_dims[-1]
-            params['n_chan'] = input_dims[-1]-1
+            #params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
+            #if 'INPUT' in params['n_in']:
+            #    params['n_in'] = '*'.join([str(k) for k in input_dims[:-1]])
+            params['n_chan_in'] = input_dims[1]#input_dims[-1]
+            params['n_chan'] = input_dims[1]+'-1'#input_dims[-1]+'-1'
         else:
-            params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
-            params['n_chan'] = input_dims[0]
-            params['n_chan_in'] = input_dims[-1]-1
+            params['n_in'] = '*'.join([str(k) for k in input_dims[:-1]])
+            #params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
+            #if 'INPUT' in params['n_in']:
+            #    params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
+            #params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
+            params['n_chan'] = input_dims[1]#input_dims[-1]
+            params['n_chan_in'] = input_dims[1]+'-1'#input_dims[-1]+'-1'
         params['dilation'] = self.get_attr('dilation', 1)
         params['n_filt_in'] = 'N_FILT_{}'.format(self.index)
-        params['n_filt'] = 'N_FILT_{}-'.format(self.index)
+        params['n_filt'] = 'N_FILT_{}-1'.format(self.index)
         params['n_out'] = 'N_OUTPUTS_{}'.format(self.index)
         params['nzeros'] = self.get_weights('weight').nzeros
         params['config_t'] = 'std::nullptr_t'
@@ -1026,6 +1052,7 @@ class Conv1D(Layer):
             conv_config = self._config_template[0].format(**params)
 
             mult_params = self._default_config_params()
+            mult_params['merge_factor'] = self.model.config.get_merge_factor(self)
             mult_params['n_in'] = self.get_attr('n_chan') * self.get_attr('filt_width')
             mult_params['n_out'] = self.get_attr('n_filt')
             mult_config = self._config_template[1].format(**mult_params)
@@ -1036,8 +1063,13 @@ class Conv1D(Layer):
 
     def print_tcl(self):
         params = self._default_tcl_params()
+        input_dims = self.get_input_variable().dim_names
+        params['n_weights']=self.get_weights('weight').data_length
         params['n_filt_in'] = 'N_FILT_{}'.format(self.index)
         params['n_chan_in'] = input_dims[-1]
+        params['1x1'] = ''
+        if self.is1x1:
+            params['1x1'] = '_1x1'
         return self._tcl_template.format(**params)
 
 class Conv2D(Layer):
@@ -1192,110 +1224,6 @@ class Conv2D(Layer):
             params['1x1'] = '_1x1'
         return self._tcl_template.format(**params)
 
-class Conv2DMerge(Layer):
-    def initialize(self):
-        print("!!!!!!!!!!!!! the merge")
-        cl=False
-        if self.get_attr('data_format') == 'channels_last':
-            shape = [self.attributes['n_filt']]
-            dims = ['N_FILT_{}'.format(self.index)]
-            cl=True
-        else:
-            shape = [self.attributes['n_filt']]
-            dims = ['N_FILT_{}'.format(self.index)]
-        self.add_output_variable(shape, dims,cl=cl)
-
-        self.add_weights()
-        self.add_bias()
-        if self.model.config.is_resource_strategy(self):
-            self.set_attr('strategy', 'large')
-            if self.model.config.backend.name == 'Vivado':
-                valid_rf = self.model.config.backend.get_valid_reuse_factors(self)
-                chosen_rf = self.model.config.get_reuse_factor(self)
-                if chosen_rf not in valid_rf:
-                    print('WARNING: Using invalid ReuseFactor={} with "Resource" strategy in layer "{}". Valid ReuseFactor(s): {}'
-                        .format(chosen_rf, self.name, ','.join(map(str, valid_rf))))
-                self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[3, 0, 1, 2]) #(H,W,C,F) => (F,C,H,W)
-                #self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[1, 3, 2, 0]) #(H,W,C,F) => (F,C,H,W)
-        else:
-            self.set_attr('strategy', 'latency')
-
-    def function_cpp(self,iFirst=False):
-        params = self._default_function_params()
-        params['strategy'] = self.get_attr('strategy')
-        params['data_format'] = 'cf' if self.get_attr('data_format') == 'channels_first' else 'cl'
-        params['w'] = self.get_weights('weight').name
-        params['b'] = self.get_weights('bias').name
-        header=''
-        if self.model.config.get_config_value('IOType') == 'io_serial':
-            if iFirst:
-                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
-            else:
-                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
-        return [header+self._function_template.format(**params)]
-
-    def config_cpp(self):
-        params = self._default_config_params()
-        if self.get_attr('data_format') == 'channels_last':
-            params['in_height'] = self.get_input_variable().dim_names[0]
-            params['in_width'] = self.get_input_variable().dim_names[1]
-            params['n_chan'] = self.get_input_variable().dim_names[2]+'-1'
-            params['n_chan_in'] = self.get_input_variable().dim_names[2]
-            params['out_height'] = self.get_output_variable().dim_names[0]
-            params['out_width'] = self.get_output_variable().dim_names[1]
-            params['n_filt'] = self.get_output_variable().dim_names[2]+'-1'
-            params['n_filt_in'] = self.get_output_variable().dim_names[2]
-        else:
-            params['n_chan'] = self.get_input_variable().dim_names[0]+'-1'
-            params['n_chan_in'] = self.get_input_variable().dim_names[0]
-            params['in_height'] = self.get_input_variable().dim_names[1]
-            params['in_width'] = self.get_input_variable().dim_names[2]
-            params['n_filt'] = self.get_output_variable().dim_names[0]+'-1'
-            params['n_filt_in'] = self.get_output_variable().dim_names[0]
-            params['out_height'] = self.get_output_variable().dim_names[1]
-            params['out_width'] = self.get_output_variable().dim_names[2]
-        params['dilation'] = self.get_attr('dilation', 1)
-        params['nzeros'] = self.get_weights('weight').nzeros
-        params['config_t'] = 'std::nullptr_t'
-
-        if self.model.config.is_resource_strategy(self):
-            mult_params = self._default_config_params()
-            mult_params['reuse'] = params['reuse']
-            mult_params['n_in'] = self.get_attr('n_chan') * self.get_attr('filt_height') * self.get_attr('filt_width')
-            mult_params['n_out'] = self.get_attr('n_filt')
-            mult_config = self._config_template[1].format(**mult_params)
-
-            relu_params = self._default_config_params()
-            relu_params['n_in'] = self.get_attr('n_filt') 
-            relu_params['n_out'] = self.get_attr('n_filt') 
-            relu_config = self._config_template[2].format(**relu_params)
-
-            return relu_config + '\n' + mult_config + '\n' + conv_config
-        else:
-            return self._config_template[0].format(**params)
-
-
-        if self.model.config.is_resource_strategy(self):
-            params['config_t_relu'] = 'config{}_relu'.format(self.index)
-            conv_config = self._config_template[0].format(**params)
-
-            relu_params = self._default_config_params()
-            relu_params['n_in'] = self.get_attr('n_filt') 
-            relu_config = self._config_template[1].format(**relu_params)
-
-            return relu_config + '\n' + conv_config
-        else:
-            return self._config_template[0].format(**params)
-
-    def print_tcl(self):
-        params = self._default_tcl_params()
-        params['n_chan_in'] =  self.get_input_variable().dim_names[0]
-        params['n_filt_in'] = self.get_output_variable().dim_names[0]
-        params['n_weights']=self.get_weights('weight').data_length
-        params['weights']=self.get_weights('weight').name
-        if self.is1x1:
-            params['1x1'] = '_1x1'
-        return self._tcl_template.format(**params)
 
 class Pooling1D(Layer):
     def initialize(self):
@@ -1545,7 +1473,7 @@ class BatchNormalization(Layer):
 
     def print_tcl(self):
         params = self._default_tcl_params()
-        params['n_in'] = self.get_input_variable().size_cpp_cpp()
+        params['n_in'] = self.get_input_variable().size_cpp_cnn()
         params['scale'] = self.get_weights('scale').name
         params['bias'] = self.get_weights('bias').name
         return self._tcl_template.format(**params)
@@ -1814,7 +1742,6 @@ layer_map = {
     'TernaryDense'       : Dense,
     'Conv1D'             : Conv1D,
     'Conv2D'             : Conv2D,
-    'Conv2DMerge'        : Conv2DMerge,
     'BinaryConv2D'       : Conv2D,
     'UpSampling2D'       : UpSampling2D,
     'BatchNormalization' : BatchNormalization,
