@@ -73,6 +73,246 @@ class VivadoWriter(Writer):
             copyfile(srcpath + h, dstpath + h)
 
 
+    def galapagos_to_hls4ml_bridge(self, bridge_file, bridge_wrapper_file, width, galapagos_flit_width=64, hls4ml_channel_width=1):
+        
+        bridge_name = '_hls4ml_galapagos_input_bridge_' + str(width)
+        bridge_file.write("template <class INPUT_T>\n")
+        bridge_file.write("void " + bridge_name + "(galapagos_interface * bridge_in, hls::stream<INPUT_T > input[" + str(width) + "]){\n")
+        bridge_file.write("\tgalapagos_packet gp_in;\n") 
+        bridge_file.write("\tINPUT_T data;\n")
+
+        bridge_wrapper_name = 'hls4ml_galapagos_input_bridge_' + str(width)
+        bridge_wrapper_file.write("void " + bridge_wrapper_name + "(galapagos_interface * bridge_in, hls::stream<ap_uint<" + str(8/hls4ml_channel_width) + "> > input[" + str(width) + "]){\n")
+        bridge_wrapper_file.write("#pragma HLS INTERFACE axis register both port=bridge_in\n")
+        bridge_wrapper_file.write("#pragma HLS INTERFACE axis register both port=input\n")
+        bridge_wrapper_file.write("#pragma HLS array_partition variable=input\n")
+        bridge_wrapper_file.write("#pragma HLS INTERFACE ap_ctrl_none port=return\n")
+        bridge_wrapper_file.write("\t" + bridge_name + "<ap_uint<" + str(8/hls4ml_channel_width) + "> >(bridge_in,  input);\n")
+        bridge_wrapper_file.write("}\n\n")
+
+
+
+        #more than one input fits within a single galapagos flit
+        #assuming divisible
+        if(width < galapagos_flit_width/hls4ml_channel_width):
+            bridge_file.write("\tap_uint<32> size;")
+            bridge_file.write("\tgp_in = bridge_in->read();\n") 
+            bridge_file.write("\tsize.range() = gp_in.data.range(31,0);\n")
+            bridge_file.write("\tfor(int i=0; i<size; i++){\n")
+            bridge_file.write("#pragma HLS pipeline II=1\n")
+            bridge_file.write("\t\tint offset = 32+i * " + str(width) + " * 8;\n")
+            for i in range (0, width):
+                #bridge_file.write("\t\tdata.range() = gp_in.data.range(" +  str(i) + "*8 + offset + 7, " + str(i) + "*8 + offset);\n")
+                #bridge_file.write("\t\tinput[" + str(i) + "].write(data.range());\n")
+                bridge_file.write("\t\tinput[" + str(i) + "].write(gp_in.data.range(" +  str(i) + "*8 + offset + 7, " + str(i) + "*8 + offset));\n")
+
+            bridge_file.write("\t}\n")
+        
+        #can't fit more than one input in a single flit, hence don't need size 
+        else:
+            for i in range(0, width - 1, galapagos_flit_width/hls4ml_channel_width):
+                bridge_file.write("\tgp_in = bridge_in->read();\n") 
+                for j in range(0, galapagos_flit_width/hls4ml_channel_width):
+                    bridge_file.write("\tdata.range() = gp_in.data(" +  str(j*8 + 7) + ", " + str(j*8) + ");\n")
+                    bridge_file.write("\tinput[" + str(i+j) + "].write(data.range());\n")
+                bridge_file.write("\n")
+            inputs_in_last_flit = width % galapagos_flit_width/hls4ml_channel_width
+            if inputs_in_last_flit > 0:
+                bridge_file.write("\tgp_in = bridge_in->read();\n") 
+
+
+            for i in range(0,  (inputs_in_last_flit)):
+                bridge_file.write("\tdata.range() = gp_in.data(" +  str(i*8+ 7) +  ", " + str(i*8) + ");\n")
+                bridge_file.write("\tinput[" + str(width - inputs_in_last_flit + i) + "].write(data.range());\n")
+
+
+        bridge_file.write("}\n\n\n")
+
+    def hls4ml_to_galapagos_bridge(self, bridge_file, bridge_wrapper_file, width, galapagos_flit_width=64, hls4ml_channel_width=1):
+        
+        bridge_name = '_hls4ml_galapagos_output_bridge_' + str(width)
+        bridge_file.write("template < class OUTPUT_T>\n")
+        bridge_file.write("void " + bridge_name + "(ap_uint<32> size, galapagos_interface * bridge_output, hls::stream<OUTPUT_T > output[ " + str(width) + "], const ap_uint <8> dest){\n")
+        bridge_file.write("\tgalapagos_packet gp_out;\n") 
+        bridge_file.write("\tgp_out.dest = dest;\n")
+        
+        if(width <= galapagos_flit_width/hls4ml_channel_width):
+            bridge_file.write("\tgp_out.last = 1;\n") 
+        else:
+            bridge_file.write("\tgp_out.last = 0;\n") 
+
+        bridge_wrapper_name = 'hls4ml_galapagos_output_bridge_' + str(width)
+        bridge_wrapper_file.write("void " + bridge_wrapper_name + "(ap_uint<16> size, hls::stream<ap_uint<" + 
+                                    str(8/hls4ml_channel_width) + "> > output[" + str(width) + 
+                                    "], galapagos_interface * bridge_output, const ap_uint<8> dest){\n")
+        bridge_wrapper_file.write("#pragma HLS INTERFACE axis register both port=bridge_output\n")
+        bridge_wrapper_file.write("#pragma HLS INTERFACE axis register both port=output\n")
+        bridge_wrapper_file.write("#pragma HLS array_partition variable=output\n")
+        bridge_wrapper_file.write("#pragma HLS INTERFACE ap_ctrl_none port=dest\n")
+        bridge_wrapper_file.write("#pragma HLS INTERFACE ap_ctrl_none port=size\n")
+        bridge_wrapper_file.write("#pragma HLS INTERFACE ap_ctrl_none port=return\n")
+        bridge_wrapper_file.write("\t" + bridge_name + "<ap_uint<" + str(8/hls4ml_channel_width) + "> >(size, bridge_output,  output, dest);\n")
+        bridge_wrapper_file.write("}\n\n") #ending function
+        
+        #more than one input fits within a single galapagos flit
+        #assuming divisible
+        if(width < galapagos_flit_width/hls4ml_channel_width):
+            
+            bridge_file.write("\tgp_out.last = 1;\n") 
+            bridge_file.write("\tgp_out.data.range(31,0) = size;\n")
+            bridge_file.write("\tgp_out.data = gp_out.data & 0x0ffff;\n")
+            bridge_file.write("\tfor(int i=0; i<size; i++){\n")
+            bridge_file.write("#pragma HLS pipeline II=1\n")
+            bridge_file.write("\t\tint offset = 32 * i*4*8;\n")
+            bridge_file.write("\t\toffset = 32+i * " + str(width) + " * 8;\n")
+            bridge_file.write("\t\tOUTPUT_T data;\n")
+            for i in range (0, width):
+                bridge_file.write("\t\tdata.range() = output[" + str(i) +"].read();\n")
+                bridge_file.write("\t\tgp_out.data.range(" +  str(i) + "*8 + offset + 7, " + str(i) + "*8 + offset) = data.range();\n")
+            
+            bridge_file.write("\t}\n") #ending loop
+
+        #can't fit more than one output in a single flit, hence don't need size 
+        else:
+            #for i in range(0, width + galapagos_flit_width/hls4ml_channel_width, galapagos_flit_width/hls4ml_channel_width):
+            for i in range(0, width - 1,  galapagos_flit_width/hls4ml_channel_width):
+                for j in range(0, galapagos_flit_width/hls4ml_channel_width):
+                    bridge_file.write("\tif(!output[" + str(i+j) + "].empty()){\n")
+                    bridge_file.write("\t\tOUTPUT_T data;\n")
+                    bridge_file.write("\t\tdata.range() = output[" + str(i + j) +"].read();\n")
+                    bridge_file.write("\t\tgp_out.data.range(" +  str((j) *8 + 7) + ", " + str((j) *8 ) + ") = data.range();\n")
+                    bridge_file.write("\t}\n") #ending if
+                bridge_file.write("\tbridge_output->write(gp_out);\n\n")
+                
+
+            outputs_in_last_flit = width % galapagos_flit_width/hls4ml_channel_width
+            bridge_file.write("\tgp_out.last = 1;\n")
+            for i in range(0, outputs_in_last_flit):
+                bridge_file.write("\tOUTPUT_T data;\n")
+                bridge_file.write("\tdata.range() = output[" + str(width - outputs_in_last_flit + i) + "].read().range();\n")
+                bridge_file.write("\tgp_out.data.range(" +  str(i*8 + 7) + ", " + str(i *8) + ") = data.range();\n")
+            bridge_file.write("\tbridge_output->write(gp_out);\n")
+
+
+        bridge_file.write("}\n\n\n") #ending function
+
+
+
+
+    def write_bridges(self, model, fpga_part="xczu19eg-ffvc1760-2-i"):
+
+        print("writing bridges") 
+        if not os.path.isdir("{}/firmware/ips/include".format(model.config.get_output_dir())):
+            os.makedirs("{}/firmware/ips/include".format(model.config.get_output_dir()))
+
+        if not os.path.isdir("{}/firmware/ips/srcs".format(model.config.get_output_dir())):
+            os.makedirs("{}/firmware/ips/srcs".format(model.config.get_output_dir()))
+        
+        if not os.path.isdir("{}/firmware/ips/galapagos_bridges".format(model.config.get_output_dir())):
+            os.makedirs("{}/firmware/ips/galapagos_bridges".format(model.config.get_output_dir()))
+        
+        
+        bridge_file = open("{}/firmware/ips/include/_galapagos_bridge.hpp".format(model.config.get_output_dir()),"w")
+        bridge_file.write("#ifndef GALAPAGOS_BRIDGE_HPP\n")
+        bridge_file.write("#include \"packet_size.h\"\n")
+        bridge_file.write("#ifdef CPU\n")
+        bridge_file.write("#include \"galapagos_interface.hpp\"\n")
+        bridge_file.write("#else\n")
+        bridge_file.write("#include \"galapagos_packet.h\"\n")
+        bridge_file.write("#endif\n\n\n")
+
+        bridge_wrapper_file = open("{}/firmware/ips/srcs/galapagos_bridge.cpp".format(model.config.get_output_dir()),"w")
+        bridge_wrapper_file.write("#include \"_galapagos_bridge.hpp\"\n\n")
+        
+        bridge_tcl_file = open("{}/firmware/ips/galapagos_bridges/synth.tcl".format(model.config.get_output_dir()),"w")
+        bridge_tcl_file.write("set curDir [pwd]\n")
+        bridge_tcl_file.write("set bridge_name [lindex $argv 0]\n")
+        bridge_tcl_file.write("set galapagos_dir [lindex $argv 1]\n")
+        bridge_tcl_file.write("set libGalapagos_dir [lindex $argv 2]\n")
+        bridge_tcl_file.write("set prefix_name [lindex $argv 3]\n")
+        bridge_tcl_file.write("cd $galapagos_dir/userIP/hls_projects\n")
+        bridge_tcl_file.write("open_project $bridge_name\n")
+        bridge_tcl_file.write("set_top $bridge_name\n")
+        bridge_tcl_file.write("open_solution \"solution1\"\n")
+        bridge_tcl_file.write("config_rtl -prefix $prefix_name\n")
+        bridge_tcl_file.write("set_part " + fpga_part + "\n")
+        bridge_tcl_file.write("catch {config_array_partition -maximum_size 4096}\n")
+        bridge_tcl_file.write("add_files $curDir/../srcs/galapagos_bridge.cpp -cflags \"-std=c++11 -I $curDir/$libGalapagos_dir -I $curDir/../include -DINTERFACE_100G\"\n")
+        bridge_tcl_file.write("create_clock -period 300MHz -name default\n")
+        bridge_tcl_file.write("csynth_design\n")
+        bridge_tcl_file.write("export_design -format ip_catalog\n")
+        bridge_tcl_file.write("close_project\n")
+
+        bridge_makefile_file = open("{}/firmware/ips/galapagos_bridges/Makefile".format(model.config.get_output_dir()),"w")
+
+        bridge_makefile_file.write("SUBDIRS := $(wildcard */.)\n")
+        bridge_makefile_file.write(".PHONY: all clean\n")
+        bridge_makefile_file.write("include ../common/include.mk\n")
+        bridge_makefile_file.write("SYNTH_ROOT =\".\"\n")
+        bridge_makefile_file.write("all: input_bridges output_bridges\n")
+
+
+        bridge_input_widths = []
+        bridge_output_widths = []
+
+        first_layer = True
+
+        for layer in model.get_layers():
+            if 'Input' in layer.__class__.__name__:
+                continue
+            if 'Activation' in layer.__class__.__name__:
+                continue
+            if 'Dense' in layer.__class__.__name__:
+                continue
+            if ('Conv2D' in layer.__class__.__name__) or ('Pooling' in layer.__class__.__name__) or ('Dense' in layer.__class__.__name__) or ('Split' in layer.__class__.__name__):
+            # make input bridge
+                input_width = layer.get_input_variable().shape[0] + 1
+                output_width = layer.get_output_variable().shape[0] + 1
+            elif ('Merge' in layer.__class__.__name__):
+                input_width =  layer.get_input_variable(layer.inputs[0]).shape[0] + 1
+                output_width = layer.get_output_variable().shape[0] + 1
+            print("writing bridge for layer:" + layer.__class__.__name__)
+            print("input width is " + str(input_width))
+            print("output width is " + str(output_width))
+            
+            #if we did not make a bridge for this width already, make a new one
+            if not(input_width in bridge_input_widths):
+                print("input bridge if")
+                self.galapagos_to_hls4ml_bridge(bridge_file, bridge_wrapper_file, input_width) 
+                bridge_input_widths.append(input_width) 
+
+            if not(output_width in bridge_output_widths):
+                print("output bridge if")
+                self.hls4ml_to_galapagos_bridge(bridge_file, bridge_wrapper_file, output_width) 
+                bridge_output_widths.append(output_width)
+
+            if first_layer == True and (not(input_width in bridge_output_widths)):
+                self.hls4ml_to_galapagos_bridge(bridge_file, bridge_wrapper_file, input_width) 
+                bridge_output_widths.append(input_width)
+                first_layer = False
+
+
+
+        bridge_file.write("#endif")
+        bridge_makefile_file.write("input_bridges:")
+        for input_width in bridge_input_widths:
+            bridge_makefile_file.write(" input_" + str(input_width))
+
+        bridge_makefile_file.write("\noutput_bridges:")
+        for output_width in bridge_output_widths:
+            bridge_makefile_file.write(" output_" + str(output_width))
+
+        bridge_makefile_file.write("\n\n")
+        for input_width in bridge_input_widths:
+            bridge_makefile_file.write("input_" + str(input_width) + ":\n")
+            bridge_makefile_file.write("\tmkdir -p ../hls_projects\n")
+            bridge_makefile_file.write("\tvivado_hls synth.tcl -tclargs hls4ml_galapagos_input_bridge_" + str(input_width) + " $(galapagos_dir) $(libGalapagos_dir) input_" + str(input_width) + "\n\n")
+        
+        for output_width in bridge_output_widths:
+            bridge_makefile_file.write("output_" + str(output_width) + ":\n")
+            bridge_makefile_file.write("\tmkdir -p ../hls_projects\n")
+            bridge_makefile_file.write("\tvivado_hls synth.tcl -tclargs hls4ml_galapagos_output_bridge_" + str(input_width) + " $(galapagos_dir) $(libGalapagos_dir) output_" + str(output_width) + "\n\n")
+
     def write_model_json(self, model):
 
 
@@ -165,13 +405,13 @@ class VivadoWriter(Writer):
                 data_format = ''
                 onexone = ''
                 strategy = ''
-                if(layer.get_attr("data_format") == 'channels_last'):
+                if not(layer.get_attr("data_format") == 'channels_first'):
                     data_format = '_cl'
                 if(layer.is1x1):
                     onexone = '_1x1'
                 if(layer.get_attr('strategy') != None):
                     strategy = "_" + layer.get_attr("strategy")
-                kernel_name = "conv_2d" + strategy + data_format + onexone
+                kernel_name = "conv_2d" + strategy + data_format + onexone + '_port'
                 input_ports = [{"name":"input", "width": layer.get_input_variable().shape[0] + 1}]
 
                 #print (layer_key)
@@ -194,7 +434,7 @@ class VivadoWriter(Writer):
                 data_format = ''
                 onexone = ''
                 strategy = ''
-                if(layer.get_attr("data_format") == 'channels_last'):
+                if not(layer.get_attr("data_format") == 'channels_first'):
                     data_format = '_cl'
                 if(layer.is1x1):
                     onexone = '_1x1'
@@ -238,6 +478,8 @@ class VivadoWriter(Writer):
                     output_ports = [{"name":"output", "width": layer.get_output_variable().shape[0] + 1, "dest": cpu_dest}]
             elif ('Split' in layer.__class__.__name__):
                 kernel_name = "nnet_split"
+                if(layer.get_input_variable(layer.inputs[0]).size_cnn() > 1000):
+                    kernel_name = kernel_name + '_mux'
                 input_ports = [{"name":"input", "width": layer.get_input_variable().shape[0] + 1}]
 
                 if not(tensor_map[layer.get_output_variable().name]['input'] == []):
@@ -269,6 +511,8 @@ class VivadoWriter(Writer):
 
             elif ('Merge' in layer.__class__.__name__):
                 kernel_name = str(layer.get_attr('op').lower())
+                if(layer.get_input_variable(layer.inputs[0]).size_cnn() > 1000):
+                    kernel_name = kernel_name + '_mux'
                 input_ports = [{"name":"input1", "width": layer.get_input_variable(layer.inputs[0]).shape[0] + 1},
                                {"name":"input2", "width": layer.get_input_variable(layer.inputs[1]).shape[1] + 1}
                                ]
@@ -492,9 +736,9 @@ class VivadoWriter(Writer):
                     newline += 'for(int i{} = 0; i{} < {}; i{}++) {{\n'.format(i0,i0,irange[i0],i0)
                 for i1 in range(len(irange)):
                     newline += indent
-                inputs=', '.join([i.name for i in model_inputs]) 
-                outputs=', '.join([i.name for i in model_outputs]) 
-                brams=', '.join([i.name for i in model_brams]) 
+                inputs=', '.join([i.name for i in model_inputs])
+                outputs=', '.join([i.name for i in model_outputs])
+                brams=', '.join([i.name for i in model_brams])
                 insize=', '.join(['const_size_in_{}'.format(i) for i in range(1, len(model_inputs) + 1)])
                 outsize=', '.join(['const_size_out_{}'.format(o) for o in range(1, len(model_outputs) + 1)])
                 newline += ('{}{}'.format(model.config.get_project_name(),serial))+'('+inputs+','+outputs+','+brams+','+insize+','+outsize+');\n'
@@ -645,7 +889,7 @@ class VivadoWriter(Writer):
 
                 input_vars = ','.join([i.cppname for i in model.get_input_variables()])
                 output_vars = ','.join([o.cppname for o in model.get_output_variables()])
-                bram_vars   =', '.join([i.name for i in model.get_bram_variables()]) 
+                bram_vars   =', '.join([i.name for i in model.get_bram_variables()])
                 top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
                 newline += top_level
             elif '//hls-fpga-machine-learning insert predictions' in line:
@@ -711,7 +955,7 @@ class VivadoWriter(Writer):
                     newline += input_str
                     shape=inp.shape
                     #add a for loop
-                    for i0 in range(len(shape)): 
+                    for i0 in range(len(shape)):
                         if i0 != len(shape)-1:
                             newline += indent + 'for(int i{} = 0; i{} < {}; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
                         else:
@@ -719,7 +963,7 @@ class VivadoWriter(Writer):
                     cl=inp.cl
                     val=0 if cl else 2
                     newline += indent + '  {}[i{}].write(in[index]);index++;\n'.format(inp.cppname,val)
-                    for i0 in range(len(shape)): 
+                    for i0 in range(len(shape)):
                         newline += indent + '}\n'
                 for out in model.get_output_variables():
                     output_str = '      ' + out.definition_cpp().replace('static','') + ';\n'
@@ -735,7 +979,7 @@ class VivadoWriter(Writer):
                     newline += input_str
                     shape=inp.shape
                     #add a for loop
-                    for i0 in range(len(shape)): 
+                    for i0 in range(len(shape)):
                         if i0 != len(shape)-1:
                             newline += indent + 'for(int i{} = 0; i{} < {}; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
                         else:
@@ -743,7 +987,7 @@ class VivadoWriter(Writer):
                     cl=inp.cl
                     val=0 if cl else 2
                     newline += indent + '  {}[i{}].write(pTest);\n'.format(inp.cppname,val)
-                    for i0 in range(len(shape)): 
+                    for i0 in range(len(shape)):
                         newline += indent + '}\n'
                 for out in model.get_output_variables():
                     output_str = '    ' + out.definition_cpp().replace('static','') + ';\n'
@@ -757,7 +1001,7 @@ class VivadoWriter(Writer):
 
                 input_vars = ','.join([i.cppname for i in model.get_input_variables()])
                 output_vars = ','.join([o.cppname for o in model.get_output_variables()])
-                bram_vars   =', '.join([i.name for i in model.get_bram_variables()]) 
+                bram_vars   =', '.join([i.name for i in model.get_bram_variables()])
                 top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
                 newline += top_level
             elif '//hls-fpga-machine-learning insert predictions' in line:
@@ -771,12 +1015,12 @@ class VivadoWriter(Writer):
                 newline = line
                 for out in model.get_output_variables():
                     shape=out.shape
-                    for i0 in range(len(shape)): 
+                    for i0 in range(len(shape)):
                         newline += indent + 'for(int i{} = 0; i{} < {}; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
                     cl=out.cl
                     val=2 if not cl and len(shape) > 1 else 0
                     newline += indent + '  fout << {}[i{}].read() << " ";\n'.format(out.cppname,val)
-                    for i0 in range(len(shape)): 
+                    for i0 in range(len(shape)):
                         newline += indent + '}\n'
                     newline += indent + 'fout << std::endl;\n'
             else:
@@ -864,6 +1108,7 @@ class VivadoWriter(Writer):
         self.write_build_script(model)
         self.write_nnet_utils(model)
         self.write_model_json(model)
+        self.write_bridges(model)
         self.write_tcl_dir(model)
         self.write_tar(model)
         print('Done')
