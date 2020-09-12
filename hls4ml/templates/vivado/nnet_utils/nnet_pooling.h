@@ -185,7 +185,14 @@ template<class data_T, class res_T, typename CONFIG_T>
       pX = pX+1;
       if(pX == CONFIG_T::n_in+CONFIG_T::pad_right) { 
 	pX = 0;
-	for(int i1 = 0; i1 < CONFIG_T::pad_left; i1++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
+	for(int i1 = 0; i1 < CONFIG_T::pad_left; i1++){
+    for(int iX = 0; iX < CONFIG_T::pad_left; iX++) { 
+      for(int i0 = 0; i0 < CONFIG_T::n_chan_in; i0++) {
+	      data_T tmp = 0;
+	      layer_in_row[i0].shift(0,tmp);
+      }
+    }
+  };
       }
     }
 }
