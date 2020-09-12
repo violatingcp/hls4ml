@@ -1238,7 +1238,7 @@ class Pooling1D(Layer):
             shape = [self.attributes['n_filt'], self.attributes['n_out']]
             dims = ['N_FILT_{}'.format(self.index), 'N_OUTPUTS_{}'.format(self.index)]
 
-        depth=(self.attributes['pad_right']+2)
+        depth=1
         print("adding :",shape,dims)
         self.add_output_variable(shape, dims, cl = cl, depth=depth)
         self.set_attr('pool_op', self.get_attr('class_name').split('Pooling')[0])
@@ -1262,20 +1262,20 @@ class Pooling1D(Layer):
 
     def config_cpp(self):
         params = self._default_config_params()
-
-        params['n_in'] = self.get_input_variable().size_cpp()
-        params['n_out'] = self.get_output_variable().size_cpp()
+        input_dims = self.get_input_variable().dim_names
 
         if self.get_attr('data_format') == 'channels_last':
-            params['n_chan'] =  self.get_input_variable().dim_names[1] + '-1'
-            params['n_chan_in'] =  self.get_input_variable().dim_names[1]
-            params['n_filt'] = self.get_output_variable().dim_names[1] + '-1'
-            params['n_filt_in'] = self.get_output_variable().dim_names[1]
+            params['n_in'] = '*'.join([str(k) for k in input_dims[:-1]])
+            params['n_chan'] =  input_dims[1] + '-1'
+            params['n_chan_in'] =  input_dims[1]
         else:
-            params['n_chan'] =  self.get_input_variable().dim_names[0] + '-1'
-            params['n_chan_in'] =  self.get_input_variable().dim_names[0]
-            params['n_filt'] = self.get_output_variable().dim_names[0] + '-1'
-            params['n_filt_in'] = self.get_output_variable().dim_names[0]
+            params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
+            params['n_chan'] =  sinput_dims[0] + '-1'
+            params['n_chan_in'] =  input_dims[0]
+
+        params['n_filt_in'] = 'N_FILT_{}'.format(self.index)
+        params['n_filt'] = 'N_FILT_{}-1'.format(self.index)
+        params['n_out'] = 'N_OUTPUTS_{}'.format(self.index)
 
         return self._config_template.format(**params)
 
