@@ -118,7 +118,7 @@ template<class data_T, class res_T, typename CONFIG_T>
     const static int lShiftX = CONFIG_T::pool_size-CONFIG_T::pad_left-1;
     const static int rowsize = (CONFIG_T::n_in+CONFIG_T::pad_left+CONFIG_T::pad_right);
 
-    static ap_shift_reg<data_T, rowsize> layer_in_row[0][CONFIG_T::n_filt];
+    static ap_shift_reg<data_T, (CONFIG_T::filt_width)> layer_in_row[CONFIG_T::n_chan];
     #pragma HLS ARRAY_RESHAPE variable=layer_in_row complete dim=2
 
     static data_T layer_in[CONFIG_T::pool_size*CONFIG_T::n_filt];
@@ -134,13 +134,17 @@ template<class data_T, class res_T, typename CONFIG_T>
       data_T pTmp = data[i0+1].read();
       tmpdata[i0] = pTmp;
     }
+
     static res_T  pReset = 0;
+
     if(iReset==0) { 
       pX = 0; 
       pReset = 0;
       for(int i0 = 0; i0 < CONFIG_T::pad_left; i0++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
     }
+
     nnet::cnnshift<data_T,res_T,CONFIG_T>(tmpdata,layer_in_row,layer_in);
+    
     //Processs signal
     unsigned pLoop = 1;
     if(pX == CONFIG_T::n_in-1) pLoop = CONFIG_T::pad_right+1;
