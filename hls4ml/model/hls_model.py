@@ -1270,7 +1270,7 @@ class Pooling1D(Layer):
             params['n_chan_in'] =  input_dims[1]
         else:
             params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
-            params['n_chan'] =  sinput_dims[0] + '-1'
+            params['n_chan'] =  input_dims[0] + '-1'
             params['n_chan_in'] =  input_dims[0]
 
         params['n_filt_in'] = 'N_FILT_{}'.format(self.index)
