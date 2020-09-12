@@ -140,16 +140,33 @@ template<class data_T, class res_T, typename CONFIG_T>
     if(iReset==0) { 
       pX = 0; 
       pReset = 0;
-      for(int i0 = 0; i0 < CONFIG_T::pad_left; i0++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
+      
+      for(int iX = 0; iX < CONFIG_T::pad_left; iX++) { 
+        for(int i0 = 0; i0 < CONFIG_T::n_chan_in; i0++) {
+          data_T tmp = 0;
+          layer_in_row[i0].shift(0,tmp);
+          }
+        }
     }
 
-    nnet::cnnshift<data_T,res_T,CONFIG_T>(tmpdata,layer_in_row,layer_in);
+    for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
+    #pragma HLS UNROLL
+    data_T tmp = data[i0+1].read();
+    layer_in_row[i0].shift(0,tmp);
+    }
     
     //Processs signal
     unsigned pLoop = 1;
     if(pX == CONFIG_T::n_in-1) pLoop = CONFIG_T::pad_right+1;
     for(int i0 = 0; i0 < pLoop; i0++) { 
-      if(i0 > 0) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in); 
+      if(i0 > 0) {
+        for(int iX = 0; iX < CONFIG_T::pad_left; iX++) { 
+          for(int i0 = 0; i0 < CONFIG_T::n_chan_in; i0++) {
+	          data_T tmp = 0;
+	          layer_in_row[i0].shift(0,tmp);
+          }
+        }
+      }
       if((pX+1) % CONFIG_T::stride == 0 && pX > lShiftX-1) { 
 	res_T pId = pReset;
 	if(pReset == 0) pReset = 1;
