@@ -154,14 +154,12 @@ activ_config_template = """struct {type}_config{index} : nnet::activ_config {{
 
 pooling1d_config_template = """struct config{index} : nnet::pooling1d_config {{
     static const unsigned n_in = {n_in};
-    static const unsigned in_width = {n_in};
     static const unsigned n_filt = {n_filt};
     static const unsigned n_chan = {n_chan};
     static const unsigned n_filt_in = {n_filt_in};
     static const unsigned n_chan_in = {n_chan_in};
     static const unsigned stride = {stride};
     static const unsigned pool_size = {pool_size};
-    static const unsigned filt_size = {pool_size};
     static const unsigned n_out = {n_out};
     static const unsigned pad_left = {pad_left};
     static const unsigned pad_right = {pad_right};

@@ -86,8 +86,8 @@ T pad_val(){
 struct pooling1d_config{
   // IO size
   static const unsigned n_in = 10;
-  static const unsigned n_filt = 4;
-  static const unsigned stride = 1;
+  static const unsigned n_filt = 2;
+  static const unsigned stride = 2;
   static const unsigned pool_size = 2;
   static const unsigned n_out = n_in / pool_size;
   static const unsigned pad_left = 0;
@@ -145,14 +145,14 @@ template<class data_T, class res_T, typename CONFIG_T>
         for(int i0 = 0; i0 < CONFIG_T::n_chan_in; i0++) {
           data_T tmp = 0;
           layer_in_row[i0].shift(0,tmp);
-          }
         }
+      }
     }
 
     for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
-    #pragma HLS UNROLL
-    data_T tmp = data[i0+1].read();
-    layer_in_row[i0].shift(0,tmp);
+      #pragma HLS UNROLL
+      data_T tmp = data[i0+1].read();
+      layer_in_row[i0].shift(0,tmp);
     }
     
     //Processs signal
@@ -168,33 +168,35 @@ template<class data_T, class res_T, typename CONFIG_T>
         }
       }
       if((pX+1) % CONFIG_T::stride == 0 && pX > lShiftX-1) { 
-	res_T pId = pReset;
-	if(pReset == 0) pReset = 1;
-	res[0].write(pId);
-	for(unsigned i1 = 0; i1 < CONFIG_T::n_filt; i1++) { 
-         #pragma HLS UNROLL
- 	 data_T pool[CONFIG_T::pool_size];
-         #pragma HLS ARRAY_RESHAPE variable=pool complete dim=0
-         for(unsigned i2 = 0; i2 < CONFIG_T::pool_size; i2++) { 
-          #pragma HLS UNROLL
-	  pool[i2] = layer_in[i1*CONFIG_T::n_filt+i1];
- 	 }
-	 res[i1+1].write(pool_op<data_T, CONFIG_T::pool_size, CONFIG_T::pool_op>(pool));
-	}				       
+	    res_T pId = pReset;
+	    if(pReset == 0) pReset = 1;
+	    res[0].write(pId);
+	    for(unsigned i1 = 0; i1 < CONFIG_T::n_filt; i1++) { 
+
+        #pragma HLS UNROLL
+ 	      data_T pool[CONFIG_T::pool_size];
+        #pragma HLS ARRAY_RESHAPE variable=pool complete dim=0
+
+        for(unsigned i2 = 0; i2 < CONFIG_T::pool_size; i2++) { 
+        #pragma HLS UNROLL
+	      pool[i2] = layer_in[i1*CONFIG_T::n_filt+i1];
+ 	      }
+	      res[i1+1].write(pool_op<data_T, CONFIG_T::pool_size, CONFIG_T::pool_op>(pool));
+	    }				       
       }
       pX = pX+1;
       if(pX == CONFIG_T::n_in+CONFIG_T::pad_right) { 
-	pX = 0;
-	for(int i1 = 0; i1 < CONFIG_T::pad_left; i1++){
-    for(int iX = 0; iX < CONFIG_T::pad_left; iX++) { 
-      for(int i0 = 0; i0 < CONFIG_T::n_chan_in; i0++) {
-	      data_T tmp = 0;
-	      layer_in_row[i0].shift(0,tmp);
-      }
+	    pX = 0;
+	    for(int i1 = 0; i1 < CONFIG_T::pad_left; i1++){
+        for(int iX = 0; iX < CONFIG_T::pad_left; iX++) { 
+          for(int i0 = 0; i0 < CONFIG_T::n_chan_in; i0++) {
+	          data_T tmp = 0;
+	          layer_in_row[i0].shift(0,tmp);
+          }
+        }
+      };
     }
-  };
-      }
-    }
+  }
 }
 
 struct pooling2d_config{
