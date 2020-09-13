@@ -137,7 +137,7 @@ template<class data_T, class res_T, typename CONFIG_T>
 
     static res_T  pReset = 0;
 
-    if(iReset==0) { 
+    if(iReset==0) {
       pX = 0; 
       pReset = 0;
       
@@ -160,41 +160,37 @@ template<class data_T, class res_T, typename CONFIG_T>
     if(pX == CONFIG_T::n_in-1) pLoop = CONFIG_T::pad_right+1;
     for(int i0 = 0; i0 < pLoop; i0++) { 
       if(i0 > 0) {
-        for(int iX = 0; iX < CONFIG_T::pad_left; iX++) { 
           for(int i0 = 0; i0 < CONFIG_T::n_chan_in; i0++) {
 	          data_T tmp = 0;
 	          layer_in_row[i0].shift(0,tmp);
           }
-        }
       }
       if((pX+1) % CONFIG_T::stride == 0 && pX > lShiftX-1) { 
-	    res_T pId = pReset;
-	    if(pReset == 0) pReset = 1;
-	    res[0].write(pId);
-	    for(unsigned i1 = 0; i1 < CONFIG_T::n_filt; i1++) { 
+        res_T pId = pReset;
+        if(pReset == 0) pReset = 1;
+        res[0].write(pId);
+        for(unsigned i1 = 0; i1 < CONFIG_T::n_filt; i1++) { 
 
-        #pragma HLS UNROLL
- 	      data_T pool[CONFIG_T::pool_size];
-        #pragma HLS ARRAY_RESHAPE variable=pool complete dim=0
+          #pragma HLS UNROLL
+          data_T pool[CONFIG_T::pool_size];
+          #pragma HLS ARRAY_RESHAPE variable=pool complete dim=0
 
-        for(unsigned i2 = 0; i2 < CONFIG_T::pool_size; i2++) { 
-        #pragma HLS UNROLL
-	      pool[i2] = layer_in[i1*CONFIG_T::n_filt+i1];
- 	      }
-	      res[i1+1].write(pool_op<data_T, CONFIG_T::pool_size, CONFIG_T::pool_op>(pool));
-	    }				       
+          for(unsigned i2 = 0; i2 < CONFIG_T::pool_size; i2++) { 
+          #pragma HLS UNROLL
+          pool[i2] = layer_in[i1*CONFIG_T::n_filt+i1];
+          }
+          res[i1+1].write(pool_op<data_T, CONFIG_T::pool_size, CONFIG_T::pool_op>(pool));
+	      }				       
       }
       pX = pX+1;
-      if(pX == CONFIG_T::n_in+CONFIG_T::pad_right) { 
+      if(pX == CONFIG_T::n_in+CONFIG_T::pad_right) {
 	    pX = 0;
-	    for(int i1 = 0; i1 < CONFIG_T::pad_left; i1++){
-        for(int iX = 0; iX < CONFIG_T::pad_left; iX++) { 
-          for(int i0 = 0; i0 < CONFIG_T::n_chan_in; i0++) {
-	          data_T tmp = 0;
-	          layer_in_row[i0].shift(0,tmp);
-          }
+      for(int i1 = 0; i1 < CONFIG_T::pad_left; i1++) { 
+        for(int i0 = 0; i0 < CONFIG_T::n_chan_in; i0++) {
+          data_T tmp = 0;
+          layer_in_row[i0].shift(0,tmp);
         }
-      };
+      }
     }
   }
 }
