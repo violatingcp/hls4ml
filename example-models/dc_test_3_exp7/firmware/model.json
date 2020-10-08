@@ -1,0 +1,91 @@
+{
+    "ips": [
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 6
+                }
+            ],
+            "inst": "layer8",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "dest": 0,
+                    "name": "output",
+                    "width": 4
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 29
+                }
+            ],
+            "inst": "layer2",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "dest": 0,
+                    "name": "output",
+                    "width": 27
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 27
+                }
+            ],
+            "inst": "layer4",
+            "kernel": "pooling2d_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer5",
+                    "output_port": "input",
+                    "width": 14
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 14
+                }
+            ],
+            "inst": "layer5",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "dest": 0,
+                    "name": "output",
+                    "width": 12
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 12
+                }
+            ],
+            "inst": "layer7",
+            "kernel": "pooling2d_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer8",
+                    "output_port": "input",
+                    "width": 6
+                }
+            ]
+        }
+    ]
+}
