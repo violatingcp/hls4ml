@@ -156,10 +156,10 @@ struct config4_mult : nnet::dense_config {
 };
 
 struct config4 : nnet::conv2d_config {
-    static const unsigned pad_top     = 2;//2
-    static const unsigned pad_bottom  = 2;//2;
-    static const unsigned pad_left    = 2;//2
-    static const unsigned pad_right   = 2;//2
+  static const unsigned pad_top     = 2;//2
+  static const unsigned pad_bottom  = 2;//2;
+  static const unsigned pad_left    = 2;//2
+  static const unsigned pad_right   = 2;//2
     static const unsigned in_height = OUT_HEIGHT_2;
     static const unsigned in_width = OUT_WIDTH_2;
     static const unsigned n_chan = N_CHANNEL_2-1;
@@ -172,7 +172,7 @@ struct config4 : nnet::conv2d_config {
     static const unsigned stride_width = 1;
     static const unsigned out_height = OUT_HEIGHT_4;
     static const unsigned out_width = OUT_WIDTH_4;
-    static const unsigned reuse_factor = 25;
+    static const unsigned reuse_factor = 5;
     static const unsigned n_zeros = 0;
     static const bool store_weights_in_bram = false;
     typedef ap_fixed<16,6> accum_t;
@@ -239,7 +239,7 @@ struct config9 : nnet::conv2d_config {
     static const unsigned stride_width = 1;
     static const unsigned out_height = OUT_HEIGHT_9;
     static const unsigned out_width = OUT_WIDTH_9;
-    static const unsigned reuse_factor = 72;
+    static const unsigned reuse_factor = 18;
     static const unsigned n_zeros = 0;
     static const bool store_weights_in_bram = false;
     typedef ap_fixed<16,6> accum_t;

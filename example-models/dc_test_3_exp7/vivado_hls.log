@@ -6,16 +6,16 @@
 
 source /opt/local/Xilinx/Vivado/2019.1/scripts/vivado_hls/hls.tcl -notrace
 INFO: [HLS 200-10] Running '/opt/local/Xilinx/Vivado/2019.1/bin/unwrapped/lnx64.o/vivado_hls'
-INFO: [HLS 200-10] For user 'pharris' on host 'correlator3.fnal.gov' (Linux_x86_64 version 3.10.0-1127.8.2.el7.x86_64) on Mon Sep 14 23:16:32 CDT 2020
+INFO: [HLS 200-10] For user 'pharris' on host 'correlator3.fnal.gov' (Linux_x86_64 version 3.10.0-1127.8.2.el7.x86_64) on Thu Oct 08 18:45:51 CDT 2020
 INFO: [HLS 200-10] On os "Scientific Linux release 7.8 (Nitrogen)"
 INFO: [HLS 200-10] In directory '/home/pharris/aigean/hls4ml/example-models/dc_test_3_exp7'
 Sourcing Tcl script 'build_prj.tcl'
-INFO: [HLS 200-10] Opening and resetting project '/home/pharris/aigean/hls4ml/example-models/dc_test_3_exp7/myproject_prj'.
+INFO: [HLS 200-10] Creating and opening project '/home/pharris/aigean/hls4ml/example-models/dc_test_3_exp7/myproject_prj'.
 INFO: [HLS 200-10] Adding design file 'firmware/myproject.cpp' to the project
 INFO: [HLS 200-10] Adding test bench file 'myproject_test.cpp' to the project
 INFO: [HLS 200-10] Adding test bench file 'firmware/weights' to the project
 INFO: [HLS 200-10] Adding test bench file 'tb_data' to the project
-INFO: [HLS 200-10] Opening and resetting solution '/home/pharris/aigean/hls4ml/example-models/dc_test_3_exp7/myproject_prj/solution1'.
+INFO: [HLS 200-10] Creating and opening solution '/home/pharris/aigean/hls4ml/example-models/dc_test_3_exp7/myproject_prj/solution1'.
 INFO: [HLS 200-10] Cleaning up the solution database.
 INFO: [XFORM 203-101] Allowed max sub elements number after partition is 4096.
 INFO: [HLS 200-10] Setting target device to 'xcvu9p-flgb2104-2-i'
@@ -1860,7 +1860,7 @@ Layer  13 1 1 1 1 1 1 1 1 1 1 1
 INFO: Saved inference results to file: tb_data/csim_results.log
 INFO: [SIM 211-1] CSim done with 0 errors.
 INFO: [SIM 211-3] *************** CSIM finish ***************
-***** C SIMULATION COMPLETED IN 0h0m4s *****
+***** C SIMULATION COMPLETED IN 0h0m5s *****
 ***** C/RTL SYNTHESIS *****
 INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
 INFO: [HLS 200-10] Analyzing design file 'firmware/myproject.cpp' ... 
@@ -1871,8 +1871,8 @@ WARNING: [HLS 214-111] Static scalars and arrays declared inside a dataflow regi
 WARNING: [HLS 214-111] Static scalars and arrays declared inside a dataflow region will be treated like local variables: firmware/nnet_utils/nnet_conv2d_large.h:429:24
 WARNING: [HLS 214-111] Static scalars and arrays declared inside a dataflow region will be treated like local variables: firmware/myproject.cpp:75:31
 WARNING: [HLS 200-471] Dataflow form checks found 6 issue(s) in file firmware/myproject.cpp
-INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 920.668 ; gain = 132.129 ; free physical = 101241 ; free virtual = 252854
-INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 920.668 ; gain = 132.129 ; free physical = 101241 ; free virtual = 252854
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:00:22 ; elapsed = 00:00:24 . Memory (MB): peak = 920.668 ; gain = 132.129 ; free physical = 45980 ; free virtual = 244347
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:00:22 ; elapsed = 00:00:24 . Memory (MB): peak = 920.668 ; gain = 132.129 ; free physical = 45980 ; free virtual = 244347
 INFO: [HLS 200-10] Starting code transformations ...
 INFO: [HLS 200-489] Unrolling loop 'Loop-6' (firmware/nnet_utils/nnet_conv2d_large.h:318) in function 'void nnet::conv_2d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>(hls::stream<FORWARD_REFERENCE>*, hls::stream<FORWARD_REFERENCE>*, FORWARD_REFERENCE::weight_t*, FORWARD_REFERENCE::bias_t*)' completely with a factor of 1.
 INFO: [HLS 200-489] Unrolling loop 'Loop-2.1' (firmware/nnet_utils/nnet_conv2d_large.h:278) in function 'void nnet::cnnshiftzero<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config7>(ap_shift_reg<FORWARD_REFERENCE, ((FORWARD_REFERENCE::in_width) + (FORWARD_REFERENCE::pad_left)) + (FORWARD_REFERENCE::pad_right)> (*) [FORWARD_REFERENCE::n_chan], FORWARD_REFERENCE*)' completely with a factor of 1.
@@ -1881,7 +1881,7 @@ INFO: [HLS 200-489] Unrolling loop 'Loop-2.1' (firmware/nnet_utils/nnet_conv2d_l
 INFO: [HLS 200-489] Unrolling loop 'Loop-2.1' (firmware/nnet_utils/nnet_conv2d_large.h:252) in function 'void nnet::cnnshift<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4>(FORWARD_REFERENCE*, ap_shift_reg<FORWARD_REFERENCE, ((FORWARD_REFERENCE::in_width) + (FORWARD_REFERENCE::pad_left)) + (FORWARD_REFERENCE::pad_right)> (*) [FORWARD_REFERENCE::n_chan], FORWARD_REFERENCE*)' completely with a factor of 1.
 INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_conv2d_large.h:248) in function 'void nnet::cnnshift<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>(FORWARD_REFERENCE*, ap_shift_reg<FORWARD_REFERENCE, ((FORWARD_REFERENCE::in_width) + (FORWARD_REFERENCE::pad_left)) + (FORWARD_REFERENCE::pad_right)> (*) [FORWARD_REFERENCE::n_chan], FORWARD_REFERENCE*)' completely with a factor of 1.
 INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_conv2d_large.h:274) in function 'void nnet::cnnshiftzero<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>(ap_shift_reg<FORWARD_REFERENCE, ((FORWARD_REFERENCE::in_width) + (FORWARD_REFERENCE::pad_left)) + (FORWARD_REFERENCE::pad_right)> (*) [FORWARD_REFERENCE::n_chan], FORWARD_REFERENCE*)' completely with a factor of 1.
-INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:00:23 ; elapsed = 00:00:25 . Memory (MB): peak = 984.668 ; gain = 196.129 ; free physical = 101197 ; free virtual = 252815
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:00:25 ; elapsed = 00:00:27 . Memory (MB): peak = 984.668 ; gain = 196.129 ; free physical = 45935 ; free virtual = 244307
 INFO: [HLS 200-10] Checking synthesizability ...
 INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
 INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config3>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config3>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
@@ -1897,7 +1897,7 @@ INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q
 INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
 INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
 INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large.h:558) automatically.
-INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 984.668 ; gain = 196.129 ; free physical = 101190 ; free virtual = 252811
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:00:26 ; elapsed = 00:00:28 . Memory (MB): peak = 984.668 ; gain = 196.129 ; free physical = 45929 ; free virtual = 244303
 WARNING: [XFORM 203-505] Ignore pipeline pragma in Loop whose tripcount is only 1 (firmware/nnet_utils/nnet_conv2d_large.h:106) in function 'nnet::shift_right_small<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config7>'.
 WARNING: [XFORM 203-505] Ignore pipeline pragma in Loop whose tripcount is only 1 (firmware/nnet_utils/nnet_conv2d_large.h:106) in function 'nnet::shift_right_small<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4>'.
 INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'Loop-2' (firmware/nnet_utils/nnet_activation.h:267) in function 'nnet::softmax<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, softmax_config13>' for pipelining.
@@ -2124,3 +2124,35 @@ INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q
 INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
 INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_rf_leq_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large.h:101) automatically.
 INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large.h:558) automatically.
+INFO: [XFORM 203-721] Changing loop 'Loop_1_proc' (firmware/myproject.cpp:80) to a process function for dataflow in function 'myproject_in'.
+INFO: [XFORM 203-721] Changing loop 'Loop_2_proc' (firmware/myproject.cpp:83) to a process function for dataflow in function 'myproject_in'.
+INFO: [XFORM 203-721] Changing loop 'Loop_3_proc' (firmware/myproject.cpp:86) to a process function for dataflow in function 'myproject_in'.
+INFO: [XFORM 203-721] Changing loop 'Loop_4_proc' (firmware/myproject.cpp:89) to a process function for dataflow in function 'myproject_in'.
+INFO: [XFORM 203-721] Changing loop 'Loop_5_proc' (firmware/myproject.cpp:92) to a process function for dataflow in function 'myproject_in'.
+INFO: [XFORM 203-721] Changing loop 'Loop_6_proc' (firmware/myproject.cpp:95) to a process function for dataflow in function 'myproject_in'.
+INFO: [XFORM 203-721] Changing loop 'Loop_7_proc' (firmware/myproject.cpp:98) to a process function for dataflow in function 'myproject_in'.
+INFO: [XFORM 203-721] Changing loop 'Loop_8_proc' (firmware/myproject.cpp:101) to a process function for dataflow in function 'myproject_in'.
+INFO: [XFORM 203-721] Changing loop 'Loop_9_proc' (firmware/myproject.cpp:104) to a process function for dataflow in function 'myproject_in'.
+INFO: [XFORM 203-721] Changing loop 'Loop_10_proc' (firmware/myproject.cpp:107) to a process function for dataflow in function 'myproject_in'.
+ERROR: [XFORM 203-711] Internal global variable 'layer_in.V'  failed dataflow checking: it can only be read in one process function.
+WARNING: [XFORM 203-713] Internal global variable 'layer_in.V' has read and write operations in process function 'nnet::cnnshift<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>'.
+WARNING: [XFORM 203-713] Internal global variable 'layer_in.V' has read operations in process function 'nnet::conv_2d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>_Block_codeRepl1115_proc'.
+ERROR: [XFORM 203-711] Internal global variable 'layer_in.V.7'  failed dataflow checking: it can only be read in one process function.
+WARNING: [XFORM 203-713] Internal global variable 'layer_in.V.7' has read and write operations in process function 'nnet::cnnshift<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config5>'.
+WARNING: [XFORM 203-713] Internal global variable 'layer_in.V.7' has read operations in process function 'nnet::conv_2d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config5>_Block_codeRepl51115_proc'.
+ERROR: [XFORM 203-711] Internal global variable 'layer_in.V.6'  failed dataflow checking: it can only be read in one process function.
+WARNING: [XFORM 203-713] Internal global variable 'layer_in.V.6' has read and write operations in process function 'nnet::cnnshift<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>'.
+WARNING: [XFORM 203-713] Internal global variable 'layer_in.V.6' has read operations in process function 'nnet::conv_2d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>_Block_codeRepl51115_proc'.
+ERROR: [HLS 200-70] Pre-synthesis failed.
+command 'ap_source' returned error code
+    while executing
+"source build_prj.tcl"
+    invoked from within
+"hls::main build_prj.tcl"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel 1 hls::main {*}$args"
+    (procedure "hls_proc" line 5)
+    invoked from within
+"hls_proc $argv"
+INFO: [Common 17-206] Exiting vivado_hls at Thu Oct  8 18:46:31 2020...

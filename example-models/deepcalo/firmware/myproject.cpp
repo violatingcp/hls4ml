@@ -48,7 +48,7 @@
 
 void myproject_in(
 		  hls::stream<input_t>   em_barrel[N_INPUT_3_1],
-		  hls::stream<result_t>  layer54_out[N_LAYER_52],
+		  hls::stream<result_t>  layer25_out[N_FILT_22],
 		  model_weightdefault_t w27[73728],
 		  model_weightdefault_t w31[147456],
 		  model_weightdefault_t w36[294912],
@@ -57,7 +57,7 @@ void myproject_in(
 		  model_weightdefault_t w48[65536]
 ) {
 
-  #pragma HLS DATAFLOW
+
 #ifndef __SYNTHESIS__
     static bool loaded_weights = false;
     if (!loaded_weights) {
@@ -96,47 +96,50 @@ void myproject_in(
     }
 #endif
 
+    //#pragma HLS PIPELINE
     // ****************************************
     // NETWORK INSTANTIATION
     // ****************************************
 
     //hls-fpga-machine-learning insert layers
-
-    static hls::stream<layer2_t> layer2_out[N_CHANNEL_2];
-    #pragma HLS STREAM variable=layer2_out depth=50 dim=1
+    hls::stream<layer2_t> layer2_out[N_CHANNEL_2];
+    #pragma HLS STREAM variable=layer2_out depth=5 dim=1
     nnet::upsampling2d_stream<input_t, layer2_t, config2>(em_barrel, layer2_out);
     
-    static hls::stream<layer3_t> layer3_out[N_CHANNEL_2];
-    #pragma HLS STREAM variable=layer3_out depth=50 dim=1
+    hls::stream<layer3_t> layer3_out[N_CHANNEL_2];
+    #pragma HLS STREAM variable=layer3_out depth=15 dim=1
     while(!layer2_out[0].empty()) nnet::normalize_stream<layer2_t, layer3_t, config3>(layer2_out, layer3_out, s3, b3);
 
-    static hls::stream<layer7_t> layer7_out[N_FILT_4];
+    hls::stream<layer7_t> layer7_out[N_FILT_4];
     #pragma HLS STREAM variable=layer7_out depth=200 dim=1
+    //while(!layer3_out[0].empty()) nnet::conv_2d_large_cl_nopad<0,layer3_t, layer7_t, config4>(layer3_out, layer7_out, w4, b4);
     while(!layer3_out[0].empty()) nnet::conv_2d_large_cl2<layer3_t, layer7_t, config4>(layer3_out, layer7_out, w4, b4);
 
-    static hls::stream<layer8_t> layer8_out[N_FILT_8];
+    hls::stream<layer8_t> layer8_out[N_FILT_8];
     #pragma HLS STREAM variable=layer8_out depth=200 dim=1
     while(!layer7_out[0].empty()) nnet::pooling2d_cl<layer7_t, layer8_t, config8>(layer7_out, layer8_out);
 
-    static hls::stream<layer12_t> layer12_out[N_FILT_9];
+    hls::stream<layer12_t> layer12_out[N_FILT_9];
     #pragma HLS STREAM variable=layer12_out depth=100 dim=1
     while(!layer8_out[0].empty()) nnet::conv_2d_large_cl2<layer8_t, layer12_t, config9>(layer8_out, layer12_out, w9, b9);
 
-    static hls::stream<layer16_t> layer16_out[N_FILT_13];
+    hls::stream<layer16_t> layer16_out[N_FILT_13];
     #pragma HLS STREAM variable=layer16_out depth=100 dim=1
     while(!layer12_out[0].empty()) nnet::conv_2d_large_cl2<layer12_t, layer16_t, config13>(layer12_out, layer16_out, w13, b13);
     
-    static hls::stream<layer17_t> layer17_out[N_FILT_17];
+    hls::stream<layer17_t> layer17_out[N_FILT_17];
     #pragma HLS STREAM variable=layer17_out depth=100 dim=1
     while(!layer16_out[0].empty()) nnet::pooling2d_cl<layer16_t, layer17_t, config17>(layer16_out, layer17_out);
 
-    static hls::stream<layer21_t> layer21_out[N_FILT_18];
+    hls::stream<layer21_t> layer21_out[N_FILT_18];
     #pragma HLS STREAM variable=layer21_out depth=100 dim=1
     while(!layer17_out[0].empty()) nnet::conv_2d_large_cl2<layer17_t, layer21_t, config18>(layer17_out, layer21_out, w18, b18);
 
-    static hls::stream<layer25_t> layer25_out[N_FILT_22];
-    #pragma HLS STREAM variable=layer25_out depth=100 dim=1
+    //static hls::stream<layer25_t> layer25_out[N_FILT_22];
+    //#pragma HLS STREAM variable=layer25_out depth=100 dim=1
     while(!layer21_out[0].empty()) nnet::conv_2d_large_cl2<layer21_t, layer25_t, config22>(layer21_out, layer25_out, w22, b22);
+}
+/*
 
     static hls::stream<layer26_t> layer26_out[N_FILT_26];
     #pragma HLS STREAM variable=layer26_out depth=50 dim=1
@@ -192,11 +195,11 @@ void myproject_in(
 
     while(!layer52_out[0].empty()) nnet::relu_stream<layer52_t, result_t, relu_config54>(layer52_out, layer54_out);
 }
-
+*/
 
 void myproject(
 	       hls::stream<input_t>   em_barrel[N_INPUT_3_1],
-	       hls::stream<result_t>  layer54_out[N_LAYER_52],
+	       hls::stream<result_t>  layer54_out[N_FILT_22],//layer25_out[N_FILT_22]
 	       model_weightdefault_t w27[73728],
 	       model_weightdefault_t w31[147456],
 	       model_weightdefault_t w36[294912],
@@ -205,13 +208,14 @@ void myproject(
 	       model_weightdefault_t w48[65536]
 	       ) { 
 
-  //#pragma HLS DATAFLOW
-  static hls::stream<result_t> layer54b_out[N_LAYER_52];
-  #pragma HLS STREAM variable=layer54b_out depth=100 dim=1                                                                                                                                                                        
+  #pragma HLS DATAFLOW
+  hls::stream<result_t> layer54b_out[N_FILT_22];
+  #pragma HLS STREAM variable=layer54b_out depth=5000 dim=1                                                                                                                                                                        
   for(int i0 = 0; i0 < 56*11; i0++) {
      myproject_in(em_barrel,layer54b_out,w27, w31, w36, w40, w44, w48);
      while(!layer54b_out[0].empty()) { 
-       for(int i1 = 0; i1 < N_LAYER_52; i1++) {
+       for(int i1 = 0; i1 < N_FILT_22; i1++) {
+	 #pragma HLS UNROLL
 	 result_t pTmp = (result_t) layer54b_out[i1].read();
 	 layer54_out[i1].write(pTmp);
        }

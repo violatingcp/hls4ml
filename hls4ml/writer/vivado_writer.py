@@ -760,7 +760,7 @@ class VivadoWriter(Writer):
                     val=0 if cl else 2
                     ifstate=''
                     if val > 0: 
-                        val = len(shape)-1
+                        val = len(shape)
                         ifstate='if(i'
                         for i in range(val):
                             ifstate+=str(i)
@@ -768,9 +768,9 @@ class VivadoWriter(Writer):
                                 ifstate+="== 0 && i"
                             else:
                                 ifstate+="== 0)"
-                    ifnotstate=ifstate.replace('if(','if(!')
-                    newline += indent + ifstate    + ' {}[i{}].write(0);\n'.format(inp.cppname,val)
-                    newline += indent + ifnotstate + ' {}[i{}].write(1);\n'.format(inp.cppname,val)
+                    ifnotstate=ifstate.replace('if(','if(!(').replace(')','))')
+                    newline += indent + ifstate    + ' {}[i{}].write(0);\n'.format(inp.cppname,val-1)
+                    newline += indent + ifnotstate + ' {}[i{}].write(1);\n'.format(inp.cppname,val-1)
                     for i0 in range(len(shape)): 
                         newline += indent + '}\n'
                 for out in model.get_output_variables():
@@ -808,7 +808,7 @@ class VivadoWriter(Writer):
                         else:
                             newline += indent + 'for(int i{} = 0; i{} < {}+1; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
                     cl=out.cl
-                    val=2 if not cl and len(shape) > 1 else 0
+                    val=2 if len(shape) > 1 else 0
                     newline += indent + '  fout << {}[i{}].read() << " ";\n'.format(out.cppname,val)
                     for i0 in range(len(shape)): 
                         newline += indent + '}\n'

@@ -157,6 +157,7 @@ void upsampling2d_stream(
 			 hls::stream<data_T> data[CONFIG_T::n_chan],
 			 hls::stream<res_T>  res[CONFIG_T::n_chan]
 ) {
+  #pragma HLS PIPELINE
   static unsigned pX=0; 
   static data_T layer_in_row[CONFIG_T::in_width][CONFIG_T::n_chan];
   #pragma HLS ARRAY_RESHAPE variable=layer_in_row complete dim=0

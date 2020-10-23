@@ -30,7 +30,7 @@
 // Prototype of top level function for C-synthesis
 void myproject(
 	       hls::stream<input_t> em_barrel[N_INPUT_3_1],
-	       hls::stream<result_t>  layer26_out[N_LAYER_52],
+	       hls::stream<result_t>  layer26_out[N_FILT_22],
 	       model_weightdefault_t w27[73728],
 	       model_weightdefault_t w31[147456],
 	       model_weightdefault_t w36[294912],

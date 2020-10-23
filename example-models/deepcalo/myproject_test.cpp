@@ -60,7 +60,7 @@ int main(int argc, char **argv)
   //model_weightdefault_t w40[589824];
   //model_weightdefault_t w44[589824];
   //model_weightdefault_t w48[65536];
-  for(int iX = 0; iX < 3; iX++) { 
+  for(int iX = 0; iX < 10; iX++) { 
     input_t pTest = 0;
     hls::stream<input_t> em_barrel[N_INPUT_3_1];
     for(int i0 = 0; i0 < 11*56; i0++) {
@@ -71,29 +71,28 @@ int main(int argc, char **argv)
 	  if(pTest == 0) pTest = 1;
         }
     }
-    hls::stream<result_t> layer54_out[N_LAYER_52];//layer34_out[N_FILT_31]
+    hls::stream<result_t> layer54_out[N_FILT_22];
     myproject(em_barrel,layer54_out,w27, w31, w36, w40, w44, w48);
-    std::cout << "----> here " << std::endl;
-    for(int i1 = 0; i1 < 1; i1++) {
-      for(int i0 = 0; i0 < N_LAYER_52; i0++) {
+    for(int i1 = 0; i1 < (14)*(13); i1++) {
+      for(int i0 = 0; i0 < N_FILT_22; i0++) {
 	fout << layer54_out[i0].read() << " ";
       }
       fout << std::endl;
     }
-     std::cout << "input1 ";
-     for(int i0 = 0; i0 < 5; i0++) { 
-       std::cout << " " <<  em_barrel[i0].empty();
-       if(!em_barrel[i0].empty()) std::cout << "--> " << em_barrel[i0].read();
-     }
-     std::cout << std::endl;
+    std::cout << "input1 ";
+    for(int i0 = 0; i0 < 5; i0++) { 
+      std::cout << " " <<  em_barrel[i0].empty();
+      if(!em_barrel[i0].empty()) std::cout << "--> " << em_barrel[i0].read();
+    }
+    std::cout << std::endl;
 
-     std::cout << "Layer  13";
-     for(int i0 = 0; i0 < N_CHANNEL_2; i0++) { 
-       std::cout << " " << layer54_out[i0].empty();
-     }
-     std::cout << std::endl;
-     std::cout << "----> Done " << std::endl;
-
+    std::cout << "Layer  13";
+    for(int i0 = 0; i0 < N_FILT_22; i0++) { 
+      std::cout << " " << layer54_out[i0].empty();
+    }
+    std::cout << std::endl;
+    std::cout << "----> Done " << std::endl;
+    
   }
   fout.close();
   std::cout << "INFO: Saved inference results to file: " << RESULTS_LOG << std::endl;
