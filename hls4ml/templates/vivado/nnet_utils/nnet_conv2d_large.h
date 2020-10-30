@@ -100,7 +100,7 @@ void shift_right_small(//To be fixed with stride
 			      data_T input[CONFIG_T::filt_height][CONFIG_T::n_chan],
 			      res_T  data[CONFIG_T::filt_width   * CONFIG_T::filt_height * CONFIG_T::n_chan]) { 
 
-  //  #pragma HLS inline
+  #pragma HLS inline
   //Shift register by image height
   static const int filt_width = CONFIG_T::filt_width-1;
   for(int i0 = 0; i0 < filt_width; i0++) { 
@@ -405,10 +405,12 @@ void conv_2d_large_cl_nopad(
     
     static int pX=0; 
     static int pY=0;
+    static res_T lReset = 0; 
+
     data_T iReset = data[0].read();
-    for(int i1 = 0; i1 < CONFIG_T::n_chan; i1++) { 
+    for(int i0 = 0; i0 < CONFIG_T::n_chan; i1++) { 
       #pragma HLS UNROLL
-      tmpdata[i1] = data[i1+1].read(); 
+      tmpdata[i0] = data[i0+1].read(); 
     }
     nnet::cnnshift_arr<data_T,res_T,CONFIG_T>(tmpdata,layer_in_row,layer_in);
     if(iReset==0) { 
