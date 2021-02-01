@@ -1,0 +1,50 @@
+{
+    "ips": [
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 641
+                }
+            ],
+            "inst": "layer2",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "dest": 0,
+                    "name": "output",
+                    "width": 641
+                }
+            ]
+        },
+        {
+            "inputs": [],
+            "inst": "layer3",
+            "kernel": "UNKNOWN",
+            "outputs": []
+        },
+        {
+            "inputs": [],
+            "inst": "layer5",
+            "kernel": "UNKNOWN",
+            "outputs": []
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 323
+                }
+            ],
+            "inst": "layer6",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "dest": 0,
+                    "name": "output",
+                    "width": 321
+                }
+            ]
+        }
+    ]
+}

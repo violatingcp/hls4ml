@@ -1,0 +1,24 @@
+TensorFlowModel:   tensorflow/small_pad.pb
+ProjectName: myproject
+XilinxPart: xcvu9p-flgb2104-2-i
+ClockPeriod: 5
+Backend: Vivado
+OutputDir: padtest
+
+IOType: io_serial # options: io_serial/io_parallel
+HLSConfig:
+  Model:
+    Precision: ap_fixed<16,6>
+    ReuseFactor: 100000
+    Strategy: Resource
+    BramFactor:    50000
+    MergeFactor:   1    # compress 8 bit weights to 16 bit weights and use DSPs
+  LayerType:
+    Dense:
+      ReuseFactor: 100000
+      Strategy: Resource
+      Compression: False
+    Conv2D:
+      ReuseFactor: 100000
+      Strategy: Resource
+      Compression: False
