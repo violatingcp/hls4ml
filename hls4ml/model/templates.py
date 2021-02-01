@@ -218,6 +218,7 @@ pooling1d_function_template = 'nnet::pooling1d<{input_t}, {config}>({input}, {ou
 pooling2d_function_template = 'nnet::pooling2d_{data_format}<{input_t}, {config}>({input}, {output});'
 merge_function_template = 'nnet::{merge}<{input1_t}, {input2_t}, {output_t}, {config}>({input1}, {input2}, {output});'
 split_function_template = 'nnet::split<{input1_t}, {output_t}, {config}>({input}, {output1}, {output2});'
+pad_function_template    = 'nnet::pad_2d_cl<{input_t}, {output_t}, {config}>({input}, {output});'
 
 function_templates = {
     'Dense'                  : dense_function_template,
@@ -225,6 +226,7 @@ function_templates = {
     'BatchNormalization'     : batchnorm_function_template,
     'Conv1D'                 : conv1d_function_template,
     'Conv2D'                 : conv2d_function_template,
+    'Pad'                    : pad_function_template,
     'Conv2DMerge'            : conv2dmerge_function_template,
     'Activation'             : activ_function_template,
     'ParametrizedActivation' : param_activ_function_template,

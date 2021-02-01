@@ -1326,6 +1326,30 @@ class Pooling2D(Layer):
             params['1x1'] = '_1x1'        
         return self._tcl_template.format(**params)
 
+class Pad(Layer):
+    def initialize(self):
+        shape = [self.attributes['out_height'], self.attributes['out_width'], self.attributes['n_chan']]
+        dims = ['OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
+        self.add_output_variable(shape, dims)
+
+    def function_cpp(self,iFirst=False):
+        params = self._default_function_params()
+        params['data_format'] = 'cf' if self.get_attr('data_format') == 'channels_first' else 'cl'
+        return [self._function_template.format(**params)]
+
+    def config_cpp(self):
+        params = self._default_config_params()
+        params['in_height'] = self.get_input_variable().dim_names[0]
+        params['in_width'] = self.get_input_variable().dim_names[1]
+        params['n_chan'] = self.get_input_variable().dim_names[2]
+        params['out_height'] = self.get_output_variable().dim_names[0]
+        params['out_width'] = self.get_output_variable().dim_names[1]
+        return self._config_template.format(**params)       
+
+    def print_tcl(self):
+        params = self._default_tcl_params()
+        return self._tcl_template.format(**params)
+
 class Activation(Layer):
     def initialize(self):
         inp = self.get_input_variable()
@@ -1340,14 +1364,9 @@ class Activation(Layer):
         params['activation'] = self.get_attr('activation')
         params['config'] = '{}_config{}'.format(self.get_attr('activation'), self.index)
         params['strategy']=''
-        header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
-            if iFirst:
-                header='if(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
-            else:
-                header='while(!'+ self.get_input_variable(self.inputs[0]).name+'[0].empty()) '
             params['strategy'] = '_stream'
-        return [header+self._function_template.format(**params)]
+        return [self._function_template.format(**params)]
 
     def config_cpp(self):
         params = self._default_config_params()
@@ -1743,6 +1762,7 @@ layer_map = {
     'Conv1D'             : Conv1D,
     'Conv2D'             : Conv2D,
     'BinaryConv2D'       : Conv2D,
+    'Pad'                : Pad,
     'UpSampling2D'       : UpSampling2D,
     'BatchNormalization' : BatchNormalization,
     'MaxPooling1D'       : Pooling1D,

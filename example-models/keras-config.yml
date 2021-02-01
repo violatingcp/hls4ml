@@ -8,8 +8,8 @@
 #KerasH5:    keras/LargeAE.h5
 #KerasJson:  keras/DC.json
 #KerasH5:    keras/DC.h5
-KerasJson:  keras/dummy_cnn.json
-KerasH5:    keras/dummy_cnn_weights.h5
+#KerasJson:  keras/dummy_cnn.json
+#KerasH5:    keras/dummy_cnn_weights.h5
 #KerasJson:  keras/deepcalo_flat.json
 #KerasH5:    keras/deepcalo_flat_weights.h5
 #KerasJson:  keras/Keras_SHO_model.json  

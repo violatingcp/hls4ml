@@ -185,6 +185,14 @@ pooling2d_config_template = """struct config{index} : nnet::pooling2d_config {{
     static const unsigned reuse = {reuse};
 }};\n"""
 
+pad_config_template = """struct config{index} : nnet::pad_config {{
+    static const unsigned in_height = {in_height};
+    static const unsigned in_width = {in_width};
+    static const unsigned n_chan = {n_chan};
+    static const unsigned out_height = {out_height};
+    static const unsigned out_width = {out_width};
+}};\n"""
+
 merge_config_template = """struct config{index} : nnet::merge_config {{
     static const unsigned n_elem = {n_elem};
     static const unsigned n_elem_full = {n_elem_full};
@@ -230,6 +238,7 @@ dense_function_template = 'nnet::dense_{strategy}<{input_t}, {output_t}, {config
 batchnorm_function_template = 'nnet::normalize{strategy}<{input_t}, {output_t}, {config}>({input}, {output}, {scale}, {bias});'
 conv1d_function_template = 'nnet::conv_1d_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 conv2d_function_template = 'nnet::conv_2d_{strategy}_{data_format}{1x1}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
+pad_function_template    = 'nnet::pad_2d_cl<{input_t}, {output_t}, {config}>({input}, {output});'
 upsampling2d_function_template = 'nnet::upsampling2d_{strategy}<{input_t}, {output_t}, {config}>({input}, {output});'
 conv2dmerge_function_template = 'nnet::conv_2d_merge_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 activ_function_template = 'nnet::{activation}{strategy}<{input_t}, {output_t}, {config}>({input}, {output});'
@@ -245,6 +254,7 @@ split_function_template = 'nnet::split{strategy}<{input_t}, {output_t}, {config}
     'BatchNormalization'     : batchnorm_function_template,
     'Conv1D'                 : conv1d_function_template,
     'Conv2D'                 : conv2d_function_template,
+    'Pad'                    : pad_function_template,
     'Conv2DMerge'            : conv2dmerge_function_template,
     'UpSampling2D'           : upsampling2d_function_template,
     'Activation'             : activ_function_template,
@@ -315,6 +325,15 @@ set layer_type pooling2d_{data_format}{1x1}
 source ../common/build.tcl
 \n"""
 
+pad_tcl_template = """set arg_0 "-I . -DN_INPUT={n_chan} -DN_OUTPUT={n_chan}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set args "$arg_0 $arg_1 $arg_2"
+set layer_type pad_cl
+\n
+source ../common/build.tcl
+\n"""
+
 conv_2d_tcl_template = """set arg_0 "-I . -DN_INPUT={n_chan_in} -DN_OUTPUT={n_filt_in}"
 set arg_1 "-DCONFIG={config}"
 set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
@@ -345,6 +364,7 @@ source ../common/build.tcl
     'Pooling1D'              : pooling2d_tcl_template,
     'Pooling2D'              : pooling2d_tcl_template,
     'Merge'                  : merge_tcl_template,
+    'Pad'                    : pad_tcl_template,
     'Concatenate'            : merge_tcl_template,
     'Split'                  : split_tcl_template,   
 }'''
@@ -365,6 +385,7 @@ class VivadoBackend(Backend):
         self.register_templates('PReLU'                  , param_activ_function_template, activ_config_template,activ_tcl_template)
         self.register_templates('Pooling1D'              , pooling1d_function_template,   pooling1d_config_template,pooling2d_tcl_template)
         self.register_templates('Pooling2D'              , pooling2d_function_template,   pooling2d_config_template,pooling2d_tcl_template)
+        self.register_templates('Pad'                    , pad_function_template,         pad_config_template,pad_tcl_template)
         self.register_templates('Merge'                  , merge_function_template,       merge_config_template,merge_tcl_template)
         self.register_templates('Concatenate'            , merge_function_template,       concat_config_template,merge_tcl_template)
         self.register_templates('Split'                  , split_function_template,       split_config_template,split_tcl_template)

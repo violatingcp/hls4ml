@@ -876,13 +876,13 @@ class VivadoWriter(Writer):
         for h in headers:
             copyfile(srcpath + h, dstpath + h)
 
-    def write_tar(self, model):
+    #def write_tar(self, model):
         ###################
         # Tarball output
         ###################
 
-        with tarfile.open(model.config.get_output_dir() + '.tar.gz', mode='w:gz') as archive:
-            archive.add(model.config.get_output_dir(), recursive=True)
+        #with tarfile.open(model.config.get_output_dir() + '.tar.gz', mode='w:gz') as archive:
+        #    archive.add(model.config.get_output_dir(), recursive=True)
 
     def write_hls(self, model):
         print('Writing HLS project')
@@ -899,5 +899,5 @@ class VivadoWriter(Writer):
         self.write_nnet_utils(model)
         self.write_model_json(model)
         self.write_tcl_dir(model)
-        self.write_tar(model)
+        #self.write_tar(model)
         print('Done')
