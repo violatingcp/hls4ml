@@ -155,7 +155,7 @@ def tf_to_hls(yamlConfig):
     core_ops = ['Const', 'Identity', 'Placeholder']
     image_ops = ['ResizeNearestNeighbor']
     math_ops = ['Add', 'MatMul', 'Mul', 'Sigmoid']
-    nn_ops = ['AvgPool', 'BiasAdd', 'Conv2D', 'Elu', 'FusedBatchNorm', 'MaxPool', 'Relu', 'Selu', 'Softmax']
+    nn_ops = ['AvgPool', 'BiasAdd', 'Conv2D', 'Elu', 'FusedBatchNorm', 'MaxPool', 'Relu', 'Selu', 'Softmax','Pad']
     supported_ops = array_ops + core_ops + image_ops + math_ops + nn_ops
 
     input_layers = []
@@ -252,7 +252,29 @@ def tf_to_hls(yamlConfig):
             _compute_pads_2d(layer, in_height, in_width)
 
             handled = True
+        elif tf_op.type == 'Pad':
+            input_shape = tf_op.inputs[0].shape.as_list()
+            weights_shape = tf_op.inputs[1].shape.as_list()
+            output_shape = tf_op.outputs[0].shape.as_list()
 
+            layer['class_name'] = 'Pad'
+            layer['inputs']  = _parse_tensor_names(tf_op.inputs[0])
+            layer['outputs'] = _parse_tensor_names(tf_op.outputs[0])
+
+            #quick guess
+            c_idx=3
+            h_idx=2
+            w_idx=1
+            layer['data_format'] = 'channels_last'
+            layer['n_chan']    = input_shape[c_idx]
+            layer['in_height'] = input_shape[h_idx]
+            layer['in_width']  = input_shape[w_idx]
+            in_height = input_shape[h_idx]
+            in_width = input_shape[w_idx]
+            layer['out_height'] = output_shape[h_idx]
+            layer['out_width']  = output_shape[w_idx]
+            handled = True
+            
         elif tf_op.type == 'MaxPool':
             input_shape = tf_op.inputs[0].shape.as_list()
             output_shape = tf_op.outputs[0].shape.as_list()

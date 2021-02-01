@@ -189,6 +189,8 @@ zeropad2d_config_template = """struct config{index} : nnet::padding2d_config {{
     static const unsigned pad_right = {pad_right};
 }};\n"""
 
+
+
 merge_config_template = """struct config{index} : nnet::merge_config {{
     static const unsigned n_elem = {n_elem};
 }};\n"""
@@ -209,6 +211,14 @@ concat_config_template = """struct config{index} : nnet::concat_config {{
     static const unsigned n_elem2_2 = {n_elem2_2};
 
     static const unsigned axis = {axis};
+}};\n"""
+
+pad_config_template = """struct config{index} : nnet::pad_config {{
+    static const unsigned in_height = {in_height};
+    static const unsigned in_width = {in_width};
+    static const unsigned n_chan = {n_chan};
+    static const unsigned out_height = {out_height};
+    static const unsigned out_width = {out_width};
 }};\n"""
 
 resize_config_template = """struct config{index} : nnet::resize_config {{
@@ -343,6 +353,7 @@ global_pooling1d_function_template = 'nnet::global_pooling1d<{input_t}, {config}
 global_pooling2d_function_template = 'nnet::global_pooling2d_{data_format}<{input_t}, {output_t}, {config}>({input}, {output});'
 zeropad1d_function_template = 'nnet::zeropad1d_{data_format}<{input_t}, {output_t}, {config}>({input}, {output});'
 zeropad2d_function_template = 'nnet::zeropad2d_{data_format}<{input_t}, {output_t}, {config}>({input}, {output});'
+pad_function_template    = 'nnet::pad_2d_cl<{input_t}, {output_t}, {config}>({input}, {output});'
 merge_function_template = 'nnet::{merge}<{input1_t}, {input2_t}, {output_t}, {config}>({input1}, {input2}, {output});'
 resize_function_template = 'nnet::resize_{algorithm}<{input_t}, {config}>({input}, {output});'
 transpose_function_template = 'nnet::transpose{dim}<{input_t}, {config}>({input}, {output});'
@@ -358,6 +369,7 @@ sepconv2d_include_list = ['nnet_utils/nnet_conv2d.h', 'nnet_utils/nnet_sepconv2d
 activ_include_list = ['nnet_utils/nnet_activation.h', 'nnet_utils/nnet_activation_stream.h']
 pooling_include_list = ['nnet_utils/nnet_pooling.h', 'nnet_utils/nnet_pooling_stream.h']
 padding_include_list = ['nnet_utils/nnet_padding.h', 'nnet_utils/nnet_padding_stream.h']
+pad_include_list    = ['nnet_utils/nnet_padding.h']
 merge_include_list = ['nnet_utils/nnet_merge.h', 'nnet_utils/nnet_merge_stream.h']
 resize_include_list = ['nnet_utils/nnet_image.h', 'nnet_utils/nnet_image_stream.h']
 transpose_include_list = ['nnet_utils/nnet_array.h']
@@ -384,6 +396,8 @@ class VivadoBackend(Backend):
         self.register_templates('GlobalPooling2D'        , global_pooling2d_function_template,   global_pooling2d_config_template, pooling_include_list)
         self.register_templates('ZeroPadding1D'          , zeropad1d_function_template,   zeropad1d_config_template, padding_include_list)
         self.register_templates('ZeroPadding2D'          , zeropad2d_function_template,   zeropad2d_config_template, padding_include_list)
+        self.register_templates('ZeroPadding2D'          , zeropad2d_function_template,   zeropad2d_config_template, padding_include_list)
+        self.register_templates('Pad'                    , pad_function_template,          pad_config_template, pad_include_list)
         self.register_templates('Merge'                  , merge_function_template,       merge_config_template, merge_include_list)
         self.register_templates('Concatenate'            , merge_function_template,       concat_config_template, merge_include_list)
         self.register_templates('Dot'                    , merge_function_template,       dot_config_template, merge_include_list)
