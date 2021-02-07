@@ -1227,13 +1227,31 @@ class Conv2D(Layer):
 
 class Pooling1D(Layer):
     def initialize(self):
-        shape = [self.attributes['n_out'], self.attributes['n_filt']]
-        dims = ['N_OUTPUTS_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
-        self.add_output_variable(shape, dims)
+        
+        #Consider different data format
+        cl=False
+        if self.get_attr('data_format') == 'channels_last':
+            shape = [self.attributes['n_out'], self.attributes['n_filt']]
+            dims = ['N_OUTPUTS_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
+            cl = True
+        else:
+            shape = [self.attributes['n_filt'], self.attributes['n_out']]
+            dims = ['N_FILT_{}'.format(self.index), 'N_OUTPUTS_{}'.format(self.index)]
+
+        depth=1
+        print("adding :",shape,dims)
+        self.add_output_variable(shape, dims, cl = cl, depth=depth)
         self.set_attr('pool_op', self.get_attr('class_name').split('Pooling')[0])
+        self.is1x1 = False
+        if (self.attributes['n_out'] == 1): 
+            self.is1x1 = True
 
     def function_cpp(self,iFirst=False):
         params = self._default_function_params()
+        params['data_format'] = 'cf' if self.get_attr('data_format') == 'channels_first' else 'cl'
+        params['1x1'] = ''
+        if self.is1x1:
+            params['1x1'] = '_1x1'
         header=''
         if self.model.config.get_config_value('IOType') == 'io_serial':
             if iFirst:
@@ -1244,15 +1262,36 @@ class Pooling1D(Layer):
 
     def config_cpp(self):
         params = self._default_config_params()
-        params['n_in'] = self.get_input_variable().size_cpp()
-        params['n_out'] = self.get_output_variable().size_cpp()
+        input_dims = self.get_input_variable().dim_names
+
+        if self.get_attr('data_format') == 'channels_last':
+            params['n_in'] = '*'.join([str(k) for k in input_dims[:-1]])
+            params['n_chan'] =  input_dims[1] + '-1'
+            params['n_chan_in'] =  input_dims[1]
+        else:
+            params['n_in'] = '*'.join([str(k) for k in input_dims[1:]])
+            params['n_chan'] =  input_dims[0] + '-1'
+            params['n_chan_in'] =  input_dims[0]
+
+        params['n_filt_in'] = 'N_FILT_{}'.format(self.index)
+        params['n_filt'] = 'N_FILT_{}-1'.format(self.index)
+        params['n_out'] = 'N_OUTPUTS_{}'.format(self.index)
 
         return self._config_template.format(**params)
 
     def print_tcl(self):
         params = self._default_tcl_params()
-        params['n_chan_in'] =  self.get_input_variable().dim_names[0]
-        params['n_filt_in'] = self.get_output_variable().dim_names[0]
+        if self.get_attr('data_format') == 'channels_last':
+            params['n_chan_in'] =  self.get_input_variable().dim_names[1]
+            params['n_filt_in'] = self.get_output_variable().dim_names[1]
+        else:     
+            params['n_chan_in'] =  self.get_input_variable().dim_names[0]
+            params['n_filt_in'] = self.get_output_variable().dim_names[0]
+
+        params['1x1'] = ''
+        if self.is1x1:
+            params['1x1'] = '_1x1'
+        
         return self._tcl_template.format(**params)
 
 class Pooling2D(Layer):

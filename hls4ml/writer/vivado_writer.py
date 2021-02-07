@@ -200,7 +200,10 @@ class VivadoWriter(Writer):
                     onexone = '_1x1'
                 if(layer.get_attr('strategy') != None):
                     strategy = "_" + layer.get_attr("strategy")
-                kernel_name = "pooling2d" + strategy + data_format + onexone
+
+                #Kernel name depends on dimensions specify in layer's name
+                kernel_name = "pooling{}d".format(layer.__class__.__name__[-2]) + strategy + data_format + onexone
+
                 input_ports = [{"name":"input", "width": layer.get_input_variable().shape[0] +1}]
 
                 if not(tensor_map[layer.get_output_variable().name]['input'] == []):

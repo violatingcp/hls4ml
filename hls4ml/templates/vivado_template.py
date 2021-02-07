@@ -154,12 +154,17 @@ activ_config_template = """struct {type}_config{index} : nnet::activ_config {{
 
 pooling1d_config_template = """struct config{index} : nnet::pooling1d_config {{
     static const unsigned n_in = {n_in};
+    static const unsigned n_filt = {n_filt};
+    static const unsigned n_chan = {n_chan};
+    static const unsigned n_filt_in = {n_filt_in};
+    static const unsigned n_chan_in = {n_chan_in};
+    static const unsigned stride = {stride};
     static const unsigned pool_size = {pool_size};
     static const unsigned n_out = {n_out};
     static const unsigned pad_left = {pad_left};
     static const unsigned pad_right = {pad_right};
-    static const unsigned stride = {stride};
     static const nnet::Pool_Op pool_op = nnet::{pool_op};
+    static const unsigned reuse = {reuse};
 }};\n"""
 
 pooling2d_config_template = """struct config{index} : nnet::pooling2d_config {{
@@ -234,7 +239,7 @@ upsampling2d_function_template = 'nnet::upsampling2d_{strategy}<{input_t}, {outp
 conv2dmerge_function_template = 'nnet::conv_2d_merge_{strategy}_{data_format}<{input_t}, {output_t}, {config}>({input}, {output}, {w}, {b});'
 activ_function_template = 'nnet::{activation}{strategy}<{input_t}, {output_t}, {config}>({input}, {output});'
 param_activ_function_template = 'nnet::{activation}{strategy}<{input_t}, {output_t}, {config}>({input}, {param}, {output});'
-pooling1d_function_template = 'nnet::pooling1d<{input_t}, {config}>({input}, {output});'
+pooling1d_function_template = 'nnet::pooling1d_{data_format}{1x1}<{input_t}, {output_t}, {config}>({input}, {output});'
 pooling2d_function_template = 'nnet::pooling2d_{data_format}{1x1}<{input_t}, {output_t}, {config}>({input}, {output});'
 merge_function_template = 'nnet::{merge}{strategy}<{input1_t}, {input2_t}, {output_t}, {config}>({input1}, {input2}, {output});'
 split_function_template = 'nnet::split{strategy}<{input_t}, {output_t}, {config}>({input}, {output1}, {output2});'
@@ -306,6 +311,15 @@ set layer_type {merge}{strategy}
 source ../common/build.tcl
 \n"""
 
+pooling1d_tcl_template = """set arg_0 "-I . -DN_INPUT={n_chan_in} -DN_OUTPUT={n_filt_in}"
+set arg_1 "-DCONFIG={config}"
+set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
+set args "$arg_0 $arg_1 $arg_2"
+set layer_type pooling1d_{data_format}{1x1}
+\n
+source ../common/build.tcl
+\n"""
+
 pooling2d_tcl_template = """set arg_0 "-I . -DN_INPUT={n_chan_in} -DN_OUTPUT={n_filt_in}"
 set arg_1 "-DCONFIG={config}"
 set arg_2 "-DINPUT_T={input_t} -DLAYER_T={output_t}"
@@ -342,7 +356,7 @@ source ../common/build.tcl
     'Conv2D'                 : conv2d_tcl_template,
     'UpSampling2D'           : upsampling2d_tcl_template,
     'Activation'             : activ_tcl_template,
-    'Pooling1D'              : pooling2d_tcl_template,
+    'Pooling1D'              : pooling1d_tcl_template,
     'Pooling2D'              : pooling2d_tcl_template,
     'Merge'                  : merge_tcl_template,
     'Concatenate'            : merge_tcl_template,
@@ -363,7 +377,7 @@ class VivadoBackend(Backend):
         self.register_templates('Activation'             , activ_function_template,       activ_config_template,activ_tcl_template)
         self.register_templates('ParametrizedActivation' , param_activ_function_template, activ_config_template,activ_tcl_template)
         self.register_templates('PReLU'                  , param_activ_function_template, activ_config_template,activ_tcl_template)
-        self.register_templates('Pooling1D'              , pooling1d_function_template,   pooling1d_config_template,pooling2d_tcl_template)
+        self.register_templates('Pooling1D'              , pooling1d_function_template,   pooling1d_config_template,pooling1d_tcl_template)
         self.register_templates('Pooling2D'              , pooling2d_function_template,   pooling2d_config_template,pooling2d_tcl_template)
         self.register_templates('Merge'                  , merge_function_template,       merge_config_template,merge_tcl_template)
         self.register_templates('Concatenate'            , merge_function_template,       concat_config_template,merge_tcl_template)
