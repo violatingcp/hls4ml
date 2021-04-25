@@ -1099,6 +1099,9 @@ class Conv2D(Layer):
         params['reuse'] = self.reuse_factor()
         self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[3, 0, 1, 2]) #(H,W,C,F) => (F,C,H,W)
 
+    def get_bram_size(self):
+        return(self.model.config.get_bram_size(self)) # merge weights
+    
     def reuse_factor(self):
         if self.get_attr('strategy') == 'latency':
             return self.model.config.get_reuse_factor(self)
