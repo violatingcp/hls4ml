@@ -74,11 +74,11 @@ class VivadoWriter(Writer):
 
 
     def galapagos_to_hls4ml_bridge(self, bridge_file, bridge_wrapper_file, width, galapagos_flit_width=64, hls4ml_channel_width=1):
-        
+
         bridge_name = '_hls4ml_galapagos_input_bridge_' + str(width)
         bridge_file.write("template <class INPUT_T>\n")
         bridge_file.write("void " + bridge_name + "(galapagos_interface * bridge_in, hls::stream<INPUT_T > input[" + str(width) + "]){\n")
-        bridge_file.write("\tgalapagos_packet gp_in;\n") 
+        bridge_file.write("\tgalapagos_packet gp_in;\n")
         bridge_file.write("\tINPUT_T data;\n")
 
         bridge_wrapper_name = 'hls4ml_galapagos_input_bridge_' + str(width)
@@ -96,7 +96,7 @@ class VivadoWriter(Writer):
         #assuming divisible
         if(width < galapagos_flit_width/hls4ml_channel_width):
             bridge_file.write("\tap_uint<32> size;")
-            bridge_file.write("\tgp_in = bridge_in->read();\n") 
+            bridge_file.write("\tgp_in = bridge_in->read();\n")
             bridge_file.write("\tsize.range() = gp_in.data.range(31,0);\n")
             bridge_file.write("\tfor(int i=0; i<size; i++){\n")
             bridge_file.write("#pragma HLS pipeline II=1\n")
@@ -107,18 +107,18 @@ class VivadoWriter(Writer):
                 bridge_file.write("\t\tinput[" + str(i) + "].write(gp_in.data.range(" +  str(i) + "*8 + offset + 7, " + str(i) + "*8 + offset));\n")
 
             bridge_file.write("\t}\n")
-        
-        #can't fit more than one input in a single flit, hence don't need size 
+
+        #can't fit more than one input in a single flit, hence don't need size
         else:
             for i in range(0, width - 1, galapagos_flit_width/hls4ml_channel_width):
-                bridge_file.write("\tgp_in = bridge_in->read();\n") 
+                bridge_file.write("\tgp_in = bridge_in->read();\n")
                 for j in range(0, galapagos_flit_width/hls4ml_channel_width):
                     bridge_file.write("\tdata.range() = gp_in.data(" +  str(j*8 + 7) + ", " + str(j*8) + ");\n")
                     bridge_file.write("\tinput[" + str(i+j) + "].write(data.range());\n")
                 bridge_file.write("\n")
             inputs_in_last_flit = width % galapagos_flit_width/hls4ml_channel_width
             if inputs_in_last_flit > 0:
-                bridge_file.write("\tgp_in = bridge_in->read();\n") 
+                bridge_file.write("\tgp_in = bridge_in->read();\n")
 
 
             for i in range(0,  (inputs_in_last_flit)):
@@ -129,21 +129,21 @@ class VivadoWriter(Writer):
         bridge_file.write("}\n\n\n")
 
     def hls4ml_to_galapagos_bridge(self, bridge_file, bridge_wrapper_file, width, galapagos_flit_width=64, hls4ml_channel_width=1):
-        
+
         bridge_name = '_hls4ml_galapagos_output_bridge_' + str(width)
         bridge_file.write("template < class OUTPUT_T>\n")
         bridge_file.write("void " + bridge_name + "(ap_uint<32> size, galapagos_interface * bridge_output, hls::stream<OUTPUT_T > output[ " + str(width) + "], const ap_uint <8> dest){\n")
-        bridge_file.write("\tgalapagos_packet gp_out;\n") 
+        bridge_file.write("\tgalapagos_packet gp_out;\n")
         bridge_file.write("\tgp_out.dest = dest;\n")
-        
+
         if(width <= galapagos_flit_width/hls4ml_channel_width):
-            bridge_file.write("\tgp_out.last = 1;\n") 
+            bridge_file.write("\tgp_out.last = 1;\n")
         else:
-            bridge_file.write("\tgp_out.last = 0;\n") 
+            bridge_file.write("\tgp_out.last = 0;\n")
 
         bridge_wrapper_name = 'hls4ml_galapagos_output_bridge_' + str(width)
-        bridge_wrapper_file.write("void " + bridge_wrapper_name + "(ap_uint<16> size, hls::stream<ap_uint<" + 
-                                    str(8/hls4ml_channel_width) + "> > output[" + str(width) + 
+        bridge_wrapper_file.write("void " + bridge_wrapper_name + "(ap_uint<16> size, hls::stream<ap_uint<" +
+                                    str(8/hls4ml_channel_width) + "> > output[" + str(width) +
                                     "], galapagos_interface * bridge_output, const ap_uint<8> dest){\n")
         bridge_wrapper_file.write("#pragma HLS INTERFACE axis register both port=bridge_output\n")
         bridge_wrapper_file.write("#pragma HLS INTERFACE axis register both port=output\n")
@@ -153,12 +153,12 @@ class VivadoWriter(Writer):
         bridge_wrapper_file.write("#pragma HLS INTERFACE ap_ctrl_none port=return\n")
         bridge_wrapper_file.write("\t" + bridge_name + "<ap_uint<" + str(8/hls4ml_channel_width) + "> >(size, bridge_output,  output, dest);\n")
         bridge_wrapper_file.write("}\n\n") #ending function
-        
+
         #more than one input fits within a single galapagos flit
         #assuming divisible
         if(width < galapagos_flit_width/hls4ml_channel_width):
-            
-            bridge_file.write("\tgp_out.last = 1;\n") 
+
+            bridge_file.write("\tgp_out.last = 1;\n")
             bridge_file.write("\tgp_out.data.range(31,0) = size;\n")
             bridge_file.write("\tgp_out.data = gp_out.data & 0x0ffff;\n")
             bridge_file.write("\tfor(int i=0; i<size; i++){\n")
@@ -169,10 +169,10 @@ class VivadoWriter(Writer):
             for i in range (0, width):
                 bridge_file.write("\t\tdata.range() = output[" + str(i) +"].read();\n")
                 bridge_file.write("\t\tgp_out.data.range(" +  str(i) + "*8 + offset + 7, " + str(i) + "*8 + offset) = data.range();\n")
-            
+
             bridge_file.write("\t}\n") #ending loop
 
-        #can't fit more than one output in a single flit, hence don't need size 
+        #can't fit more than one output in a single flit, hence don't need size
         else:
             #for i in range(0, width + galapagos_flit_width/hls4ml_channel_width, galapagos_flit_width/hls4ml_channel_width):
             for i in range(0, width - 1,  galapagos_flit_width/hls4ml_channel_width):
@@ -183,7 +183,7 @@ class VivadoWriter(Writer):
                     bridge_file.write("\t\tgp_out.data.range(" +  str((j) *8 + 7) + ", " + str((j) *8 ) + ") = data.range();\n")
                     bridge_file.write("\t}\n") #ending if
                 bridge_file.write("\tbridge_output->write(gp_out);\n\n")
-                
+
 
             outputs_in_last_flit = width % galapagos_flit_width/hls4ml_channel_width
             bridge_file.write("\tgp_out.last = 1;\n")
@@ -201,17 +201,17 @@ class VivadoWriter(Writer):
 
     def write_bridges(self, model, fpga_part="xczu19eg-ffvc1760-2-i"):
 
-        print("writing bridges") 
+        print("writing bridges")
         if not os.path.isdir("{}/firmware/ips/include".format(model.config.get_output_dir())):
             os.makedirs("{}/firmware/ips/include".format(model.config.get_output_dir()))
 
         if not os.path.isdir("{}/firmware/ips/srcs".format(model.config.get_output_dir())):
             os.makedirs("{}/firmware/ips/srcs".format(model.config.get_output_dir()))
-        
+
         if not os.path.isdir("{}/firmware/ips/galapagos_bridges".format(model.config.get_output_dir())):
             os.makedirs("{}/firmware/ips/galapagos_bridges".format(model.config.get_output_dir()))
-        
-        
+
+
         bridge_file = open("{}/firmware/ips/include/_galapagos_bridge.hpp".format(model.config.get_output_dir()),"w")
         bridge_file.write("#ifndef GALAPAGOS_BRIDGE_HPP\n")
         bridge_file.write("#include \"packet_size.h\"\n")
@@ -223,7 +223,7 @@ class VivadoWriter(Writer):
 
         bridge_wrapper_file = open("{}/firmware/ips/srcs/galapagos_bridge.cpp".format(model.config.get_output_dir()),"w")
         bridge_wrapper_file.write("#include \"_galapagos_bridge.hpp\"\n\n")
-        
+
         bridge_tcl_file = open("{}/firmware/ips/galapagos_bridges/synth.tcl".format(model.config.get_output_dir()),"w")
         bridge_tcl_file.write("set curDir [pwd]\n")
         bridge_tcl_file.write("set bridge_name [lindex $argv 0]\n")
@@ -274,20 +274,20 @@ class VivadoWriter(Writer):
             print("writing bridge for layer:" + layer.__class__.__name__)
             print("input width is " + str(input_width))
             print("output width is " + str(output_width))
-            
+
             #if we did not make a bridge for this width already, make a new one
             if not(input_width in bridge_input_widths):
                 print("input bridge if")
-                self.galapagos_to_hls4ml_bridge(bridge_file, bridge_wrapper_file, input_width) 
-                bridge_input_widths.append(input_width) 
+                self.galapagos_to_hls4ml_bridge(bridge_file, bridge_wrapper_file, input_width)
+                bridge_input_widths.append(input_width)
 
             if not(output_width in bridge_output_widths):
                 print("output bridge if")
-                self.hls4ml_to_galapagos_bridge(bridge_file, bridge_wrapper_file, output_width) 
+                self.hls4ml_to_galapagos_bridge(bridge_file, bridge_wrapper_file, output_width)
                 bridge_output_widths.append(output_width)
 
             if first_layer == True and (not(input_width in bridge_output_widths)):
-                self.hls4ml_to_galapagos_bridge(bridge_file, bridge_wrapper_file, input_width) 
+                self.hls4ml_to_galapagos_bridge(bridge_file, bridge_wrapper_file, input_width)
                 bridge_output_widths.append(input_width)
                 first_layer = False
 
@@ -307,11 +307,30 @@ class VivadoWriter(Writer):
             bridge_makefile_file.write("input_" + str(input_width) + ":\n")
             bridge_makefile_file.write("\tmkdir -p ../hls_projects\n")
             bridge_makefile_file.write("\tvivado_hls synth.tcl -tclargs hls4ml_galapagos_input_bridge_" + str(input_width) + " $(galapagos_dir) $(libGalapagos_dir) input_" + str(input_width) + "\n\n")
-        
+
         for output_width in bridge_output_widths:
             bridge_makefile_file.write("output_" + str(output_width) + ":\n")
             bridge_makefile_file.write("\tmkdir -p ../hls_projects\n")
-            bridge_makefile_file.write("\tvivado_hls synth.tcl -tclargs hls4ml_galapagos_output_bridge_" + str(input_width) + " $(galapagos_dir) $(libGalapagos_dir) output_" + str(output_width) + "\n\n")
+            bridge_makefile_file.write("\tvivado_hls synth.tcl -tclargs hls4ml_galapagos_output_bridge_" + str(output_width) + " $(galapagos_dir) $(libGalapagos_dir) output_" + str(output_width) + "\n\n")
+
+    def get_output_ports(self, layer_map, tensor_map, cpu_dest, tensor_name, width):
+        output_ports = []
+
+
+        if 'output' in tensor_map[tensor_name]:
+            output_inst = "layer" + str(layer_map[tensor_map[tensor_name]['output']].index)
+            output_port_name = 'input'
+            if  'Merge' in layer_map[tensor_map[tensor_name]['output']].__class__.__name__:
+                if tensor_map[tensor_name]['output_port'] == 1:
+                    output_port_name = 'input_1'
+                else:
+                    output_port_name = 'input_2'
+            output_ports = {"name":"output", "width": width, "output_inst": output_inst, "output_port":output_port_name}
+        else:
+        #no layer to accept output, final layer send back to cpu
+            output_ports = {"name":"output", "width": width, "dest": cpu_dest}
+
+        return output_ports
 
     def write_model_json(self, model):
 
@@ -328,35 +347,29 @@ class VivadoWriter(Writer):
                 continue
             if 'Dense' in layer.__class__.__name__:
                 continue
-            #print("first iteration layer" + str(layer.index))
             layer_map[layer.index] = layer
 
-            #if ('Merge' in layer.__class__.__name__):
-            #    print ("merge strat: " + str(layer.get_attr('op').lower()))
-            #if('Activation' in layer.__class__.__name__):
-            #    print ("activation strat: " + str(layer.get_attr('activation')))
 
+            # get the output of each layer in terms of tensors set the input of those tensors to the current layer index
             if ('Conv2D' in layer.__class__.__name__) or ('Merge' in layer.__class__.__name__) or  ('Pooling' in layer.__class__.__name__)  or ('Activation' in layer.__class__.__name__):
+
+
                 variable = layer.get_output_variable()
                 if variable.name in tensor_map:
-                    tensor_map[variable.name]["output"].append(layer.index)
+                    tensor_map[variable.name]["input"] = layer.index
+                    tensor_map[variable.name]["input_port"] = 0
                 else:
-                    tensor_map[variable.name] = {"input": [], "output": [layer.index]}
-                layer_output_map[layer.index] = [variable.name]
-                #print('n_chan_out: name: ' +  variable.name + " DIMS: " + str(variable.shape[0]))
+                    tensor_map[variable.name] = {"input": layer.index, "input_port": 0}
             elif ('Split' in layer.__class__.__name__) :
                 variable = layer.get_output_variable()
                 if (variable.name) in tensor_map:
-                    tensor_map[variable.name ]["output"].append(layer.index)
-                    tensor_map[variable.name[:-1] + "2"]["output"].append(layer.index)
+                    tensor_map[variable.name]["input"] = layer.index
+                    tensor_map[variable.name]["input_port"] = 1
+                    tensor_map[variable.name[:-1] + "2"]["input"] = layer.index
+                    tensor_map[variable.name[:-1] + "2"]["input_port"] = 2
                 else:
-                    tensor_map[variable.name]  = {"input": [], "output": [layer.index]}
-                    tensor_map[variable.name[:-1] + "2"]  = {"input": [], "output": [layer.index]}
-                layer_output_map[layer.index] = [variable.name, variable.name[:-1] + "2"]
-                #print('n_chan_out: name: ' +  variable.name + " DIMS: " + str(variable.shape[0]))
-                #print('n_chan_out: name: ' +  variable.name[:-1] + "2 DIMS: " + str(variable.shape[0]))
-            else:
-                print("Layer not found: type is " +layer.__class__.__name__)
+                    tensor_map[variable.name]  = {"input": layer.index, "input_port":1}
+                    tensor_map[variable.name[:-1] + "2"]  = {"input": layer.index, "input_port":2}
 
 
         for layer in model.get_layers():
@@ -366,30 +379,31 @@ class VivadoWriter(Writer):
                 continue
             if 'Dense' in layer.__class__.__name__:
                 continue
-            #print("second iteration layer" + str(layer.index))
 
             if ('Conv2D' in layer.__class__.__name__) or ('Split' in layer.__class__.__name__) or  ('Pooling' in layer.__class__.__name__) or ('Dense' in layer.__class__.__name__) or ('Activation' in layer.__class__.__name__):
                 variable = layer.get_input_variable()
                 if variable.name in tensor_map:
-                    tensor_map[variable.name]["input"].append([layer.index, 0])
+                    tensor_map[variable.name]["output"] = layer.index
+                    tensor_map[variable.name]["output_port"] = 0
                 else:
-                    tensor_map[variable.name] = {"input": [[layer.index,0]], "output": []}
-                #print('n_chan_out: name: ' +  variable.name + " DIMS: " + str(variable.shape[0]))
+                    tensor_map[variable.name] = {"output": layer.index, "output_port": 0}
+
             elif ('Merge' in layer.__class__.__name__) :
                 variable = layer.get_input_variable(layer.inputs[0])
                 if (variable.name) in tensor_map:
-                    tensor_map[variable.name ]["input"].append([layer.index, 0])
+                    tensor_map[variable.name ]["output"] = layer.index
+                    tensor_map[variable.name ]["output_port"] = 1
                 else:
-                    tensor_map[variable.name]  = {"input": [[layer.index]], "input2": [], "output": []}
-                #print('n_chan_in_1: name: ' +  variable.name + " DIMS: " + str(variable.shape[0]))
+                    tensor_map[variable.name]  = {"output": layer.index, "output_port":1}
+
                 variable = layer.get_input_variable(layer.inputs[1])
                 if (variable.name) in tensor_map:
-                    tensor_map[variable.name ]["input"].append([layer.index, 1])
+                    tensor_map[variable.name ]["output"] = layer.index
+                    tensor_map[variable.name ]["output_port"] = 2
                 else:
-                    tensor_map[variable.name]  = {"input": [[layer.index, 1]], "output": []}
-                #print('n_chan_in_2: name: ' +  variable.name[:-1] + "2 DIMS: " + str(variable.shape[0]))
-            else:
-                print("Layer not found: type is " +layer.__class__.__name__)
+                    tensor_map[variable.name]  = {"output": layer.index, "output_port": 2}
+            #else:
+            #    print("Layer not found: type is " +layer.__class__.__name__)
 
 
         ips = []
@@ -414,22 +428,7 @@ class VivadoWriter(Writer):
                 kernel_name = "conv_2d" + strategy + data_format + onexone + '_port'
                 input_ports = [{"name":"input", "width": layer.get_input_variable().shape[0] + 1}]
 
-                #print (layer_key)
-                #print (layer.get_output_variable().name)
-                #print (tensor_map[layer.get_output_variable().name]['input'])
-
-                if not(tensor_map[layer.get_output_variable().name]['input'] == []):
-                    output_inst = "layer" + str(layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].index)
-                    output_port_name = 'input'
-                    if  'Merge' in layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].__class__.__name__:
-                        if tensor_map[layer.get_output_variable().name]['input'][0][1] == 1:
-                            output_port_name = 'input2'
-                        else:
-                            output_port_name = 'input1'
-                    output_ports = [{"name":"output", "width": layer.get_output_variable().shape[0] + 1, "output_inst": output_inst, "output_port":output_port_name}]
-                else:
-                #no layer to accept output, final layer send back to cpu
-                    output_ports = [{"name":"output", "width": layer.get_output_variable().shape[0] + 1, "dest": cpu_dest}]
+                output_ports = [self.get_output_ports(layer_map, tensor_map, cpu_dest, layer.get_output_variable().name, layer.get_output_variable().shape[0] + 1)]
             elif ('Pooling' in layer.__class__.__name__):
                 data_format = ''
                 onexone = ''
@@ -443,96 +442,57 @@ class VivadoWriter(Writer):
                 kernel_name = "pooling2d" + strategy + data_format + onexone
                 input_ports = [{"name":"input", "width": layer.get_input_variable().shape[0] +1}]
 
-                if not(tensor_map[layer.get_output_variable().name]['input'] == []):
-                    output_inst = "layer" + str(layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].index)
-                    output_port_name = 'input'
-                    if  'Merge' in layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].__class__.__name__:
-                        if tensor_map[layer.get_output_variable().name]['input'][0][1] == 1:
-                            output_port_name = 'input2'
-                        else:
-                            output_port_name = 'input1'
-                    output_ports = [{"name":"output", "width": layer.get_output_variable().shape[0] + 1, "output_inst": output_inst, "output_port":output_port_name}]
-                else:
-                #no layer to accept output, final layer send back to cpu
-                    output_ports = [{"name":"output", "width": layer.get_output_variable().shape[0] + 1, "dest": cpu_dest}]
+                output_ports = [self.get_output_ports(layer_map, tensor_map, cpu_dest, layer.get_output_variable().name, layer.get_output_variable().shape[0] + 1)]
             elif ('Dense' in layer.__class__.__name__):
                 kernel_name = "dense_" + layer.get_attr("strategy")
                 input_ports = [{"name":"input", "width": layer.get_input_variable().shape[0] + 1}]
+                output_ports = [self.get_output_ports(layer_map, tensor_map, cpu_dest, layer.get_output_variable().name, layer.get_output_variable().shape[0] + 1)]
 
-                #print(layer_key)
-                #print(layer.get_output_variable().name)
-                #print (tensor_map[layer.get_output_variable().name]['input'])
-
-
-                if not(tensor_map[layer.get_output_variable().name]['input'] == []):
-                    output_inst = "layer" + str(layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].index)
-                    output_port_name = 'input'
-                    if  'Merge' in layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].__class__.__name__:
-                        if tensor_map[layer.get_output_variable().name]['input'][0][1] == 1:
-                            output_port_name = 'input2'
-                        else:
-                            output_port_name = 'input1'
-                    output_ports = [{"name":"output", "width": layer.get_output_variable().shape[0] + 1, "output_inst": output_inst, "output_port":output_port_name}]
-                else:
-                #no layer to accept output, final layer send back to cpu
-                    output_ports = [{"name":"output", "width": layer.get_output_variable().shape[0] + 1, "dest": cpu_dest}]
             elif ('Split' in layer.__class__.__name__):
                 kernel_name = "nnet_split"
                 if(layer.get_input_variable(layer.inputs[0]).size_cnn() > 1000):
                     kernel_name = kernel_name + '_mux'
                 input_ports = [{"name":"input", "width": layer.get_input_variable().shape[0] + 1}]
 
-                if not(tensor_map[layer.get_output_variable().name]['input'] == []):
-                    output_inst = "layer" + str(layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].index)
-                    output_port_name = 'input'
-                    if  'Merge' in layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].__class__.__name__:
-                        if tensor_map[layer.get_output_variable().name]['input'][0][1] == 1:
-                            output_port_name = 'input2'
-                        else:
-                            output_port_name = 'input1'
-                    output_ports.append({"name":"output", "width": layer.get_output_variable().shape[0] + 1, "output_inst": output_inst, "output_port":output_port_name})
-                else:
-                #no layer to accept output, final layer send back to cpu
-                    output_ports.append({"name":"output", "width": layer.get_output_variable().shape[0] + 1, "dest": cpu_dest})
+                output_ports = [self.get_output_ports(layer_map, tensor_map, cpu_dest, layer.get_output_variable().name, layer.get_output_variable().shape[0] + 1)]
+                output_ports[0]["name"] = "output_1"
 
-                if not(tensor_map[layer.get_output_variable().name]['input'] == []):
-                    output_inst = "layer" + str(layer_map[tensor_map[layer.get_output_variable().name[:-1] + "2"]['input'][0][0]].index)
-                    output_port_name = 'input'
-                    if  'Merge' in layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].__class__.__name__:
-                        if tensor_map[layer.get_output_variable().name]['input'][0][1] == 1:
-                            output_port_name = 'input2'
-                        else:
-                            output_port_name = 'input1'
-                    output_ports.append({"name":"output", "width": layer.get_output_variable().shape[0] + 1, "output_inst": output_inst, "output_port":output_port_name})
-                else:
-                #no layer to accept output, final layer send back to cpu
-                    output_ports.append({"name":"output", "width": layer.get_output_variable().shape[0] + 1, "dest": cpu_dest})
+                if (layer.get_output_variable().name[:-1] + "2") in tensor_map:
+                    output_ports.append(self.get_output_ports(layer_map, tensor_map, cpu_dest, layer.get_output_variable().name[:-1] + "2", layer.get_output_variable().shape[0] + 1))
+                    output_ports[1]["name"] = "output_2"
 
-
+                print( "layer" + str(layer_key) + " IN SPLIT JUST ADDED OUTPUT PORTS " + str(output_ports))
             elif ('Merge' in layer.__class__.__name__):
                 kernel_name = str(layer.get_attr('op').lower())
                 if(layer.get_input_variable(layer.inputs[0]).size_cnn() > 1000):
                     kernel_name = kernel_name + '_mux'
-                input_ports = [{"name":"input1", "width": layer.get_input_variable(layer.inputs[0]).shape[0] + 1},
-                               {"name":"input2", "width": layer.get_input_variable(layer.inputs[1]).shape[1] + 1}
+                input_ports = [{"name":"input_1", "width": layer.get_input_variable(layer.inputs[0]).shape[0] + 1},
+                               #{"name":"input_2", "width": layer.get_input_variable(layer.inputs[1]).shape[1] + 1}
+                               {"name":"input_2", "width": layer.get_input_variable(layer.inputs[0]).shape[0] + 1}
                                ]
-                output_inst = "layer" + str(layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].index)
-                output_port_name = 'input'
+                #output_inst = "layer" + str(layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].index)
+                #output_port_name = 'input'
 
-                if not(tensor_map[layer.get_output_variable().name]['input'] == []):
-                    if  'Merge' in layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].__class__.__name__:
-                        if tensor_map[layer.get_output_variable().name]['input'][0][1] == 1:
-                            output_port_name = 'input2'
-                        else:
-                            output_port_name = 'input1'
-                    output_ports = [{"name":"output", "width": layer.get_output_variable().shape[0] + 1, "output_inst": output_inst, "output_port":output_port_name}]
-                else:
-                #no layer to accept output, final layer send back to cpu
-                    output_ports.append({"name":"output", "width": layer.get_output_variable().shape[0] + 1, "dest": cpu_dest})
+                output_ports = [self.get_output_ports(layer_map, tensor_map, cpu_dest, layer.get_output_variable().name, layer.get_output_variable().shape[0] + 1)]
+                #if not(tensor_map[layer.get_output_variable().name]['input'] == []):
+                #    if  'Merge' in layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].__class__.__name__:
+                #        if tensor_map[layer.get_output_variable().name]['input'][0][1] == 1:
+                #            output_port_name = 'input2'
+                #        else:
+                #            output_port_name = 'input1'
+                #    output_ports = [{"name":"output", "width": layer.get_output_variable().shape[0] + 1, "output_inst": output_inst, "output_port":output_port_name}]
+                #else:
+                ##no layer to accept output, final layer send back to cpu
+                #    output_ports.append({"name":"output", "width": layer.get_output_variable().shape[0] + 1, "dest": cpu_dest})
             else:
                 kernel_name = "UNKNOWN"
 
             ip = {"inst": "layer" + str(layer_key), "kernel":kernel_name, "inputs":input_ports, "outputs":output_ports}
+
+            if ('Conv2D' in layer.__class__.__name__):
+                ip['egress_fifo_depth'] = (layer.attributes['pad_right']+2+layer.attributes['pad_bottom']*(layer.attributes['out_width']+layer.attributes['pad_right']))
+                ip['bram_size'] = layer.get_weights('weight').data_length
+            print("ADDING IP " + str(ip))
             ips.append(ip)
 
 
@@ -626,7 +586,7 @@ class VivadoWriter(Writer):
             elif '//hls-fpga-machine-learning insert header' in line:
                 inputs_str = ', '.join([i.definition_cpp() for i in model_inputs])
                 outputs_str = ', '.join([o.definition_cpp() for o in model_outputs])
-                if len(model_brams) > 0: 
+                if len(model_brams) > 0:
                     brams_str  = ',\n'.join([o.definition_cpp() for o in model_brams])
                 insize_str = ', '.join(['unsigned short &const_size_in_{}'.format(i) for i in range(1, len(model_inputs) + 1)])
                 outsize_str = ', '.join(['unsigned short &const_size_out_{}'.format(i) for i in range(1, len(model_outputs) + 1)])
@@ -636,7 +596,7 @@ class VivadoWriter(Writer):
                 newline = ''
                 newline += indent + inputs_str + ',\n'
                 newline += indent + outputs_str + ',\n'
-                if len(model_brams) > 0: 
+                if len(model_brams) > 0:
                     newline += indent + brams_str + ',\n'
                 newline += indent + insize_str + ',\n'
                 newline += indent + outsize_str + '\n'
@@ -734,7 +694,7 @@ class VivadoWriter(Writer):
                 irange=[shape[0],shape[1]]
                 if not cl:
                     irange=[shape[1],shape[2]]
-                if len(shape) == 2: 
+                if len(shape) == 2:
                     irange=[shape[0]] if cl else [shape[1]]
                 for i0 in range(len(irange)):
                     for i1 in range(i0):
@@ -747,7 +707,7 @@ class VivadoWriter(Writer):
                 brams=', '.join([i.name for i in model_brams])
                 insize=', '.join(['const_size_in_{}'.format(i) for i in range(1, len(model_inputs) + 1)])
                 outsize=', '.join(['const_size_out_{}'.format(o) for o in range(1, len(model_outputs) + 1)])
-                if len(model_brams) > 0: 
+                if len(model_brams) > 0:
                        newline += ('{}{}'.format(model.config.get_project_name(),serial))+'('+inputs+','+outputs+','+brams+','+insize+','+outsize+');\n'
                 else:
                        newline += ('{}{}'.format(model.config.get_project_name(),serial))+'('+inputs+','+outputs+','+insize+','+outsize+');\n'
@@ -900,16 +860,8 @@ class VivadoWriter(Writer):
 
                 input_vars = ','.join([i.cppname for i in model.get_input_variables()])
                 output_vars = ','.join([o.cppname for o in model.get_output_variables()])
-<<<<<<< HEAD
                 bram_vars   =', '.join([i.name for i in model.get_bram_variables()])
                 top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
-=======
-                bram_vars   =', '.join([i.name for i in model.get_bram_variables()]) 
-                if len(model.get_bram_variables()) > 0: 
-                    top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
-                else: 
-                    top_level = indent + '{}({},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, input_size_vars, output_size_vars)
->>>>>>> b3a4ca31035ba41216edbe95b6ec6509be67a1c1
                 newline += top_level
             elif '//hls-fpga-machine-learning insert predictions' in line:
                 newline = line
@@ -981,7 +933,7 @@ class VivadoWriter(Writer):
                             newline += indent + 'for(int i{} = 0; i{} < {}+1; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
                     cl=inp.cl
                     val=0 if cl else 2
-                    if val > 0: 
+                    if val > 0:
                         val = len(shape)-1
                     newline += indent + '  {}[i{}].write(in[index]);index++;\n'.format(inp.cppname,val)
                     for i0 in range(len(shape)):
@@ -1007,14 +959,8 @@ class VivadoWriter(Writer):
                             newline += indent + 'for(int i{} = 0; i{} < {}+1; i{}++) {{\n'.format(i0,i0,shape[i0],i0)
                     cl=inp.cl
                     val=0 if cl else 2
-<<<<<<< HEAD
                     newline += indent + '  {}[i{}].write(pTest);\n'.format(inp.cppname,val)
                     for i0 in range(len(shape)):
-=======
-                    if val > 0: 
-                        val = len(shape)-1
-                    for i0 in range(len(shape)): 
->>>>>>> b3a4ca31035ba41216edbe95b6ec6509be67a1c1
                         newline += indent + '}\n'
                 for out in model.get_output_variables():
                     output_str = '    ' + out.definition_cpp().replace('static','') + ';\n'
@@ -1028,16 +974,8 @@ class VivadoWriter(Writer):
 
                 input_vars = ','.join([i.cppname for i in model.get_input_variables()])
                 output_vars = ','.join([o.cppname for o in model.get_output_variables()])
-<<<<<<< HEAD
                 bram_vars   =', '.join([i.name for i in model.get_bram_variables()])
                 top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
-=======
-                bram_vars   =', '.join([i.name for i in model.get_bram_variables()]) 
-                if len(model.get_bram_variables()) > 0: 
-                    top_level = indent + '{}({},{},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, bram_vars, input_size_vars, output_size_vars)
-                else: 
-                    top_level = indent + '{}({},{},{},{});\n'.format(model.config.get_project_name(), input_vars, output_vars, input_size_vars, output_size_vars)
->>>>>>> b3a4ca31035ba41216edbe95b6ec6509be67a1c1
                 newline += top_level
             elif '//hls-fpga-machine-learning insert predictions' in line:
                 newline = line
