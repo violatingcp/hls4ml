@@ -1,0 +1,85 @@
+mkdir -p ../hls_projects
+vivado_hls synth.tcl -tclargs hls4ml_galapagos_output_bridge_2049 "../../../../../../galapagos"  "../../../../../../libGalapagos" output_2049
+
+****** Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:36:41 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source /opt/Xilinx/Vivado/2018.3/scripts/vivado_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/opt/Xilinx/Vivado/2018.3/bin/unwrapped/lnx64.o/vivado_hls'
+INFO: [HLS 200-10] For user 'tarafdar' on host 'localhost' (Linux_x86_64 version 4.4.0-159-generic) on Wed Jul 01 19:42:00 UTC 2020
+INFO: [HLS 200-10] On os Ubuntu 16.04.6 LTS
+INFO: [HLS 200-10] In directory '/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges'
+INFO: [HLS 200-10] Opening project '/home/tarafdar/workDir/reproducability/galapagos/userIP/hls_projects/hls4ml_galapagos_output_bridge_2049'.
+INFO: [HLS 200-10] Opening solution '/home/tarafdar/workDir/reproducability/galapagos/userIP/hls_projects/hls4ml_galapagos_output_bridge_2049/solution1'.
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3.333ns.
+INFO: [HLS 200-10] Setting target device to 'xczu19eg-ffvc1760-2-i'
+INFO: [XFORM 203-101] Allowed max sub elements number after partition is 4096.
+INFO: [XFORM 203-101] Allowed max sub elements number after partition is 4096.
+INFO: [HLS 200-10] Adding design file '/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp' to the project
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file '/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp' ... 
+ERROR: [HLS 200-70] Compilation errors found: In file included from /home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:1:
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:16:38: error: use of undeclared identifier 'bridge_in'
+ _hls4ml_galapagos_input_bridge <4> (bridge_in, input);
+                                     ^
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:17:2: error: expected ';' at end of declaration
+}
+ ^
+ ;
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:31:39: error: use of undeclared identifier 'bridge_in'
+ _hls4ml_galapagos_input_bridge <65> (bridge_in, input);
+                                      ^
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:32:2: error: expected ';' at end of declaration
+}
+ ^
+ ;
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:45:40: error: use of undeclared identifier 'bridge_in'
+ _hls4ml_galapagos_input_bridge <257> (bridge_in, input);
+                                       ^
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:46:2: error: expected ';' at end of declaration
+}
+ ^
+ ;
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:59:40: error: use of undeclared identifier 'bridge_in'
+ _hls4ml_galapagos_input_bridge <513> (bridge_in, input);
+                                       ^
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:60:2: error: expected ';' at end of declaration
+}
+ ^
+ ;
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:73:41: error: use of undeclared identifier 'bridge_in'
+ _hls4ml_galapagos_input_bridge <1025> (bridge_in, input);
+                                        ^
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:74:2: error: expected ';' at end of declaration
+}
+ ^
+ ;
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:87:41: error: use of undeclared identifier 'bridge_in'
+ _hls4ml_galapagos_input_bridge <2049> (bridge_in, input);
+                                        ^
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:88:2: error: expected ';' at end of declaration
+}
+ ^
+ ;
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:106:73: error: expected '}'
+ _hls4ml_galapagos_output_bridge <4> (size, output, bridge_output, dest);
+                                                                        ^
+/home/tarafdar/workDir/reproducability/hls4ml/example-models/resnet50-hls-full_300mus/firmware/ips/bridges/../srcs/galapagos_resnet_bridge.cpp:97:1: note: to match this '{'
+{
+^
+13 errors generated.
+Failed during preprocessing.
+    while executing
+"source synth.tcl"
+    invoked from within
+"hls::main synth.tcl hls4ml_galapagos_output_bridge_2049 ../../../../../../galapagos ../../../../../../libGalapagos output_2049"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel 1 hls::main {*}$args"
+    (procedure "hls_proc" line 5)
+    invoked from within
+"hls_proc $argv"
+INFO: [Common 17-206] Exiting vivado_hls at Wed Jul  1 19:42:07 2020...
+Makefile:60: recipe for target 'output_2049' failed

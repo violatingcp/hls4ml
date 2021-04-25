@@ -202,6 +202,8 @@ template<class data_T, class res_T, typename CONFIG_T>
 		    hls::stream<data_T> data[CONFIG_T::n_filt_in],
 		    hls::stream<res_T>  res [CONFIG_T::n_filt_in]) { 
 
+    #pragma HLS PIPELINE
+
     const static int lShiftX = CONFIG_T::pool_width-CONFIG_T::pad_left-1;
     const static int lShiftY = CONFIG_T::pool_height-CONFIG_T::pad_top-1;
     const static int rowsize = (CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right);
@@ -215,13 +217,14 @@ template<class data_T, class res_T, typename CONFIG_T>
     static unsigned pX=0;
     static unsigned pY=0;
 
-    static data_T tmpdata[CONFIG_T::n_chan]; 
-    #pragma HLS ARRAY_RESHAPE variable=tmpdata complete
+    hls::stream<data_T> tmpdata[CONFIG_T::n_chan]; 
+    #pragma HLS STREAM variable=tmpdata depth=1 dim=1
 
     data_T iReset = data[0].read();
     for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
+      #pragma HLS UNROLL
       data_T pTmp = data[i0+1].read();
-      tmpdata[i0] = pTmp;
+      tmpdata[i0].write(pTmp);
     }
     static res_T  pReset = 0;
     if(iReset==0) { 
@@ -247,19 +250,92 @@ template<class data_T, class res_T, typename CONFIG_T>
          #pragma HLS ARRAY_RESHAPE variable=pool complete dim=0
          for(unsigned i2 = 0; i2 < CONFIG_T::pool_height*CONFIG_T::pool_width; i2++) { 
           #pragma HLS UNROLL
-	  pool[i2] = layer_in[i1*CONFIG_T::n_filt+i1];
+	  pool[i2] = layer_in[i2*CONFIG_T::n_filt+i1];
  	 }
 	 res[i1+1].write(pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool));
 	}				       
       }
       pX = pX+1;
-      if(pX == CONFIG_T::in_width+CONFIG_T::pad_right) { 
+      if(pX == CONFIG_T::in_width+CONFIG_T::pad_right){ 
 	pX = 0;
 	pY = pY+1;
 	for(int i1 = 0; i1 < CONFIG_T::pad_left; i1++) nnet::cnnshiftzero<data_T,res_T,CONFIG_T>(layer_in_row,layer_in);
       }
     }
 }
+
+template<class data_T, class res_T, typename CONFIG_T>
+  void pooling2d_cl_nopad_pad(
+		    hls::stream<data_T> data[CONFIG_T::n_filt_in],
+		    hls::stream<res_T>  res [CONFIG_T::n_filt_in]) { 
+
+    const static int lShiftX = CONFIG_T::pool_width-CONFIG_T::pad_left-1;
+    const static int lShiftY = CONFIG_T::pool_height-CONFIG_T::pad_top-1;
+    const static int rowsize = (CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right);
+
+    hls::stream<data_T> tmpdata[CONFIG_T::n_chan]; 
+    #pragma HLS STREAM variable=tmpdata depth=1 dim=1
+
+    static ap_shift_reg<data_T, rowsize> layer_in_row[(CONFIG_T::filt_height)-1][CONFIG_T::n_filt];
+    #pragma HLS ARRAY_RESHAPE variable=layer_in_row complete dim=2
+
+    static data_T layer_in[CONFIG_T::pool_height*CONFIG_T::pool_width*CONFIG_T::n_filt];
+    #pragma HLS ARRAY_RESHAPE variable=layer_in complete dim=0
+
+    static unsigned pX=0;
+    static unsigned pY=0;
+    static res_T  pReset = 0;
+
+    data_T iReset = data[0].read();
+    for(int i0 = 0; i0 < CONFIG_T::n_chan; i0++) { 
+      #pragma HLS UNROLL
+      data_T pTmp = data[i0+1].read();
+      tmpdata[i0].write(pTmp);
+    }
+    if(iReset==0) { 
+      pX = 0; 
+      pY = 0;
+      pReset = 0;
+    }
+    nnet::cnnshift<data_T,res_T,CONFIG_T>(tmpdata,layer_in_row,layer_in);
+    if((pX+1) % CONFIG_T::stride_width == 0 && (pY+1) % CONFIG_T::stride_height == 0 && pY > lShiftY-1 && pX > lShiftX-1) { 
+      res_T pId = pReset;
+      if(pReset == 0) pReset = 1;
+      res[0].write(pId);
+      for(unsigned i1 = 0; i1 < CONFIG_T::n_filt; i1++) { 
+       #pragma HLS UNROLL
+       data_T pool[CONFIG_T::pool_height * CONFIG_T::pool_width];
+       #pragma HLS ARRAY_RESHAPE variable=pool complete dim=0
+       for(unsigned i2 = 0; i2 < CONFIG_T::pool_height*CONFIG_T::pool_width; i2++) { 
+          #pragma HLS UNROLL
+	  pool[i2] = layer_in[i2*CONFIG_T::n_filt+i1];
+       }
+       res[i1+1].write(pool_op<data_T, CONFIG_T::pool_height*CONFIG_T::pool_width, CONFIG_T::pool_op>(pool));
+      }				       
+    }
+    pX = pX+1;
+    if(pX == CONFIG_T::in_width+CONFIG_T::pad_right+CONFIG_T::pad_left) { 
+	pX = 0;
+	pY = pY+1;
+    }
+}
+
+template<class data_T, class res_T, typename CONFIG_T>
+void pooling2d_cl2(
+		   hls::stream<data_T> data[CONFIG_T::n_chan_in],
+		   hls::stream<res_T>  res [CONFIG_T::n_filt_in]) { 
+  
+    #pragma HLS DATAFLOW
+    const static int rowsize = (CONFIG_T::in_width+CONFIG_T::pad_left+CONFIG_T::pad_right);
+    const static int depth   = CONFIG_T::pad_left+CONFIG_T::pad_top*rowsize;
+    hls::stream<res_T>  ptmp[CONFIG_T::n_chan_in];	  
+    #pragma HLS STREAM variable=ptmp depth=depth dim=1
+    zeropad<data_T,res_T,CONFIG_T>(data,ptmp);
+    while(!ptmp[0].empty()) { 
+      pooling2d_cl_nopad_pad<data_T,res_T,CONFIG_T>(ptmp,res);
+    }
+}
+
 template<class data_T, class res_T, typename CONFIG_T>
 void pooling2d_cl_1x1(//bool iReset,
 				 hls::stream<data_T> data[CONFIG_T::n_chan_in],

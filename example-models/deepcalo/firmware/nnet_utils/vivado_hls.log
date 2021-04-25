@@ -1,0 +1,25 @@
+
+****** Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.1 (64-bit)
+  **** SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+  **** IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source /opt/local/Xilinx/Vivado/2019.1/scripts/vivado_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/opt/local/Xilinx/Vivado/2019.1/bin/unwrapped/lnx64.o/vivado_hls'
+INFO: [HLS 200-10] For user 'pharris' on host 'correlator3.fnal.gov' (Linux_x86_64 version 3.10.0-1127.8.2.el7.x86_64) on Fri Aug 21 23:35:56 CDT 2020
+INFO: [HLS 200-10] On os "Scientific Linux release 7.8 (Nitrogen)"
+INFO: [HLS 200-10] In directory '/home/pharris/aigean/hls4ml/example-models/deepcalo_test_10/firmware/nnet_utils'
+Sourcing Tcl script 'build_prj.tcl'
+build_prj.tcl can't be opened.
+couldn't read file "build_prj.tcl": no such file or directory
+    while executing
+"source build_prj.tcl"
+    invoked from within
+"hls::main build_prj.tcl"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel 1 hls::main {*}$args"
+    (procedure "hls_proc" line 5)
+    invoked from within
+"hls_proc $argv"
+INFO: [Common 17-206] Exiting vivado_hls at Fri Aug 21 23:35:56 2020...
