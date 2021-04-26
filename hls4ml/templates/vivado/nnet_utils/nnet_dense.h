@@ -27,6 +27,8 @@
 
 namespace nnet {
 
+enum mult_type {type0 = 0, type1};
+
 struct dense_config
 {
     // Internal data type definitions
@@ -46,6 +48,7 @@ struct dense_config
     static const unsigned reuse_factor = 1;
     static const bool store_weights_in_bram = false;
     static const unsigned n_zeros = 0;
+    static const unsigned mult_type = type0;
     // partitioning arrays cyclically to go with roll factors?
 };
 
@@ -95,26 +98,56 @@ product(data_T a, weight_T w){
 
 template<class data_T, class weight_T, class ret_T,class out_T>void product_merge_split(data_T a, weight_T w, out_T out[2]){
     // 'Normal' product
-    #pragma HLS inline off
-    ret_T w1; 
-    w1.range(25,18) = w.range(15,8);
-    w1.range(7,0)   = w.range(7,0);
-    ret_T w2 = a * w1;
-    weight_T wf;
-    out[0]         = w2.range(15, 8);
+    //#pragma HLS inline 
+    //#pragma HLS inline off
+    #pragma HLS PIPELINE
+    //ret_T w1; 
+    //w1.range(25,18) = w.range(15,8);
+    //w1.range(7,0)   = w.range(7,0);
+    ret_T w2 = a * w;
+    out[0]         = w2.range(25,18);
     out[1]         = w2.range( 7, 0);
 }
 
+template<class data_T, class weight_T, class ret_T>void product_merge_func(data_T a, weight_T w, ret_T &out){
+    // 'Normal' product
+    #pragma HLS inline off
+   //#pragma HLS PIPELINE
+    ret_T w1; 
+    w1.range(25,18) = w.range(15,8);
+    w1.range(7,0)   = w.range(7,0);
+    out = a * w1;
+}
 
+//std::enable_if<(not std::is_same<data_T, ap_uint<1>>::value) and (not std::is_same<weight_T, ap_uint<1>>::value), ret_T>::type
+//inline typename 
+template<class data_T, class weight_T, class ret_T>
+ret_T product_merge(data_T a, weight_T w){
+    // 'Normal' product
+    #pragma HLS inline off
+    //ret_T w1 = 262144*w.range(15,8) + w.range(7,0);
+    ret_T w1=0; 
+    w1.range(25,18) = w.range(15,8);
+    w1.range(7,0)   = w.range(7,0);
+    //ret_T w2 = a * w1;
+    //weight_T w3;
+    //w3.range(15,8) = w2.range(25,18);
+    //w3.range(7,0)  = w2.range( 7, 0);
+    return a*w1;
+ }
+/*
 template<class data_T, class weight_T, class ret_T>
 inline typename std::enable_if<(not std::is_same<data_T, ap_uint<1>>::value)
         and (not std::is_same<weight_T, ap_uint<1>>::value), ret_T>::type
 product_merge(data_T a, weight_T w){
     // 'Normal' product
-    #pragma HLS inline off
+    //#pragma HLS inline 
+    //#pragma HLS inline off
+    //#pragma HLS PIPELINE
     ret_T w1 = 262144*w.range(15,8) + w.range(7,0);
     return a * w1;
 }
+*/
 
 template<class data_T, class res_T, typename CONFIG_T>
 inline typename std::enable_if<std::is_same<data_T, ap_uint<1>>::value

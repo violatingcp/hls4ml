@@ -89,6 +89,8 @@ class HLSConfig(object):
 
     def get_bram_size(self, layer):
         bf = self.model_bf
+        if bf is None:
+            return 500
         return bf
 
     def get_strategy(self, layer):
@@ -315,10 +317,10 @@ class HLSModel(object):
         quant_data = np.moveaxis(quant_data,len(quant_data.shape)-1,0)
         #print(data.shape,quant_data[0])
         shape=list(quant_data.shape)
-        shape[0]=shape[0]/2
+        shape[0]=int(shape[0]/2)
         data_out = np.zeros((shape),dtype=int)
         #print(data_out.shape)
-        for i0 in range(quant_data.shape[0]/2):
+        for i0 in range(int(quant_data.shape[0]/2)):
             data_out[i0] = quant_data[2*i0] + quant_data[2*i0+1]*264
         data_out = np.moveaxis(data_out,0,len(data_out.shape)-1)
         return data_out
@@ -749,6 +751,7 @@ class Layer(object):
 
         self.weights[name] = var
         self.precision[var.type.name] = var.type
+        print(np.prod(data.shape),bramport_size)
         if(np.prod(data.shape) > bramport_size):
             var_out = var_name.replace("{index}",str(self.index))
             self.model.register_bram_variable(var_out,var)

@@ -2,10 +2,10 @@ from __future__ import print_function
 import numpy as np
 import math
 from onnx import ModelProto, GraphProto, NodeProto, TensorProto
-from onnx import optimizer, helper, numpy_helper, shape_inference
+from onnx import helper, numpy_helper, shape_inference
 
 from hls4ml.model import HLSModel
-from hls4ml.model.optimizer import optimize_model
+#from hls4ml.model.optimizer import optimize_model
 
 MAXMULT = 4096
 
@@ -150,7 +150,7 @@ def onnx_to_hls(yamlConfig):
 
     passes = ['fuse_transpose_into_gemm', 'fuse_matmul_add_bias_into_gemm', 'eliminate_nop_transpose', 'fuse_consecutive_transposes']
     model = shape_inference.infer_shapes(model) # have to infer shapes before optimizing the model
-    model = optimizer.optimize(model, passes)
+    #model = optimizer.optimize(model, passes)
     model = shape_inference.infer_shapes(model) # have to infer shapes before optimizing the model
     
     reader = ONNXDataReader(model)
@@ -378,5 +378,5 @@ def onnx_to_hls(yamlConfig):
     print('Creating HLS model')
     hls_model = HLSModel(yamlConfig, reader, layer_list, input_layers, output_layers)
     optimizers = ['fuse_conv','fuse_conv2','fuse_merge','fuse_split','eliminate_linear_activation', 'merge_batch_norm_quantized_tanh', 'quantize_dense_output', 'fuse_dense_batch_norm']
-    optimize_model(hls_model, optimizers)
+    #optimize_model(hls_model, optimizers)
     return hls_model

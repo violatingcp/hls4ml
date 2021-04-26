@@ -1,7 +1,7 @@
 OnnxModel: onnx/resnet50.onnx
 #InputData: keras/KERAS_3layer_input_features.dat
 #OutputPredictions: keras/KERAS_3layer_predictions.dat
-OutputDir: resnet50-hls-full_1500mus
+OutputDir: resnet50-hls-full_1500mus_v3
 ProjectName: myproject
 XilinxPart: xcvu9p-flgc2104-2-i
 ClockPeriod: 5
@@ -12,6 +12,7 @@ HLSConfig:
     Precision: ap_uint<8>
     ReuseFactor: 300000
     MergeFactor: 2    # compress 8 bit weights to 16 bit weights and use DSPs
+    BramFactor: 500
   LayerType:
     Dense:
       ReuseFactor: 300000
