@@ -1,0 +1,16 @@
+{
+    "ips": [
+        {
+            "inputs": [],
+            "inst": "layer2",
+            "kernel": "UNKNOWN",
+            "outputs": []
+        },
+        {
+            "inputs": [],
+            "inst": "layer4",
+            "kernel": "UNKNOWN",
+            "outputs": []
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+OnnxModel: onnx/resnet50.onnx
+#InputData: keras/KERAS_3layer_input_features.dat
+#OutputPredictions: keras/KERAS_3layer_predictions.dat
+OutputDir: resnet50-hls-full_300mus
+ProjectName: myproject
+XilinxPart: xcvu9p-flgc2104-2-i
+ClockPeriod: 5
+
+IOType: io_serial # options: io_serial/io_parallel
+HLSConfig:
+  Model:
+    Precision: ap_uint<8>
+    ReuseFactor: 60000
+    MergeWeights: 2    # compress 8 bit weights to 16 bit weights and use DSPs
+  LayerType:
+    Dense:
+      ReuseFactor: 60000
+      Strategy: Resource
+      Compression: False
+    Conv2D:
+      ReuseFactor: 60000
+      Strategy: Resource
+      Compression: False
+    Conv2DMerge:
+      ReuseFactor: 60000
+      Strategy: Resource
+      Compression: False

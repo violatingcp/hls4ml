@@ -1,0 +1,1200 @@
+
+****** Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.1 (64-bit)
+  **** SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+  **** IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+    ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+source /opt/local/Xilinx/Vivado/2019.1/scripts/vivado_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/opt/local/Xilinx/Vivado/2019.1/bin/unwrapped/lnx64.o/vivado_hls'
+INFO: [HLS 200-10] For user 'pharris' on host 'correlator3.fnal.gov' (Linux_x86_64 version 3.10.0-1127.8.2.el7.x86_64) on Thu Aug 27 22:34:57 CDT 2020
+INFO: [HLS 200-10] On os "Scientific Linux release 7.8 (Nitrogen)"
+INFO: [HLS 200-10] In directory '/home/pharris/aigean/hls4ml/example-models/conv1d_test'
+Sourcing Tcl script 'build_prj.tcl'
+INFO: [HLS 200-10] Opening project '/home/pharris/aigean/hls4ml/example-models/conv1d_test/myproject_prj'.
+INFO: [HLS 200-10] Adding design file 'firmware/myproject.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'myproject_test.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'firmware/weights' to the project
+INFO: [HLS 200-10] Adding test bench file 'tb_data' to the project
+INFO: [HLS 200-10] Opening solution '/home/pharris/aigean/hls4ml/example-models/conv1d_test/myproject_prj/solution1'.
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 5ns.
+INFO: [HLS 200-10] Setting target device to 'xcvu9p-flgb2104-2-i'
+INFO: [XFORM 203-101] Allowed max sub elements number after partition is 4096.
+INFO: [XFORM 203-101] Allowed max sub elements number after partition is 4096.
+***** C SIMULATION *****
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../myproject_test.cpp in debug mode
+   Generating csim.exe
+INFO: Unable to open input/predictions file, using default input.
+ here 14
+ here 15
+ here 16
+ here 17
+ here 18
+ here 4
+ here 19
+ here 5
+ here 20
+ here 6
+ here 21
+ here 7
+ here 22
+ here 8
+ here 23
+ here 9
+ here 24
+ here 10
+ here 25
+ here 11
+ here 26
+ here 12
+ here 27
+ here 13
+ here 28
+ here 14
+ here 29
+ here 15
+ here 30
+ here 16
+ here 31
+ here 17
+ here 32
+ here 18
+ here 33
+ here 19
+ here 34
+ here 20
+ here 35
+ here 21
+ here 36
+ here 22
+ here 37
+ here 23
+ here 38
+ here 24
+ here 39
+ here 25
+ here 40
+ here 26
+ here 41
+ here 27
+ here 42
+ here 28
+ here 43
+ here 29
+ here 44
+ here 30
+ here 45
+ here 31
+ here 46
+ here 32
+ here 47
+ here 33
+ here 48
+ here 34
+ here 49
+ here 35
+ here 50
+ here 36
+ here 51
+ here 37
+ here 52
+ here 38
+ here 53
+ here 39
+ here 54
+ here 40
+ here 55
+ here 41
+ here 56
+ here 42
+ here 57
+ here 43
+ here 58
+ here 44
+ here 59
+ here 45
+ here 60
+ here 46
+ here 61
+ here 47
+ here 62
+ here 48
+ here 63
+ here 49
+ here 64
+ here 50
+ here 65
+ here 51
+ here 66
+ here 52
+ here 67
+ here 53
+ here 68
+ here 54
+ here 69
+ here 55
+ here 70
+ here 56
+ here 71
+ here 57
+ here 72
+ here 58
+ here 73
+ here 59
+ here 74
+ here 60
+ here 75
+ here 61
+ here 76
+ here 62
+ here 77
+ here 63
+ here 78
+ here 64
+ here 79
+ here 65
+ ----> 
+INFO: Saved inference results to file: tb_data/csim_results.log
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+***** C SIMULATION COMPLETED IN 0h0m24s *****
+***** C/RTL SYNTHESIS *****
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file 'firmware/myproject.cpp' ... 
+WARNING: [HLS 214-114] Since the only kind of statements allowed in a dataflow region are variable declarations and function calls, the compiler may not be able to correctly handle the region: firmware/nnet_utils/nnet_dense.h:165:9
+WARNING: [HLS 214-104] Only for-loops and functions support the dataflow: firmware/nnet_utils/nnet_dense.h:177:9
+WARNING: [HLS 214-104] Only for-loops and functions support the dataflow: firmware/nnet_utils/nnet_batchnorm.h:76:9
+WARNING: [HLS 214-111] Static scalars and arrays declared inside a dataflow region will be treated like local variables: firmware/nnet_utils/nnet_conv2d_large.h:400:24
+WARNING: [HLS 200-471] Dataflow form checks found 4 issue(s) in file firmware/myproject.cpp
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:00:41 ; elapsed = 00:00:42 . Memory (MB): peak = 984.668 ; gain = 196.129 ; free physical = 86005 ; free virtual = 248571
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:00:41 ; elapsed = 00:00:42 . Memory (MB): peak = 984.668 ; gain = 196.129 ; free physical = 86005 ; free virtual = 248571
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:160) in function 'void nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>(FORWARD_REFERENCE*, FORWARD_REFERENCE*, FORWARD_REFERENCE::weight_t*, FORWARD_REFERENCE::bias_t*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:160) in function 'void nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>(FORWARD_REFERENCE*, FORWARD_REFERENCE*, FORWARD_REFERENCE::weight_t*, FORWARD_REFERENCE::bias_t*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:160) in function 'void nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>(FORWARD_REFERENCE*, FORWARD_REFERENCE*, FORWARD_REFERENCE::weight_t*, FORWARD_REFERENCE::bias_t*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:160) in function 'void nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>(FORWARD_REFERENCE*, FORWARD_REFERENCE*, FORWARD_REFERENCE::weight_t*, FORWARD_REFERENCE::bias_t*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:160) in function 'void nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>(FORWARD_REFERENCE*, FORWARD_REFERENCE*, FORWARD_REFERENCE::weight_t*, FORWARD_REFERENCE::bias_t*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:160) in function 'void nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>(FORWARD_REFERENCE*, FORWARD_REFERENCE*, FORWARD_REFERENCE::weight_t*, FORWARD_REFERENCE::bias_t*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:160) in function 'void nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>(FORWARD_REFERENCE*, FORWARD_REFERENCE*, FORWARD_REFERENCE::weight_t*, FORWARD_REFERENCE::bias_t*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:160) in function 'void nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>(FORWARD_REFERENCE*, FORWARD_REFERENCE*, FORWARD_REFERENCE::weight_t*, FORWARD_REFERENCE::bias_t*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'MultLoop' (firmware/nnet_utils/nnet_dense_large.h:223) in function 'void nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>(FORWARD_REFERENCE*, FORWARD_REFERENCE*, FORWARD_REFERENCE::weight_t*, FORWARD_REFERENCE::bias_t*)' completely with a factor of 1.
+INFO: [HLS 200-489] Unrolling loop 'AccumLoop1' (firmware/nnet_utils/nnet_dense_large.h:241) in function 'void nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>(FORWARD_REFERENCE*, FORWARD_REFERENCE*, FORWARD_REFERENCE::weight_t*, FORWARD_REFERENCE::bias_t*)' completely with a factor of 1.
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:00:43 ; elapsed = 00:00:45 . Memory (MB): peak = 984.668 ; gain = 196.129 ; free physical = 85961 ; free virtual = 248527
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' into 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' (firmware/nnet_utils/nnet_dense_large.h:262) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' into 'nnet::conv_1d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' (firmware/nnet_utils/nnet_conv2d_large.h:492) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config3>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config3>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>' into 'nnet::conv_1d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4>' (firmware/nnet_utils/nnet_conv2d_large.h:492) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config5>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config5>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config7>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config7>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config9>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config9>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config13>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config13>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config15>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config15>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config17>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config17>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config19>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config19>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:00:44 ; elapsed = 00:00:46 . Memory (MB): peak = 984.668 ; gain = 196.129 ; free physical = 85961 ; free virtual = 248527
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::fill_image<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4>' (firmware/nnet_utils/nnet_conv2d_large.h:125:49).
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::fill_image<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' (firmware/nnet_utils/nnet_conv2d_large.h:125:49).
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:217) in function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' for pipelining.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:99) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config19>' completely with a factor of 5.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_activation.h:104) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config19>' completely with a factor of 5.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config19>' completely with a factor of 5.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_dense_large.h:540) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_dense_large.h:551) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' completely with a factor of 4.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:132) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' completely with a factor of 4.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:178) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' completely with a factor of 4.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:99) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config17>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_activation.h:104) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config17>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config17>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_dense_large.h:540) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_dense_large.h:551) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:132) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:178) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:99) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config15>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_activation.h:104) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config15>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config15>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_dense_large.h:540) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_dense_large.h:551) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:132) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:178) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:99) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config13>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_activation.h:104) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config13>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config13>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_dense_large.h:540) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_dense_large.h:551) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:132) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:178) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:99) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_activation.h:104) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_dense_large.h:540) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' completely with a factor of 32.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_dense_large.h:551) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:132) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:178) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:99) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config9>' completely with a factor of 33.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_activation.h:104) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config9>' completely with a factor of 33.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config9>' completely with a factor of 33.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_dense_large.h:540) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' completely with a factor of 32.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_dense_large.h:551) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' completely with a factor of 32.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:132) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' completely with a factor of 32.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:178) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' completely with a factor of 32.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:99) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config7>' completely with a factor of 33.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_activation.h:104) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config7>' completely with a factor of 33.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config7>' completely with a factor of 33.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_dense_large.h:540) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' completely with a factor of 4.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_dense_large.h:551) in function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' completely with a factor of 32.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:132) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' completely with a factor of 32.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:178) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' completely with a factor of 32.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:99) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config5>' completely with a factor of 5.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_activation.h:104) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config5>' completely with a factor of 5.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config5>' completely with a factor of 5.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_conv2d_large.h:478) in function 'nnet::conv_1d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_conv2d_large.h:485) in function 'nnet::conv_1d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_conv2d_large.h:127) in function 'nnet::fill_image<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4>' completely with a factor of 5.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:132) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>' completely with a factor of 4.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:178) in function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>' completely with a factor of 4.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:99) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config3>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_activation.h:104) in function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config3>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_activation.h:84) in function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config3>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_conv2d_large.h:478) in function 'nnet::conv_1d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' completely with a factor of 2.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2' (firmware/nnet_utils/nnet_conv2d_large.h:485) in function 'nnet::conv_1d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' completely with a factor of 2.
+INFO: [HLS 200-489] Unrolling loop 'Loop-1' (firmware/nnet_utils/nnet_conv2d_large.h:127) in function 'nnet::fill_image<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' completely with a factor of 9.
+INFO: [HLS 200-489] Unrolling loop 'InitAccum' (firmware/nnet_utils/nnet_dense_large.h:211) in function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'ResetMult' (firmware/nnet_utils/nnet_dense_large.h:235) in function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'AccumLoop2' (firmware/nnet_utils/nnet_dense_large.h:250) in function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Result' (firmware/nnet_utils/nnet_dense_large.h:260) in function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' completely with a factor of 8.
+WARNING: [XFORM 203-135] Cannot reshape array 'w18.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w16.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w14.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w12.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w10.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w8.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w6.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w4.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w2.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w18.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w16.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w14.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w12.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w10.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w8.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w6.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w4.V' : incorrect reshape factor 1.
+WARNING: [XFORM 203-135] Cannot reshape array 'w2.V' : incorrect reshape factor 1.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_in.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_reluout.V'  in dimension 1 completely.
+INFO: [XFORM 203-131] Reshaping array 'layer_out.V'  in dimension 1 completely.
+INFO: [XFORM 203-102] Automatically partitioning shift register array 'layer_in_row.Array.V.1' .
+INFO: [XFORM 203-102] Automatically partitioning shift register array 'layer_in_row.Array.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer9_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer8_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer7_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer6_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer5_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer4_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer3_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer2_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer18_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer17_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer16_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer15_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer14_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer13_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer12_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer11_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer10_out.V.V' .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'input1.V.V' (firmware/myproject.cpp:162) .
+INFO: [XFORM 203-102] Automatically partitioning streamed array 'layer19_out.V.V' (firmware/myproject.cpp:163) .
+INFO: [XFORM 203-101] Partitioning array 'b4.V'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:128) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'b2.V'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:207) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpmult.V' (firmware/nnet_utils/nnet_dense_large.h:219) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V' (firmware/nnet_utils/nnet_dense_large.h:231) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'data_cache.V' (firmware/nnet_utils/nnet_activation.h:95) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'res_cache'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpdata.V.4'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpres.V' (firmware/nnet_utils/nnet_dense_large.h:546) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'b18.V'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:128) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'data_cache.V' (firmware/nnet_utils/nnet_activation.h:95) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'res_cache'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpdata.V.3'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpres'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'b16.V'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:128) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'data_cache.V' (firmware/nnet_utils/nnet_activation.h:95) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'res_cache'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpdata.V.2'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpres'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'b14.V'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:128) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'data_cache.V' (firmware/nnet_utils/nnet_activation.h:95) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'res_cache'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpdata.V.1'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpres'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'b12.V'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:128) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'data_cache.V' (firmware/nnet_utils/nnet_activation.h:95) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'res_cache'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpdata.V'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpres'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'b10.V'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:128) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'data_cache.V' (firmware/nnet_utils/nnet_activation.h:95) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'res_cache'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpdata.V.6'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpres'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'b8.V'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:128) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'data_cache.V' (firmware/nnet_utils/nnet_activation.h:95) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'res_cache'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpdata.V.5'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'tmpres'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'b6.V'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (firmware/nnet_utils/nnet_dense_large.h:128) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'data_cache.V' (firmware/nnet_utils/nnet_activation.h:95) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'res_cache'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'data_cache.V' (firmware/nnet_utils/nnet_activation.h:95) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'res_cache'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer_in_row.Array.V.1' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer_in_row.Array.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer9_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer8_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer7_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer6_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer5_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer4_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer3_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer2_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer18_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer17_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer16_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer15_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer14_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer13_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer12_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer11_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer10_out.V.V' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'input1.V.V' (firmware/myproject.cpp:162) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer19_out.V.V' (firmware/myproject.cpp:163) in dimension 1 completely.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' into 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' (firmware/nnet_utils/nnet_dense_large.h:262) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>' into 'nnet::conv_1d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config3>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config3>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>' into 'nnet::conv_1d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4>' automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config5>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config5>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config7>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config7>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config9>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config9>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config13>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config13>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config15>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config15>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config17>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config17>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::cast<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' into 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' (firmware/nnet_utils/nnet_dense_large.h:180) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::dense_large<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' into 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' (firmware/nnet_utils/nnet_dense_large.h:548) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config19>' into 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config19>' (firmware/nnet_utils/nnet_activation.h:103) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config3>' into 'myproject_in' (firmware/myproject.cpp:94) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config5>' into 'myproject_in' (firmware/myproject.cpp:102) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config11>' into 'myproject_in' (firmware/myproject.cpp:126) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config13>' into 'myproject_in' (firmware/myproject.cpp:134) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config15>' into 'myproject_in' (firmware/myproject.cpp:142) automatically.
+INFO: [XFORM 203-602] Inlining function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config17>' into 'myproject_in' (firmware/myproject.cpp:150) automatically.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[0].V' to 'b18.V.0'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[1].V' to 'b18.V.1'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[2].V' to 'b18.V.2'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[3].V' to 'b18.V.3'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[0].V' to 'b16.V.0'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[1].V' to 'b16.V.1'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[2].V' to 'b16.V.2'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[3].V' to 'b16.V.3'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[4].V' to 'b16.V.4'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[5].V' to 'b16.V.5'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[6].V' to 'b16.V.6'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[7].V' to 'b16.V.7'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[0].V' to 'b14.V.0'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[1].V' to 'b14.V.1'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[2].V' to 'b14.V.2'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[3].V' to 'b14.V.3'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[4].V' to 'b14.V.4'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[5].V' to 'b14.V.5'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[6].V' to 'b14.V.6'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[7].V' to 'b14.V.7'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[0].V' to 'b12.V.0'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[1].V' to 'b12.V.1'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[2].V' to 'b12.V.2'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[3].V' to 'b12.V.3'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[4].V' to 'b12.V.4'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[5].V' to 'b12.V.5'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[6].V' to 'b12.V.6'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[7].V' to 'b12.V.7'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[0].V' to 'b10.V.0'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[1].V' to 'b10.V.1'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[2].V' to 'b10.V.2'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[3].V' to 'b10.V.3'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[4].V' to 'b10.V.4'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[5].V' to 'b10.V.5'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[6].V' to 'b10.V.6'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[7].V' to 'b10.V.7'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[0].V' to 'b8.V.0'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[1].V' to 'b8.V.1'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[2].V' to 'b8.V.2'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[3].V' to 'b8.V.3'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[4].V' to 'b8.V.4'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[5].V' to 'b8.V.5'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[6].V' to 'b8.V.6'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[7].V' to 'b8.V.7'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[8].V' to 'b8.V.8'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[9].V' to 'b8.V.9'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[10].V' to 'b8.V.10'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[11].V' to 'b8.V.11'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[12].V' to 'b8.V.12'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[13].V' to 'b8.V.13'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[14].V' to 'b8.V.14'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[15].V' to 'b8.V.15'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[16].V' to 'b8.V.16'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[17].V' to 'b8.V.17'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[18].V' to 'b8.V.18'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[19].V' to 'b8.V.19'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[20].V' to 'b8.V.20'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[21].V' to 'b8.V.21'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[22].V' to 'b8.V.22'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[23].V' to 'b8.V.23'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[24].V' to 'b8.V.24'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[25].V' to 'b8.V.25'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[26].V' to 'b8.V.26'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[27].V' to 'b8.V.27'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[28].V' to 'b8.V.28'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[29].V' to 'b8.V.29'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[30].V' to 'b8.V.30'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[31].V' to 'b8.V.31'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[0].V' to 'b6.V.0'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[1].V' to 'b6.V.1'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[2].V' to 'b6.V.2'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[3].V' to 'b6.V.3'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[4].V' to 'b6.V.4'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[5].V' to 'b6.V.5'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[6].V' to 'b6.V.6'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[7].V' to 'b6.V.7'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[8].V' to 'b6.V.8'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[9].V' to 'b6.V.9'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[10].V' to 'b6.V.10'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[11].V' to 'b6.V.11'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[12].V' to 'b6.V.12'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[13].V' to 'b6.V.13'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[14].V' to 'b6.V.14'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[15].V' to 'b6.V.15'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[16].V' to 'b6.V.16'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[17].V' to 'b6.V.17'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[18].V' to 'b6.V.18'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[19].V' to 'b6.V.19'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[20].V' to 'b6.V.20'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[21].V' to 'b6.V.21'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[22].V' to 'b6.V.22'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[23].V' to 'b6.V.23'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[24].V' to 'b6.V.24'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[25].V' to 'b6.V.25'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[26].V' to 'b6.V.26'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[27].V' to 'b6.V.27'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[28].V' to 'b6.V.28'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[29].V' to 'b6.V.29'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[30].V' to 'b6.V.30'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/nnet_utils/nnet_dense_large.h:512->firmware/nnet_utils/nnet_dense_large.h:548) by setting 'biases[31].V' to 'b6.V.31'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>.0' by setting 'biases[0].V' to 'b4.V.0'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>.0.0' by setting 'biases[1].V' to 'b4.V.1'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>.0.0.0' by setting 'biases[2].V' to 'b4.V.2'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:128:37) to 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>.0.0.0.0' by setting 'biases[3].V' to 'b4.V.3'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>'(firmware/nnet_utils/nnet_dense_large.h:213:9) to 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0' by setting 'biases[0].V' to 'b2.V.0'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0'(firmware/nnet_utils/nnet_dense_large.h:213:9) to 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0' by setting 'biases[1].V' to 'b2.V.1'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0'(firmware/nnet_utils/nnet_dense_large.h:213:9) to 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0' by setting 'biases[2].V' to 'b2.V.2'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:213:9) to 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0.0' by setting 'biases[3].V' to 'b2.V.3'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:213:9) to 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0.0.0' by setting 'biases[4].V' to 'b2.V.4'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:213:9) to 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0.0.0.0' by setting 'biases[5].V' to 'b2.V.5'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:213:9) to 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0.0.0.0.0' by setting 'biases[6].V' to 'b2.V.6'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0.0.0.0.0'(firmware/nnet_utils/nnet_dense_large.h:213:9) to 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0.0.0.0.0.0' by setting 'biases[7].V' to 'b2.V.7'.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (firmware/nnet_utils/nnet_dense_large.h:244:49) to (firmware/nnet_utils/nnet_dense_large.h:217:37) in function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0.0.0.0.0.0'... converting 12 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock to (firmware/nnet_utils/nnet_conv2d_large.h:483:3) in function 'nnet::conv_1d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4>'... converting 17 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock to (firmware/nnet_utils/nnet_conv2d_large.h:483:3) in function 'nnet::conv_1d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>'... converting 5 basic blocks.
+INFO: [HLS 200-111] Finished Pre-synthesis Time (s): cpu = 00:00:59 ; elapsed = 00:01:01 . Memory (MB): peak = 984.668 ; gain = 196.129 ; free physical = 85930 ; free virtual = 248496
+WARNING: [XFORM 203-631] Renaming function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config9>' to 'relu_stream' (firmware/nnet_utils/nnet_activation.h:87:1)
+WARNING: [XFORM 203-631] Renaming function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config7>' to 'relu_stream.1' (firmware/nnet_utils/nnet_activation.h:87:1)
+WARNING: [XFORM 203-631] Renaming function 'nnet::relu_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config19>' to 'relu_stream.2' (firmware/nnet_utils/nnet_activation.h:87:1)
+WARNING: [XFORM 203-631] Renaming function 'nnet::product<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0> >' to 'product' (firmware/nnet_utils/nnet_dense.h:93:9)
+WARNING: [XFORM 203-631] Renaming function 'nnet::fill_image<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4>' to 'fill_image' (firmware/nnet_utils/nnet_conv2d_large.h:126:1)
+WARNING: [XFORM 203-631] Renaming function 'nnet::fill_image<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' to 'fill_image.1' (firmware/nnet_utils/nnet_conv2d_large.h:126:1)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>' to 'dense_large_stream' (firmware/nnet_utils/nnet_dense_large.h:512:1)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>' to 'dense_large_stream.1' (firmware/nnet_utils/nnet_dense_large.h:512:1)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>' to 'dense_large_stream.2' (firmware/nnet_utils/nnet_dense_large.h:512:1)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>' to 'dense_large_stream.3' (firmware/nnet_utils/nnet_dense_large.h:512:1)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>' to 'dense_large_stream.4' (firmware/nnet_utils/nnet_dense_large.h:512:1)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>' to 'dense_large_stream.5' (firmware/nnet_utils/nnet_dense_large.h:512:1)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_stream<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>' to 'dense_large_stream.6' (firmware/nnet_utils/nnet_dense_large.h:512:1)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config8>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' to 'dense_large_rf_gt_ni' (firmware/nnet_utils/nnet_dense_large.h:153:20)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config6>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' to 'dense_large_rf_gt_ni.1' (firmware/nnet_utils/nnet_dense_large.h:153:20)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4_mult>.0.0.0.0' to 'dense_large_rf_gt_ni.2' (firmware/nnet_utils/nnet_dense_large.h:153:20)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config18>.0.0.0.0' to 'dense_large_rf_gt_ni.3' (firmware/nnet_utils/nnet_dense_large.h:153:20)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config16>.0.0.0.0.0.0.0.0' to 'dense_large_rf_gt_ni.4' (firmware/nnet_utils/nnet_dense_large.h:153:20)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config14>.0.0.0.0.0.0.0.0' to 'dense_large_rf_gt_ni.5' (firmware/nnet_utils/nnet_dense_large.h:153:20)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config12>.0.0.0.0.0.0.0.0' to 'dense_large_rf_gt_ni.6' (firmware/nnet_utils/nnet_dense_large.h:153:20)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_rf_gt_nin_rem0<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config10>.0.0.0.0.0.0.0.0' to 'dense_large_rf_gt_ni.7' (firmware/nnet_utils/nnet_dense_large.h:153:20)
+WARNING: [XFORM 203-631] Renaming function 'nnet::dense_large_rf_gt_nin<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2_mult>.0.0.0.0.0.0.0.0' to 'dense_large_rf_gt_ni.8' (firmware/nnet_utils/nnet_dense_large.h:217:9)
+WARNING: [XFORM 203-631] Renaming function 'nnet::conv_1d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config4>' to 'conv_1d_large_cl' (firmware/nnet_utils/nnet_conv2d_large.h:468:45)
+WARNING: [XFORM 203-631] Renaming function 'nnet::conv_1d_large_cl<ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<16, 6, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' to 'conv_1d_large_cl.1' (firmware/nnet_utils/nnet_conv2d_large.h:468:45)
+INFO: [XFORM 203-531] Rewinding loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:217) in function 'dense_large_rf_gt_ni.8'.
+INFO: [XFORM 203-531] Rewinding loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:153) in function 'dense_large_rf_gt_ni.7'.
+INFO: [XFORM 203-531] Rewinding loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:153) in function 'dense_large_rf_gt_ni.6'.
+INFO: [XFORM 203-531] Rewinding loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:153) in function 'dense_large_rf_gt_ni.5'.
+INFO: [XFORM 203-531] Rewinding loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:153) in function 'dense_large_rf_gt_ni.4'.
+INFO: [XFORM 203-531] Rewinding loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:153) in function 'dense_large_rf_gt_ni.3'.
+INFO: [XFORM 203-531] Rewinding loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:153) in function 'dense_large_rf_gt_ni.2'.
+INFO: [XFORM 203-531] Rewinding loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:153) in function 'dense_large_rf_gt_ni.1'.
+INFO: [XFORM 203-531] Rewinding loop 'ReuseLoop' (firmware/nnet_utils/nnet_dense_large.h:153) in function 'dense_large_rf_gt_ni'.
+WARNING: [XFORM 203-561] Ignored multiple trip count directives for loop 'ReuseLoop' in function 'dense_large_rf_gt_ni.8'.
+WARNING: [XFORM 203-561] Ignored multiple trip count directives for loop 'ReuseLoop' in function 'dense_large_rf_gt_ni.7'.
+WARNING: [XFORM 203-561] Ignored multiple trip count directives for loop 'ReuseLoop' in function 'dense_large_rf_gt_ni.6'.
+WARNING: [XFORM 203-561] Ignored multiple trip count directives for loop 'ReuseLoop' in function 'dense_large_rf_gt_ni.5'.
+WARNING: [XFORM 203-561] Ignored multiple trip count directives for loop 'ReuseLoop' in function 'dense_large_rf_gt_ni.4'.
+WARNING: [XFORM 203-561] Ignored multiple trip count directives for loop 'ReuseLoop' in function 'dense_large_rf_gt_ni.3'.
+WARNING: [XFORM 203-561] Ignored multiple trip count directives for loop 'ReuseLoop' in function 'dense_large_rf_gt_ni.2'.
+WARNING: [XFORM 203-561] Ignored multiple trip count directives for loop 'ReuseLoop' in function 'dense_large_rf_gt_ni.1'.
+WARNING: [XFORM 203-561] Ignored multiple trip count directives for loop 'ReuseLoop' in function 'dense_large_rf_gt_ni'.
+INFO: [HLS 200-111] Finished Architecture Synthesis Time (s): cpu = 00:01:10 ; elapsed = 00:01:11 . Memory (MB): peak = 1240.668 ; gain = 452.129 ; free physical = 85681 ; free virtual = 248247
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'myproject' ...
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_rf_gt_ni.8' to 'dense_large_rf_gt_ni_8'.
+WARNING: [SYN 201-103] Legalizing function name 'fill_image.1' to 'fill_image_1'.
+WARNING: [SYN 201-103] Legalizing function name 'conv_1d_large_cl.1' to 'conv_1d_large_cl_1'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_rf_gt_ni.2' to 'dense_large_rf_gt_ni_2'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_rf_gt_ni.1' to 'dense_large_rf_gt_ni_1'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_stream.1' to 'dense_large_stream_1'.
+WARNING: [SYN 201-103] Legalizing function name 'relu_stream.1' to 'relu_stream_1'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_rf_gt_ni.7' to 'dense_large_rf_gt_ni_7'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_stream.6' to 'dense_large_stream_6'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_rf_gt_ni.6' to 'dense_large_rf_gt_ni_6'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_stream.5' to 'dense_large_stream_5'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_rf_gt_ni.5' to 'dense_large_rf_gt_ni_5'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_stream.4' to 'dense_large_stream_4'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_rf_gt_ni.4' to 'dense_large_rf_gt_ni_4'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_stream.3' to 'dense_large_stream_3'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_rf_gt_ni.3' to 'dense_large_rf_gt_ni_3'.
+WARNING: [SYN 201-103] Legalizing function name 'dense_large_stream.2' to 'dense_large_stream_2'.
+WARNING: [SYN 201-103] Legalizing function name 'relu_stream.2' to 'relu_stream_2'.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'product' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'product'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 1.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 71.71 seconds; current allocated memory: 442.596 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.03 seconds; current allocated memory: 442.653 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_rf_gt_ni_8' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'ReuseLoop'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.1 seconds; current allocated memory: 443.046 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.16 seconds; current allocated memory: 443.591 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'fill_image_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'fill_image.1'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 1.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.35 seconds; current allocated memory: 443.879 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.05 seconds; current allocated memory: 444.104 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'conv_1d_large_cl_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.1 seconds; current allocated memory: 444.430 MB.
+INFO: [HLS 200-434] Only 0 loops out of a total 2 loops have been pipelined in this design.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.2 seconds; current allocated memory: 444.906 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_rf_gt_ni_2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'ReuseLoop'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.32 seconds; current allocated memory: 445.272 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.11 seconds; current allocated memory: 445.706 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'fill_image' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'fill_image'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 1.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.21 seconds; current allocated memory: 445.768 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.04 seconds; current allocated memory: 445.907 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'conv_1d_large_cl' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.32 seconds; current allocated memory: 447.037 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.51 seconds; current allocated memory: 448.570 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_rf_gt_ni_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'ReuseLoop'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 3.08 seconds; current allocated memory: 449.670 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.29 seconds; current allocated memory: 453.634 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_stream_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.88 seconds; current allocated memory: 453.969 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.17 seconds; current allocated memory: 454.769 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'relu_stream_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 1.24 seconds; current allocated memory: 455.466 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.31 seconds; current allocated memory: 457.050 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_rf_gt_ni' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'ReuseLoop'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 2.86 seconds; current allocated memory: 458.115 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.31 seconds; current allocated memory: 462.195 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_stream' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 1.34 seconds; current allocated memory: 462.683 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.24 seconds; current allocated memory: 464.006 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'relu_stream' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 1.3 seconds; current allocated memory: 464.740 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.32 seconds; current allocated memory: 466.296 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_rf_gt_ni_7' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'ReuseLoop'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.51 seconds; current allocated memory: 466.766 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.13 seconds; current allocated memory: 467.471 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_stream_6' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.8 seconds; current allocated memory: 467.833 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.18 seconds; current allocated memory: 468.722 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_rf_gt_ni_6' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'ReuseLoop'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.33 seconds; current allocated memory: 468.978 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.12 seconds; current allocated memory: 469.583 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_stream_5' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.41 seconds; current allocated memory: 469.775 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.09 seconds; current allocated memory: 470.198 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_rf_gt_ni_5' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'ReuseLoop'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.26 seconds; current allocated memory: 470.471 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.12 seconds; current allocated memory: 471.073 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_stream_4' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.42 seconds; current allocated memory: 471.227 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.1 seconds; current allocated memory: 471.646 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_rf_gt_ni_4' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'ReuseLoop'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.26 seconds; current allocated memory: 471.919 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.11 seconds; current allocated memory: 472.525 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_stream_3' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.41 seconds; current allocated memory: 472.679 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.09 seconds; current allocated memory: 473.135 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_rf_gt_ni_3' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'ReuseLoop'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.17 seconds; current allocated memory: 473.336 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.1 seconds; current allocated memory: 473.692 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'dense_large_stream_2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.33 seconds; current allocated memory: 473.838 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.09 seconds; current allocated memory: 474.184 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'relu_stream_2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.18 seconds; current allocated memory: 474.296 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.07 seconds; current allocated memory: 474.533 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'myproject_in' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 1.93 seconds; current allocated memory: 476.252 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 1.97 seconds; current allocated memory: 482.874 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'myproject' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 1.48 seconds; current allocated memory: 484.153 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.7 seconds; current allocated memory: 488.642 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'product' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_mul_13s_16s_26_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'product'.
+INFO: [HLS 200-111]  Elapsed time: 1.14 seconds; current allocated memory: 489.482 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_rf_gt_ni_8' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'myproject_mux_83_16_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_rf_gt_ni_8'.
+INFO: [HLS 200-111]  Elapsed time: 0.07 seconds; current allocated memory: 490.520 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'fill_image_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'fill_image_1'.
+INFO: [HLS 200-111]  Elapsed time: 0.39 seconds; current allocated memory: 492.862 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'conv_1d_large_cl_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'pX_6' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'layer_in_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'layer_out_V' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'conv_1d_large_cl_1'.
+INFO: [HLS 200-111]  Elapsed time: 0.13 seconds; current allocated memory: 494.276 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_rf_gt_ni_2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'myproject_mux_42_16_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_rf_gt_ni_2'.
+INFO: [HLS 200-111]  Elapsed time: 0.47 seconds; current allocated memory: 496.922 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'fill_image' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'fill_image'.
+INFO: [HLS 200-111]  Elapsed time: 0.24 seconds; current allocated memory: 498.482 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'conv_1d_large_cl' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'pX_5' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'layer_in_V_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'layer_out_V_1' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'conv_1d_large_cl'.
+INFO: [HLS 200-111]  Elapsed time: 0.25 seconds; current allocated memory: 501.380 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_rf_gt_ni_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'myproject_mux_325_16_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mux_42_16_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_rf_gt_ni_1'.
+INFO: [HLS 200-111]  Elapsed time: 1.49 seconds; current allocated memory: 514.494 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_stream_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'pX_7' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_5_0' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_5_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_5_2' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_5_3' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_stream_1'.
+INFO: [HLS 200-111]  Elapsed time: 0.7 seconds; current allocated memory: 525.713 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'relu_stream_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'relu_stream_1'.
+INFO: [HLS 200-111]  Elapsed time: 0.38 seconds; current allocated memory: 528.994 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_rf_gt_ni' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'myproject_mux_325_16_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_rf_gt_ni'.
+INFO: [HLS 200-111]  Elapsed time: 1.04 seconds; current allocated memory: 539.354 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_stream' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'pX' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_0' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_2' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_3' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_4' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_5' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_6' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_7' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_8' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_9' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_10' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_11' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_12' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_13' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_14' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_15' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_16' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_17' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_18' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_19' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_20' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_21' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_22' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_23' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_24' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_25' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_26' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_27' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_28' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_29' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_30' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6_31' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_stream'.
+INFO: [HLS 200-111]  Elapsed time: 0.96 seconds; current allocated memory: 551.579 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'relu_stream' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'relu_stream'.
+INFO: [HLS 200-111]  Elapsed time: 0.52 seconds; current allocated memory: 555.804 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_rf_gt_ni_7' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'myproject_mux_325_16_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mux_83_16_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_rf_gt_ni_7'.
+INFO: [HLS 200-111]  Elapsed time: 0.77 seconds; current allocated memory: 560.485 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_stream_6' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'pX_4' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_0' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_1485' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_2486' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_3487' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_4488' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_5489' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_6490' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_7' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_8' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_9' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_10' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_11' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_12' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_13' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_14' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_15' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_16' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_17' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_18' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_19' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_20' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_21' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_22' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_23' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_24' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_25' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_26' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_27' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_28' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_29' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_30' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_31' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_stream_6'.
+INFO: [HLS 200-111]  Elapsed time: 0.61 seconds; current allocated memory: 563.825 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_rf_gt_ni_6' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'myproject_mux_83_16_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_rf_gt_ni_6'.
+INFO: [HLS 200-111]  Elapsed time: 0.44 seconds; current allocated memory: 566.582 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_stream_5' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'pX_3' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_1_0' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_1_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_1_2' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_1_3' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_1_4' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_1_5' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_1_6' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_1_7' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_stream_5'.
+INFO: [HLS 200-111]  Elapsed time: 0.42 seconds; current allocated memory: 569.063 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_rf_gt_ni_5' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'myproject_mux_83_16_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_rf_gt_ni_5'.
+INFO: [HLS 200-111]  Elapsed time: 0.33 seconds; current allocated memory: 570.949 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_stream_4' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'pX_2' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_2_0' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_2_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_2_2' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_2_3' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_2_4' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_2_5' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_2_6' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_2_7' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_stream_4'.
+INFO: [HLS 200-111]  Elapsed time: 0.42 seconds; current allocated memory: 573.467 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_rf_gt_ni_4' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'myproject_mux_83_16_1_1': 2 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_rf_gt_ni_4'.
+INFO: [HLS 200-111]  Elapsed time: 0.34 seconds; current allocated memory: 575.341 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_stream_3' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'pX_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_3_0' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_3_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_3_2' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_3_3' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_3_4' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_3_5' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_3_6' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_3_7' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_stream_3'.
+INFO: [HLS 200-111]  Elapsed time: 0.43 seconds; current allocated memory: 577.849 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_rf_gt_ni_3' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'myproject_mux_42_16_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mux_83_16_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_rf_gt_ni_3'.
+INFO: [HLS 200-111]  Elapsed time: 0.34 seconds; current allocated memory: 579.419 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'dense_large_stream_2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'pX_8' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_4_0' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_4_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_4_2' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_4_3' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_4_4' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_4_5' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_4_6' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'tmpdata_V_4_7' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'dense_large_stream_2'.
+INFO: [HLS 200-111]  Elapsed time: 0.37 seconds; current allocated memory: 581.068 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'relu_stream_2' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'relu_stream_2'.
+INFO: [HLS 200-111]  Elapsed time: 0.28 seconds; current allocated memory: 582.160 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'myproject_in' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'myproject_in'.
+INFO: [HLS 200-111]  Elapsed time: 2.12 seconds; current allocated memory: 595.327 MB.

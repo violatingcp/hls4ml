@@ -1,0 +1,261 @@
+{
+    "ips": [
+        {
+            "inputs": [],
+            "inst": "layer2",
+            "kernel": "UNKNOWN",
+            "outputs": []
+        },
+        {
+            "inputs": [],
+            "inst": "layer3",
+            "kernel": "UNKNOWN",
+            "outputs": []
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 57
+                }
+            ],
+            "inst": "layer4",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer8",
+                    "output_port": "input",
+                    "width": 57
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 57
+                }
+            ],
+            "inst": "layer8",
+            "kernel": "pooling2d_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer9",
+                    "output_port": "input",
+                    "width": 29
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 29
+                }
+            ],
+            "inst": "layer9",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer13",
+                    "output_port": "input",
+                    "width": 29
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 29
+                }
+            ],
+            "inst": "layer13",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer17",
+                    "output_port": "input",
+                    "width": 29
+                }
+            ]
+        },
+        {
+            "inputs": [],
+            "inst": "layer46",
+            "kernel": "UNKNOWN",
+            "outputs": []
+        },
+        {
+            "inputs": [],
+            "inst": "layer50",
+            "kernel": "UNKNOWN",
+            "outputs": []
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 29
+                }
+            ],
+            "inst": "layer17",
+            "kernel": "pooling2d_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer18",
+                    "output_port": "input",
+                    "width": 15
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 15
+                }
+            ],
+            "inst": "layer18",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer22",
+                    "output_port": "input",
+                    "width": 15
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 8
+                }
+            ],
+            "inst": "layer35",
+            "kernel": "pooling2d_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer36",
+                    "output_port": "input",
+                    "width": 4
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 15
+                }
+            ],
+            "inst": "layer22",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer26",
+                    "output_port": "input",
+                    "width": 15
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 4
+                }
+            ],
+            "inst": "layer40",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "dest": 0,
+                    "name": "output",
+                    "width": 4
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 4
+                }
+            ],
+            "inst": "layer36",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer40",
+                    "output_port": "input",
+                    "width": 4
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 15
+                }
+            ],
+            "inst": "layer26",
+            "kernel": "pooling2d_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer27",
+                    "output_port": "input",
+                    "width": 8
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 8
+                }
+            ],
+            "inst": "layer27",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer31",
+                    "output_port": "input",
+                    "width": 8
+                }
+            ]
+        },
+        {
+            "inputs": [
+                {
+                    "name": "input",
+                    "width": 8
+                }
+            ],
+            "inst": "layer31",
+            "kernel": "conv_2d_large_cl",
+            "outputs": [
+                {
+                    "name": "output",
+                    "output_inst": "layer35",
+                    "output_port": "input",
+                    "width": 8
+                }
+            ]
+        }
+    ]
+}
