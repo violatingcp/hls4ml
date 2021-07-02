@@ -7,6 +7,6 @@ class EliminateLinearActivation(OptimizerPass):
             cast = node.get_input_variable().type.precision != node.get_output_variable().type.precision
         return node.__class__.__name__ == 'Activation' and node.get_attr('activation') == 'linear' and not cast
     
-    def transform(self, model, node):
+    def transform(self, model, node,lastnodes=None):
         model.remove_node(node)
         return True

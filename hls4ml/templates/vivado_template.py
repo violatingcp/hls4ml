@@ -7,6 +7,10 @@ from collections.abc import Iterable
 from hls4ml.templates.templates import Backend
 
 dense_config_template = """struct config{index} : nnet::dense_config {{
+    static const unsigned block_factor = {block_factor};
+    static const unsigned merge_factor = {merge_factor};
+    static const unsigned n_input = {n_input};
+    static const unsigned n_output = {n_output};
     static const unsigned n_in = {n_in};
     static const unsigned n_out = {n_out};
     static const unsigned io_type = nnet::{iotype};
@@ -18,6 +22,7 @@ dense_config_template = """struct config{index} : nnet::dense_config {{
     typedef {accum_t} accum_t;
     typedef {bias_t} bias_t;
     typedef {weight_t} weight_t;
+    typedef {bigweight_t} weightmult_t;
     typedef {index_t} index_t;
     template<class x_T, class y_T, class res_T>
     using product = nnet::product::{product_type}<x_T, y_T, res_T>;
@@ -40,6 +45,7 @@ conv1d_config_template = """struct config{index} : nnet::conv1d_config {{
     static const unsigned pad_right = {pad_right};
     static const unsigned in_width = {in_width};
     static const unsigned n_chan = {n_chan};
+    static const unsigned n_chan_in = {n_chan_in};
     static const unsigned filt_width = {filt_width};
     static const unsigned kernel_size = filt_width;
     static const unsigned n_filt = {n_filt};
@@ -59,10 +65,22 @@ conv1d_config_template = """struct config{index} : nnet::conv1d_config {{
 }};
 const ap_uint<config{index}::filt_width> config{index}::pixels[] = {{{instructions}}};\n"""
 
+upsampling2d_config_template = """struct config{index} : nnet::upsampling2d_config {{
+    static const unsigned height_factor = {height_factor};
+    static const unsigned width_factor = {width_factor};
+    static const unsigned in_height = {in_height};
+    static const unsigned in_width = {in_width};
+    static const unsigned out_height = {out_height};
+    static const unsigned out_width = {out_width};
+    static const unsigned n_chan    = {n_channel};
+    static const nnet::Interp_Op interp_op = nnet::{interp_op};
+}};\n"""
+
 conv_mult_config_template = """struct config{index}_mult : nnet::dense_config {{
     static const unsigned n_in = {n_in};
     static const unsigned n_out = {n_out};
     static const unsigned reuse_factor = {reuse};
+    static const unsigned merge_factor = {merge_factor};
     typedef {accum_t} accum_t;
     typedef {bias_t} bias_t;
     typedef {weight_t} weight_t;
@@ -71,6 +89,51 @@ conv_mult_config_template = """struct config{index}_mult : nnet::dense_config {{
 }};\n"""
 
 conv2d_config_template = """struct config{index} : nnet::conv2d_config {{
+    static const unsigned pad_top = {pad_top};
+    static const unsigned pad_bottom = {pad_bottom};
+    static const unsigned pad_left = {pad_left};
+    static const unsigned pad_right = {pad_right};
+    static const unsigned in_height = {in_height};
+    static const unsigned in_width = {in_width};
+    static const unsigned n_chan = {n_chan};
+    static const unsigned n_chan_in = {n_chan_in};
+    static const unsigned filt_height = {filt_height};
+    static const unsigned filt_width = {filt_width};
+    static const unsigned n_filt = {n_filt};
+    static const unsigned n_filt_in = {n_filt_in};
+    static const unsigned stride_height = {stride_height};
+    static const unsigned stride_width = {stride_width};
+    static const unsigned out_height = {out_height};
+    static const unsigned out_width = {out_width};
+    static const unsigned reuse_factor = {reuse};
+    static const unsigned n_zeros = {nzeros};
+    static const bool store_weights_in_bram = false;
+    typedef {accum_t} accum_t;
+    typedef {bias_t} bias_t;
+    typedef {weight_t} weight_t;
+    typedef {config_t} mult_config;
+    typedef {config_t_relu} relu_config;
+}};\n"""
+
+
+conv_norm_config_template = """struct config{index}_norm : nnet::dense_config {{
+    static const unsigned n_in = {n_in};
+    static const unsigned n_filt = {n_filt};
+    static const unsigned io_type = nnet::{iotype};
+    static const unsigned reuse_factor = {reuse};
+    static const bool store_weights_in_bram = false;
+    typedef {bias_t} bias_t;
+    typedef {scale_t} scale_t;
+}};\n"""
+
+conv_relu_config_template = """struct config{index}_relu : nnet::activ_config {{
+    static const unsigned n_in = {n_in};
+    static const unsigned table_size = 1024;
+    static const unsigned io_type = nnet::{iotype};
+}};\n"""
+
+
+conv2dmerge_config_template = """struct config{index} : nnet::conv2d_config {{
     static const unsigned pad_top = {pad_top};
     static const unsigned pad_bottom = {pad_bottom};
     static const unsigned pad_left = {pad_left};
@@ -138,10 +201,15 @@ pooling2d_config_template = """struct config{index} : nnet::pooling2d_config {{
     static const unsigned in_height = {in_height};
     static const unsigned in_width = {in_width};
     static const unsigned n_filt = {n_filt};
+    static const unsigned n_chan = {n_chan};
+    static const unsigned n_filt_in = {n_filt_in};
+    static const unsigned n_chan_in = {n_chan_in};
     static const unsigned stride_height = {stride_height};
     static const unsigned stride_width = {stride_width};
     static const unsigned pool_height = {pool_height};
     static const unsigned pool_width = {pool_width};
+    static const unsigned filt_height = {pool_height};
+    static const unsigned filt_width = {pool_width};
     static const unsigned out_height = {out_height};
     static const unsigned out_width = {out_width};
     static const unsigned pad_top = {pad_top};
@@ -193,6 +261,14 @@ zeropad2d_config_template = """struct config{index} : nnet::padding2d_config {{
 
 merge_config_template = """struct config{index} : nnet::merge_config {{
     static const unsigned n_elem = {n_elem};
+    static const unsigned n_elem_full = {n_elem_full};
+    static const unsigned n_mux       = {n_mux};
+}};\n"""
+
+split_config_template = """struct config{index} : nnet::split_config {{
+    static const unsigned n_elem = {n_elem};
+    static const unsigned n_elem_full = {n_elem_full};
+    static const unsigned n_mux       = {n_mux};
 }};\n"""
 
 dot_config_template = """struct config{index} : nnet::dot_config {{
@@ -375,6 +451,7 @@ resize_include_list = ['nnet_utils/nnet_image.h', 'nnet_utils/nnet_image_stream.
 transpose_include_list = ['nnet_utils/nnet_array.h']
 garnet_include_list = ['nnet_utils/nnet_garnet.h']
 
+
 class VivadoBackend(Backend):
     def __init__(self):
         super(VivadoBackend, self).__init__('Vivado')
@@ -416,6 +493,9 @@ class VivadoBackend(Backend):
             n_in = layer.get_attr('n_chan') * layer.get_attr('filt_width')
             n_out = layer.get_attr('n_filt')
         elif 'Conv2D' in layer.__class__.__name__:
+            n_in = layer.get_attr('n_chan') * layer.get_attr('filt_height') * layer.get_attr('filt_width')
+            n_out = layer.get_attr('n_filt')
+        elif layer.__class__.__name__ == 'Conv2DMerge':
             n_in = layer.get_attr('n_chan') * layer.get_attr('filt_height') * layer.get_attr('filt_width')
             n_out = layer.get_attr('n_filt')
 

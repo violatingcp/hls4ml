@@ -5,6 +5,7 @@ import sys
 import platform
 import ctypes
 import re
+import copy
 import numpy as np
 import numpy.ctypeslib as npc
 from collections import OrderedDict
@@ -123,6 +124,18 @@ class HLSConfig(object):
 
         return rf
 
+    def get_merge_factor(self, layer):
+        mf = self.model_mf
+        if mf is None:
+            mf = 1
+        return mf
+
+    def get_bram_size(self, layer):
+        bf = self.model_bf
+        if bf is None:
+            return 500
+        return bf
+
     def get_strategy(self, layer):
         strategy = self.layer_name_strategy.get(layer.name.lower())
         if strategy is None:
@@ -171,9 +184,11 @@ class HLSConfig(object):
                     self.model_precision['default'] = precision_cfg # Default precision for everything
 
             self.model_rf = model_cfg.get('ReuseFactor')
+            self.model_mf = model_cfg.get('MergeFactor')
+            self.model_bf = model_cfg.get('BramFactor')
             self.model_strategy = model_cfg.get('Strategy', 'Latency')
             self.model_compression = bool(model_cfg.get('Compression', 0))
-
+            
         layer_type_cfg = hls_config.get('LayerType')
         if layer_type_cfg is not None:
             for layer_type, layer_cfg in layer_type_cfg.items():
@@ -255,6 +270,7 @@ class HLSModel(object):
         # If not provided, assumes layer_list[0] is input, and layer_list[-1] is output
         self.inputs = inputs if inputs is not None else [layer_list[0]['name']]
         self.outputs = outputs if outputs is not None else [layer_list[-1]['name']]
+        self.brams   = []
 
         self.index = 0
         self.graph = OrderedDict()
@@ -296,7 +312,7 @@ class HLSModel(object):
         if len(node.inputs) > 1:
             raise Exception('Cannot insert a node with more than one input (for now).')
 
-        prev_node = self.graph.get(node.inputs[0])
+        prev_node = next((x for x in self.graph.values() if x.outputs[0] == node.inputs[0]),None)
         next_node = next((x for x in self.graph.values() if x.inputs[0] == prev_node.outputs[0]), None)
         if next_node is not None:
             next_node.inputs[0] = node.outputs[0]
@@ -313,6 +329,9 @@ class HLSModel(object):
         if rewire:
             if len(node.inputs) > 1 or len(node.outputs) > 1:
                 raise Exception('Cannot rewire a node with multiple inputs/outputs')
+            #print("Check outputs",node.outputs,"!!!!",self.graph.values())
+            #prev_node = (x for x in self.graph.values() if x == node.inputs[0]) #self.graph.get(node.inputs[0])
+            #next_node = next((x for x in self.graph.values() if x == node),None)
             prev_node = self.graph.get(node.inputs[0])
             next_node = next((x for x in self.graph.values() if node.outputs[0] in x.inputs), None)
             if prev_node is not None:
@@ -368,6 +387,16 @@ class HLSModel(object):
         variables = []
         for out in self.outputs:
             variables.append(self.output_vars[out])
+        return variables
+
+    def register_bram_variable(self, out_name, variable):
+        self.brams.append(out_name)
+        self.bram_vars[out_name] = variable
+
+    def get_bram_variables(self):
+        variables = []
+        for bram in self.brams:
+            variables.append(self.bram_vars[bram])
         return variables
 
     def get_layer_output_variable(self, output_name):

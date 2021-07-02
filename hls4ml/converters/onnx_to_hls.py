@@ -2,7 +2,7 @@ from __future__ import print_function
 import numpy as np
 import math
 from onnx import ModelProto, GraphProto, NodeProto, TensorProto
-from onnx import optimizer, helper, numpy_helper, shape_inference
+from onnx import helper, numpy_helper, shape_inference
 
 from hls4ml.model import HLSModel
 
@@ -149,7 +149,7 @@ def onnx_to_hls(yamlConfig):
 
     passes = ['fuse_transpose_into_gemm', 'fuse_matmul_add_bias_into_gemm', 'eliminate_nop_transpose', 'fuse_consecutive_transposes']
     model = shape_inference.infer_shapes(model) # have to infer shapes before optimizing the model
-    model = optimizer.optimize(model, passes)
+    #model = optimizer.optimize(model, passes)
     model = shape_inference.infer_shapes(model) # have to infer shapes before optimizing the model
     
     reader = ONNXDataReader(model)
@@ -201,7 +201,7 @@ def onnx_to_hls(yamlConfig):
             layer_counter = layer_counter + 1
 
         #Dictionary to fill in and append to layer_list
-        layer = {}
+        layer = {} 
 
         #Extract name for finding weights and biases
         if operation.name:
@@ -229,7 +229,11 @@ def onnx_to_hls(yamlConfig):
             
             current_shape = [current_shape[0], layer['n_out']]
         elif layer['class_name']=='Conv':
-            current_shape = get_input_shape(model, operation)
+            if operation != model.graph.node[0]:
+                current_shape = get_input_shape(model, operation)
+            print("Conv shape",current_shape)
+
+                
             strides = get_onnx_attribute(operation, 'strides')
             kernel_shape = get_onnx_attribute(operation, 'kernel_shape')
 
@@ -257,7 +261,6 @@ def onnx_to_hls(yamlConfig):
             elif len(current_shape) == 4: # Conv2D
                 layer['class_name'] = 'Conv2D'
                 reader.add_input(layer['name'], operation.input, transpose=True, perm=[2, 3, 1, 0])
-
                 layer['in_height']=current_shape[2]
                 layer['in_width']=current_shape[3]
                 layer['filt_height']=kernel_shape[0]
@@ -272,7 +275,7 @@ def onnx_to_hls(yamlConfig):
                 layer['pad_bottom'] = pads[2]
                 layer['pad_left'] = pads[1]
                 layer['pad_right'] = pads[3]
-
+                print("Conv2D-layer",current_shape)
                 if all(x == 0 for x in pads): # No padding, i.e., 'VALID' padding in Keras/Tensorflow
                     layer['out_width'] = int(math.ceil(float(layer['in_width'] - layer['filt_width'] + 1) / float(layer['stride_width'])))
                     layer['out_height'] = int(math.ceil(float(layer['in_height'] - layer['filt_height'] + 1) / float(layer['stride_height'])))

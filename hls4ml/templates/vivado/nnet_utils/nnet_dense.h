@@ -11,16 +11,21 @@
 
 namespace nnet {
 
+enum mult_type {type0 = 0, type1};
+
 struct dense_config
 {
     // Internal data type definitions
     typedef float bias_t;
     typedef float weight_t;
+    typedef ap_uint<16> weightmult_t;
     typedef float accum_t;
 
     // Layer Sizes
     static const unsigned n_in = 10;
     static const unsigned n_out = 10;
+    // For merging of weights
+    static const unsigned merge_factor = 1;
 
     // Resource reuse info
     static const unsigned io_type = io_parallel;
@@ -28,6 +33,7 @@ struct dense_config
     static const unsigned reuse_factor = 1;
     static const bool store_weights_in_bram = false;
     static const unsigned n_zeros = 0;
+    static const unsigned mult_type = type0;
     // partitioning arrays cyclically to go with roll factors?
     // Product function to use
     template<class x_T, class y_T, class res_T>

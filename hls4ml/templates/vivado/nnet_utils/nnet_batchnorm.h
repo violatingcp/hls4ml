@@ -95,6 +95,52 @@ void normalize(
 	}
 }
 
+template<class data_T, class res_T, typename CONFIG_T>
+void normalize2(
+    data_T    data[CONFIG_T::n_in],
+    res_T     res[CONFIG_T::n_in],
+    typename CONFIG_T::scale_t  scale[CONFIG_T::n_in],
+    typename CONFIG_T::bias_t   bias[CONFIG_T::n_in] ) {
+   
+    // Use a function_instantiate in case it helps to explicitly optimize unchanging weights/biases
+    //#pragma HLS function_instantiate variable=scale,bias
+    #pragma HLS ARRAY_RESHAPE variable=scale complete
+    #pragma HLS ARRAY_RESHAPE variable=bias complete
+
+    const int rufactor = 1;//CONFIG_T::reuse_factor;
+    const int multfactor = CONFIG_T::n_in;//MIN(CONFIG_T::n_in,CONFIG_T::reuse_factor);
+
+    // Calcuate result
+    //for (int ir = 0; ir < rufactor; ir++) {
+    int ir = 0; 
+        for (int ires = 0; ires < multfactor; ires++) {
+            #pragma HLS UNROLL
+            res[ires*rufactor+ir] = data[ires*rufactor+ir] * scale[ires*rufactor+ir] + bias[ires*rufactor+ir];
+        }
+	  //}
+}
+
+template<class data_T, class res_T, typename CONFIG_T>
+void normalize_stream(
+    hls::stream<data_T>    data[CONFIG_T::n_in],
+    hls::stream<res_T>     res[CONFIG_T::n_in],
+    typename CONFIG_T::scale_t  scale[CONFIG_T::n_in],
+    typename CONFIG_T::bias_t   bias[CONFIG_T::n_in] ) {
+   
+    #pragma HLS PIPELINE
+    #pragma HLS function_instantiate variable=scale,bias
+    #pragma HLS ARRAY_RESHAPE variable=scale complete
+    #pragma HLS ARRAY_RESHAPE variable=bias complete
+
+    for (int ires = 0; ires < CONFIG_T::n_in; ires++) {
+     #pragma HLS UNROLL
+     res_T pTmp = (res_T) data[ires].read();
+     if(ires > 0) { 
+      pTmp = pTmp*scale[ires-1] + bias[ires-1];
+     }
+     res[ires].write(pTmp);
+    }
+}
 // ****************************************************
 //       Merged Batch Normalization and Quantized Tanh
 // ****************************************************
