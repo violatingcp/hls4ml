@@ -188,7 +188,7 @@ class HLSConfig(object):
             self.model_bf = model_cfg.get('BramFactor')
             self.model_strategy = model_cfg.get('Strategy', 'Latency')
             self.model_compression = bool(model_cfg.get('Compression', 0))
-            
+
         layer_type_cfg = hls_config.get('LayerType')
         if layer_type_cfg is not None:
             for layer_type, layer_cfg in layer_type_cfg.items():
@@ -329,9 +329,6 @@ class HLSModel(object):
         if rewire:
             if len(node.inputs) > 1 or len(node.outputs) > 1:
                 raise Exception('Cannot rewire a node with multiple inputs/outputs')
-            #print("Check outputs",node.outputs,"!!!!",self.graph.values())
-            #prev_node = (x for x in self.graph.values() if x == node.inputs[0]) #self.graph.get(node.inputs[0])
-            #next_node = next((x for x in self.graph.values() if x == node),None)
             prev_node = self.graph.get(node.inputs[0])
             next_node = next((x for x in self.graph.values() if node.outputs[0] in x.inputs), None)
             if prev_node is not None:

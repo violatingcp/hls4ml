@@ -56,9 +56,6 @@ class VivadoWriter(Writer):
         ## Print weight array to C++
         #######################################
 
-        #var.data = np.transpose(var.data, axes=[3, 2, 1, 0])
-        #var.data = np.transpose(var.data, axes=[0, 3, 2, 1])
-
         h_file = open("{}/firmware/weights/{}.h".format(odir,var.name),"w")
         if write_txt_file:
             txt_file = open("{}/firmware/weights/{}.txt".format(odir,var.name),"w")
@@ -100,7 +97,6 @@ class VivadoWriter(Writer):
         if not os.path.isdir("{}/firmware/weights".format(model.config.get_output_dir())):
             os.makedirs("{}/firmware/weights".format(model.config.get_output_dir()))
 
-<<<<<<< HEAD
     @staticmethod
     def _make_array_pragma(variable):
         """
@@ -134,7 +130,6 @@ class VivadoWriter(Writer):
 
         elif mode == 'stream':
             return '#pragma HLS STREAM variable={name} depth={depth}'.format(name=variable.name, depth=depth)
-=======
     def copy_dir(self,model,indir,outdir):
         filedir = os.path.dirname(os.path.abspath(__file__))
         srcpath = os.path.join(filedir,indir)
@@ -337,16 +332,19 @@ class VivadoWriter(Writer):
                 continue
             if 'Dense' in layer.__class__.__name__:
                 continue
-            if ('Conv2D' in layer.__class__.__name__) or ('Pooling' in layer.__class__.__name__) or ('Dense' in layer.__class__.__name__) or ('Split' in layer.__class__.__name__):
+            #if ('Conv2D' in layer.__class__.__name__) or ('Pooling' in layer.__class__.__name__) or ('Dense' in layer.__class__.__name__) or ('Split' in layer.__class__.__name__):
             # make input bridge
+            #    input_width = layer.get_input_variable().shape[0] + 1
+            #    output_width = layer.get_output_variable().shape[0] + 1
+            if len(layer.get_input_variable().shape) > 0 and layer.get_input_variable().shape[0] != None:
                 input_width = layer.get_input_variable().shape[0] + 1
+            else:
+                input_width = 2
+            if len(layer.get_output_variable().shape) > 0 and layer.get_output_variable().shape[0] != None:
                 output_width = layer.get_output_variable().shape[0] + 1
-            elif ('Merge' in layer.__class__.__name__):
-                input_width =  layer.get_input_variable(layer.inputs[0]).shape[0] + 1
-                output_width = layer.get_output_variable().shape[0] + 1
+            else:
+                output_width = 2
             print("writing bridge for layer:" + layer.__class__.__name__)
-            print("input width is " + str(input_width))
-            print("output width is " + str(output_width))
 
             #if we did not make a bridge for this width already, make a new one
             if not(input_width in bridge_input_widths):
@@ -482,7 +480,6 @@ class VivadoWriter(Writer):
         ips = []
         cpu_dest = 0
 
-
         for layer_key in layer_map.keys():
             layer = layer_map[layer_key]
             kernel_name = ''
@@ -494,12 +491,14 @@ class VivadoWriter(Writer):
                 strategy = ''
                 if not(layer.get_attr("data_format") == 'channels_first'):
                     data_format = '_cl'
-                if(layer.is1x1):
-                    onexone = '_1x1'
                 if(layer.get_attr('strategy') != None):
                     strategy = "_" + layer.get_attr("strategy")
                 kernel_name = "conv_2d" + strategy + data_format + onexone + '_port'
-                input_ports = [{"name":"input", "width": layer.get_input_variable().shape[0] + 1}]
+                shape0 = layer.get_input_variable().shape[0]
+                if shape0 is None:
+                    input_ports = [{"name":"input", "width": 1+1}]
+                else:
+                    input_ports = [{"name":"input", "width": shape0 + 1}]
 
                 output_ports = [self.get_output_ports(layer_map, tensor_map, cpu_dest, layer.get_output_variable().name, layer.get_output_variable().shape[0] + 1)]
             elif ('Pooling' in layer.__class__.__name__):
@@ -508,8 +507,6 @@ class VivadoWriter(Writer):
                 strategy = ''
                 if not(layer.get_attr("data_format") == 'channels_first'):
                     data_format = '_cl'
-                if(layer.is1x1):
-                    onexone = '_1x1'
                 if(layer.get_attr('strategy') != None):
                     strategy = "_" + layer.get_attr("strategy")
                 kernel_name = "pooling2d" + strategy + data_format + onexone
@@ -523,8 +520,6 @@ class VivadoWriter(Writer):
 
             elif ('Split' in layer.__class__.__name__):
                 kernel_name = "nnet_split"
-                if(layer.get_input_variable(layer.inputs[0]).size_cnn() > 1000):
-                    kernel_name = kernel_name + '_mux'
                 input_ports = [{"name":"input", "width": layer.get_input_variable().shape[0] + 1}]
 
                 output_ports = [self.get_output_ports(layer_map, tensor_map, cpu_dest, layer.get_output_variable().name, layer.get_output_variable().shape[0] + 1)]
@@ -535,28 +530,7 @@ class VivadoWriter(Writer):
                     output_ports[1]["name"] = "output_2"
 
                 print( "layer" + str(layer_key) + " IN SPLIT JUST ADDED OUTPUT PORTS " + str(output_ports))
-            elif ('Merge' in layer.__class__.__name__):
-                kernel_name = str(layer.get_attr('op').lower())
-                if(layer.get_input_variable(layer.inputs[0]).size_cnn() > 1000):
-                    kernel_name = kernel_name + '_mux'
-                input_ports = [{"name":"input_1", "width": layer.get_input_variable(layer.inputs[0]).shape[0] + 1},
-                               #{"name":"input_2", "width": layer.get_input_variable(layer.inputs[1]).shape[1] + 1}
-                               {"name":"input_2", "width": layer.get_input_variable(layer.inputs[0]).shape[0] + 1}
-                               ]
-                #output_inst = "layer" + str(layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].index)
-                #output_port_name = 'input'
-
-                output_ports = [self.get_output_ports(layer_map, tensor_map, cpu_dest, layer.get_output_variable().name, layer.get_output_variable().shape[0] + 1)]
-                #if not(tensor_map[layer.get_output_variable().name]['input'] == []):
-                #    if  'Merge' in layer_map[tensor_map[layer.get_output_variable().name]['input'][0][0]].__class__.__name__:
-                #        if tensor_map[layer.get_output_variable().name]['input'][0][1] == 1:
-                #            output_port_name = 'input2'
-                #        else:
-                #            output_port_name = 'input1'
-                #    output_ports = [{"name":"output", "width": layer.get_output_variable().shape[0] + 1, "output_inst": output_inst, "output_port":output_port_name}]
-                #else:
-                ##no layer to accept output, final layer send back to cpu
-                #    output_ports.append({"name":"output", "width": layer.get_output_variable().shape[0] + 1, "dest": cpu_dest})
+                # I don't care about "Merge" layer for now
             else:
                 kernel_name = "UNKNOWN"
 
@@ -568,12 +542,22 @@ class VivadoWriter(Writer):
             print("ADDING IP " + str(ip))
             ips.append(ip)
 
-
-
-        #print (tensor_map)
-        #print(ips)
         ips = {"ips":ips}
-        r = json.dumps(ips, indent=4, separators=(',', ': '), sort_keys=True)
+        # Encoder for numpy values
+        class NpEncoder(json.JSONEncoder):
+            def default(self, obj):
+                if isinstance(obj, np.integer):
+                    return int(obj)
+                elif isinstance(obj, np.floating):
+                    return float(obj)
+                elif isinstance(obj, np.int64):
+                    return int(obj)
+                elif isinstance(obj, np.ndarray):
+                    return obj.tolist()
+                else:
+                    return super(NpEncoder, self).default(obj)
+
+        r = json.dumps(ips, cls=NpEncoder, indent=4, separators=(',', ': '), sort_keys=True)
         f = open("{}/firmware/model.json".format(model.config.get_output_dir()),"w")
         f.write(str(r))
 
@@ -630,7 +614,6 @@ class VivadoWriter(Writer):
         self.copy_dir(model,'../templates/vivado/AIgean/common/','firmware/ips/common/'),
         self.copy_dir(model,'../templates/vivado/AIgean/include/','firmware/ips/include/'),
         self.copy_dir(model,'../templates/vivado/AIgean/bridges/','firmware/ips/bridges/'),
->>>>>>> origin/sc20_test
 
     def write_project_cpp(self, model):
         ###################
@@ -649,7 +632,7 @@ class VivadoWriter(Writer):
         model_brams   = model.get_bram_variables()
 
         indent = '    '
-        cl=False
+        cl=True
         for line in f.readlines():
             #Add headers to weights and biases
             if 'myproject' in line:
@@ -658,15 +641,10 @@ class VivadoWriter(Writer):
                 else:
                     newline = line.replace('myproject', model.config.get_project_name())
             elif '//hls-fpga-machine-learning insert header' in line:
-<<<<<<< HEAD
                 inputs_str = ', '.join([self.variable_definition_cpp(model, i, as_reference=True) for i in model_inputs])
                 outputs_str = ', '.join([self.variable_definition_cpp(model, o, as_reference=True) for o in model_outputs])
-=======
-                inputs_str = ', '.join([i.definition_cpp() for i in model_inputs])
-                outputs_str = ', '.join([o.definition_cpp() for o in model_outputs])
                 if len(model_brams) > 0:
                     brams_str  = ',\n'.join([o.definition_cpp() for o in model_brams])
->>>>>>> origin/sc20_test
                 insize_str = ', '.join(['unsigned short &const_size_in_{}'.format(i) for i in range(1, len(model_inputs) + 1)])
                 outsize_str = ', '.join(['unsigned short &const_size_out_{}'.format(i) for i in range(1, len(model_outputs) + 1)])
                 inputs_str=inputs_str.replace('static','')
@@ -680,8 +658,6 @@ class VivadoWriter(Writer):
                 newline += indent + insize_str + ',\n'
                 newline += indent + outsize_str + '\n'
 
-<<<<<<< HEAD
-=======
             elif '//hls-fpga-machine-learning insert weights' in line:
                 newline = line
                 for layer in model.get_layers():
@@ -689,7 +665,6 @@ class VivadoWriter(Writer):
                         if w.name not in model.brams:
                             newline += '#include "weights/{}.h"\n'.format(w.name)
 
->>>>>>> origin/sc20_test
             elif '//hls-fpga-machine-learning insert load weights' in line:
                 newline = line
                 for layer in model.get_layers():
@@ -732,27 +707,16 @@ class VivadoWriter(Writer):
                 newline = line + '\n'
                 inputs = model.get_input_variables()
                 outputs = model.get_output_variables()
-                first=True
                 for layer in model.get_layers():
                     vars = layer.get_variables()
                     for var in vars:
-                        if var.cl:
-                            cl=True
                         if var not in inputs and var not in outputs:
                             def_cpp = self.variable_definition_cpp(model, var)
                             if def_cpp is not None:
                                 newline += '    ' + def_cpp + ';\n'
                                 if var.pragma:
-<<<<<<< HEAD
                                     newline += '    ' + self._make_array_pragma(var) + '\n'
                     func = layer.function_cpp()
-=======
-                                    newline += '    ' + var.pragma + '\n'
-
-                    func = layer.function_cpp(first)
-                    if 'put' not in layer.name: #put is short for input
-                        first=False
->>>>>>> origin/sc20_test
                     if func:
                         if len(func) == 1:
                             newline += '    ' + func[0] + ' // ' + layer.name + '\n'
@@ -844,17 +808,11 @@ class VivadoWriter(Writer):
             elif 'void myproject(' in line:
                 newline = 'void {}(\n'.format(model.config.get_project_name())
             elif '//hls-fpga-machine-learning insert header' in line:
-<<<<<<< HEAD
-                inputs_str = ', '.join([self.variable_definition_cpp(model, i, as_reference=True) for i in model_inputs])
-                outputs_str = ', '.join([self.variable_definition_cpp(model, o, as_reference=True) for o in model_outputs])
-                insize_str = ', '.join(['unsigned short &const_size_in_{}'.format(i) for i in range(1, len(model_inputs) + 1)])
-=======
-                inputs_str  = ', '.join([i.definition_cpp().replace('static','') for i in model_inputs])
-                outputs_str = ', '.join([o.definition_cpp().replace('static','') for o in model_outputs])
+                inputs_str = ', '.join([self.variable_definition_cpp(model, i, as_reference=True).replace('static', '') for i in model_inputs])
+                outputs_str = ', '.join([self.variable_definition_cpp(model, o, as_reference=True).replace('static', '') for o in model_outputs])
                 if len(model_brams) > 0:
                     brams_str   = ',\n'.join([o.definition_cpp() for o in model_brams])
                 insize_str  = ', '.join(['unsigned short &const_size_in_{}'.format(i) for i in range(1, len(model_inputs) + 1)])
->>>>>>> origin/sc20_test
                 outsize_str = ', '.join(['unsigned short &const_size_out_{}'.format(o) for o in range(1, len(model_outputs) + 1)])
 
                 newline = ''
@@ -997,21 +955,14 @@ class VivadoWriter(Writer):
                 newline = line.replace('myproject', model.config.get_project_name())
             elif '//hls-fpga-machine-learning insert data' in line:
                 newline = line
-<<<<<<< HEAD
+                model_brams   = model.get_bram_variables()
+                for bram in model_brams:
+                    newline += bram.definition_cpp()+';\n'
                 offset = 0
                 for inp in model.get_input_variables():
                     newline += '      ' + self.variable_definition_cpp(model, inp) + ';\n'
                     newline += '      nnet::copy_data<float, {}, {}, {}>(in, {});\n'.format(inp.type.name, offset, inp.size_cpp(), inp.cppname)
                     offset += inp.size()
-=======
-                model_brams   = model.get_bram_variables()
-                for bram in model_brams:
-                    newline += bram.definition_cpp()+';\n'
-                for inp in model.get_input_variables():
-                    input_str = '      ' + inp.definition_cpp() + ' = {};\n'
-                    default_val = ','.join('in[{}]'.format(i) for i in range(inp.size()-1))
-                    newline += input_str.format('{' + default_val + '}')
->>>>>>> origin/sc20_test
                 for out in model.get_output_variables():
                     newline += '      ' + self.variable_definition_cpp(model, out) + ';\n'
             elif '//hls-fpga-machine-learning insert zero' in line:
@@ -1355,15 +1306,8 @@ class VivadoWriter(Writer):
         self.write_weights(model)
         self.write_defines(model)
         self.write_parameters(model)
-<<<<<<< HEAD
         self.write_test_bench(model)
         self.write_bridge(model)
-=======
-        if model.config.get_config_value('IOType') == 'io_serial':
-            self.write_test_bench_serial(model)
-        else:
-            self.write_test_bench(model)
->>>>>>> origin/sc20_test
         self.write_build_script(model)
         self.write_nnet_utils(model)
         self.write_model_json(model)

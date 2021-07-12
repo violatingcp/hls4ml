@@ -151,12 +151,14 @@ def tf_to_hls(yamlConfig):
         raise Exception('Error importing the graph: {}'.format(str(e)))
 
     #Define supported operations
-    array_ops = ['ConcatV2', 'StridedSlice', 'Transpose']
+    array_ops = ['ConcatV2', 'Pack', 'StridedSlice', 'Transpose']
     core_ops = ['Const', 'Identity', 'Placeholder']
     image_ops = ['ResizeNearestNeighbor']
     math_ops = ['Add', 'MatMul', 'Mul', 'Sigmoid']
-    nn_ops = ['AvgPool', 'BiasAdd', 'Conv2D', 'Elu', 'FusedBatchNorm', 'MaxPool', 'Relu', 'Selu', 'Softmax','Pad']
-    supported_ops = array_ops + core_ops + image_ops + math_ops + nn_ops
+    nn_ops = ['AvgPool', 'BiasAdd', 'Conv2D', 'Elu', 'FusedBatchNorm', 'MaxPool', 'Relu', 'Selu', 'Softmax', 'Pad']
+    property_ops = ['Shape', 'Reshape']
+    supported_ops = array_ops + core_ops + image_ops + math_ops + nn_ops + property_ops
+
 
     input_layers = []
     output_layers = _find_graph_outputs(graph)
@@ -257,7 +259,7 @@ def tf_to_hls(yamlConfig):
             weights_shape = tf_op.inputs[1].shape.as_list()
             output_shape = tf_op.outputs[0].shape.as_list()
 
-            layer['class_name'] = 'Pad'
+            layer['class_name'] = 'ZeroPadding2D'
             layer['inputs']  = _parse_tensor_names(tf_op.inputs[0])
             layer['outputs'] = _parse_tensor_names(tf_op.outputs[0])
 
@@ -273,6 +275,10 @@ def tf_to_hls(yamlConfig):
             in_width = input_shape[w_idx]
             layer['out_height'] = output_shape[h_idx]
             layer['out_width']  = output_shape[w_idx]
+            layer['pad_top']  = (layer['out_height']-layer['in_height'])/2
+            layer['pad_bottom']  = layer['pad_top']
+            layer['pad_left']  = (layer['out_width']-layer['in_width'])/2
+            layer['pad_right']  = layer['pad_left']
             handled = True
             
         elif tf_op.type == 'MaxPool':
@@ -337,8 +343,33 @@ def tf_to_hls(yamlConfig):
 
             handled = True
 
+        elif tf_op.type == 'StridedSlice':
+            layer['class_name'] = 'StridedSlice'
+            layer['inputs'] = _parse_tensor_names(list(tf_op.inputs))
+            layer['outputs'] = _parse_tensor_names(tf_op.outputs[0])
+            # expect these to be constants
+            layer['begin'] = tf_op.inputs[1].op.node_def.attr['value'].tensor.int_val[0]
+            layer['end'] = tf_op.inputs[2].op.node_def.attr['value'].tensor.int_val[0]
+            layer['stride'] = tf_op.inputs[3].op.node_def.attr['value'].tensor.int_val[0]
+            layer['in_size'] = tf_op.inputs[0].shape.as_list()[0]
+            print("begin:", layer['begin'])
+            print("end:", layer['end'])
+            print("stride:", layer['stride'])
+            output_shape = tf_op.outputs[0].shape.as_list()
+            print("strided slice output shape:", output_shape)
+            layer['out_size'] = int((layer['end'] - layer['begin'])/layer['stride'])
+            layer['output_shape'] = output_shape
+            if len(output_shape) > 1:
+                raise Exception("Unsupported number of inputs in StridedSlice")
+
+            handled = True
+
         elif tf_op.type in ['Add', 'Mul']:
             layer['class_name'] = 'Merge'
+            if tf_op.type == "Mul" and tf_op.inputs[1].op.type == 'Const' and False:
+                layer['second_input'] = 'Const'
+            else:
+                layer['second_input'] = "na"
             layer['inputs'] = _parse_tensor_names(list(tf_op.inputs))
             layer['outputs'] = _parse_tensor_names(tf_op.outputs[0])
             output_shape = tf_op.outputs[0].shape.as_list()
@@ -379,6 +410,52 @@ def tf_to_hls(yamlConfig):
             half_pixel_centers = tf_op.get_attr('align_corners')
             if half_pixel_centers:
                 raise NotImplementedError('Property "half_pixel_centers=True" is not supported.')
+
+            handled = True
+        elif tf_op.type == 'Shape':
+            input_shape = tf_op.inputs[0].shape.as_list()
+            print("Shape input shape:", input_shape)
+            output_shape = [len(input_shape)]
+            layer['class_name'] = 'Shape'
+            layer['inputs'] = _parse_tensor_names(tf_op.inputs[0])
+            layer['outputs'] = _parse_tensor_names(tf_op.outputs[0])
+            print("Shape output:", layer['outputs'])
+            layer['input_shape'] = input_shape
+            layer['output_shape'] = output_shape
+            if len(input_shape) == 4 and input_shape[0] == None:
+                layer['S_1'] = input_shape[1]
+                layer['S_2'] = input_shape[2]
+                layer['S_3'] = input_shape[3]
+            else:
+                raise NotImplementedError("For now, don't support Shape with input shape not in this form <None, x, y, z>")
+
+            handled = True
+
+        elif tf_op.type == 'Reshape':
+            input_shape = tf_op.inputs[0].shape.as_list()
+            output_shape = tf_op.outputs[0].shape.as_list()
+            layer['class_name'] = 'Reshape'
+            layer['inputs'] = _parse_tensor_names(tf_op.inputs[0])
+            layer['outputs'] = _parse_tensor_names(tf_op.outputs[0])
+            layer['input_shape'] = input_shape
+            layer['target_shape'] = tf_op.get_attr('shape')
+
+            handled = True
+        elif tf_op.type == 'Pack':
+            input_shape = tf_op.inputs[0].shape.as_list()
+            print("Pack input shape lists:", input_shape)
+            output_shape = tf_op.outputs[0].shape.as_list()
+            
+            layer['class_name'] = 'Pack'
+            layer['inputs'] = _parse_tensor_names(list(tf_op.inputs))
+            print("inputs:", layer['inputs'])
+            layer['outputs'] = _parse_tensor_names(tf_op.outputs[0])
+            print("outputs:", layer['outputs'])
+            layer['axis'] = tf_op.get_attr('axis')
+            layer['N'] = tf_op.get_attr('N')
+            layer['n_chan'] = input_shape[3] if len(input_shape) > 3 else 0
+            layer['in_height'] = input_shape[2] if len(input_shape) > 2 else 0
+            layer['in_width'] = input_shape[1] if len(input_shape) > 1 else 0
 
             handled = True
 

@@ -171,11 +171,18 @@ class ArrayVariable(Variable):
 
 class StreamVariable(Variable):
     def __init__(self, shape, dim_names, var_name='layer{index}', type_name='layer{index}_t', precision=None, n_pack=1, depth=0, **kwargs):
-        super(StreamVariable, self).__init__(var_name, PackedType(type_name, precision, shape[-1], n_pack, **kwargs), **kwargs)
+        if len(shape) == 0:
+            super(StreamVariable, self).__init__(var_name, PackedType(type_name, precision, 1, n_pack, **kwargs), **kwargs)
+        else:
+            super(StreamVariable, self).__init__(var_name, PackedType(type_name, precision, shape[-1], n_pack, **kwargs), **kwargs)
+
         self.shape = shape
         self.dim_names = dim_names
         if depth == 0:
-            depth = np.prod(shape) // shape[-1]
+            if len(shape) == 0:
+                depth = 1
+            else:
+                depth = np.prod(list(filter(None, shape))) // shape[-1]
         self.pragma = ('stream', depth)
 
     def get_shape(self):
@@ -838,7 +845,7 @@ class Conv2D(Layer):
             self.set_attr('strategy', 'resource')
             if self.model.config.backend.name == 'Vivado':
                 self.model.config.backend.set_closest_reuse_factor(self)
-                self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[3, 2, 0, 1]) #(H,W,C,F) => (F,C,H,W)
+                self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[3, 0, 1, 2]) 
         else:
             self.set_attr('strategy', 'latency')
 
@@ -871,8 +878,8 @@ class Conv2D(Layer):
 
         if self.model.config.get_config_value('IOType') == 'io_stream':
             min_h, min_w, instructions = self.model.config.backend.compute_conv2d_instructions(
-                self.get_input_variable().shape[0],
-                self.get_input_variable().shape[1],
+                self.get_attr('in_height'), #self.get_input_variable().shape[0],
+                self.get_attr('in_width'), #self.get_input_variable().shape[1],
                 self.get_input_variable().shape[2],
                 params['filt_height'],
                 params['stride_height'])
@@ -920,8 +927,8 @@ class SeparableConv2D(Layer):
             self.set_attr('strategy', 'resource')
             if self.model.config.backend.name == 'Vivado':
                 self.model.config.backend.set_closest_reuse_factor(self)
-                self.weights['depthwise'].data = np.transpose(self.weights['depthwise'].data, axes=[3, 2, 0, 1]) #(H,W,C,F) => (F,C,H,W)
-                self.weights['pointwise'].data = np.transpose(self.weights['pointwise'].data, axes=[3, 2, 0, 1]) #(H,W,C,F) => (F,C,H,W)
+                self.weights['depthwise'].data = np.transpose(self.weights['depthwise'].data, axes=[3, 0, 1, 2]) #(H,W,C,F) => (F,C,H,W)
+                self.weights['pointwise'].data = np.transpose(self.weights['pointwise'].data, axes=[3, 0, 1, 2]) #(H,W,C,F) => (F,C,H,W)
         else:
             self.set_attr('strategy', 'latency')
 
@@ -1051,7 +1058,7 @@ class DepthwiseConv2D(Conv2D):
             self.set_attr('strategy', 'resource')
             if self.model.config.backend.name == 'Vivado':
                 self.model.config.backend.set_closest_reuse_factor(self)
-                self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[3, 2, 0, 1]) #(H,W,C,F) => (F,C,H,W)
+                self.weights['weight'].data = np.transpose(self.weights['weight'].data, axes=[3, 0, 1, 2]) #(H,W,C,F) => (F,C,H,W)
         else:
             self.set_attr('strategy', 'latency')
 
@@ -1240,6 +1247,88 @@ class Pad(Layer):
         params['out_width'] = self.get_output_variable().dim_names[1]
         return self._config_template.format(**params)       
 
+class StridedSlice(Layer):
+    def initialize(self):
+        shape = self.attributes['output_shape']
+        inp = self.get_input_variable()
+        self.add_output_variable(shape, inp.dim_names)
+
+    def function_cpp(self):
+        params = self._default_function_params()
+        params['begin'] = self.attributes['begin']
+        params['end'] = self.attributes['end']
+        params['stride'] = self.attributes['stride']
+        params['in_size'] = self.attributes['in_size']
+        params['out_size'] = self.attributes['out_size']
+        return [self._function_template.format(**params)]
+
+    def config_cpp(self):
+        params = self._default_config_params()
+        return self._config_template.format(**params)       
+
+class Shape(Layer):
+    def initialize(self):
+
+        shape = self.attributes['output_shape']
+        dims = ['N_SIZE_{}_{}'.format(i, self.index) for i in range(1, len(shape) + 1)]
+        out_name = self.outputs[0]
+        proxy = self.get_input_variable()
+        out = InplaceVariable(shape, dims, proxy, index=self.get_input_node().index)
+
+        self.variables[out_name] = out
+        self.model.register_output_variable(out_name, out)
+
+    def function_cpp(self):
+        params = self._default_function_params()
+        return [self._function_template.format(**params)]
+
+    def config_cpp(self):
+        params = self._default_config_params()
+        return self._config_template.format(**params)       
+
+class Pack(Layer):
+    def initialize(self):
+        #inp = self.get_input_variable(self.inputs)
+        print(self.get_input_variable(self.inputs[0]))
+        print(self.get_input_variable(self.inputs[1]))
+        print("self.inputs:", self.inputs)
+        inp1 = self.get_input_variable(self.inputs[0])
+        inp2 = self.get_input_variable(self.inputs[1])
+        if self.attributes['axis'] == 0:
+            shape = [self.attributes['N'], self.attributes['in_height'], self.attributes['in_width'], self.attributes['n_chan']]
+        elif self.attributes['axis'] == 1:
+            shape = [self.attributes['in_height'], self.attributes['N'], self.attributes['in_width'], self.attributes['n_chan']]
+        else:
+           raise Exception("Unsupported axis {} for now".format(self.attributes['axis']))
+
+        dims = ['N_{}'.format(self.index), 'OUT_HEIGHT_{}'.format(self.index), 'OUT_WIDTH_{}'.format(self.index), 'N_FILT_{}'.format(self.index)]
+        self.add_output_variable(shape, dims)
+
+    def function_cpp(self):
+        params = self._default_function_params()
+        params['data_format'] = 'cl'
+        for i in range(self.attributes['N']):
+            params['input{}'.format(i)] = self.get_input_variable(self.inputs[i]).name
+        # max number of inputs for now is 5
+        max_N = 5
+        for i in range(self.attributes['N'], max_N+1):
+            params['input{}'.format(i)] = 'empty'
+        params['axis'] = self.attributes['axis']
+
+        print("function_cpp params:", params)
+        return [self._function_template.format(**params)]
+
+    def config_cpp(self):
+        params = self._default_config_params()
+        print("vars:", self.get_input_variable())
+        print("dim names:", self.get_input_variable().dim_names)
+        params['in_height'] = self.get_input_variable().dim_names[0]
+        params['in_width'] = self.get_input_variable().dim_names[1] if len(self.get_input_variable().dim_names) > 1 else 1
+        params['n_chan'] = self.get_input_variable().dim_names[2] if len(self.get_input_variable().dim_names) > 2 else 1
+        #params['N'] = self.get_output_variable().dim_names[0] #TODO
+        print("params:", params)
+        return self._config_template.format(**params)       
+
 class Activation(Layer):
     def initialize(self):
         inp = self.get_input_variable()
@@ -1347,9 +1436,10 @@ class Merge(Layer):
     def initialize(self):
         assert(len(self.inputs) == 2)
         inp1 = self.get_input_variable(self.inputs[0])
-        inp2 = self.get_input_variable(self.inputs[1])
+        if self.get_attr('second_input') == "na":
+            inp2 = self.get_input_variable(self.inputs[1])
+            assert(inp1.shape == inp2.shape)
         shape = inp1.shape
-        assert(inp1.shape == inp2.shape)
         dims = inp1.dim_names
         self.add_output_variable(shape, dims)
 
@@ -1788,6 +1878,9 @@ layer_map = {
     'GarNetStack'            : GarNetStack,
     # TensorFlow-specific layers:
     'BiasAdd'                : BiasAdd,
+    'Pack'                   : Pack,
+    'StridedSlice'           : StridedSlice,
+    'Shape'                  : Shape,
 }
 
 def register_layer(name, clazz):
