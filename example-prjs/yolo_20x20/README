@@ -1,0 +1,6 @@
+This project needs tensorflow 1.x
+I'm using python 3.7
+If you don't want to care about installing packages,
+pip install -r requirements.txt
+
+pip install <your hls4ml checked out branch>
